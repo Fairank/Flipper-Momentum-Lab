@@ -1,0 +1,708 @@
+﻿Downloading Windows toolchain..done!
+
+
+    Directory: C:\Users\PC\Desktop\projects\RE\6\Momentum-Firmware
+
+
+Mode                 LastWriteTime         Length Name                                                                 
+----                 -------------         ------ ----                                                                 
+d-----         9/21/2026   9:15 PM                toolchain                                                            
+Extracting Windows toolchain..moving..linking to 'current'..Junction created for C:\Users\PC\Desktop\projects\RE\6\Momentum-Firmware\toolchain\x86_64-windows\..\current <<===>> C:\Users\PC\Desktop\projects\RE\6\Momentum-Firmware\toolchain\x86_64-windows
+done!
+Cleaning up temporary files..done!
+
+
+.\fbt.cmd : [1;35m
+At line:1 char:322
++ ... ch {} } }; $env:FBT_NO_SYNC=1; .\fbt.cmd updater_package 2>&1 | Tee-O ...
++                                    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: ([1;35m:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+fbt: warning: Failed parsing manifest 
+'C:\Users\PC\Desktop\projects\RE\6\Momentum-Firmware\applications\external\cli_bridge\application.fam' : Invalid appid 
+'.cli_gui'. Must match regex 're.compile('^[a-z0-9_]+$')'
+[0m[33m[33mLoadAppManifest, line 135, [0min file 
+"C:\Users\PC\Desktop\projects\RE\6\Momentum-Firmware\scripts\fbt_tools\fbt_apps.py"
+[0m[1;35m
+fbt: warning: Failed parsing manifest 
+'C:\Users\PC\Desktop\projects\RE\6\Momentum-Firmware\applications\external\mtp\application.fam' : Invalid appid 
+'.f0_mtp'. Must match regex 're.compile('^[a-z0-9_]+$')'
+[0m[33m[33mLoadAppManifest, line 135, [0min file 
+"C:\Users\PC\Desktop\projects\RE\6\Momentum-Firmware\scripts\fbt_tools\fbt_apps.py"
+[0m[1;35m
+fbt: warning: Failed parsing manifest 
+'C:\Users\PC\Desktop\projects\RE\6\Momentum-Firmware\applications\external\cli_bridge\application.fam' : Invalid appid 
+'.cli_gui'. Must match regex 're.compile('^[a-z0-9_]+$')'
+[0m[33m[33mLoadAppManifest, line 135, [0min file 
+"C:\Users\PC\Desktop\projects\RE\6\Momentum-Firmware\scripts\fbt_tools\fbt_apps.py"
+[0m[1;35m
+fbt: warning: Failed parsing manifest 
+'C:\Users\PC\Desktop\projects\RE\6\Momentum-Firmware\applications\external\mtp\application.fam' : Invalid appid 
+'.f0_mtp'. Must match regex 're.compile('^[a-z0-9_]+$')'
+[0m[33m[33mLoadAppManifest, line 135, [0min file 
+"C:\Users\PC\Desktop\projects\RE\6\Momentum-Firmware\scripts\fbt_tools\fbt_apps.py"
+	ICONS	build\f7-firmware-C\assets\compiled\_assets_icons_dropin.c
+	PROTO	assets\protobuf\application.proto
+	DOLPHIN	blocking
+	DOLPHIN	internal
+	CC	lib\bit_lib\bit_lib.c
+2026-09-21 21:16:23,181 [INFO] Processing Dolphin sources[0m
+2026-09-21 21:16:23,181 [INFO] Loading data[0m
+2026-09-21 21:16:23,181 [INFO] Loading directory assets\dolphin\blocking[0m
+2026-09-21 21:16:23,184 [INFO] Packing[0m
+2026-09-21 21:16:23,186 [INFO] Processing Dolphin sources[0m
+2026-09-21 21:16:23,186 [INFO] Loading data[0m
+2026-09-21 21:16:23,186 [INFO] Loading directory assets\dolphin\internal[0m
+2026-09-21 21:16:23,187 [INFO] Packing[0m
+2026-09-21 21:16:23,617 [INFO] _assets_icons_dropin: ignoring duplicate icon A_Levelup_128x64[0m
+2026-09-21 21:16:23,617 [INFO] _assets_icons_dropin: ignoring duplicate icon I_125_10px[0m
+2026-09-21 21:16:23,617 [INFO] _assets_icons_dropin: ignoring duplicate icon I_Apps_10px[0m
+2026-09-21 21:16:23,617 [INFO] _assets_icons_dropin: ignoring duplicate icon I_Nfc_10px[0m
+2026-09-21 21:16:23,617 [INFO] _assets_icons_dropin: ignoring duplicate icon I_back_10px[0m
+2026-09-21 21:16:23,617 [INFO] _assets_icons_dropin: ignoring duplicate icon I_badusb_10px[0m
+2026-09-21 21:16:23,617 [INFO] _assets_icons_dropin: ignoring duplicate icon I_dir_10px[0m
+2026-09-21 21:16:23,617 [INFO] _assets_icons_dropin: ignoring duplicate icon I_file_10px[0m
+2026-09-21 21:16:23,620 [INFO] _assets_icons_dropin: ignoring duplicate icon I_floppydisk_10px[0m
+2026-09-21 21:16:23,620 [INFO] _assets_icons_dropin: ignoring duplicate icon I_ibutt_10px[0m
+2026-09-21 21:16:23,620 [INFO] _assets_icons_dropin: ignoring duplicate icon I_ir_10px[0m
+2026-09-21 21:16:23,620 [INFO] _assets_icons_dropin: ignoring duplicate icon I_ir_scope_10px[0m
+2026-09-21 21:16:23,620 [INFO] _assets_icons_dropin: ignoring duplicate icon I_js_script_10px[0m
+2026-09-21 21:16:23,620 [INFO] Complete[0m
+2026-09-21 21:16:23,620 [INFO] _assets_icons_dropin: ignoring duplicate icon I_keyboard_10px[0m
+2026-09-21 21:16:23,620 [INFO] _assets_icons_dropin: ignoring duplicate icon I_loading_10px[0m
+2026-09-21 21:16:23,620 [INFO] _assets_icons_dropin: ignoring duplicate icon I_mag_card_10px[0m
+2026-09-21 21:16:23,620 [INFO] _assets_icons_dropin: ignoring duplicate icon I_music_10px[0m
+2026-09-21 21:16:23,620 [INFO] _assets_icons_dropin: ignoring duplicate icon I_protopirate_10px[0m
+2026-09-21 21:16:23,620 [INFO] _assets_icons_dropin: ignoring duplicate icon I_search_10px[0m
+2026-09-21 21:16:23,621 [INFO] _assets_icons_dropin: ignoring duplicate icon I_settings_10px[0m
+2026-09-21 21:16:23,621 [INFO] _assets_icons_dropin: ignoring duplicate icon I_sub1_10px[0m
+2026-09-21 21:16:23,621 [INFO] _assets_icons_dropin: ignoring duplicate icon I_subplaylist_10px[0m
+2026-09-21 21:16:23,621 [INFO] _assets_icons_dropin: ignoring duplicate icon I_subrem_10px[0m
+2026-09-21 21:16:23,621 [INFO] _assets_icons_dropin: ignoring duplicate icon I_u2f_10px[0m
+2026-09-21 21:16:23,621 [INFO] _assets_icons_dropin: ignoring duplicate icon I_unknown_10px[0m
+2026-09-21 21:16:23,621 [INFO] _assets_icons_dropin: ignoring duplicate icon I_update_10px[0m
+2026-09-21 21:16:23,621 [INFO] _assets_icons_dropin: ignoring duplicate icon I_xremote_10px[0m
+2026-09-21 21:16:23,621 [INFO] _assets_icons_dropin: ignoring duplicate icon I_BLE_Pairing_128x64[0m
+2026-09-21 21:16:23,621 [INFO] _assets_icons_dropin: ignoring duplicate icon I_Ble_connected_15x15[0m
+2026-09-21 21:16:23,621 [INFO] _assets_icons_dropin: ignoring duplicate icon I_Ble_disconnected_15x15[0m
+2026-09-21 21:16:23,621 [INFO] _assets_icons_dropin: ignoring duplicate icon I_Button_18x18[0m
+2026-09-21 21:16:23,621 [INFO] _assets_icons_dropin: ignoring duplicate icon I_Circles_47x47[0m
+2026-09-21 21:16:23,621 [INFO] _assets_icons_dropin: ignoring duplicate icon I_Left_mouse_icon_9x9[0m
+2026-09-21 21:16:23,621 [INFO] _assets_icons_dropin: ignoring duplicate icon I_Ok_btn_9x9[0m
+2026-09-21 21:16:23,621 [INFO] _assets_icons_dropin: ignoring duplicate icon I_Ok_btn_pressed_13x13[0m
+2026-09-21 21:16:23,623 [INFO] _assets_icons_dropin: ignoring duplicate icon I_Pressed_Button_13x13[0m
+2026-09-21 21:16:23,623 [INFO] _assets_icons_dropin: ignoring duplicate icon I_Right_mouse_icon_9x9[0m
+2026-09-21 21:16:23,623 [INFO] _assets_icons_dropin: ignoring duplicate icon I_Space_65x18[0m
+2026-09-21 21:16:23,623 [INFO] _assets_icons_dropin: ignoring duplicate icon I_Voldwn_6x6[0m
+2026-09-21 21:16:23,623 [INFO] _assets_icons_dropin: ignoring duplicate icon I_Volup_8x6[0m
+2026-09-21 21:16:23,623 [INFO] _assets_icons_dropin: ignoring duplicate icon I_Bad_BLE_48x22[0m
+2026-09-21 21:16:23,623 [INFO] _assets_icons_dropin: ignoring duplicate icon I_Clock_18x18[0m
+2026-09-21 21:16:23,623 [INFO] _assets_icons_dropin: ignoring duplicate icon I_Error_18x18[0m
+2026-09-21 21:16:23,623 [INFO] _assets_icons_dropin: ignoring duplicate icon I_EviSmile1_18x21[0m
+2026-09-21 21:16:23,623 [INFO] _assets_icons_dropin: ignoring duplicate icon I_EviSmile2_18x21[0m
+2026-09-21 21:16:23,623 [INFO] _assets_icons_dropin: ignoring duplicate icon I_EviWaiting1_18x21[0m
+2026-09-21 21:16:23,623 [INFO] _assets_icons_dropin: ignoring duplicate icon I_EviWaiting2_18x21[0m
+2026-09-21 21:16:23,623 [INFO] _assets_icons_dropin: ignoring duplicate icon I_Percent_10x14[0m
+2026-09-21 21:16:23,623 [INFO] _assets_icons_dropin: ignoring duplicate icon I_Smile_18x18[0m
+2026-09-21 21:16:23,623 [INFO] _assets_icons_dropin: ignoring duplicate icon I_UsbTree_48x22[0m
+2026-09-21 21:16:23,623 [INFO] Complete[0m
+2026-09-21 21:16:23,623 [INFO] _assets_icons_dropin: ignoring duplicate icon I_ActiveConnection_50x64[0m
+2026-09-21 21:16:23,623 [INFO] _assets_icons_dropin: ignoring duplicate icon I_ButtonCenter_7x7[0m
+2026-09-21 21:16:23,623 [INFO] _assets_icons_dropin: ignoring duplicate icon I_ButtonDown_7x4[0m
+2026-09-21 21:16:23,623 [INFO] _assets_icons_dropin: ignoring duplicate icon I_ButtonLeftSmall_3x5[0m
+2026-09-21 21:16:23,623 [INFO] _assets_icons_dropin: ignoring duplicate icon I_ButtonLeft_4x7[0m
+2026-09-21 21:16:23,623 [INFO] _assets_icons_dropin: ignoring duplicate icon I_ButtonRightSmall_3x5[0m
+2026-09-21 21:16:23,623 [INFO] _assets_icons_dropin: ignoring duplicate icon I_ButtonRight_4x7[0m
+2026-09-21 21:16:23,623 [INFO] _assets_icons_dropin: ignoring duplicate icon I_ButtonUp_7x4[0m
+2026-09-21 21:16:23,627 [INFO] _assets_icons_dropin: ignoring duplicate icon I_Hashmark_7x7[0m
+2026-09-21 21:16:23,627 [INFO] _assets_icons_dropin: ignoring duplicate icon I_More_data_placeholder_5x7[0m
+2026-09-21 21:16:23,627 [INFO] _assets_icons_dropin: ignoring duplicate icon I_arrow_nano_down[0m
+2026-09-21 21:16:23,631 [INFO] _assets_icons_dropin: ignoring duplicate icon I_arrow_nano_up[0m
+2026-09-21 21:16:23,631 [INFO] _assets_icons_dropin: ignoring duplicate icon A_Loading_24[0m
+2026-09-21 21:16:23,631 [INFO] _assets_icons_dropin: ignoring duplicate icon A_Round_loader_8x8[0m
+2026-09-21 21:16:23,631 [INFO] _assets_icons_dropin: ignoring duplicate icon I_CC_Bluetooth_16x16[0m
+2026-09-21 21:16:23,631 [INFO] _assets_icons_dropin: ignoring duplicate icon I_CC_DarkMode_16x16[0m
+2026-09-21 21:16:23,636 [INFO] _assets_icons_dropin: ignoring duplicate icon I_CC_LefthandedMode_16x16[0m
+2026-09-21 21:16:23,636 [INFO] _assets_icons_dropin: ignoring duplicate icon I_CC_Lock_16x16[0m
+2026-09-21 21:16:23,636 [INFO] _assets_icons_dropin: ignoring duplicate icon I_CC_Momentum_16x16[0m
+2026-09-21 21:16:23,636 [INFO] _assets_icons_dropin: ignoring duplicate icon I_CC_Settings_16x16[0m
+2026-09-21 21:16:23,637 [INFO] _assets_icons_dropin: ignoring duplicate icon I_DolphinDone_80x58[0m
+2026-09-21 21:16:23,637 [INFO] _assets_icons_dropin: ignoring duplicate icon I_DolphinMafia_119x62[0m
+2026-09-21 21:16:23,637 [INFO] _assets_icons_dropin: ignoring duplicate icon I_DolphinReadingSuccess_59x63[0m
+2026-09-21 21:16:23,637 [INFO] _assets_icons_dropin: ignoring duplicate icon I_DolphinSaved_92x58[0m
+2026-09-21 21:16:23,637 [INFO] _assets_icons_dropin: ignoring duplicate icon I_DolphinSuccess_91x55[0m
+2026-09-21 21:16:23,637 [INFO] _assets_icons_dropin: ignoring duplicate icon I_DolphinWait_59x54[0m
+2026-09-21 21:16:23,637 [INFO] _assets_icons_dropin: ignoring duplicate icon I_WarningDolphinFlip_45x42[0m
+2026-09-21 21:16:23,637 [INFO] _assets_icons_dropin: ignoring duplicate icon I_WarningDolphin_45x42[0m
+2026-09-21 21:16:23,637 [INFO] _assets_icons_dropin: ignoring duplicate icon I_ArrowUpEmpty_14x15[0m
+2026-09-21 21:16:23,637 [INFO] _assets_icons_dropin: ignoring duplicate icon I_ArrowUpFilled_14x15[0m
+2026-09-21 21:16:23,637 [INFO] _assets_icons_dropin: ignoring duplicate icon I_InfraredArrowDown_4x8[0m
+2026-09-21 21:16:23,637 [INFO] _assets_icons_dropin: ignoring duplicate icon I_InfraredArrowUp_4x8[0m
+2026-09-21 21:16:23,637 [INFO] _assets_icons_dropin: ignoring duplicate icon I_InfraredLearnShort_128x31[0m
+2026-09-21 21:16:23,640 [INFO] _assets_icons_dropin: ignoring duplicate icon I_blue_19x20[0m
+2026-09-21 21:16:23,640 [INFO] _assets_icons_dropin: ignoring duplicate icon I_blue_hover_19x20[0m
+2026-09-21 21:16:23,640 [INFO] _assets_icons_dropin: ignoring duplicate icon I_brightness_text_40x5[0m
+2026-09-21 21:16:23,640 [INFO] _assets_icons_dropin: ignoring duplicate icon I_celsius_24x23[0m
+2026-09-21 21:16:23,640 [INFO] _assets_icons_dropin: ignoring duplicate icon I_celsius_hover_24x23[0m
+2026-09-21 21:16:23,640 [INFO] _assets_icons_dropin: ignoring duplicate icon I_ch_down_24x21[0m
+2026-09-21 21:16:23,640 [INFO] _assets_icons_dropin: ignoring duplicate icon I_ch_down_hover_24x21[0m
+2026-09-21 21:16:23,640 [INFO] _assets_icons_dropin: ignoring duplicate icon I_ch_text_31x34[0m
+2026-09-21 21:16:23,640 [INFO] _assets_icons_dropin: ignoring duplicate icon I_ch_up_24x21[0m
+2026-09-21 21:16:23,640 [INFO] _assets_icons_dropin: ignoring duplicate icon I_ch_up_hover_24x21[0m
+2026-09-21 21:16:23,642 [INFO] _assets_icons_dropin: ignoring duplicate icon I_color_text_24x5[0m
+2026-09-21 21:16:23,642 [INFO] _assets_icons_dropin: ignoring duplicate icon I_cool_30x51[0m
+2026-09-21 21:16:23,642 [INFO] _assets_icons_dropin: ignoring duplicate icon I_dry_19x20[0m
+2026-09-21 21:16:23,642 [INFO] _assets_icons_dropin: ignoring duplicate icon I_dry_hover_19x20[0m
+2026-09-21 21:16:23,642 [INFO] _assets_icons_dropin: ignoring duplicate icon I_dry_text_15x5[0m
+2026-09-21 21:16:23,642 [INFO] _assets_icons_dropin: ignoring duplicate icon I_eject_19x20[0m
+2026-09-21 21:16:23,642 [INFO] _assets_icons_dropin: ignoring duplicate icon I_eject_hover_19x20[0m
+2026-09-21 21:16:23,642 [INFO] _assets_icons_dropin: ignoring duplicate icon I_eject_text_19x5[0m
+2026-09-21 21:16:23,642 [INFO] _assets_icons_dropin: ignoring duplicate icon I_exit_19x20[0m
+2026-09-21 21:16:23,642 [INFO] _assets_icons_dropin: ignoring duplicate icon I_exit_hover_19x20[0m
+2026-09-21 21:16:23,642 [INFO] _assets_icons_dropin: ignoring duplicate icon I_exit_text_18x5[0m
+2026-09-21 21:16:23,642 [INFO] _assets_icons_dropin: ignoring duplicate icon I_fahren_24x23[0m
+2026-09-21 21:16:23,642 [INFO] _assets_icons_dropin: ignoring duplicate icon I_fahren_hover_24x23[0m
+2026-09-21 21:16:23,642 [INFO] _assets_icons_dropin: ignoring duplicate icon I_fast_backward_19x20[0m
+2026-09-21 21:16:23,642 [INFO] _assets_icons_dropin: ignoring duplicate icon I_fast_backward_hover_19x20[0m
+2026-09-21 21:16:23,644 [INFO] _assets_icons_dropin: ignoring duplicate icon I_fast_backward_text_19x6[0m
+2026-09-21 21:16:23,644 [INFO] _assets_icons_dropin: ignoring duplicate icon I_fast_f_19x20[0m
+	CC	lib\ble_profile\extra_profiles\hid_profile.c
+2026-09-21 21:16:23,644 [INFO] _assets_icons_dropin: ignoring duplicate icon I_fast_f_hover_19x20[0m
+2026-09-21 21:16:23,644 [INFO] _assets_icons_dropin: ignoring duplicate icon I_fast_f_text_19x6[0m
+2026-09-21 21:16:23,644 [INFO] _assets_icons_dropin: ignoring duplicate icon I_green_19x20[0m
+2026-09-21 21:16:23,644 [INFO] _assets_icons_dropin: ignoring duplicate icon I_green_hover_19x20[0m
+2026-09-21 21:16:23,644 [INFO] _assets_icons_dropin: ignoring duplicate icon I_heat_30x51[0m
+2026-09-21 21:16:23,644 [INFO] _assets_icons_dropin: ignoring duplicate icon I_input_19x20[0m
+2026-09-21 21:16:23,644 [INFO] _assets_icons_dropin: ignoring duplicate icon I_input_hover_19x20[0m
+2026-09-21 21:16:23,644 [INFO] _assets_icons_dropin: ignoring duplicate icon I_input_text_24x5[0m
+2026-09-21 21:16:23,644 [INFO] _assets_icons_dropin: ignoring duplicate icon I_max_24x23[0m
+2026-09-21 21:16:23,644 [INFO] _assets_icons_dropin: ignoring duplicate icon I_max_hover_24x23[0m
+2026-09-21 21:16:23,644 [INFO] _assets_icons_dropin: ignoring duplicate icon I_menu_text_20x5[0m
+2026-09-21 21:16:23,644 [INFO] _assets_icons_dropin: ignoring duplicate icon I_minus_19x20[0m
+2026-09-21 21:16:23,644 [INFO] _assets_icons_dropin: ignoring duplicate icon I_minus_hover_19x20[0m
+2026-09-21 21:16:23,644 [INFO] _assets_icons_dropin: ignoring duplicate icon I_mode_19x20[0m
+2026-09-21 21:16:23,646 [INFO] _assets_icons_dropin: ignoring duplicate icon I_mode_hover_19x20[0m
+2026-09-21 21:16:23,646 [INFO] _assets_icons_dropin: ignoring duplicate icon I_mode_text_20x5[0m
+2026-09-21 21:16:23,646 [INFO] _assets_icons_dropin: ignoring duplicate icon I_mute_19x20[0m
+2026-09-21 21:16:23,646 [INFO] _assets_icons_dropin: ignoring duplicate icon I_mute_hover_19x20[0m
+2026-09-21 21:16:23,646 [INFO] _assets_icons_dropin: ignoring duplicate icon I_mute_text_19x5[0m
+2026-09-21 21:16:23,646 [INFO] _assets_icons_dropin: ignoring duplicate icon I_next_19x20[0m
+2026-09-21 21:16:23,646 [INFO] _assets_icons_dropin: ignoring duplicate icon I_next_hover_19x20[0m
+2026-09-21 21:16:23,647 [INFO] _assets_icons_dropin: ignoring duplicate icon I_next_text_19x6[0m
+2026-09-21 21:16:23,647 [INFO] _assets_icons_dropin: ignoring duplicate icon I_off_19x20[0m
+2026-09-21 21:16:23,647 [INFO] _assets_icons_dropin: ignoring duplicate icon I_off_hover_19x20[0m
+2026-09-21 21:16:23,647 [INFO] _assets_icons_dropin: ignoring duplicate icon I_off_text_12x5[0m
+2026-09-21 21:16:23,647 [INFO] _assets_icons_dropin: ignoring duplicate icon I_ok_19x20[0m
+2026-09-21 21:16:23,647 [INFO] _assets_icons_dropin: ignoring duplicate icon I_ok_hover_19x20[0m
+2026-09-21 21:16:23,647 [INFO] _assets_icons_dropin: ignoring duplicate icon I_ok_text_19x5[0m
+2026-09-21 21:16:23,647 [INFO] _assets_icons_dropin: ignoring duplicate icon I_on_text_9x5[0m
+2026-09-21 21:16:23,647 [INFO] _assets_icons_dropin: ignoring duplicate icon I_pause_19x20[0m
+2026-09-21 21:16:23,647 [INFO] _assets_icons_dropin: ignoring duplicate icon I_pause_hover_19x20[0m
+2026-09-21 21:16:23,647 [INFO] _assets_icons_dropin: ignoring duplicate icon I_pause_text_23x5[0m
+2026-09-21 21:16:23,647 [INFO] _assets_icons_dropin: ignoring duplicate icon I_play_19x20[0m
+2026-09-21 21:16:23,647 [INFO] _assets_icons_dropin: ignoring duplicate icon I_play_hover_19x20[0m
+2026-09-21 21:16:23,647 [INFO] _assets_icons_dropin: ignoring duplicate icon I_play_text_19x5[0m
+2026-09-21 21:16:23,647 [INFO] _assets_icons_dropin: ignoring duplicate icon I_plus_19x20[0m
+2026-09-21 21:16:23,647 [INFO] _assets_icons_dropin: ignoring duplicate icon I_plus_hover_19x20[0m
+2026-09-21 21:16:23,647 [INFO] _assets_icons_dropin: ignoring duplicate icon I_power_19x20[0m
+2026-09-21 21:16:23,647 [INFO] _assets_icons_dropin: ignoring duplicate icon I_power_hover_19x20[0m
+2026-09-21 21:16:23,647 [INFO] _assets_icons_dropin: ignoring duplicate icon I_power_text_24x5[0m
+2026-09-21 21:16:23,647 [INFO] _assets_icons_dropin: ignoring duplicate icon I_prev_19x20[0m
+2026-09-21 21:16:23,647 [INFO] _assets_icons_dropin: ignoring duplicate icon I_prev_hover_19x20[0m
+2026-09-21 21:16:23,647 [INFO] _assets_icons_dropin: ignoring duplicate icon I_prev_text_19x5[0m
+2026-09-21 21:16:23,647 [INFO] _assets_icons_dropin: ignoring duplicate icon I_red_19x20[0m
+2026-09-21 21:16:23,647 [INFO] _assets_icons_dropin: ignoring duplicate icon I_red_hover_19x20[0m
+2026-09-21 21:16:23,651 [INFO] _assets_icons_dropin: ignoring duplicate icon I_rotate_19x20[0m
+2026-09-21 21:16:23,651 [INFO] _assets_icons_dropin: ignoring duplicate icon I_rotate_hover_19x20[0m
+2026-09-21 21:16:23,651 [INFO] _assets_icons_dropin: ignoring duplicate icon I_rotate_text_24x5[0m
+2026-09-21 21:16:23,651 [INFO] _assets_icons_dropin: ignoring duplicate icon I_speed_text_30x30[0m
+2026-09-21 21:16:23,651 [INFO] _assets_icons_dropin: ignoring duplicate icon I_stop_19x20[0m
+2026-09-21 21:16:23,651 [INFO] _assets_icons_dropin: ignoring duplicate icon I_stop_hover_19x20[0m
+2026-09-21 21:16:23,651 [INFO] _assets_icons_dropin: ignoring duplicate icon I_stop_text_19x5[0m
+2026-09-21 21:16:23,651 [INFO] _assets_icons_dropin: ignoring duplicate icon I_subtitle_19x20[0m
+2026-09-21 21:16:23,651 [INFO] _assets_icons_dropin: ignoring duplicate icon I_subtitle_hover_19x20[0m
+2026-09-21 21:16:23,651 [INFO] _assets_icons_dropin: ignoring duplicate icon I_subtitle_text_19x5[0m
+2026-09-21 21:16:23,651 [INFO] _assets_icons_dropin: ignoring duplicate icon I_timer_19x20[0m
+2026-09-21 21:16:23,651 [INFO] _assets_icons_dropin: ignoring duplicate icon I_timer_hover_19x20[0m
+2026-09-21 21:16:23,651 [INFO] _assets_icons_dropin: ignoring duplicate icon I_timer_text_23x5[0m
+2026-09-21 21:16:23,651 [INFO] _assets_icons_dropin: ignoring duplicate icon I_vol_ac_text_30x30[0m
+2026-09-21 21:16:23,652 [INFO] _assets_icons_dropin: ignoring duplicate icon I_vol_tv_text_29x34[0m
+2026-09-21 21:16:23,652 [INFO] _assets_icons_dropin: ignoring duplicate icon I_voldown_24x21[0m
+2026-09-21 21:16:23,652 [INFO] _assets_icons_dropin: ignoring duplicate icon I_voldown_hover_24x21[0m
+2026-09-21 21:16:23,652 [INFO] _assets_icons_dropin: ignoring duplicate icon I_volup_24x21[0m
+2026-09-21 21:16:23,652 [INFO] _assets_icons_dropin: ignoring duplicate icon I_volup_hover_24x21[0m
+2026-09-21 21:16:23,652 [INFO] _assets_icons_dropin: ignoring duplicate icon I_white_19x20[0m
+2026-09-21 21:16:23,652 [INFO] _assets_icons_dropin: ignoring duplicate icon I_white_hover_19x20[0m
+2026-09-21 21:16:23,652 [INFO] _assets_icons_dropin: ignoring duplicate icon I_Lockscreen[0m
+2026-09-21 21:16:23,652 [INFO] _assets_icons_dropin: ignoring duplicate icon I_SmallArrowDown_3x5[0m
+2026-09-21 21:16:23,652 [INFO] _assets_icons_dropin: ignoring duplicate icon I_SmallArrowUp_3x5[0m
+2026-09-21 21:16:23,652 [INFO] _assets_icons_dropin: ignoring duplicate icon I_KeyBackspaceSelected_17x11[0m
+2026-09-21 21:16:23,654 [INFO] _assets_icons_dropin: ignoring duplicate icon I_KeyBackspace_17x11[0m
+2026-09-21 21:16:23,654 [INFO] _assets_icons_dropin: ignoring duplicate icon I_KeyKeyboardSelected_10x11[0m
+2026-09-21 21:16:23,654 [INFO] _assets_icons_dropin: ignoring duplicate icon I_KeyKeyboard_10x11[0m
+2026-09-21 21:16:23,654 [INFO] _assets_icons_dropin: ignoring duplicate icon I_KeySaveBlockedSelected_22x11[0m
+2026-09-21 21:16:23,654 [INFO] _assets_icons_dropin: ignoring duplicate icon I_KeySaveBlocked_22x11[0m
+2026-09-21 21:16:23,654 [INFO] _assets_icons_dropin: ignoring duplicate icon I_KeySaveSelected_22x11[0m
+2026-09-21 21:16:23,654 [INFO] _assets_icons_dropin: ignoring duplicate icon I_KeySave_22x11[0m
+2026-09-21 21:16:23,654 [INFO] _assets_icons_dropin: ignoring duplicate icon I_KeySignSelected_21x11[0m
+2026-09-21 21:16:23,654 [INFO] _assets_icons_dropin: ignoring duplicate icon I_KeySign_21x11[0m
+2026-09-21 21:16:23,660 [INFO] _assets_icons_dropin: ignoring duplicate icon A_125khz_14[0m
+2026-09-21 21:16:23,660 [INFO] _assets_icons_dropin: ignoring duplicate icon A_BadUsb_14[0m
+2026-09-21 21:16:23,660 [INFO] _assets_icons_dropin: ignoring duplicate icon A_GPIO_14[0m
+2026-09-21 21:16:23,660 [INFO] _assets_icons_dropin: ignoring duplicate icon A_Infrared_14[0m
+2026-09-21 21:16:23,660 [INFO] _assets_icons_dropin: ignoring duplicate icon A_Momentum_14[0m
+2026-09-21 21:16:23,662 [INFO] _assets_icons_dropin: ignoring duplicate icon A_NFC_14[0m
+2026-09-21 21:16:23,662 [INFO] _assets_icons_dropin: ignoring duplicate icon A_Plugins_14[0m
+2026-09-21 21:16:23,662 [INFO] _assets_icons_dropin: ignoring duplicate icon A_Settings_14[0m
+2026-09-21 21:16:23,662 [INFO] _assets_icons_dropin: ignoring duplicate icon A_Sub1ghz_14[0m
+2026-09-21 21:16:23,662 [INFO] _assets_icons_dropin: ignoring duplicate icon A_U2F_14[0m
+2026-09-21 21:16:23,662 [INFO] _assets_icons_dropin: ignoring duplicate icon A_iButton_14[0m
+2026-09-21 21:16:23,662 [INFO] _assets_icons_dropin: ignoring duplicate icon I_ArrowC_1_36x36[0m
+2026-09-21 21:16:23,662 [INFO] _assets_icons_dropin: ignoring duplicate icon I_Keychain_39x36[0m
+2026-09-21 21:16:23,664 [INFO] _assets_icons_dropin: ignoring duplicate icon I_Modern_reader_18x34[0m
+2026-09-21 21:16:23,665 [INFO] _assets_icons_dropin: ignoring duplicate icon I_Move_flipper_26x39[0m
+2026-09-21 21:16:23,665 [INFO] _assets_icons_dropin: ignoring duplicate icon I_NFC_dolphin_emulation_51x64[0m
+2026-09-21 21:16:23,665 [INFO] _assets_icons_dropin: ignoring duplicate icon I_NFC_manual_60x50[0m
+2026-09-21 21:16:23,665 [INFO] _assets_icons_dropin: ignoring duplicate icon I_Release_arrow_18x15[0m
+2026-09-21 21:16:23,665 [INFO] _assets_icons_dropin: ignoring duplicate icon I_check_big_20x17[0m
+2026-09-21 21:16:23,665 [INFO] _assets_icons_dropin: ignoring duplicate icon I_Pin_arrow_up_7x9[0m
+2026-09-21 21:16:23,665 [INFO] _assets_icons_dropin: ignoring duplicate icon I_Pin_attention_dpad_29x29[0m
+2026-09-21 21:16:23,665 [INFO] _assets_icons_dropin: ignoring duplicate icon I_Pin_back_arrow_10x8[0m
+2026-09-21 21:16:23,665 [INFO] _assets_icons_dropin: ignoring duplicate icon I_Pin_pointer_5x3[0m
+2026-09-21 21:16:23,665 [INFO] _assets_icons_dropin: ignoring duplicate icon I_Pin_star_7x7[0m
+2026-09-21 21:16:23,667 [INFO] _assets_icons_dropin: ignoring duplicate icon I_passport_128x64[0m
+2026-09-21 21:16:23,667 [INFO] _assets_icons_dropin: ignoring duplicate icon I_passport_bad_46x49[0m
+2026-09-21 21:16:23,667 [INFO] _assets_icons_dropin: ignoring duplicate icon I_passport_happy_46x49[0m
+2026-09-21 21:16:23,667 [INFO] _assets_icons_dropin: ignoring duplicate icon I_passport_okay_46x49[0m
+2026-09-21 21:16:23,667 [INFO] _assets_icons_dropin: ignoring duplicate icon I_BatteryBody_52x28[0m
+2026-09-21 21:16:23,667 [INFO] _assets_icons_dropin: ignoring duplicate icon I_Battery_16x16[0m
+2026-09-21 21:16:23,667 [INFO] _assets_icons_dropin: ignoring duplicate icon I_FaceCharging_29x14[0m
+2026-09-21 21:16:23,667 [INFO] _assets_icons_dropin: ignoring duplicate icon I_FaceConfused_29x14[0m
+2026-09-21 21:16:23,667 [INFO] _assets_icons_dropin: ignoring duplicate icon I_FaceNopower_29x14[0m
+2026-09-21 21:16:23,667 [INFO] _assets_icons_dropin: ignoring duplicate icon I_FaceNormal_29x14[0m
+2026-09-21 21:16:23,667 [INFO] _assets_icons_dropin: ignoring duplicate icon I_Health_16x16[0m
+2026-09-21 21:16:23,669 [INFO] _assets_icons_dropin: ignoring duplicate icon I_Temperature_16x16[0m
+2026-09-21 21:16:23,669 [INFO] _assets_icons_dropin: ignoring duplicate icon I_Unplug_bg_bottom_128x10[0m
+2026-09-21 21:16:23,669 [INFO] _assets_icons_dropin: ignoring duplicate icon I_Unplug_bg_top_128x14[0m
+2026-09-21 21:16:23,669 [INFO] _assets_icons_dropin: ignoring duplicate icon I_Voltage_16x16[0m
+2026-09-21 21:16:23,669 [INFO] _assets_icons_dropin: ignoring duplicate icon I_RFIDDolphinReceive_97x61[0m
+2026-09-21 21:16:23,669 [INFO] _assets_icons_dropin: ignoring duplicate icon I_RFIDDolphinSend_97x61[0m
+2026-09-21 21:16:23,669 [INFO] _assets_icons_dropin: ignoring duplicate icon I_RFIDSmallChip_14x14[0m
+2026-09-21 21:16:23,669 [INFO] _assets_icons_dropin: ignoring duplicate icon I_SDQuestion_35x43[0m
+2026-09-21 21:16:23,669 [INFO] _assets_icons_dropin: ignoring duplicate icon I_LoadingHourglass_24x24[0m
+2026-09-21 21:16:23,669 [INFO] _assets_icons_dropin: ignoring duplicate icon I_dolph_cry_49x54[0m
+2026-09-21 21:16:23,671 [INFO] _assets_icons_dropin: ignoring duplicate icon A_Alarm_47x39[0m
+2026-09-21 21:16:23,671 [INFO] _assets_icons_dropin: ignoring duplicate icon I_BLE_beacon_7x8[0m
+2026-09-21 21:16:23,671 [INFO] _assets_icons_dropin: ignoring duplicate icon I_Background_128x11[0m
+2026-09-21 21:16:23,671 [INFO] _assets_icons_dropin: ignoring duplicate icon I_Battery_25x8[0m
+2026-09-21 21:16:23,671 [INFO] _assets_icons_dropin: ignoring duplicate icon I_Bluetooth_Connected_16x8[0m
+2026-09-21 21:16:23,671 [INFO] _assets_icons_dropin: ignoring duplicate icon I_Bluetooth_Idle_5x8[0m
+2026-09-21 21:16:23,671 [INFO] _assets_icons_dropin: ignoring duplicate icon I_Charging_lightning_9x10[0m
+2026-09-21 21:16:23,671 [INFO] _assets_icons_dropin: ignoring duplicate icon I_Charging_lightning_mask_9x10[0m
+2026-09-21 21:16:23,671 [INFO] _assets_icons_dropin: ignoring duplicate icon I_Exp_module_connected_12x8[0m
+2026-09-21 21:16:23,671 [INFO] _assets_icons_dropin: ignoring duplicate icon I_Hidden_window_9x8[0m
+2026-09-21 21:16:23,672 [INFO] _assets_icons_dropin: ignoring duplicate icon I_Muted_8x8[0m
+2026-09-21 21:16:23,672 [INFO] _assets_icons_dropin: ignoring duplicate icon I_Rpc_active_7x8[0m
+2026-09-21 21:16:23,672 [INFO] _assets_icons_dropin: ignoring duplicate icon I_SDcardMounted_11x8[0m
+2026-09-21 21:16:23,672 [INFO] _assets_icons_dropin: ignoring duplicate icon I_Cos_9x7[0m
+2026-09-21 21:16:23,672 [INFO] _assets_icons_dropin: ignoring duplicate icon I_Dynamic_9x7[0m
+2026-09-21 21:16:23,672 [INFO] _assets_icons_dropin: ignoring duplicate icon I_Fishing_123x52[0m
+2026-09-21 21:16:23,672 [INFO] _assets_icons_dropin: ignoring duplicate icon I_Lock_7x8[0m
+2026-09-21 21:16:23,672 [INFO] _assets_icons_dropin: ignoring duplicate icon I_MHz_25x11[0m
+2026-09-21 21:16:23,674 [INFO] _assets_icons_dropin: ignoring duplicate icon I_Quest_7x8[0m
+2026-09-21 21:16:23,674 [INFO] _assets_icons_dropin: ignoring duplicate icon I_Raw_9x7[0m
+2026-09-21 21:16:23,674 [INFO] _assets_icons_dropin: ignoring duplicate icon I_Sats_6x9[0m
+2026-09-21 21:16:23,674 [INFO] _assets_icons_dropin: ignoring duplicate icon I_Scanning_123x52[0m
+2026-09-21 21:16:23,674 [INFO] _assets_icons_dropin: ignoring duplicate icon I_Static_9x7[0m
+2026-09-21 21:16:23,674 [INFO] _assets_icons_dropin: ignoring duplicate icon I_Unlock_7x8[0m
+2026-09-21 21:16:23,675 [INFO] _assets_icons_dropin: ignoring duplicate icon I_Auth_62x31[0m
+2026-09-21 21:16:23,675 [INFO] _assets_icons_dropin: ignoring duplicate icon I_Connect_me_62x31[0m
+2026-09-21 21:16:23,675 [INFO] _assets_icons_dropin: ignoring duplicate icon I_Connected_62x31[0m
+2026-09-21 21:16:23,675 [INFO] _assets_icons_dropin: ignoring duplicate icon I_Drive_112x35[0m
+2026-09-21 21:16:23,675 [INFO] _assets_icons_dropin: ignoring duplicate icon I_Error_62x31[0m
+2026-09-21 21:16:23,677 [INFO] _assets_icons_dropin: ignoring duplicate icon I_iButtonDolphinVerySuccess_92x55[0m
+2026-09-21 21:16:23,677 [INFO] _assets_icons_dropin: ignoring duplicate icon I_iButtonKey_49x44[0m
+	CC	build\f7-firmware-C\assets\compiled\assets_dolphin_internal.c
+	CC	build\f7-firmware-C\assets\compiled\assets_dolphin_blocking.c
+	CC	build\f7-firmware-C\assets\compiled\_assets_icons_dropin.c
+	AR	build\f7-firmware-C\bit_lib\libbit_lib.a
+	CC	lib\ble_profile\extra_services\hid_service.c
+	CC	lib\datetime\datetime.c
+	CC	lib\digital_signal\presets\nfc\iso14443_3a_signal.c
+	CC	lib\digital_signal\presets\nfc\iso15693_signal.c
+	CC	lib\digital_signal\digital_sequence.c
+	INSTALL	build\f7-firmware-C\lib\libbit_lib.a
+	CC	lib\digital_signal\digital_signal.c
+	CC	lib\fatfs\option\unicode.c
+	CC	lib\fatfs\diskio.c
+	CC	lib\fatfs\ff.c
+	CC	lib\fatfs\ff_gen_drv.c
+	CC	targets\f7\ble_glue\furi_ble\event_dispatcher.c
+	AR	build\f7-firmware-C\datetime\libdatetime.a
+	CC	targets\f7\ble_glue\furi_ble\gatt.c
+	AR	build\f7-firmware-C\ble_profile\libble_profile.a
+	CC	targets\f7\ble_glue\profiles\serial_profile.c
+	INSTALL	build\f7-firmware-C\lib\libdatetime.a
+	CC	targets\f7\ble_glue\services\battery_service.c
+	INSTALL	build\f7-firmware-C\lib\libble_profile.a
+	CC	targets\f7\ble_glue\services\serial_service.c
+	CC	targets\f7\ble_glue\app_debug.c
+	CC	targets\f7\ble_glue\ble_app.c
+	CC	targets\f7\ble_glue\ble_event_thread.c
+	CC	targets\f7\ble_glue\ble_glue.c
+	AR	build\f7-firmware-C\digital_signal\libdigital_signal.a
+	CC	targets\f7\ble_glue\ble_tl_hooks.c
+	CC	targets\f7\ble_glue\extra_beacon.c
+	CC	targets\f7\ble_glue\gap.c
+	INSTALL	build\f7-firmware-C\lib\libdigital_signal.a
+	CC	targets\f7\ble_glue\hw_ipcc.c
+	CC	targets\f7\fatfs\fatfs.c
+	CC	targets\f7\fatfs\sector_cache.c
+	CC	targets\f7\fatfs\user_diskio.c
+	CC	targets\f7\furi_hal\furi_hal.c
+	CC	targets\f7\furi_hal\furi_hal_adc.c
+	CC	targets\f7\furi_hal\furi_hal_bt.c
+	CC	targets\f7\furi_hal\furi_hal_bus.c
+	CC	targets\f7\furi_hal\furi_hal_clock.c
+	CC	targets\f7\furi_hal\furi_hal_cortex.c
+	CC	targets\f7\furi_hal\furi_hal_crypto.c
+	CC	targets\f7\furi_hal\furi_hal_debug.c
+	CC	targets\f7\furi_hal\furi_hal_dma.c
+	CC	targets\f7\furi_hal\furi_hal_flash.c
+	CC	build\f7-firmware-C\assets\compiled\gpio.pb.c
+	CC	build\f7-firmware-C\assets\compiled\desktop.pb.c
+	CC	build\f7-firmware-C\assets\compiled\storage.pb.c
+	CC	build\f7-firmware-C\assets\compiled\system.pb.c
+	CC	build\f7-firmware-C\assets\compiled\gui.pb.c
+	CC	build\f7-firmware-C\assets\compiled\flipper.pb.c
+	CC	build\f7-firmware-C\assets\compiled\application.pb.c
+	CC	build\f7-firmware-C\assets\compiled\property.pb.c
+	PBVER	build\f7-firmware-C\assets\compiled\protobuf_version.h
+	CC	targets\f7\furi_hal\furi_hal_gpio.c
+	CC	targets\f7\furi_hal\furi_hal_i2c.c
+	CC	targets\f7\furi_hal\furi_hal_i2c_config.c
+	CC	targets\f7\furi_hal\furi_hal_ibutton.c
+	AR	build\f7-firmware-C\fatfs\libfatfs.a
+	CC	targets\f7\furi_hal\furi_hal_infrared.c
+	CC	targets\f7\furi_hal\furi_hal_interrupt.c
+	CC	targets\f7\furi_hal\furi_hal_light.c
+	CC	targets\f7\furi_hal\furi_hal_memory.c
+	CC	targets\f7\furi_hal\furi_hal_mpu.c
+	CC	targets\f7\furi_hal\furi_hal_nfc.c
+	INSTALL	build\f7-firmware-C\lib\libfatfs.a
+	CC	targets\f7\furi_hal\furi_hal_nfc_event.c
+	CC	targets\f7\furi_hal\furi_hal_nfc_felica.c
+	CC	targets\f7\furi_hal\furi_hal_nfc_irq.c
+	CC	targets\f7\furi_hal\furi_hal_nfc_iso14443a.c
+	CC	targets\f7\furi_hal\furi_hal_nfc_iso14443b.c
+	CC	targets\f7\furi_hal\furi_hal_nfc_iso15693.c
+	CC	targets\f7\furi_hal\furi_hal_nfc_timer.c
+	CC	targets\f7\furi_hal\furi_hal_os.c
+	CC	targets\f7\furi_hal\furi_hal_power.c
+	CC	targets\f7\furi_hal\furi_hal_power_config.c
+	CC	targets\f7\furi_hal\furi_hal_pwm.c
+	CC	targets\f7\furi_hal\furi_hal_random.c
+	CC	targets\f7\furi_hal\furi_hal_region.c
+	CC	targets\f7\furi_hal\furi_hal_resources.c
+	CC	targets\f7\furi_hal\furi_hal_rfid.c
+	CC	targets\f7\furi_hal\furi_hal_rtc.c
+	CC	targets\f7\furi_hal\furi_hal_sd.c
+	CC	targets\f7\furi_hal\furi_hal_serial.c
+	CC	targets\f7\furi_hal\furi_hal_serial_control.c
+	CC	targets\f7\furi_hal\furi_hal_speaker.c
+	CC	targets\f7\furi_hal\furi_hal_spi.c
+	CC	targets\f7\furi_hal\furi_hal_spi_config.c
+	CC	targets\f7\furi_hal\furi_hal_subghz.c
+	CC	targets\f7\furi_hal\furi_hal_usb.c
+	CC	targets\f7\furi_hal\furi_hal_usb_ccid.c
+	CC	targets\f7\furi_hal\furi_hal_usb_cdc.c
+	CC	targets\f7\furi_hal\furi_hal_usb_hid.c
+	CC	targets\f7\furi_hal\furi_hal_usb_u2f.c
+	CC	targets\f7\furi_hal\furi_hal_version.c
+	CC	targets\f7\furi_hal\furi_hal_version_device.c
+	CC	targets\f7\furi_hal\furi_hal_vibro.c
+	CC	targets\f7\platform_specific\cxx_virtual_stub.c
+	ICONS	build\icons\assets_icons.c
+	CC	targets\f7\src\main.c
+	CC	targets\f7\src\stm32wb55_startup.c
+	CC	targets\f7\src\update.c
+	CC	lib\flipper_application\elf\elf_file.c
+	CC	lib\flipper_application\plugins\composite_resolver.c
+	CC	lib\flipper_application\plugins\plugin_manager.c
+	CC	lib\flipper_application\application_assets.c
+	CC	lib\flipper_application\application_manifest.c
+	CC	lib\flipper_application\flipper_application.c
+	CPP	lib\flipper_application\api_hashtable\api_hashtable.cpp
+	CC	lib\flipper_format\flipper_format.c
+	CC	lib\flipper_format\flipper_format_stream.c
+	CC	lib\FreeRTOS-Kernel\croutine.c
+	CC	lib\FreeRTOS-Kernel\event_groups.c
+	CC	lib\FreeRTOS-Kernel\list.c
+	CC	lib\FreeRTOS-Kernel\queue.c
+	CC	lib\FreeRTOS-Kernel\stream_buffer.c
+	CC	targets\f7\src\recovery.c
+	CC	targets\f7\src\dfu.c
+	CC	lib\FreeRTOS-Kernel\tasks.c
+	CC	lib\FreeRTOS-Kernel\timers.c
+	CC	lib\FreeRTOS-Kernel\portable\GCC\ARM_CM4F\port.c
+	AR	build\f7-firmware-C\flipper_format\libflipperformat.a
+	CC	furi\core\check.c
+	INSTALL	build\f7-firmware-C\lib\libflipperformat.a
+	CC	furi\core\critical.c
+	CC	furi\core\event_flag.c
+	CC	furi\core\event_loop.c
+	CC	furi\core\event_loop_tick.c
+	CC	furi\core\event_loop_timer.c
+	CC	furi\core\kernel.c
+	AR	build\f7-firmware-C\flipper_application\libflipper_application.a
+	CC	furi\core\log.c
+	CC	furi\core\memmgr.c
+	CC	furi\core\memmgr_heap.c
+	INSTALL	build\f7-firmware-C\lib\libflipper_application.a
+	CC	furi\core\message_queue.c
+	CC	furi\core\mutex.c
+	CC	furi\core\pubsub.c
+	CC	furi\core\record.c
+	AR	build\f7-firmware-C\freertos\libfreertos.a
+	CC	furi\core\semaphore.c
+	CC	furi\core\stream_buffer.c
+	INSTALL	build\f7-firmware-C\lib\libfreertos.a
+	CC	furi\core\string.c
+	CC	furi\core\thread.c
+	CC	targets\f7\furi_hal\furi_hal_info.c
+	CC	targets\f7\ble_glue\services\dev_info_service.c
+	AR	build\f7-firmware-C\assets\libassets.a
+	CC	furi\core\thread_list.c
+	CC	furi\core\timer.c
+	CC	furi\flipper.c
+	INSTALL	build\f7-firmware-C\lib\libassets.a
+	CC	furi\furi.c
+	CC	build\icons\assets_icons.c
+	CC	lib\heatshrink\heatshrink_decoder.c
+	CC	lib\heatshrink\heatshrink_encoder.c
+	CC	lib\drivers\SK6805.c
+	AR	build\f7-firmware-C\targets\libflipper7.a
+	CC	lib\drivers\bq25896.c
+	CC	lib\drivers\bq27220.c
+	AR	build\f7-firmware-C\assets\libfwassets.a
+	CC	lib\drivers\cc1101.c
+	CC	lib\drivers\lp5562.c
+	INSTALL	build\f7-firmware-C\lib\libflipper7.a
+	CC	lib\drivers\rgb_backlight.c
+	CC	lib\drivers\st25r3916.c
+	CC	lib\drivers\st25r3916_reg.c
+	AR	build\f7-firmware-C\heatshrink\libheatshrink.a
+	INSTALL	build\f7-firmware-C\lib\libfwassets.a
+	CC	lib\ibutton\protocols\blanks\rw1990.c
+	CC	lib\ibutton\protocols\blanks\tm01x.c
+	INSTALL	build\f7-firmware-C\lib\libheatshrink.a
+	CC	lib\ibutton\protocols\blanks\tm2004.c
+	CC	lib\ibutton\protocols\dallas\dallas_common.c
+	CC	lib\ibutton\protocols\dallas\protocol_ds1420.c
+	CC	lib\ibutton\protocols\dallas\protocol_ds1971.c
+	AR	build\f7-firmware-C\furi\libfuri.a
+	CC	lib\ibutton\protocols\dallas\protocol_ds1990.c
+	CC	lib\ibutton\protocols\dallas\protocol_ds1992.c
+	CC	lib\ibutton\protocols\dallas\protocol_ds1996.c
+	CC	lib\ibutton\protocols\dallas\protocol_ds_generic.c
+	CC	lib\ibutton\protocols\dallas\protocol_group_dallas.c
+	INSTALL	build\f7-firmware-C\lib\libfuri.a
+	CC	lib\ibutton\protocols\dallas\protocol_group_dallas_defs.c
+	AR	build\f7-firmware-C\drivers\libhwdrivers.a
+	CC	lib\ibutton\protocols\misc\protocol_cyfral.c
+	CC	lib\ibutton\protocols\misc\protocol_group_misc.c
+	CC	lib\ibutton\protocols\misc\protocol_group_misc_defs.c
+	INSTALL	build\f7-firmware-C\lib\libhwdrivers.a
+	CC	lib\ibutton\protocols\misc\protocol_metakom.c
+	CC	lib\ibutton\protocols\protocol_group_defs.c
+	CC	lib\ibutton\ibutton_key.c
+	CC	lib\ibutton\ibutton_protocols.c
+	CC	lib\ibutton\ibutton_worker.c
+	CC	lib\ibutton\ibutton_worker_modes.c
+	CC	lib\ieee754_parse_wrap\wrappers.c
+	CC	lib\infrared\encoder_decoder\common\infrared_common_decoder.c
+	CC	lib\infrared\encoder_decoder\common\infrared_common_encoder.c
+	CC	lib\infrared\encoder_decoder\kaseikyo\infrared_decoder_kaseikyo.c
+	CC	lib\infrared\encoder_decoder\kaseikyo\infrared_encoder_kaseikyo.c
+	CC	lib\infrared\encoder_decoder\kaseikyo\infrared_protocol_kaseikyo.c
+	CC	lib\infrared\encoder_decoder\nec\infrared_decoder_nec.c
+	AR	build\f7-firmware-C\ieee754_parse_wrap\libieee754_parse_wrap.a
+	CC	lib\infrared\encoder_decoder\nec\infrared_encoder_nec.c
+	CC	lib\infrared\encoder_decoder\nec\infrared_protocol_nec.c
+	CC	lib\infrared\encoder_decoder\pioneer\infrared_decoder_pioneer.c
+	CC	lib\infrared\encoder_decoder\pioneer\infrared_encoder_pioneer.c
+	INSTALL	build\f7-firmware-C\lib\libieee754_parse_wrap.a
+	CC	lib\infrared\encoder_decoder\pioneer\infrared_protocol_pioneer.c
+	AR	build\f7-firmware-C\ibutton\libibutton.a
+	CC	lib\infrared\encoder_decoder\rc5\infrared_decoder_rc5.c
+	CC	lib\infrared\encoder_decoder\rc5\infrared_encoder_rc5.c
+	CC	lib\infrared\encoder_decoder\rc5\infrared_protocol_rc5.c
+	CC	lib\infrared\encoder_decoder\rc6\infrared_decoder_rc6.c
+	CC	lib\infrared\encoder_decoder\rc6\infrared_encoder_rc6.c
+	CC	lib\infrared\encoder_decoder\rc6\infrared_protocol_rc6.c
+	CC	lib\infrared\encoder_decoder\rca\infrared_decoder_rca.c
+	INSTALL	build\f7-firmware-C\lib\libibutton.a
+	CC	lib\infrared\encoder_decoder\rca\infrared_encoder_rca.c
+	CC	lib\infrared\encoder_decoder\rca\infrared_protocol_rca.c
+	CC	lib\infrared\encoder_decoder\samsung\infrared_decoder_samsung.c
+	CC	lib\infrared\encoder_decoder\samsung\infrared_encoder_samsung.c
+	CC	lib\infrared\encoder_decoder\samsung\infrared_protocol_samsung.c
+	CC	lib\infrared\encoder_decoder\sirc\infrared_decoder_sirc.c
+	CC	lib\infrared\encoder_decoder\sirc\infrared_encoder_sirc.c
+	CC	lib\infrared\encoder_decoder\sirc\infrared_protocol_sirc.c
+	CC	lib\infrared\encoder_decoder\infrared.c
+	CC	lib\infrared\signal\infrared_brute_force.c
+	CC	lib\infrared\signal\infrared_signal.c
+	CC	lib\infrared\worker\infrared_transmit.c
+	CC	lib\infrared\worker\infrared_worker.c
+	CC	lib\lfrfid\protocols\lfrfid_protocols.c
+	CC	lib\lfrfid\protocols\protocol_awid.c
+	CC	lib\lfrfid\protocols\protocol_electra.c
+	CC	lib\lfrfid\protocols\protocol_em4100.c
+	CC	lib\lfrfid\protocols\protocol_fdx_a.c
+	CC	lib\lfrfid\protocols\protocol_fdx_b.c
+	CC	lib\lfrfid\protocols\protocol_gallagher.c
+	CC	lib\lfrfid\protocols\protocol_gproxii.c
+	CC	lib\lfrfid\protocols\protocol_h10301.c
+	CC	lib\lfrfid\protocols\protocol_hid_ex_generic.c
+	CC	lib\lfrfid\protocols\protocol_hid_generic.c
+	CC	lib\lfrfid\protocols\protocol_idteck.c
+	CC	lib\lfrfid\protocols\protocol_indala224.c
+	CC	lib\lfrfid\protocols\protocol_indala26.c
+	CC	lib\lfrfid\protocols\protocol_insta_fob.c
+	CC	lib\lfrfid\protocols\protocol_io_prox_xsf.c
+	CC	lib\lfrfid\protocols\protocol_jablotron.c
+	CC	lib\lfrfid\protocols\protocol_keri.c
+	AR	build\f7-firmware-C\infrared\libinfrared.a
+	CC	lib\lfrfid\protocols\protocol_nexwatch.c
+	CC	lib\lfrfid\protocols\protocol_noralsy.c
+	CC	lib\lfrfid\protocols\protocol_pac_stanley.c
+	CC	lib\lfrfid\protocols\protocol_paradox.c
+	CC	lib\lfrfid\protocols\protocol_pyramid.c
+	CC	lib\lfrfid\protocols\protocol_securakey.c
+	INSTALL	build\f7-firmware-C\lib\libinfrared.a
+	CC	lib\lfrfid\protocols\protocol_viking.c
+	CC	lib\lfrfid\tools\em4305.c
+	CC	lib\lfrfid\tools\fsk_demod.c
+	CC	lib\lfrfid\tools\fsk_ocs.c
+	CC	lib\lfrfid\tools\iso_3166.c
+	CC	lib\lfrfid\tools\t5577.c
+	CC	lib\lfrfid\tools\varint_pair.c
+	CC	lib\lfrfid\lfrfid_dict_file.c
+	CC	lib\lfrfid\lfrfid_raw_file.c
+	CC	lib\lfrfid\lfrfid_raw_worker.c
+	CC	lib\lfrfid\lfrfid_worker.c
+	CC	lib\lfrfid\lfrfid_worker_modes.c
+	CC	lib\mbedtls\library\aes.c
+	CC	lib\mbedtls\library\bignum.c
+	AR	build\f7-firmware-C\lfrfid\liblfrfid.a
+	CC	lib\mbedtls\library\bignum_core.c
+	CC	lib\mbedtls\library\ecdsa.c
+	INSTALL	build\f7-firmware-C\lib\liblfrfid.a
+	CC	lib\mbedtls\library\ecp.c
+	CC	lib\mbedtls\library\ecp_curves.c
+	CC	lib\mbedtls\library\md.c
+	CC	lib\mbedtls\library\md5.c
+	CC	lib\mbedtls\library\platform_util.c
+	CC	lib\mbedtls\library\ripemd160.c
+	CC	lib\mbedtls\library\sha1.c
+	CC	lib\mbedtls\library\sha256.c
+	CC	lib\mbedtls\library\des.c
+	CC	lib\microtar\src\microtar.c
+	CC	lib\mjs\common\frozen\frozen.c
+	CC	lib\mjs\common\platforms\platform_flipper.c
+	CC	lib\mjs\common\cs_dbg.c
+	CC	lib\mjs\common\cs_dirent.c
+	CC	lib\mjs\common\cs_file.c
+	CC	lib\mjs\common\cs_time.c
+	CC	lib\mjs\common\cs_varint.c
+	CC	lib\mjs\common\mbuf.c
+	CC	lib\mjs\common\mg_str.c
+	CC	lib\mjs\common\str_util.c
+	CC	lib\mjs\ffi\ffi.c
+	AR	build\f7-firmware-C\microtar\libmicrotar.a
+	CC	lib\mjs\mjs_array.c
+	CC	lib\mjs\mjs_array_buf.c
+	CC	lib\mjs\mjs_bcode.c
+	CC	lib\mjs\mjs_builtin.c
+	CC	lib\mjs\mjs_core.c
+	INSTALL	build\f7-firmware-C\lib\libmicrotar.a
+	CC	lib\mjs\mjs_dataview.c
+	CC	lib\mjs\mjs_exec.c
+	CC	lib\mjs\mjs_ffi.c
+	AR	build\f7-firmware-C\mbedtls\libmbedtls.a
+	CC	lib\mjs\mjs_gc.c
+	CC	lib\mjs\mjs_json.c
+	CC	lib\mjs\mjs_object.c
+	CC	lib\mjs\mjs_parser.c
+	CC	lib\mjs\mjs_primitive.c
+	INSTALL	build\f7-firmware-C\lib\libmbedtls.a
+	CC	lib\mjs\mjs_string.c
+	CC	lib\mjs\mjs_tok.c
+	CC	lib\mjs\mjs_util.c
+	CC	lib\momentum\asset_packs.c
+	CC	lib\momentum\namespoof.c
+	CC	lib\momentum\settings.c
+	CC	lib\music_worker\music_worker.c
+	CC	lib\nanopb\pb_common.c
+	CC	lib\nanopb\pb_decode.c
+	CC	lib\nanopb\pb_encode.c
+	CC	lib\nfc\helpers\crypto1.c
+	AR	build\f7-firmware-C\mjs\libmjs.a
+	CC	lib\nfc\helpers\felica_crc.c
+	CC	lib\nfc\helpers\iso13239_crc.c
+	CC	lib\nfc\helpers\iso14443_4_layer.c
+	CC	lib\nfc\helpers\iso14443_crc.c
+	CC	lib\nfc\helpers\nfc_data_generator.c
+	INSTALL	build\f7-firmware-C\lib\libmjs.a
+	CC	lib\nfc\helpers\nfc_util.c
+	CC	lib\nfc\helpers\nxp_native_command.c
+	AR	build\f7-firmware-C\momentum\libmomentum.a
+	CC	lib\nfc\protocols\calypso\calypso.c
+	CC	lib\nfc\protocols\calypso\calypso_poller.c
+	AR	build\f7-firmware-C\music_worker\libmusic_worker.a
+	CC	lib\nfc\protocols\calypso\calypso_poller_i.c
+	CC	lib\nfc\protocols\emv\emv.c
+	CC	lib\nfc\protocols\emv\emv_poller.c
+	CC	lib\nfc\protocols\emv\emv_poller_i.c
+	INSTALL	build\f7-firmware-C\lib\libmomentum.a
+	CC	lib\nfc\protocols\felica\felica.c
+	INSTALL	build\f7-firmware-C\lib\libmusic_worker.a
+	CC	lib\nfc\protocols\felica\felica_i.c
+	CC	lib\nfc\protocols\felica\felica_listener.c
+	AR	build\f7-firmware-C\nanopb\libnanopb.a
+	CC	lib\nfc\protocols\felica\felica_listener_i.c
+[0mIn file included from lib\nfc\protocols\calypso\calypso.c:1:
+lib\nfc\protocols\calypso\calypso.h:70:14: error: unknown type name 'NfcDeviceBase'
+   70 | extern const NfcDeviceBase nfc_device_calypso;
+      |              ^~~~~~~~~~~~~
+lib\nfc\protocols\calypso\calypso.c:11:21: error: conflicting types for 'nfc_device_calypso'; have 'NfcDeviceBase'
+   11 | const NfcDeviceBase nfc_device_calypso = {
+      |                     ^~~~~~~~~~~~~~~~~~
+lib\nfc\protocols\calypso\calypso.h:70:28: note: previous declaration of 'nfc_device_calypso' with type 'int'
+   70 | extern const NfcDeviceBase nfc_device_calypso;
+      |                            ^~~~~~~~~~~~~~~~~~
+In file included from lib\nfc\protocols\calypso\calypso_poller.h:3,
+                 from lib\nfc\protocols\calypso\calypso_poller_i.h:3,
+                 from lib\nfc\protocols\calypso\calypso_poller.c:1:
+lib\nfc\protocols\calypso\calypso.h:70:14: error: unknown type name 'NfcDeviceBase'
+   70 | extern const NfcDeviceBase nfc_device_calypso;
+      |              ^~~~~~~~~~~~~
+	CC	lib\nfc\protocols\felica\felica_poller.c
+	INSTALL	build\f7-firmware-C\lib\libnanopb.a
+In file included from lib\nfc\protocols\calypso\calypso_poller.h:3,
+                 from lib\nfc\protocols\calypso\calypso_poller_i.h:3,
+                 from lib\nfc\protocols\calypso\calypso_poller_i.c:1:
+lib\nfc\protocols\calypso\calypso.h:70:14: error: unknown type name 'NfcDeviceBase'
+   70 | extern const NfcDeviceBase nfc_device_calypso;
+      |              ^~~~~~~~~~~~~
+	CC	lib\nfc\protocols\felica\felica_poller_i.c
+scons: *** [build\f7-firmware-C\nfc\protocols\calypso\calypso_poller.o] Error 1
+scons: *** [build\f7-firmware-C\nfc\protocols\calypso\calypso_poller_i.o] Error 1
+scons: *** [build\f7-firmware-C\nfc\protocols\calypso\calypso.o] Error 1
+
+[91m[1m********** FBT ERRORS **********[0m[0m
+[33mbuild\f7-firmware-C\nfc\protocols\calypso\calypso_poller.o[0m: Error 1
+[33mbuild\f7-firmware-C\nfc\protocols\calypso\calypso_poller_i.o[0m: Error 1
+[33mbuild\f7-firmware-C\nfc\protocols\calypso\calypso.o[0m: Error 1

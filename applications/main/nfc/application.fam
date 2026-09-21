@@ -214,7 +214,28 @@ App(
     fal_embedded=True,
 )
 
+App(
+    appid="nfc_calypso",
+    targets=["f7"],
+    apptype=FlipperAppType.PLUGIN,
+    entry_point="nfc_calypso_ep",
+    requires=["nfc"],
+    sources=[
+        "helpers/protocol_support/calypso/*.c",
+    ],
+    fal_embedded=True,
+)
+
 # Parser plugins
+
+App(
+    appid="ravkav_parser",
+    apptype=FlipperAppType.PLUGIN,
+    entry_point="ravkav_plugin_ep",
+    targets=["f7"],
+    requires=["nfc"],
+    sources=["plugins/supported_cards/ravkav.c"],
+)
 
 App(
     appid="all_in_one_parser",
