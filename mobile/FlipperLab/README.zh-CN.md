@@ -9,10 +9,10 @@
 | 项目 | 状态 |
 | --- | --- |
 | 工程配置与本说明 | 在 Windows 电脑上编写，本地没有 Xcode 或可用的 Mac。下文的本地命令只在 GitHub macOS CI 中以等效步骤运行过 |
-| Swift 包测试（`swift test`） | 提交 `1a8f4ee8` 的 [CI 35992211349](https://github.com/Fairank/Flipper-Momentum-Lab/actions/runs/35992211349)：通过，确切数量见验收记录 |
+| Swift 包测试（`swift test`） | 提交 `9611f740` 的 [CI 35998623945](https://github.com/Fairank/Flipper-Momentum-Lab/actions/runs/35998623945)：52 项通过 |
 | 模拟器构建（不签名） | 同一运行通过 |
-| 模拟器 UI 测试 | 新版三项检查进行中：四页导航、中文指南、示例分析、菜单、深色大字；iPhone 17 Pro Max / iOS 26.5，Xcode 26.6。只证明离线界面，不证明蓝牙 |
-| 模拟器截图导出、示例记录固定样本测试 | 新版运行截图待导出和逐页复核 |
+| 模拟器 UI 测试 | 同一运行的 3 项测试通过：四页导航、中文指南、示例分析、菜单、深色大字；iPhone 17 Pro Max / iOS 26.5，Xcode 26.6。只证明离线界面，不证明蓝牙 |
+| 模拟器截图导出、示例记录固定样本测试 | 已导出 17 张。展示的 17 张逐页复核原图选自应用代码完全相同的两次运行，以避开系统通知和过渡帧；出处与校验值见验收记录 |
 | GitHub Actions（[`lab-validation.yml`](../../.github/workflows/lab-validation.yml)） | 已运行；后续提交的结果以 PR [#1](https://github.com/Fairank/Flipper-Momentum-Lab/pull/1) 的检查为准 |
 | 真机：蓝牙配对、设备文件导入、上传读回、红外执行 | 均未验证；没有可用的 Mac 和 Flipper |
 | App Store / TestFlight | 未准备：没有 App 图标，未做上架或审核相关准备 |

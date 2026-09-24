@@ -102,7 +102,7 @@
 
 ## 待补证据
 
-1. 新界面与内存上限检查已有新版 CI 证据，见下方“手机界面最终验收”；后续代码变更须补相应证据。
+1. 新界面与内存上限检查已有新版 CI 证据，见下方手机界面各轮验收记录；后续代码变更须补相应证据。
 2. 固件若继续变更，重新生成对应提交的更新包及 SHA-256。
 3. 剩余 Flash/RAM 的测量。
 4. 模拟器主要页面截图已检查；其他设备尺寸、VoiceOver 与真实操作状态仍待验收。
@@ -135,9 +135,17 @@ applications/external/subghz_playlist/playlist_file.h: No such file or directory
 
 本轮在完整初始化的子模块上，Windows 核心构建与完整包构建均已通过；macOS 上没有重新构建。
 
-## 手机界面最终验收（2026-09-24）
+## 手机首轮界面验收（2026-09-24）
 
 代码版本 `bfc43b4a949a6d4b4e4fa791e26f053c7abcf3d1` 在 [35985874280](https://github.com/Fairank/Flipper-Momentum-Lab/actions/runs/35985874280) 通过 52 项核心测试、3 项 UI 测试、36 项桌面回归与模拟器构建；完整固件构建 [35985874510](https://github.com/Fairank/Flipper-Momentum-Lab/actions/runs/35985874510) 和 Lint 亦通过。运行环境为 Xcode 26.6 / iPhone 17 Pro Max / iOS 26.5；17 张原始截图，含修正后的浅色栏、完整波形和深色大字页面。模型分工、实际返回值、主控修正和截图 SHA256 见 [UI_REVIEW.md](UI_REVIEW.md)。
 
 设计由本机 `claude-fable-5-1 --effort max` 完成，实现由用户本轮指定的 `claude-opus-5-5 --effort max` 完成；实际模型一致，均退出码 0。主控审阅后采纳，并修复截图检查发现的问题。
+
+## 手机苹果原生界面优化（2026-09-24）
+
+根据用户的新反馈，手机重新整理为设备、资料库、任务、指南四页，使用原生导航、分组列表、表单、菜单和系统颜色，保留 Flipper 橙色及小像素屏。Fable 5.1 Max 负责设计，Opus 5.5 Max 负责实现，均由本地 CLI 实际调用并正常退出；主助手审核决定并修复截图发现的问题。实际模型、代码核对和各轮运行证据见 [UI_APPLE_REVIEW.md](UI_APPLE_REVIEW.md)。
+
+最终验证提交 `9611f7403c5f41df964048c01ee0c622b3c6842d` 已通过 [35998623945](https://github.com/Fairank/Flipper-Momentum-Lab/actions/runs/35998623945) 的 52 项核心测试、3 项 UI 测试、36 项桌面回归与模拟器构建。[完整固件构建](https://github.com/Fairank/Flipper-Momentum-Lab/actions/runs/35998623890) 与 [Lint](https://github.com/Fairank/Flipper-Momentum-Lab/actions/runs/35998623705) 通过。运行环境为 Xcode 26.6 / iPhone 17 Pro Max / iOS 26.5。
+
+应用源码在 `4e80b06e` 后保持不变，后续修正截图测试，使资料库和记录详情的图标检查直接针对保存的整屏原图。最新 17 张截图中一张受到模拟器系统通知遮挡，因此展示选取同一应用代码两次运行中的 17 张无遮挡原图；每张注明出处且未编辑像素。完整来源、ZIP SHA-256、人工核对范围及测试局限见 [UI_APPLE_REVIEW.md](UI_APPLE_REVIEW.md)。之后只更新文档的提交不另作一次代码验证。
 

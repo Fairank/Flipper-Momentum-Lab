@@ -1,5 +1,8 @@
 # Flipper Lab iPhone UI — Apple-native refinement: implementation handoff
 
+This document records the delegate's handoff, before root review and CI. Subsequent fixes,
+actual build/test results and visual acceptance are recorded in [UI_APPLE_REVIEW.md](UI_APPLE_REVIEW.md).
+
 Implemented by Claude Opus 5.5 (`claude-opus-5-5`, effort max, as requested by the caller) from
 `UI_APPLE_DESIGN.md` plus the root overrides. Tools used: Read/Write/Edit/Glob/Grep only.
 **Not built, not run:** no Xcode build, simulator or UI-test run was possible here. Root owns
