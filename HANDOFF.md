@@ -20,17 +20,17 @@
 
 ## 新电脑取得源码
 
-仓库计划使用 `Fairank/Flipper-Momentum-Lab`。若仓库尚未建立或上传完成，不要把本段视为已经上传成功的证明。私有仓库需要使用有访问权限的 GitHub 账号登录 Git 客户端。
+仓库为 [Fairank/Flipper-Momentum-Lab](https://github.com/Fairank/Flipper-Momentum-Lab/tree/codex/momentum-unleashed)。请检出下面指定的个人开发分支，以取得此次改动和交接文档。后续推送需要使用有写入权限的 GitHub 账号登录 Git 客户端。
 
 ```sh
-git clone --branch codex/momentum-unleashed https://github.com/Fairank/Flipper-Momentum-Lab.git
+git clone --depth 1 --branch codex/momentum-unleashed https://github.com/Fairank/Flipper-Momentum-Lab.git
 cd Flipper-Momentum-Lab
 git remote add upstream https://github.com/Next-Flip/Momentum-Firmware.git
 git remote add unleashed https://github.com/DarkFlippers/unleashed-firmware.git
 git submodule update --init --recursive --depth 1 --jobs 4
 ```
 
-远程名称已存在时直接复用。子模块必须按主仓库记录的提交检出，不要使用 `git submodule update --remote` 升级到最新版本。断网后可重试上面的子模块命令；如果某个仓库不支持浅获取，针对它去掉 `--depth 1` 重试。
+首次只取当前分支快照以减少下载量；后续需要历史时再获取。远程名称已存在时直接复用。子模块必须按主仓库记录的提交检出，不要使用 `git submodule update --remote` 升级到最新版本。断网后可重试上面的子模块命令；如果某个仓库不支持浅获取，针对它去掉 `--depth 1` 重试。
 
 外部应用源码由 `applications/external` 子模块管理，并非丢失的文件。工具链、构建缓存和日志没有纳入版本控制；新电脑通过 `fbt` 下载适合自身系统的工具链。
 
