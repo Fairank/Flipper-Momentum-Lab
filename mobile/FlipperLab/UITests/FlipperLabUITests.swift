@@ -26,6 +26,10 @@ final class FlipperLabUITests: XCTestCase {
         // Facts replace the progress row only after the off-main analysis finishes.
         XCTAssertTrue(app.staticTexts["文件类型"].waitForExistence(timeout: 10))
         XCTAssertTrue(app.staticTexts["按钮数量"].exists)
+        // The native toolbar may finish its transition after the analysis rows appear.
+        // Verify the actual orange icon is painted before taking the first detail screenshot.
+        let recordMore = moreMenu("record.more", in: app)
+        XCTAssertTrue(waitForLightToolbarIcon(recordMore))
         capture(app, name: "09-示例记录分析")
 
         // The chart row is built only when it scrolls near the screen, then measured whole.
@@ -194,7 +198,7 @@ final class FlipperLabUITests: XCTestCase {
     }
 
     @MainActor
-    private func darkPixelFraction(of element: XCUIElement) -> Double? {
+    private func darkPixelFraction(of element: XCUIElement, threshold: Double = 80) -> Double? {
         guard let image = element.screenshot().image.cgImage else { return nil }
         let width = image.width, height = image.height
         guard width > 0, height > 0 else { return nil }
@@ -212,9 +216,22 @@ final class FlipperLabUITests: XCTestCase {
             let red: Double = 0.2126 * Double(rgba[index])
             let green: Double = 0.7152 * Double(rgba[index + 1])
             let blue: Double = 0.0722 * Double(rgba[index + 2])
-            if red + green + blue < 80 { darkCount += 1 }
+            if red + green + blue < threshold { darkCount += 1 }
         }
         return Double(darkCount) / Double(width * height)
+    }
+
+    /// Bounded screenshot checks distinguish a visible icon from an accessible but blank
+    /// toolbar item. A light glass background is brighter than 180; the orange symbol is darker.
+    @MainActor
+    private func waitForLightToolbarIcon(_ element: XCUIElement) -> Bool {
+        for _ in 0..<5 {
+            guard element.waitForExistence(timeout: 1), element.isHittable else { continue }
+            if let fraction = darkPixelFraction(of: element, threshold: 180), fraction > 0.02 {
+                return true
+            }
+        }
+        return false
     }
 
     @MainActor
