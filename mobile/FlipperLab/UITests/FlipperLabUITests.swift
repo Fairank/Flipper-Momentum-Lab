@@ -19,8 +19,7 @@ final class FlipperLabUITests: XCTestCase {
         let record = buttonContaining("示例：客厅遥控", in: app)
         XCTAssertTrue(record.waitForExistence(timeout: 10))
         XCTAssertTrue(buttonContaining("示例：设备启动日志", in: app).exists)
-        XCTAssertTrue(waitForLightToolbarIcon(moreMenu("library.more", in: app)))
-        capture(app, name: "08-示例资料库")
+        captureWithLightToolbarIcon(app, name: "08-示例资料库", icon: moreMenu("library.more", in: app))
 
         record.tap()
         XCTAssertTrue(app.staticTexts["分析结果"].waitForExistence(timeout: 10))
@@ -30,8 +29,7 @@ final class FlipperLabUITests: XCTestCase {
         // The native toolbar may finish its transition after the analysis rows appear.
         // Verify the actual orange icon is painted before taking the first detail screenshot.
         let recordMore = moreMenu("record.more", in: app)
-        XCTAssertTrue(waitForLightToolbarIcon(recordMore))
-        capture(app, name: "09-示例记录分析")
+        captureWithLightToolbarIcon(app, name: "09-示例记录分析", icon: recordMore)
 
         // The chart row is built only when it scrolls near the screen, then measured whole.
         let chart = app.descendants(matching: .any).matching(identifier: "record.pulseChart").firstMatch
@@ -96,8 +94,7 @@ final class FlipperLabUITests: XCTestCase {
         XCTAssertGreaterThan(emptyImport.frame.width, emptyImport.frame.height * 2,
                              "The empty-library action should remain a readable horizontal button")
         XCTAssertLessThan(emptyImport.frame.height, app.frame.height * 0.2)
-        XCTAssertTrue(waitForLightToolbarIcon(moreMenu("library.more", in: app)))
-        capture(app, name: "02-资料库")
+        captureWithLightToolbarIcon(app, name: "02-资料库", icon: moreMenu("library.more", in: app))
 
         // 比较 and 从 Flipper 导入 live in the library's 更多 menu; offline, device import is
         // disabled and its subtitle gives the reason.
@@ -202,6 +199,10 @@ final class FlipperLabUITests: XCTestCase {
     @MainActor
     private func darkPixelFraction(of element: XCUIElement, threshold: Double = 80) -> Double? {
         guard let image = element.screenshot().image.cgImage else { return nil }
+        return darkPixelFraction(in: image, threshold: threshold)
+    }
+
+    private func darkPixelFraction(in image: CGImage, threshold: Double) -> Double? {
         let width = image.width, height = image.height
         guard width > 0, height > 0 else { return nil }
         var rgba = [UInt8](repeating: 0, count: width * height * 4)
@@ -223,17 +224,35 @@ final class FlipperLabUITests: XCTestCase {
         return Double(darkCount) / Double(width * height)
     }
 
-    /// Bounded screenshot checks distinguish a visible icon from an accessible but blank
-    /// toolbar item. A light glass background is brighter than 180; the orange symbol is darker.
+    /// Inspect the exact full-screen image that becomes the attachment. An element screenshot
+    /// followed by a separate app screenshot can observe different native-toolbar frames.
+    /// Cropping is only for measurement: the unmodified full-screen image is saved.
     @MainActor
-    private func waitForLightToolbarIcon(_ element: XCUIElement) -> Bool {
+    private func captureWithLightToolbarIcon(_ app: XCUIApplication, name: String, icon: XCUIElement) {
+        XCTAssertTrue(icon.waitForExistence(timeout: 5))
         for _ in 0..<5 {
-            guard element.waitForExistence(timeout: 1), element.isHittable else { continue }
-            if let fraction = darkPixelFraction(of: element, threshold: 180), fraction > 0.02 {
-                return true
+            guard icon.isHittable else { continue }
+            let frame = icon.frame
+            let appFrame = app.frame
+            let screenshot = app.screenshot()
+            guard let full = screenshot.image.cgImage, appFrame.width > 0, appFrame.height > 0 else { continue }
+            let scaleX = CGFloat(full.width) / appFrame.width
+            let scaleY = CGFloat(full.height) / appFrame.height
+            let bounds = CGRect(x: (frame.minX - appFrame.minX) * scaleX,
+                                y: (frame.minY - appFrame.minY) * scaleY,
+                                width: frame.width * scaleX, height: frame.height * scaleY).integral
+                .intersection(CGRect(x: 0, y: 0, width: full.width, height: full.height))
+            guard !bounds.isEmpty, let region = full.cropping(to: bounds) else { continue }
+            if let fraction = darkPixelFraction(in: region, threshold: 180), fraction > 0.02 {
+                let attachment = XCTAttachment(screenshot: screenshot)
+                attachment.name = name
+                attachment.lifetime = .keepAlways
+                add(attachment)
+                return
             }
         }
-        return false
+        capture(app, name: name + "-toolbar-failure")
+        XCTFail("The saved full-screen image must show the toolbar icon")
     }
 
     @MainActor
