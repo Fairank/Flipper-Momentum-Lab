@@ -19,6 +19,7 @@ final class FlipperLabUITests: XCTestCase {
         let record = buttonContaining("示例：客厅遥控", in: app)
         XCTAssertTrue(record.waitForExistence(timeout: 10))
         XCTAssertTrue(buttonContaining("示例：设备启动日志", in: app).exists)
+        XCTAssertTrue(waitForLightToolbarIcon(moreMenu("library.more", in: app)))
         capture(app, name: "08-示例资料库")
 
         record.tap()
@@ -95,6 +96,7 @@ final class FlipperLabUITests: XCTestCase {
         XCTAssertGreaterThan(emptyImport.frame.width, emptyImport.frame.height * 2,
                              "The empty-library action should remain a readable horizontal button")
         XCTAssertLessThan(emptyImport.frame.height, app.frame.height * 0.2)
+        XCTAssertTrue(waitForLightToolbarIcon(moreMenu("library.more", in: app)))
         capture(app, name: "02-资料库")
 
         // 比较 and 从 Flipper 导入 live in the library's 更多 menu; offline, device import is
