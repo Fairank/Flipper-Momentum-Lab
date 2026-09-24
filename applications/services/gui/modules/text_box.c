@@ -1,6 +1,7 @@
 #include "text_box.h"
 #include <gui/canvas.h>
 #include <gui/elements.h>
+#include <gui/utf8_internal.h>
 #include <furi.h>
 #include <stdint.h>
 
@@ -113,17 +114,21 @@ static void text_box_seek_next_line(Canvas* canvas, TextBoxModel* model) {
     size_t line_width = 0;
 
     while(!text_box_end_of_text_reached(model)) {
-        char symb = model->text[model->text_offset];
-        if(symb == '\n') {
+        const char* symb = &model->text[model->text_offset];
+        if(*symb == '\n') {
             model->text_offset++;
             break;
         } else {
-            size_t glyph_width = canvas_glyph_width(canvas, symb);
-            if(line_width + glyph_width > TEXT_BOX_TEXT_WIDTH) {
+            uint32_t codepoint;
+            size_t symb_size = gui_utf8_decode(symb, &codepoint);
+            // u8g2 keeps only the low 16 bits of non-BMP codepoints, measure what it draws
+            size_t glyph_width = canvas_glyph_width(canvas, (uint16_t)codepoint);
+            // Take a too-wide glyph onto an empty line, so seeking always makes progress
+            if(line_width > 0 && line_width + glyph_width > TEXT_BOX_TEXT_WIDTH) {
                 break;
             }
             line_width += glyph_width;
-            model->text_offset++;
+            model->text_offset += symb_size;
         }
     }
 }
@@ -158,7 +163,8 @@ static void text_box_seek_prev_line(Canvas* canvas, TextBoxModel* model) {
     int32_t current_text_offset = model->text_offset;
     while(true) {
         text_box_seek_next_line(canvas, model);
-        if(model->text_offset == start_text_offset) {
+        // Stop on start_text_offset, or just past it if it is not a line start
+        if(model->text_offset >= start_text_offset) {
             break;
         }
         current_text_offset = model->text_offset;
@@ -193,7 +199,7 @@ static void text_box_update_screen_text(Canvas* canvas, TextBoxModel* model) {
             &model->text[current_line_text_offset],
             next_line_text_offset - current_line_text_offset);
         size_t str_len = furi_string_size(model->text_line);
-        if(furi_string_get_char(model->text_line, str_len - 1) != '\n') {
+        if(str_len == 0 || furi_string_get_char(model->text_line, str_len - 1) != '\n') {
             furi_string_push_back(model->text_line, '\n');
         }
         furi_string_cat(model->text_on_screen, model->text_line);

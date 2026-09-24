@@ -72,3 +72,10 @@ node_modules/
 # cli_perf script output in case of errors
 /block.bin
 /return_block.bin
+
+# Native mobile build products
+.build/
+DerivedData/
+*.xcuserstate
+xcuserdata/
+mobile/FlipperLab/FlipperLab.xcodeproj/
