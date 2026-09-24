@@ -102,12 +102,12 @@
 
 ## 待补证据
 
-1. 新界面和新内存上限检查的 CI 结果与截图，旧版验证不能替代新版。
+1. 新界面与内存上限检查已有新版 CI 证据，见下方“手机界面最终验收”；后续代码变更须补相应证据。
 2. 固件若继续变更，重新生成对应提交的更新包及 SHA-256。
 3. 剩余 Flash/RAM 的测量。
-4. 模拟器截图检查（文字无截断）和所用模拟器机型与 iOS 版本。
+4. 模拟器主要页面截图已检查；其他设备尺寸、VoiceOver 与真实操作状态仍待验收。
 5. iPhone 17 Pro Max 与 Flipper 真机的完整蓝牙流程。
-6. Flipper 真机屏幕检查，以及源码渲染预览的输出。
+6. Flipper 真机屏幕检查；65 个源码渲染预览已输出并通过 CI，不能替代真机检查。
 7. 扩展板型号及测试记录。
 
 仓库继承的上游固件工作流仍带上游发布假设和官方 API 版本一致性检查；它们的状态不能等同于本定制的验证结论，本定制以 `lab-validation.yml` 与 `lab-firmware.yml` 为准。
@@ -125,6 +125,12 @@
 | API CSV 与基线比较 | 4,675 个既有条目签名和状态不变，新增 4 个，无重复名称 | 导出表文本兼容性，不能代替应用运行 |
 
 这些测试从生产实现抽取函数，以桌面存储/绘图替身执行，没有验证真实 SD 卡、GUI 线程调度、板上内存和硬件行为。
+
+## 手机界面最终验收（2026-09-24）
+
+代码版本 `bfc43b4a949a6d4b4e4fa791e26f053c7abcf3d1` 在 [35985874280](https://github.com/Fairank/Flipper-Momentum-Lab/actions/runs/35985874280) 通过 52 项核心测试、3 项 UI 测试、36 项桌面回归与模拟器构建；完整固件构建 [35985874510](https://github.com/Fairank/Flipper-Momentum-Lab/actions/runs/35985874510) 和 Lint 亦通过。运行环境为 Xcode 26.6 / iPhone 17 Pro Max / iOS 26.5；17 张原始截图，含修正后的浅色栏、完整波形和深色大字页面。模型分工、实际返回值、主控修正和截图 SHA256 见 [UI_REVIEW.md](UI_REVIEW.md)。
+
+设计由本机 `claude-fable-5-1 --effort max` 完成，实现由用户本轮指定的 `claude-opus-5-5 --effort max` 完成；实际模型一致，均退出码 0。主控审阅后采纳，并修复截图检查发现的问题。
 
 当时 `applications/external` 只稀疏检出三个目录，嵌套依赖也未完整初始化。`FBT_NO_SYNC=1 ./fbt SKIP_EXTERNAL=1 updater_package` 以退出码 2 失败：
 

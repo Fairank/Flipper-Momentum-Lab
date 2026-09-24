@@ -227,7 +227,7 @@ xcodebuild build \
 工作流为 [`.github/workflows/lab-validation.yml`](../../.github/workflows/lab-validation.yml)：
 
 - 触发：推送到 `codex/**` 分支、Pull Request 或手动运行。推送和 PR 只在 `mobile/`、`scripts/tests/`、`applications/main/lab/`、`applications/services/gui/`、`scripts/generate_lab_font.py` 或工作流本身有改动时触发；同一分支或 PR 的新运行会取消旧运行。
-- macOS 15：用 Homebrew 安装 XcodeGen，执行 `swift test`，生成工程，做不签名的模拟器通用构建（`CODE_SIGNING_ALLOWED=NO`，警告不视为错误），然后在可用的第一台 iPhone 模拟器上运行 `FlipperLabUITests`，并从结果包导出截图。
+- macOS 26 / Xcode 26.6：安装 XcodeGen，执行 `swift test`，生成工程，做不签名的模拟器通用构建（`CODE_SIGNING_ALLOWED=NO`，警告不视为错误），然后在指定的 iPhone 17 Pro Max / iOS 26.5 模拟器上运行 `FlipperLabUITests`，并从结果包导出截图。
 - Ubuntu 24.04：执行 `python3 -m unittest discover -s scripts/tests`（旧回归、UTF-8 回归、字库生成器测试）和 `scripts/generate_lab_font.py --check`。其中的 C 回归需要主机 C 编译器，缺少时任务直接失败，不会带着跳过的测试通过。
 - 只有读取仓库内容的权限，不使用任何密钥；不签名、不发布，不向上游或更新服务器上传，也不生成可安装的 IPA。
 
@@ -241,7 +241,7 @@ xcodebuild build \
 
 设备端固件由另一个工作流 [`lab-firmware.yml`](../../.github/workflows/lab-firmware.yml) 构建，产物 `flipper-lab-firmware-<提交>` 含更新包、`SHA256SUMS.txt` 和 `dist/f7-C/apps/Tools/lab.fap`，保留 14 天；运行 [35977973532](https://github.com/Fairank/Flipper-Momentum-Lab/actions/runs/35977973532) 已通过。
 
-状态：基线提交 `43bd0358` 通过 52 项包测试、模拟器构建和 2 项 UI 测试，导出 10 张截图。用户要求按 Flipper 理念重做界面，设计与实施见 [UI_REDESIGN.md](../../documentation/custom/UI_REDESIGN.md) 和 [UI_REVIEW.md](../../documentation/custom/UI_REVIEW.md)，新版结果需另行记录。CI 通过不代表蓝牙、上传或红外功能在真机上可用。
+状态：新版代码 `bfc43b4a` 通过 52 项包测试、模拟器构建和 3 项 UI 测试，导出 17 张截图，包含深色大字、完整波形和浅色导航栏对比度检查。设备页采用暖白机身、橙色 LCD 与原创像素海豚；资料库、工具、任务及中文指南采用统一主题。设计与验收见 [UI_REDESIGN.md](../../documentation/custom/UI_REDESIGN.md) 和 [UI_REVIEW.md](../../documentation/custom/UI_REVIEW.md)。CI 通过不代表蓝牙、上传或红外功能在真机上可用。
 
 ## 真机验证清单（尚未执行，没有可用的 Mac 和 Flipper）
 

@@ -37,3 +37,17 @@ Opus 实施完成：实际返回 `claude-opus-5-5`，退出码 0，耗时 2,374.
 首轮新版 `4a8e7fba` 在 Xcode 26.6 / iPhone 17 Pro Max / iOS 26.5 编译成功，52 项核心测试、3 项 UI 测试、36 项桌面回归通过；固件构建和 Lint 同样通过。证据：[Lab validation 35983873183](https://github.com/Fairank/Flipper-Momentum-Lab/actions/runs/35983873183)，17 张 PNG 截图，artifact 10801832125，ZIP SHA256 `fe5bfbdbf986d453503852f09cb6c195afa8f9680f13707c7ce963c1bf80bed1`。
 
 主控人工看图发现浅色 Tab 栏白字对比度不足：iOS 26 的玻璃背景没有采用指定墨色，而强制 dark scheme 仍影响标签。现改为 iOS 26 使用系统原生玻璃及明暗适配，旧系统保留墨色栏；系统操作色增加深橙/浅琥珀变体。依据 [Apple Adopting Liquid Glass](https://developer.apple.com/documentation/technologyoverviews/adopting-liquid-glass) 对系统栏移除自定义背景的指导。UI 测试增加浅色未选中 Tab 的截图像素回归，并要求波形面板完整进入可视区域后截图。这些修正需要新一轮运行证据。
+
+## 最终验收
+
+2026-09-24，代码提交 `bfc43b4a949a6d4b4e4fa791e26f053c7abcf3d1`：
+
+- [Lab validation 35985874280](https://github.com/Fairank/Flipper-Momentum-Lab/actions/runs/35985874280)：52 项核心测试、3 项界面测试、36 项桌面回归通过；模拟器构建成功，65 个 Flipper 源码预览生成成功。
+- [Lint 35985874525](https://github.com/Fairank/Flipper-Momentum-Lab/actions/runs/35985874525) 和 [固件构建 35985874510](https://github.com/Fairank/Flipper-Momentum-Lab/actions/runs/35985874510) 均通过。
+- 环境：Xcode 26.6、iPhone 17 Pro Max 模拟器、iOS 26.5。17 张原始 PNG，1320 × 2868；artifact `10802477470`，ZIP SHA256 `73f95e6c879de2121e9f669464e6d2f8d22d21ed135de62e292512806b635875`。
+- 主控逐页审阅首轮主要页面，并复核最终设备页、资料库、完整波形和深色大字画面。浅色栏现在为深色图标、深橙选中项；大字换行与滚动正常，波形面板完整显示。截图原文件没有修图。
+- 中间提交 `691a866e` 的应用构建成功，但新增截图检查因 Swift 类型推断超时没有编译通过；`bfc43b4a` 将计算拆开后，完整测试通过，没有删除或绕过检查。
+- 正常启动没有示例记录；示例截图使用 DEBUG 测试数据，未伪造已连接状态。截图证明离线 UI，不能证明真机蓝牙、上传或红外动作成功。
+- Flipper 画面由实际文字、字库和绘制坐标生成，属于源码布局预览，不是真机截图。
+
+本次最终文档提交仅记录上述证据，不变更运行代码；运行验收的代码版本以此处 SHA 为准。
