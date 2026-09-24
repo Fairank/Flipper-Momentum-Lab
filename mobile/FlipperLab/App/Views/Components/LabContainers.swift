@@ -1,138 +1,7 @@
 import SwiftUI
 
-/// Scrolling page used by every screen. The warm background also fills the safe areas
-/// under the navigation and tab bars, so no default white strip shows below the content.
-struct LabPage<Content: View>: View {
-    private let content: Content
-
-    init(@ViewBuilder content: () -> Content) {
-        self.content = content()
-    }
-
-    var body: some View {
-        ScrollView {
-            VStack(alignment: .leading, spacing: 12) {
-                content
-            }
-            .padding(.horizontal, 16)
-            .padding(.top, 8)
-            .padding(.bottom, 24)
-            .frame(maxWidth: 680, alignment: .leading)
-            .frame(maxWidth: .infinity)
-        }
-        .background(LabColor.bg.ignoresSafeArea())
-    }
-}
-
-enum LabPanelStyle {
-    case neutral, emphasis, danger, muted
-}
-
-/// Panel container (§2.3): 14 pt corners, border instead of shadow.
-struct LabPanel<Content: View>: View {
-    private let style: LabPanelStyle
-    private let padded: Bool
-    private let spacing: CGFloat
-    private let content: Content
-
-    init(_ style: LabPanelStyle = .neutral, padded: Bool = true, spacing: CGFloat = 12,
-         @ViewBuilder content: () -> Content) {
-        self.style = style
-        self.padded = padded
-        self.spacing = spacing
-        self.content = content()
-    }
-
-    var body: some View {
-        let shape = RoundedRectangle(cornerRadius: 14, style: .continuous)
-        VStack(alignment: .leading, spacing: padded ? spacing : 0) {
-            content
-        }
-        .padding(padding)
-        .frame(maxWidth: .infinity, alignment: .leading)
-        .background(style == .muted ? LabColor.surfaceAlt : LabColor.surface, in: shape)
-        .clipShape(shape)
-        .overlay(shape.strokeBorder(border, lineWidth: borderWidth))
-    }
-
-    private var padding: CGFloat {
-        guard padded else { return 0 }
-        return style == .muted ? 12 : 16
-    }
-
-    private var border: Color {
-        switch style {
-        case .neutral: return LabColor.line
-        case .emphasis: return LabColor.strongLine
-        case .danger: return LabColor.danger
-        case .muted: return .clear
-        }
-    }
-
-    private var borderWidth: CGFloat {
-        switch style {
-        case .neutral: return 1
-        case .emphasis, .danger: return 1.5
-        case .muted: return 0
-        }
-    }
-}
-
-/// Section label: 6 pt orange pixel, caption title (a real header text) and optional meta.
-struct PixelLabel: View {
-    private let title: String
-    private let meta: String?
-    private let warning: Bool
-    private let spaced: Bool
-    @Environment(\.dynamicTypeSize) private var dynamicTypeSize
-
-    init(_ title: String, meta: String? = nil, warning: Bool = false, spaced: Bool = true) {
-        self.title = title
-        self.meta = meta
-        self.warning = warning
-        self.spaced = spaced
-    }
-
-    var body: some View {
-        HStack(alignment: .firstTextBaseline, spacing: 8) {
-            Rectangle()
-                .fill(LabColor.orange)
-                .frame(width: 6, height: 6)
-                .alignmentGuide(.firstTextBaseline) { dimensions in dimensions[.bottom] }
-                .accessibilityHidden(true)
-            if dynamicTypeSize.isAccessibilitySize {
-                VStack(alignment: .leading, spacing: 4) {
-                    titleText
-                    metaText
-                }
-            } else {
-                titleText
-                Spacer(minLength: 8)
-                metaText
-            }
-        }
-        // 24 pt above a group, 8 pt to its panel (§2.3).
-        .padding(.top, spaced ? 12 : 0)
-        .padding(.bottom, spaced ? -4 : 0)
-    }
-
-    private var titleText: some View {
-        Text(title)
-            .font(LabFont.label)
-            .foregroundStyle(warning ? LabColor.warnText : LabColor.ink)
-            .accessibilityAddTraits(.isHeader)
-    }
-
-    @ViewBuilder private var metaText: some View {
-        if let meta {
-            Text(meta)
-                .font(LabFont.monoCaption)
-                .foregroundStyle(LabColor.inkSecondary)
-        }
-    }
-}
-
-/// Pixel pointer plus a concrete sentence: why a control is disabled, or a note from the analyser.
+/// Why a control is disabled, or a caveat next to it: an info symbol that scales with the
+/// footnote text. One accessibility element whose label is exactly the sentence.
 struct ReasonNote: View {
     private let text: String
 
@@ -142,37 +11,19 @@ struct ReasonNote: View {
 
     var body: some View {
         HStack(alignment: .firstTextBaseline, spacing: 6) {
-            PixelBitmapView(bitmap: PixelSprites.pointer, unit: 2, color: LabColor.orangeDeep)
-                .alignmentGuide(.firstTextBaseline) { dimensions in dimensions[.bottom] }
+            Image(systemName: "info.circle")
+                .accessibilityHidden(true)
             Text(text)
-                .font(.footnote)
-                .foregroundStyle(LabColor.inkSecondary)
                 .frame(maxWidth: .infinity, alignment: .leading)
         }
+        .font(.footnote)
+        .foregroundStyle(.secondary)
         .accessibilityElement(children: .combine)
     }
 }
 
-struct LabDivider: View {
-    var body: some View {
-        Rectangle()
-            .fill(LabColor.line)
-            .frame(height: 1)
-            .accessibilityHidden(true)
-    }
-}
-
-struct LabChevron: View {
-    var body: some View {
-        Image(systemName: "chevron.right")
-            .font(.footnote.weight(.semibold))
-            .foregroundStyle(LabColor.inkTertiary)
-            .accessibilityHidden(true)
-    }
-}
-
-/// Non-interactive activity strip. It shows an indeterminate spinner only — never a percentage.
-struct LabProgressStrip: View {
+/// Activity row with an indeterminate spinner only — never a percentage.
+struct BusyRow: View {
     private let title: String
 
     init(_ title: String) {
@@ -182,21 +33,16 @@ struct LabProgressStrip: View {
     var body: some View {
         HStack(spacing: 12) {
             ProgressView()
-                .tint(LabColor.ink)
             Text(title)
-                .font(.headline)
-                .foregroundStyle(LabColor.ink)
+                .foregroundStyle(.secondary)
         }
-        .padding(.horizontal, 16)
-        .padding(.vertical, 12)
-        .frame(maxWidth: .infinity, minHeight: 52)
-        .background(LabColor.orangeSoft, in: RoundedRectangle(cornerRadius: 12, style: .continuous))
+        .frame(maxWidth: .infinity, minHeight: 44, alignment: .leading)
         .accessibilityElement(children: .combine)
     }
 }
 
-/// Error panel (§7): 1.5 pt danger border, danger title, selectable message, optional actions.
-struct ErrorPanel<Actions: View>: View {
+/// Error row: red warning symbol with the title, the selectable message, then optional actions.
+struct ErrorRow<Actions: View>: View {
     private let title: String
     private let message: String
     private let actions: Actions
@@ -208,67 +54,59 @@ struct ErrorPanel<Actions: View>: View {
     }
 
     var body: some View {
-        LabPanel(.danger) {
-            Text(title)
-                .font(.headline)
-                .foregroundStyle(LabColor.dangerText)
-                .accessibilityAddTraits(.isHeader)
+        VStack(alignment: .leading, spacing: 8) {
+            Label {
+                Text(title)
+            } icon: {
+                Image(systemName: "exclamationmark.triangle.fill")
+                    .foregroundStyle(.red)
+            }
+            .font(.headline)
+            .accessibilityAddTraits(.isHeader)
             Text(message)
-                .font(.body)
-                .foregroundStyle(LabColor.ink)
                 .textSelection(.enabled)
             actions
         }
+        .padding(.vertical, 4)
     }
 }
 
-extension ErrorPanel where Actions == EmptyView {
+extension ErrorRow where Actions == EmptyView {
     init(title: String, message: String) {
         self.init(title: title, message: message) { EmptyView() }
     }
 }
 
-/// Empty state: pixel tray, title, explanation and an optional action (§7).
-struct EmptyPanel<Action: View>: View {
+/// List section header with an optional count. Text keeps its case (paths, "Flipper"), and
+/// the count moves under the title at accessibility text sizes instead of truncating.
+struct SectionHeader: View {
     private let title: String
-    private let message: String?
-    private let showsTray: Bool
-    private let action: Action
+    private let count: String?
+    @Environment(\.dynamicTypeSize) private var dynamicTypeSize
 
-    init(_ title: String, message: String? = nil, showsTray: Bool = true, @ViewBuilder action: () -> Action) {
+    init(_ title: String, count: String? = nil) {
         self.title = title
-        self.message = message
-        self.showsTray = showsTray
-        self.action = action()
+        self.count = count
     }
 
     var body: some View {
-        LabPanel {
-            VStack(spacing: 12) {
-                if showsTray {
-                    PixelBitmapView(bitmap: PixelSprites.tray, unit: 4, color: LabColor.inkSecondary)
-                        .padding(.vertical, 4)
+        Group {
+            if let count, dynamicTypeSize.isAccessibilitySize {
+                VStack(alignment: .leading, spacing: 2) {
+                    Text(title)
+                    Text(count).monospacedDigit()
                 }
+            } else if let count {
+                HStack(alignment: .firstTextBaseline, spacing: 8) {
+                    Text(title)
+                    Spacer(minLength: 8)
+                    Text(count).monospacedDigit()
+                }
+            } else {
                 Text(title)
-                    .font(.headline)
-                    .foregroundStyle(LabColor.ink)
-                if let message {
-                    Text(message)
-                        .font(.subheadline)
-                        .foregroundStyle(LabColor.inkSecondary)
-                }
-                action
             }
-            .multilineTextAlignment(.center)
-            .frame(maxWidth: .infinity)
-            .padding(.vertical, 8)
         }
-    }
-}
-
-extension EmptyPanel where Action == EmptyView {
-    init(_ title: String, message: String? = nil, showsTray: Bool = true) {
-        self.init(title, message: message, showsTray: showsTray) { EmptyView() }
+        .textCase(nil)
     }
 }
 
@@ -299,7 +137,7 @@ struct AdaptiveStack<Content: View>: View {
     }
 }
 
-/// Wrapping row layout for tag chips.
+/// Wrapping row layout for tag capsules.
 struct FlowLayout: Layout {
     var spacing: CGFloat = 8
 

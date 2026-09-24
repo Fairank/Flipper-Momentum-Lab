@@ -2,30 +2,36 @@ import SwiftUI
 import UIKit
 import FlipperCore
 
-/// 设备: hero device, live status, one main action, then content panels (UI_REDESIGN.md §5.1).
-/// Every value shown comes from `FlipperDevice`; nothing is simulated.
+/// 设备: compact LCD status header with one main action per state, then grouped sections
+/// (UI_APPLE_DESIGN.md §4). Every value shown comes from `FlipperDevice`; nothing is simulated.
 @MainActor struct DeviceView: View {
     let model: AppModel
     @Environment(\.openURL) private var openURL
-    @Environment(\.accessibilityReduceMotion) private var reduceMotion
+    @State private var browsing = false
 
     private var device: FlipperDevice { model.device }
 
     var body: some View {
-        LabPage {
-            DeviceHeroView(state: device.state, deviceName: device.deviceName,
-                           protocolVersion: device.protocolVersion)
-            if model.busy {
-                LabPanel(.muted) {
-                    Label("正在处理，详情见“任务”页。", systemImage: "hourglass")
-                        .font(.subheadline)
-                        .foregroundStyle(LabColor.inkSecondary)
+        List {
+            Section {
+                VStack(alignment: .leading, spacing: 16) {
+                    DeviceStatusHeader(state: device.state, deviceName: device.deviceName,
+                                       protocolVersion: device.protocolVersion, explanation: explanation)
+                    controls
                 }
+                .listRowInsets(EdgeInsets(top: 4, leading: 0, bottom: 4, trailing: 0))
+                .listRowBackground(Color.clear)
             }
-            statusBlock
-            controls
             if let error = device.lastError, device.state != .unavailable {
-                connectionError(error)
+                Section {
+                    ErrorRow(title: "连接出错", message: error) {
+                        Button("知道了") { device.clearError() }
+                            .buttonStyle(.bordered)
+                            .buttonBorderShape(.capsule)
+                            .controlSize(.large)
+                            .accessibilityIdentifier("device.clearError")
+                    }
+                }
             }
             if device.state == .idle || device.state == .scanning {
                 nearbySection
@@ -36,43 +42,19 @@ import FlipperCore
             if !device.info.isEmpty {
                 infoSection
             }
-            Text("个人项目，不是 Flipper Devices 的官方 App。")
-                .labFootnote()
-                .padding(.top, 12)
-        }
-        .labNavigation("设备")
-    }
-
-    // MARK: Status
-
-    private var statusBlock: some View {
-        VStack(alignment: .leading, spacing: 6) {
-            HStack(alignment: .firstTextBaseline, spacing: 8) {
-                if device.ready {
-                    Rectangle()
-                        .fill(LabColor.ok)
-                        .frame(width: 8, height: 8)
-                        .alignmentGuide(.firstTextBaseline) { dimensions in dimensions[.bottom] + 4 }
-                        .accessibilityHidden(true)
-                }
-                Text(device.state.rawValue)
-                    .font(.title2.weight(.semibold))
-                    .foregroundStyle(LabColor.ink)
-                    .accessibilityAddTraits(.isHeader)
-                    .accessibilityIdentifier("device.status")
+            Section {
+                Text("个人项目，不是 Flipper Devices 的官方 App。")
+                    .font(.footnote)
+                    .foregroundStyle(.secondary)
+                    .listRowBackground(Color.clear)
             }
-            if device.ready {
-                Text(verbatim: "\(device.deviceName) · 协议 \(device.protocolVersion)")
-                    .font(LabFont.mono)
-                    .foregroundStyle(LabColor.inkSecondary)
-                    .textSelection(.enabled)
-            }
-            Text(explanation)
-                .font(.subheadline)
-                .foregroundStyle(LabColor.inkSecondary)
         }
-        .padding(.top, 4)
-        .animation(reduceMotion ? nil : .easeInOut(duration: 0.2), value: device.state)
+        .listStyle(.insetGrouped)
+        .navigationTitle("设备")
+        .navigationBarTitleDisplayMode(.large)
+        .navigationDestination(isPresented: $browsing) {
+            DeviceFilesView(model: model, path: "/ext")
+        }
     }
 
     private var explanation: String {
@@ -87,63 +69,71 @@ import FlipperCore
         }
     }
 
-    // MARK: Controls — one main action per state
+    // MARK: Controls — one prominent action per state
 
-    @ViewBuilder private var controls: some View {
-        switch device.state {
-        case .idle, .unavailable:
-            scanControls
-        case .scanning:
-            LabProgressStrip("正在搜索…")
-            Button("停止搜索") { device.disconnect() }
-                .buttonStyle(.labSecondary)
+    /// The status header already names the state, so no extra note repeats it; the busy
+    /// reason appears once, under the actions, only while a task runs.
+    private var controls: some View {
+        VStack(spacing: 12) {
+            switch device.state {
+            case .idle:
+                Button { device.scan() } label: {
+                    PrimaryButtonLabel(title: "搜索附近的 Flipper", systemImage: "magnifyingglass")
+                }
+                .buttonStyle(.borderedProminent)
+                .controlSize(.large)
+                .tint(LabColor.brandOrange)
+                .disabled(model.busy || device.state == .unavailable)
+                .accessibilityIdentifier("device.scan")
+            case .unavailable:
+                Button { openSettings() } label: {
+                    PrimaryButtonLabel(title: "打开 iPhone 设置", systemImage: "gear")
+                }
+                .buttonStyle(.borderedProminent)
+                .controlSize(.large)
+                .tint(LabColor.brandOrange)
+                .accessibilityIdentifier("device.openSettings")
+                Button { device.scan() } label: {
+                    WideButtonLabel(title: "搜索附近的 Flipper", systemImage: "magnifyingglass")
+                }
+                .buttonStyle(.bordered)
+                .controlSize(.large)
+                .disabled(model.busy || device.state == .unavailable)
+                .accessibilityIdentifier("device.scan")
+            case .scanning:
+                Button { device.disconnect() } label: {
+                    WideButtonLabel(title: "停止搜索")
+                }
+                .buttonStyle(.bordered)
+                .controlSize(.large)
                 .accessibilityIdentifier("device.stopScan")
-        case .connecting, .discovering, .negotiating:
-            LabProgressStrip("正在连接…")
-            Button("取消连接") { device.disconnect() }
-                .buttonStyle(.labDestructive)
+            case .connecting, .discovering, .negotiating:
+                Button(role: .destructive) { device.disconnect() } label: {
+                    WideButtonLabel(title: "取消连接")
+                }
+                .buttonStyle(.bordered)
+                .controlSize(.large)
                 .accessibilityIdentifier("device.cancelConnect")
-        case .ready:
-            readyControls
-        }
-    }
-
-    @ViewBuilder private var scanControls: some View {
-        Button { device.scan() } label: {
-            Label("搜索附近的 Flipper", systemImage: "magnifyingglass")
-        }
-        .buttonStyle(.labPrimary)
-        .disabled(model.busy || device.state == .unavailable)
-        .accessibilityIdentifier("device.scan")
-        if device.state == .unavailable {
-            ReasonNote("蓝牙不可用，暂时不能搜索。")
-            Button { openSettings() } label: {
-                Label("打开 iPhone 设置", systemImage: "gear")
+            case .ready:
+                Button { browsing = true } label: {
+                    PrimaryButtonLabel(title: "浏览设备文件", systemImage: "folder")
+                }
+                .buttonStyle(.borderedProminent)
+                .controlSize(.large)
+                .tint(LabColor.brandOrange)
+                .disabled(model.busy)
+                .accessibilityIdentifier("device.browseFiles")
+                Button(role: .destructive) { device.disconnect() } label: {
+                    WideButtonLabel(title: "断开连接")
+                }
+                .buttonStyle(.bordered)
+                .controlSize(.large)
+                .accessibilityIdentifier("device.disconnect")
             }
-            .buttonStyle(.labSecondary)
-            .accessibilityIdentifier("device.openSettings")
-        } else if model.busy {
-            ReasonNote("有任务正在进行。")
-        }
-    }
-
-    @ViewBuilder private var readyControls: some View {
-        NavigationLink { DeviceFilesView(model: model, path: "/ext") } label: {
-            HStack(spacing: 8) {
-                Text("浏览设备文件")
-                Image(systemName: "chevron.right")
-                    .accessibilityHidden(true)
+            if model.busy {
+                ReasonNote("有任务正在进行，详情见“任务”页。")
             }
         }
-        .buttonStyle(.labPrimary)
-        .disabled(model.busy)
-        .accessibilityIdentifier("device.browseFiles")
-        if model.busy {
-            ReasonNote("有任务正在进行。")
-        }
-        Button("断开连接") { device.disconnect() }
-            .buttonStyle(.labDestructive)
-            .accessibilityIdentifier("device.disconnect")
     }
 
     private func openSettings() {
@@ -151,92 +141,67 @@ import FlipperCore
         openURL(url)
     }
 
-    private func connectionError(_ message: String) -> some View {
-        ErrorPanel(title: "连接出错", message: message) {
-            Button("知道了") { device.clearError() }
-                .buttonStyle(.labCompact)
-                .accessibilityIdentifier("device.clearError")
-        }
-    }
+    // MARK: Sections
 
-    // MARK: Panels
-
-    @ViewBuilder private var nearbySection: some View {
-        PixelLabel("附近设备", meta: device.nearby.isEmpty ? nil : "\(device.nearby.count) 台")
-        LabPanel(padded: false) {
+    private var nearbySection: some View {
+        Section {
             if device.nearby.isEmpty {
                 Text(device.state == .scanning ? "正在搜索，请将设备放在手机旁。" : "搜索后在这里选择设备。")
-                    .font(.subheadline)
-                    .foregroundStyle(LabColor.inkSecondary)
-                    .padding(16)
-                    .frame(maxWidth: .infinity, alignment: .leading)
+                    .foregroundStyle(.secondary)
             } else {
                 ForEach(Array(device.nearby.enumerated()), id: \.element.id) { index, item in
-                    if index > 0 {
-                        LabDivider()
-                    }
                     nearbyRow(item, index: index)
                 }
             }
+        } header: {
+            SectionHeader("附近设备", count: device.nearby.isEmpty ? nil : "\(device.nearby.count) 台")
         }
     }
 
     private func nearbyRow(_ item: NearbyDevice, index: Int) -> some View {
         Button { device.connect(item) } label: {
-            HStack(spacing: 12) {
-                SymbolTile(systemName: "dot.radiowaves.left.and.right", size: 36)
-                Text(verbatim: item.name)
-                    .font(.headline)
-                    .multilineTextAlignment(.leading)
+            AdaptiveStack(verticalAlignment: .firstTextBaseline, spacing: 8) {
+                Label(item.name, systemImage: "dot.radiowaves.left.and.right")
                 Spacer(minLength: 8)
                 Text(verbatim: "\(item.rssi) dBm")
                     .font(LabFont.mono)
-                    .foregroundStyle(LabColor.inkSecondary)
-                LabChevron()
+                    .foregroundStyle(.secondary)
             }
-            .padding(.horizontal, 16)
-            .padding(.vertical, 10)
+            .frame(minHeight: 44)
         }
-        .buttonStyle(.labRow)
         .disabled(model.busy || (device.state != .scanning && device.state != .idle))
         .accessibilityLabel("\(item.name)，信号 \(item.rssi) dBm")
         .accessibilityHint("连接此设备")
         .accessibilityIdentifier("device.nearby.\(index)")
     }
 
-    @ViewBuilder private var firstConnectionSection: some View {
-        PixelLabel("首次连接")
-        LabPanel {
+    private var firstConnectionSection: some View {
+        Section {
             StepRow(number: 1, text: "在 Flipper 设置中开启蓝牙。")
             StepRow(number: 2, text: "允许本应用使用 iPhone 蓝牙。")
             StepRow(number: 3, text: "选择设备，在 iPhone 输入 Flipper 屏幕上的配对码。")
             StepRow(number: 4, text: "等待“设备已就绪”后操作。")
+        } header: {
+            SectionHeader("首次连接")
+        } footer: {
             Text("传输和分析时请保持应用在前台。")
-                .labFootnote()
         }
     }
 
     /// Keys exactly as the device reports them, sorted; values are selectable.
-    @ViewBuilder private var infoSection: some View {
-        PixelLabel("设备报告的信息", meta: "\(device.info.count) 项")
-        LabPanel(padded: false) {
-            ForEach(Array(device.info.keys.sorted().enumerated()), id: \.element) { index, key in
-                if index > 0 {
-                    LabDivider()
-                }
+    private var infoSection: some View {
+        Section {
+            ForEach(device.info.keys.sorted(), id: \.self) { key in
                 VStack(alignment: .leading, spacing: 4) {
                     Text(verbatim: key)
-                        .font(LabFont.monoCaption)
-                        .foregroundStyle(LabColor.inkSecondary)
+                        .font(LabFont.mono)
+                        .foregroundStyle(.secondary)
                     Text(verbatim: device.info[key] ?? "")
-                        .font(.body)
-                        .foregroundStyle(LabColor.ink)
                         .textSelection(.enabled)
                 }
-                .padding(.horizontal, 16)
-                .padding(.vertical, 12)
-                .frame(maxWidth: .infinity, alignment: .leading)
             }
+        } header: {
+            SectionHeader("设备报告的信息", count: "\(device.info.count) 项")
         }
     }
 }

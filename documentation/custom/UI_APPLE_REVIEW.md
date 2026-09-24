@@ -1,0 +1,36 @@
+# iPhone 苹果原生界面优化验收
+
+基线是已运行验收的 `bfc43b4a949a6d4b4e4fa791e26f053c7abcf3d1`。这一轮针对手机界面的层级、导航、阅读和操作体验，不改变蓝牙协议、设备控制或分析算法。
+
+## 分工记录
+
+- 设计：本地 CLI `claude-fable-5-1 --effort max`；实际返回 `claude-fable-5-1`，退出码 0，459.6 秒。输入包括六张上一版的真实模拟器截图。设计见 [UI_APPLE_DESIGN.md](UI_APPLE_DESIGN.md)。
+- 实现：按用户在本任务中的明确指定，调用本地 CLI `claude-opus-5-5 --effort max`；实际返回 `claude-opus-5-5`，退出码 0，2117.1 秒。交接记录见 [UI_APPLE_IMPLEMENTATION.md](UI_APPLE_IMPLEMENTATION.md)。
+- 主助手：审核设计取舍、代码与真实运行结果。模型报告本身不作为编译、连接或真机执行成功的证据。
+
+## 审核后的设计决定
+
+1. 使用设备、资料库、任务、指南四个固定分页。比较和导入收进资料库，记录详情可进入比较并预选记录 A。四页是本项目的信息组织决定，苹果并没有禁止五页。
+2. 页面使用原生大标题、分组列表、表单、菜单和系统导航材质；移除厚边框和大面积仿实体按键，保留橙色和小像素屏。iOS 17 使用系统兼容表现，iOS 26 由系统管理导航材质。
+3. 使用语义字号、系统前景色及背景色；普通启动尊重用户外观和字号。仅 DEBUG 截图参数可强制测试外观。
+4. 脉冲图继续使用原来的线性刻度，保留正负持续时间、单位和抽样说明。设计中可选的对数刻度不采纳，避免本轮改变数据表达含义。
+5. 删除仍需确认；离线和忙碌状态仍禁止相应硬件操作，并显示原因。设备错误、分析失败、任务取消和资料库重试入口必须保留。
+6. 主助手将蓝牙不可用说明改为实际状态对应的用户提示：未授权、已关闭、不支持和重置分别解释；移除面向开发者的模拟器测试文案。只改变提示选择，关闭连接和协议处理保持原逻辑。
+7. 主助手把红外按钮改为分行的原生列表内容，避免大型遥控库一次创建全部按钮；禁用原因放在按钮前，文件中的按钮次序、执行索引和条件不变。移除已无内容的旧工具页文件。
+
+## 参考依据
+
+- [Apple HIG：布局](https://developer.apple.com/design/human-interface-guidelines/layout)：层级、分组、对齐和安全区域。
+- [Apple HIG：排版](https://developer.apple.com/design/human-interface-guidelines/typography)：语义文字样式和动态字号。
+- [Apple HIG：标签栏](https://developer.apple.com/design/human-interface-guidelines/tab-bars)：清楚、稳定的主要目的地。
+- [Adopting Liquid Glass](https://developer.apple.com/documentation/technologyoverviews/adopting-liquid-glass)：原生控件和导航材质适配。
+
+文档中的具体间距、圆角和页面数量是设计选择，并非苹果强制数值，也不构成苹果认证。
+
+## 本轮运行证据
+
+待实现完成后，记录确切代码提交、Mac CI、三项 UI 测试、截图及人工复核结果。
+
+## 验证边界
+
+模拟器可以验证编译、离线流程和布局。真实 iPhone 与 Flipper 的配对、传输、红外执行和真机显示仍需硬件验证。Flipper 中文小屏展示继续标注为源码布局预览；这轮手机样式调整不表示 Flipper 全部原生应用已完成中文重写。

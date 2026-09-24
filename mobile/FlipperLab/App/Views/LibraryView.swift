@@ -2,13 +2,16 @@ import SwiftUI
 import UniformTypeIdentifiers
 import FlipperCore
 
-/// 中文资料库: kind chips, real counts, record cards (§5.4). Production data stays empty
-/// until the user imports; the "示例" records exist only under the DEBUG fixture argument.
+/// 资料库: kind pills, one real count and the record list (UI_APPLE_DESIGN.md §4). Both import
+/// sources and 比较 sit in the toolbar. Production data stays empty until the user imports;
+/// the "示例" records exist only under the DEBUG fixture argument.
 @MainActor struct LibraryView: View {
     let model: AppModel
     @State private var search = ""
     @State private var kind: RecordKind?
     @State private var importing = false
+    @State private var browsingDevice = false
+    @State private var comparing = false
     private var visible: [CaptureRecord] {
         model.records.filter {
             (kind == nil || kind == $0.kind) && (search.isEmpty ||
@@ -17,21 +20,26 @@ import FlipperCore
     }
 
     var body: some View {
-        LabPage {
+        List {
             if model.libraryReady {
                 loadedContent
             } else if model.busy {
-                LabProgressStrip("正在加载资料库…")
+                BusyRow("正在加载资料库…")
             } else {
-                notLoadedPanel
+                notLoadedSection
             }
         }
-        .labNavigation("中文资料库")
+        .listStyle(.insetGrouped)
+        .navigationTitle("资料库")
+        .navigationBarTitleDisplayMode(.large)
         .searchable(text: $search, placement: .navigationBarDrawer(displayMode: .always), prompt: "名称、标签、备注")
         .toolbar {
-            Button("导入文件", systemImage: "square.and.arrow.down") { importing = true }
-                .disabled(model.busy || !model.libraryReady)
-                .accessibilityIdentifier("library.import")
+            ToolbarItemGroup(placement: .topBarTrailing) {
+                Button("导入文件", systemImage: "square.and.arrow.down") { importing = true }
+                    .disabled(model.busy || !model.libraryReady)
+                    .accessibilityIdentifier("library.import")
+                moreMenu
+            }
         }
         .fileImporter(isPresented: $importing, allowedContentTypes: [.data, .text]) { result in
             switch result {
@@ -39,52 +47,109 @@ import FlipperCore
             case .failure(let error): model.error = error.localizedDescription
             }
         }
+        .navigationDestination(isPresented: $browsingDevice) {
+            DeviceFilesView(model: model, path: "/ext")
+        }
+        .navigationDestination(isPresented: $comparing) {
+            CompareRecordsView(model: model)
+        }
+    }
+
+    /// 更多: both import sources and 比较. A disabled item states its reason as the subtitle.
+    private var moreMenu: some View {
+        let deviceReason: String? = !model.device.ready ? "需要先在“设备”页连接 Flipper。"
+            : (model.busy ? "有任务正在进行。" : nil)
+        return Menu {
+            Button { importing = true } label: {
+                Label("从 iPhone 文件导入", systemImage: "square.and.arrow.down")
+            }
+            .disabled(model.busy || !model.libraryReady)
+            Button { browsingDevice = true } label: {
+                Label("从 Flipper 导入", systemImage: "arrow.down.doc")
+                Text(deviceReason ?? "浏览设备存储，把文件导入资料库。")
+            }
+            .disabled(deviceReason != nil)
+            .accessibilityIdentifier("library.importDevice")
+            Button { comparing = true } label: {
+                Label("比较两次记录", systemImage: "rectangle.split.2x1")
+            }
+            .accessibilityIdentifier("library.compare")
+        } label: {
+            Label("更多", systemImage: "ellipsis.circle")
+        }
+        .accessibilityIdentifier("library.more")
     }
 
     @ViewBuilder private var loadedContent: some View {
-        let shown = visible
-        KindChipBar(selection: $kind)
-        PixelLabel("记录", meta: "共 \(model.records.count) 条 · 显示 \(shown.count) 条")
         if model.records.isEmpty {
-            EmptyPanel("这里还没有记录", message: "从 iPhone 文件或 Flipper 设备导入，随后可离线分析。") {
-                Button { importing = true } label: {
-                    Label("从 iPhone 文件导入", systemImage: "square.and.arrow.down")
+            Section {
+                ContentUnavailableView {
+                    Label {
+                        Text("这里还没有记录")
+                    } icon: {
+                        PixelBitmapView(bitmap: PixelSprites.tray, unit: 4, color: .secondary)
+                    }
+                } description: {
+                    Text("从 iPhone 文件或 Flipper 导入采集文件；统计、图表和比较都在手机本地完成，不上传云端。")
+                } actions: {
+                    Button { importing = true } label: {
+                        PrimaryButtonLabel(title: "从 iPhone 文件导入", systemImage: "square.and.arrow.down")
+                    }
+                    .buttonStyle(.borderedProminent)
+                    .controlSize(.large)
+                    .tint(LabColor.brandOrange)
+                    .disabled(model.busy)
+                    .accessibilityIdentifier("library.emptyImport")
+                    if model.busy {
+                        ReasonNote("有任务正在进行。")
+                    }
                 }
-                .buttonStyle(.labPrimary)
-                .disabled(model.busy)
-                .accessibilityIdentifier("library.emptyImport")
+                .listRowBackground(Color.clear)
+            }
+        } else {
+            let shown = visible
+            Section {
+                KindFilterBar(selection: $kind)
+                    .listRowInsets(EdgeInsets())
+                    .listRowBackground(Color.clear)
+            }
+            Section {
+                if shown.isEmpty {
+                    ContentUnavailableView("没有匹配的记录", systemImage: "magnifyingglass",
+                                           description: Text("换一个类型或关键词试试。"))
+                        .listRowBackground(Color.clear)
+                } else {
+                    ForEach(shown) { record in
+                        NavigationLink { RecordDetailView(model: model, id: record.id) } label: {
+                            RecordRow(record: record)
+                        }
+                        .accessibilityLabel(rowDescription(record))
+                    }
+                }
+            } header: {
+                SectionHeader("记录", count: shown.count == model.records.count
+                              ? "共 \(model.records.count) 条" : "显示 \(shown.count) 条")
+            }
+        }
+    }
+
+    private var notLoadedSection: some View {
+        Section {
+            ErrorRow(title: "资料库尚未加载", message: "加载失败时会保留原文件，请先重试。") {
+                Button("重试加载") { Task { await model.load() } }
+                    .buttonStyle(.bordered)
+                    .buttonBorderShape(.capsule)
+                    .controlSize(.large)
+                    .disabled(model.busy)
+                    .accessibilityIdentifier("library.retry")
                 if model.busy {
                     ReasonNote("有任务正在进行。")
                 }
             }
-        } else if shown.isEmpty {
-            EmptyPanel("没有匹配的记录", message: "换一个类型或关键词试试。", showsTray: false)
-        } else {
-            LazyVStack(spacing: 12) {
-                ForEach(shown) { record in
-                    NavigationLink { RecordDetailView(model: model, id: record.id) } label: {
-                        RecordCard(record: record)
-                    }
-                    .buttonStyle(.labCard())
-                    .accessibilityLabel(cardDescription(record))
-                }
-            }
         }
     }
 
-    private var notLoadedPanel: some View {
-        ErrorPanel(title: "资料库尚未加载", message: "加载失败时会保留原文件，请先重试。") {
-            Button("重试加载") { Task { await model.load() } }
-                .buttonStyle(.labCompact)
-                .disabled(model.busy)
-                .accessibilityIdentifier("library.retry")
-            if model.busy {
-                ReasonNote("有任务正在进行。")
-            }
-        }
-    }
-
-    private func cardDescription(_ record: CaptureRecord) -> String {
+    private func rowDescription(_ record: CaptureRecord) -> String {
         var parts = [record.name, record.kind.title]
         if !record.tags.isEmpty {
             parts.append("标签 " + record.tags.joined(separator: "、"))
@@ -94,8 +159,8 @@ import FlipperCore
     }
 }
 
-/// Record card: kind tile, name, kind and tags, then date and source in monospace.
-private struct RecordCard: View {
+/// Record row: kind tile, name, kind and tags, then the date and source in the default face.
+private struct RecordRow: View {
     let record: CaptureRecord
 
     var body: some View {
@@ -104,26 +169,21 @@ private struct RecordCard: View {
             VStack(alignment: .leading, spacing: 4) {
                 Text(verbatim: record.name)
                     .font(.headline)
-                    .foregroundStyle(LabColor.ink)
                 Text(verbatim: subtitle)
                     .font(.subheadline)
-                    .foregroundStyle(LabColor.inkSecondary)
-                AdaptiveStack(verticalAlignment: .firstTextBaseline, spacing: 10) {
+                    .foregroundStyle(.secondary)
+                AdaptiveStack(verticalAlignment: .firstTextBaseline, spacing: 8) {
                     Text(record.createdAt, format: .dateTime.year().month().day())
                     Text(verbatim: record.sourcePath ?? "来自 iPhone 文件")
                         .lineLimit(2)
                         .truncationMode(.middle)
                 }
-                .font(LabFont.monoCaption)
-                .foregroundStyle(LabColor.inkTertiary)
-                .padding(.top, 2)
+                .font(.footnote)
+                .foregroundStyle(.secondary)
             }
             .multilineTextAlignment(.leading)
-            Spacer(minLength: 4)
-            LabChevron()
         }
-        .padding(16)
-        .frame(maxWidth: .infinity, alignment: .leading)
+        .padding(.vertical, 4)
     }
 
     private var subtitle: String {

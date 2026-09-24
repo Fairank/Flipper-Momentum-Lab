@@ -1,100 +1,69 @@
 import SwiftUI
 import FlipperCore
 
-/// Guide detail: purpose, requirements, numbered steps, the phone / Flipper split,
-/// how to read the result and the limits — all catalogue text, unabridged (§5.10).
+/// Guide detail as a grouped reading list: purpose, requirements, numbered steps, the phone /
+/// Flipper split, how to read the result and the limits — all catalogue text, unabridged and
+/// selectable (UI_APPLE_DESIGN.md §4).
 @MainActor struct GuideDetailView: View {
     let guide: FeatureGuide
 
     var body: some View {
-        LabPage {
-            purposeSection
-            requirementsSection
-            stepsSection
-            rolesSection
-            resultSection
-            limitsSection
-        }
-        .labNavigation(guide.title)
-    }
-
-    @ViewBuilder private var purposeSection: some View {
-        PixelLabel("用途")
-        LabPanel(.muted) {
-            Text(guide.summary)
-                .font(.body)
-                .foregroundStyle(LabColor.ink)
-        }
-    }
-
-    @ViewBuilder private var requirementsSection: some View {
-        if !guide.requires.isEmpty {
-            PixelLabel("准备事项")
-            LabPanel {
-                ForEach(Array(guide.requires.enumerated()), id: \.offset) { _, text in
-                    BulletRow(text: text)
+        List {
+            Section {
+                Text(guide.summary)
+            } header: {
+                SectionHeader("用途")
+            }
+            if !guide.requires.isEmpty {
+                Section {
+                    ForEach(Array(guide.requires.enumerated()), id: \.offset) { _, text in
+                        Text(text)
+                    }
+                } header: {
+                    SectionHeader("准备事项")
                 }
             }
-        }
-    }
-
-    @ViewBuilder private var stepsSection: some View {
-        PixelLabel("操作步骤", meta: "\(guide.steps.count) 步")
-        LabPanel {
-            ForEach(Array(guide.steps.enumerated()), id: \.offset) { index, text in
-                StepRow(number: index + 1, text: text)
+            Section {
+                ForEach(Array(guide.steps.enumerated()), id: \.offset) { index, text in
+                    StepRow(number: index + 1, text: text)
+                }
+            } header: {
+                SectionHeader("操作步骤", count: "\(guide.steps.count) 步")
+            }
+            Section {
+                roleRow(title: "手机负责", systemImage: "iphone", text: guide.phoneRole)
+                roleRow(title: "Flipper 负责", systemImage: "dot.radiowaves.left.and.right", text: guide.flipperRole)
+            } header: {
+                SectionHeader("分工")
+            } footer: {
+                if !guide.deviceHelp.isEmpty {
+                    Text(guide.deviceHelp)
+                }
+            }
+            Section {
+                Text(guide.result)
+            } header: {
+                SectionHeader("怎样理解结果")
+            }
+            Section {
+                Text(guide.limits)
+            } header: {
+                SectionHeader("适用范围")
             }
         }
+        .listStyle(.insetGrouped)
+        .textSelection(.enabled)
+        .navigationTitle(guide.title)
+        .navigationBarTitleDisplayMode(.inline)
     }
 
-    /// Two columns normally; stacked at accessibility text sizes.
-    @ViewBuilder private var rolesSection: some View {
-        PixelLabel("分工")
-        AdaptiveStack(verticalAlignment: .top, spacing: 12) {
-            roleCard(title: "手机负责", systemImage: "iphone", text: guide.phoneRole, help: nil)
-            roleCard(title: "Flipper 负责", systemImage: "dot.radiowaves.left.and.right",
-                     text: guide.flipperRole, help: guide.deviceHelp)
-        }
-        .fixedSize(horizontal: false, vertical: true)
-    }
-
-    @ViewBuilder private var resultSection: some View {
-        PixelLabel("怎样理解结果")
-        LabPanel {
-            Text(guide.result)
-                .font(.body)
-                .foregroundStyle(LabColor.ink)
-        }
-    }
-
-    @ViewBuilder private var limitsSection: some View {
-        PixelLabel("适用范围", warning: true)
-        LabPanel {
-            Text(guide.limits)
-                .font(.body)
-                .foregroundStyle(LabColor.ink)
-        }
-    }
-
-    private func roleCard(title: String, systemImage: String, text: String, help: String?) -> some View {
-        VStack(alignment: .leading, spacing: 8) {
-            HStack(spacing: 8) {
-                SymbolTile(systemName: systemImage, size: 28)
-                Text(title)
-                    .font(.headline)
-                    .foregroundStyle(LabColor.ink)
-                    .accessibilityAddTraits(.isHeader)
-            }
+    /// Stacked role rows: full-width Chinese prose instead of two narrow columns.
+    private func roleRow(title: String, systemImage: String, text: String) -> some View {
+        VStack(alignment: .leading, spacing: 6) {
+            Label(title, systemImage: systemImage)
+                .font(.headline)
             Text(text)
-                .font(.body)
-                .foregroundStyle(LabColor.ink)
-            if let help, !help.isEmpty {
-                ReasonNote(help)
-            }
         }
-        .padding(16)
-        .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
-        .background(LabColor.surface, in: RoundedRectangle(cornerRadius: 14, style: .continuous))
-        .overlay(RoundedRectangle(cornerRadius: 14, style: .continuous).strokeBorder(LabColor.line, lineWidth: 1))
+        .padding(.vertical, 4)
     }
 }

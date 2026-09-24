@@ -30,7 +30,8 @@ private struct RecordComparison: Sendable {
     }
 }
 
-/// 比较记录: two record slots, then both statistics and the bounded line-by-line differences (§5.7).
+/// 比较记录: two record slots, then both statistics and the bounded line-by-line differences
+/// (UI_APPLE_DESIGN.md §4). Opened from a record's menu, that record is already chosen as A.
 @MainActor struct CompareRecordsView: View {
     let model: AppModel
     @State private var first: UUID?
@@ -40,26 +41,40 @@ private struct RecordComparison: Sendable {
     @State private var comparing = false
     private var selection: String { "\(first?.uuidString ?? ""):\(second?.uuidString ?? "")" }
 
+    init(model: AppModel, initialFirst: UUID? = nil) {
+        self.model = model
+        _first = State(initialValue: initialFirst)
+    }
+
     var body: some View {
-        LabPage {
-            slot("记录 A", selection: $first, marker: LabColor.ink, identifier: "compare.pickerA")
-            slot("记录 B", selection: $second, marker: LabColor.orangeDeep, identifier: "compare.pickerB")
-            Text("同类型记录更容易比较。文本按相同行号对比；插入一行会影响后续行的对应关系。")
-                .labFootnote()
-            if model.records.isEmpty {
-                ReasonNote("先在资料库导入记录，再选择要比较的内容。")
+        Form {
+            Section {
+                slot("记录 A", selection: $first, identifier: "compare.pickerA")
+                slot("记录 B", selection: $second, identifier: "compare.pickerB")
+                if model.records.isEmpty {
+                    ReasonNote("先在资料库导入记录，再选择要比较的内容。")
+                }
+            } header: {
+                SectionHeader("选择记录")
+            } footer: {
+                Text("同类型记录更容易比较。文本按相同行号对比；插入一行会影响后续行的对应关系。")
             }
             if comparing {
-                LabProgressStrip("正在比较…")
+                Section {
+                    BusyRow("正在比较…")
+                }
             }
             if let failure {
-                ErrorPanel(title: "无法比较", message: failure)
+                Section {
+                    ErrorRow(title: "无法比较", message: failure)
+                }
             }
             if let result {
                 results(result)
             }
         }
-        .labNavigation("比较记录")
+        .navigationTitle("比较记录")
+        .navigationBarTitleDisplayMode(.inline)
         .task(id: selection) {
             result = nil; failure = nil
             comparing = false
@@ -74,50 +89,63 @@ private struct RecordComparison: Sendable {
         }
     }
 
-    private func slot(_ title: String, selection: Binding<UUID?>, marker: Color, identifier: String) -> some View {
-        LabPanel(.emphasis, spacing: 8) {
-            HStack(spacing: 8) {
-                Rectangle()
-                    .fill(marker)
-                    .frame(width: 8, height: 8)
-                    .accessibilityHidden(true)
-                Text(title)
-                    .font(LabFont.label)
-                    .foregroundStyle(LabColor.ink)
-            }
+    /// A 44 pt row whose label wraps the full record name; the menu inside is a checkmarked picker.
+    private func slot(_ title: String, selection: Binding<UUID?>, identifier: String) -> some View {
+        let chosen = model.records.first { $0.id == selection.wrappedValue }
+        let value = chosen.map { $0.name + " · " + $0.kind.title } ?? "请选择"
+        return Menu {
             Picker(title, selection: selection) {
                 Text("请选择").tag(nil as UUID?)
                 ForEach(model.records) { Text($0.name + " · " + $0.kind.title).tag(Optional($0.id)) }
             }
-            .pickerStyle(.menu)
-            .labelsHidden()
-            .tint(LabColor.ink)
+        } label: {
+            HStack(spacing: 8) {
+                VStack(alignment: .leading, spacing: 2) {
+                    Text(title)
+                        .font(.subheadline)
+                        .foregroundStyle(.secondary)
+                    Text(verbatim: value)
+                        .foregroundStyle(.primary)
+                        .multilineTextAlignment(.leading)
+                }
+                Spacer(minLength: 8)
+                Image(systemName: "chevron.up.chevron.down")
+                    .font(.footnote.weight(.semibold))
+                    .foregroundStyle(.secondary)
+            }
             .frame(maxWidth: .infinity, minHeight: 44, alignment: .leading)
-            .accessibilityIdentifier(identifier)
+            .contentShape(Rectangle())
         }
+        .accessibilityLabel(title)
+        .accessibilityValue(value)
+        .accessibilityIdentifier(identifier)
     }
 
     @ViewBuilder private func results(_ result: RecordComparison) -> some View {
-        PixelLabel("记录 A 的统计")
-        FactList(facts: result.left.facts)
-        PixelLabel("记录 B 的统计")
-        FactList(facts: result.right.facts)
-        PixelLabel("按行对比", meta: "\(result.differences.count) 处差异")
-        if result.limited {
-            ReasonNote("内容较多，结果已截短。最多比较前 5,000 行、显示 200 处差异，每行预览 240 个字符；可导出完整原文进一步查看。")
+        Section {
+            FactList(facts: result.left.facts)
+        } header: {
+            SectionHeader("记录 A 的统计")
         }
-        if result.differences.isEmpty {
-            LabPanel {
-                Text(result.limited ? "已比较范围内没有差异。" : "两份文本内容相同。")
-                    .font(.body)
-                    .foregroundStyle(LabColor.ink)
+        Section {
+            FactList(facts: result.right.facts)
+        } header: {
+            SectionHeader("记录 B 的统计")
+        }
+        Section {
+            // The caveat qualifies the list below it, so it leads the section.
+            if result.limited {
+                ReasonNote("内容较多，结果已截短。最多比较前 5,000 行、显示 200 处差异，每行预览 240 个字符；可导出完整原文进一步查看。")
             }
-        } else {
-            LazyVStack(spacing: 8) {
+            if result.differences.isEmpty {
+                Text(result.limited ? "已比较范围内没有差异。" : "两份文本内容相同。")
+            } else {
                 ForEach(Array(result.differences.enumerated()), id: \.offset) { _, line in
                     DiffBlock(text: line)
                 }
             }
+        } header: {
+            SectionHeader("按行对比", count: "\(result.differences.count) 处差异")
         }
     }
 }
@@ -132,20 +160,18 @@ private struct DiffBlock: View {
         VStack(alignment: .leading, spacing: 6) {
             if parts.count == 3, parts[1].hasPrefix("A: "), parts[2].hasPrefix("B: ") {
                 Text(verbatim: String(parts[0]))
-                    .font(LabFont.label)
-                    .foregroundStyle(LabColor.ink)
-                side("A", content: String(parts[1].dropFirst(3)), marker: LabColor.ink, markerText: LabColor.surface)
-                side("B", content: String(parts[2].dropFirst(3)), marker: LabColor.orangeDeep, markerText: LabColor.lcdInk)
+                    .font(.subheadline.weight(.semibold))
+                side("A", content: String(parts[1].dropFirst(3)),
+                     marker: Color.primary, markerText: Color(uiColor: .systemBackground))
+                side("B", content: String(parts[2].dropFirst(3)),
+                     marker: LabColor.brandOrange, markerText: LabColor.lcdInk)
             } else {
                 Text(verbatim: text)
                     .font(LabFont.mono)
-                    .foregroundStyle(LabColor.ink)
                     .textSelection(.enabled)
             }
         }
-        .padding(12)
-        .frame(maxWidth: .infinity, alignment: .leading)
-        .background(LabColor.surfaceAlt, in: RoundedRectangle(cornerRadius: 8, style: .continuous))
+        .padding(.vertical, 4)
     }
 
     private func side(_ label: String, content: String, marker: Color, markerText: Color) -> some View {
@@ -153,11 +179,11 @@ private struct DiffBlock: View {
             Text(verbatim: label)
                 .font(LabFont.monoCaption.weight(.bold))
                 .foregroundStyle(markerText)
-                .frame(minWidth: 20, minHeight: 20)
-                .background(marker, in: RoundedRectangle(cornerRadius: 3, style: .continuous))
+                .padding(.horizontal, 5)
+                .padding(.vertical, 1)
+                .background(marker, in: RoundedRectangle(cornerRadius: 4, style: .continuous))
             Text(verbatim: content)
                 .font(LabFont.mono)
-                .foregroundStyle(LabColor.ink)
                 .textSelection(.enabled)
                 .frame(maxWidth: .infinity, alignment: .leading)
         }

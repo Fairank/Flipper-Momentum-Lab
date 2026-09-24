@@ -1,8 +1,9 @@
 import SwiftUI
 import FlipperCore
 
-/// Shell only: five native tabs, each with its own navigation stack, the Chinese locale
-/// and the shared alert that surfaces `model.error`.
+/// Shell only: four native tabs (设备 · 资料库 · 任务 · 指南), each with its own navigation
+/// stack, the Chinese locale and the shared alert that surfaces `model.error`. The system
+/// owns the tab bar material on every iOS version.
 @MainActor struct RootView: View {
     @Bindable var model: AppModel
 
@@ -10,19 +11,12 @@ import FlipperCore
         TabView {
             NavigationStack { DeviceView(model: model) }
                 .tabItem { Label("设备", systemImage: "antenna.radiowaves.left.and.right") }
-                .labTabChrome()
-            NavigationStack { ToolsView(model: model) }
-                .tabItem { Label("工具", systemImage: "waveform.path") }
-                .labTabChrome()
             NavigationStack { LibraryView(model: model) }
                 .tabItem { Label("资料库", systemImage: "square.stack.3d.up") }
-                .labTabChrome()
             NavigationStack { TasksView(model: model) }
                 .tabItem { Label("任务", systemImage: "checklist") }
-                .labTabChrome()
             NavigationStack { GuidesView(model: model) }
                 .tabItem { Label("指南", systemImage: "book.closed") }
-                .labTabChrome()
         }
         .environment(\.locale, Locale(identifier: "zh_CN"))
         .alert("操作提示", isPresented: Binding(get: { model.error != nil }, set: { if !$0 { model.error = nil } })) {

@@ -7,7 +7,8 @@ enum LCDOverlay: Equatable {
     case sleep
 }
 
-/// Orange backlit screen: a 64 × 32 grid of `px`-point cells inside a 6 pt bezel (§4.3).
+/// Orange backlit screen: a 64 × 32 grid of `px`-point cells inside a 6 pt bezel — the only
+/// framed object left in the app. Hidden from VoiceOver; its state is real text beside it.
 struct LCDScreen: View {
     let dolphin: PixelBitmap
     let decoration: LCDOverlay
@@ -16,7 +17,7 @@ struct LCDScreen: View {
 
     var body: some View {
         ZStack(alignment: .topLeading) {
-            LabColor.orange
+            LabColor.brandOrange
             PixelBitmapView(bitmap: dolphin, unit: px, color: LabColor.lcdInk)
                 .offset(x: px, y: 12 * px)
             overlayArt
@@ -63,100 +64,71 @@ struct LCDScreen: View {
     }
 }
 
-/// Decorative direction pad: 88 pt ring, square direction marks, orange centre.
-struct DPadView: View {
-    var body: some View {
-        ZStack {
-            Circle().fill(LabColor.surface)
-            Circle().strokeBorder(LabColor.strongLine, lineWidth: 2)
-            mark.offset(y: -29)
-            mark.offset(x: 29)
-            mark.offset(y: 29)
-            mark.offset(x: -29)
-            Circle()
-                .fill(LabColor.orange)
-                .frame(width: 24, height: 24)
-                .overlay(Circle().strokeBorder(LabColor.strongLine, lineWidth: 1.5))
-        }
-        .frame(width: 88, height: 88)
-        .accessibilityHidden(true)
-    }
-
-    private var mark: some View {
-        Rectangle().fill(LabColor.ink).frame(width: 8, height: 8)
-    }
-}
-
-/// Decorative back key, 28 × 28.
-struct BackKeyView: View {
-    var body: some View {
-        let shape = RoundedRectangle(cornerRadius: 6, style: .continuous)
-        shape
-            .fill(LabColor.surface)
-            .overlay(shape.strokeBorder(LabColor.strongLine, lineWidth: 1.5))
-            .overlay(Rectangle().fill(LabColor.orange).frame(width: 6, height: 6))
-            .frame(width: 28, height: 28)
-            .accessibilityHidden(true)
-    }
-}
-
-/// Abstract front of the companion device (not an official render): LCD with the original
-/// pixel dolphin, D-pad and back key. It only receives real connection values — never
-/// record content — and the whole card is one accessibility element; the status is also
-/// written as real text beneath it.
-@MainActor struct DeviceHeroView: View {
+/// 设备 status header (UI_APPLE_DESIGN.md §4): the compact LCD companion (px 2, 128 × 64 pt)
+/// beside the status title, then one explanation; stacked at accessibility text sizes. The
+/// LCD only receives real connection values — never record content. The group carries
+/// `device.hero`; its status title carries `device.status`.
+@MainActor struct DeviceStatusHeader: View {
     let state: FlipperDevice.State
     let deviceName: String
     let protocolVersion: String
+    let explanation: String
 
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
-    @Environment(\.dynamicTypeSize) private var dynamicTypeSize
     @State private var eyesClosed = false
     @State private var arcFrame = 3
 
     var body: some View {
-        let shape = RoundedRectangle(cornerRadius: 28, style: .continuous)
-        VStack(spacing: 0) {
-            // Largest whole-point cell size that fits: 4 on Pro Max widths, 3 on 6.1-inch phones.
-            ViewThatFits(in: .horizontal) {
-                face(px: 4)
-                face(px: 3)
-                face(px: 2)
+        let motion: Animation? = reduceMotion ? nil : .easeInOut(duration: 0.2)
+        VStack(alignment: .leading, spacing: 12) {
+            AdaptiveStack(verticalAlignment: .center, spacing: 16) {
+                LCDScreen(dolphin: dolphin, decoration: decoration, lines: lcdLines, px: 2)
+                statusText
+                    .animation(motion, value: state)
             }
-            .padding(16)
-            .frame(maxWidth: .infinity)
-            LabColor.orange
-                .frame(height: 6)
+            Text(explanation)
+                .font(.subheadline)
+                .foregroundStyle(.secondary)
+                .frame(maxWidth: .infinity, alignment: .leading)
+                .animation(motion, value: state)
         }
-        .background(LabColor.surfaceAlt)
-        .clipShape(shape)
-        .overlay(shape.strokeBorder(LabColor.strongLine, lineWidth: 1.5))
-        .frame(maxWidth: 520)
-        .frame(maxWidth: .infinity)
-        .accessibilityElement(children: .ignore)
-        .accessibilityLabel(accessibilityDescription)
-        .accessibilityAddTraits(.isImage)
+        .accessibilityElement(children: .contain)
         .accessibilityIdentifier("device.hero")
         .task(id: MotionKey(state: state, reduceMotion: reduceMotion)) {
             await runMotion()
         }
     }
 
-    /// Accessibility text sizes drop the decorative controls and give the LCD the full width.
-    @ViewBuilder private func face(px: CGFloat) -> some View {
-        let screen = LCDScreen(dolphin: dolphin, decoration: decoration, lines: lcdLines, px: px)
-        if dynamicTypeSize.isAccessibilitySize {
-            screen
-        } else {
-            HStack(spacing: 0) {
-                screen
-                Spacer(minLength: 16)
-                VStack(alignment: .trailing, spacing: 12) {
-                    DPadView()
-                    BackKeyView()
-                }
-                .frame(width: 88)
+    private var statusText: some View {
+        VStack(alignment: .leading, spacing: 4) {
+            HStack(spacing: 8) {
+                statusSymbol
+                Text(state.rawValue)
+                    .accessibilityAddTraits(.isHeader)
+                    .accessibilityIdentifier("device.status")
             }
+            .font(.title2.weight(.semibold))
+            if state == .ready {
+                Text(verbatim: "\(deviceName) · 协议 \(protocolVersion)")
+                    .font(.subheadline)
+                    .foregroundStyle(.secondary)
+                    .textSelection(.enabled)
+            }
+        }
+    }
+
+    /// A spinner while the device is working, a check once ready; the title says the rest.
+    @ViewBuilder private var statusSymbol: some View {
+        switch state {
+        case .ready:
+            Image(systemName: "checkmark.circle.fill")
+                .foregroundStyle(.green)
+                .accessibilityHidden(true)
+        case .scanning, .connecting, .discovering, .negotiating:
+            ProgressView()
+                .accessibilityHidden(true)
+        case .idle, .unavailable:
+            EmptyView()
         }
     }
 
@@ -192,14 +164,6 @@ struct BackKeyView: View {
             !line.isEmpty && line.allSatisfy(\.isASCII)
         }
         return lines.isEmpty ? ["READY"] : lines
-    }
-
-    private var accessibilityDescription: String {
-        var text = "Flipper 设备示意图，状态：\(state.rawValue)"
-        if state == .ready {
-            text += "，\(deviceName)，协议版本 \(protocolVersion)"
-        }
-        return text
     }
 
     private struct MotionKey: Equatable {

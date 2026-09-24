@@ -8,7 +8,7 @@ struct FlipperLabApp: App {
         WindowGroup {
             RootView(model: model)
                 .task { await model.load() }
-                .tint(LabColor.controlTint)
+                .tint(LabColor.accent)
                 #if DEBUG
                 .modifier(UITestPresentation(arguments: ProcessInfo.processInfo.arguments))
                 #endif

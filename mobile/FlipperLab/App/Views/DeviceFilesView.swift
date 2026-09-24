@@ -1,7 +1,8 @@
 import SwiftUI
 import FlipperCore
 
-/// 设备文件: path strip, then the directory listing from the connected Flipper (§5.2).
+/// 设备文件: the directory listing from the connected Flipper as one grouped section — path as
+/// header, limits as footer (UI_APPLE_DESIGN.md §4).
 @MainActor struct DeviceFilesView: View {
     let model: AppModel
     let path: String
@@ -13,13 +14,27 @@ import FlipperCore
     private static let importLimit: UInt64 = 2 * 1024 * 1024
 
     var body: some View {
-        LabPage {
-            PathStrip(text: path)
-            Text("选择文件导入手机；支持红外、Sub-GHz、NFC、RFID、iButton 和文本日志，单个文件最多 2 MiB。")
-                .labFootnote()
-            listing
+        List {
+            Section {
+                listing
+            } header: {
+                HStack(alignment: .firstTextBaseline, spacing: 8) {
+                    Text(verbatim: path)
+                        .font(LabFont.mono)
+                    if !loading, failure == nil, !files.isEmpty {
+                        Spacer(minLength: 8)
+                        Text("\(files.count) 项")
+                            .monospacedDigit()
+                    }
+                }
+                .textCase(nil)
+            } footer: {
+                Text("选择文件导入手机；支持红外、Sub-GHz、NFC、RFID、iButton 和文本日志，单个文件最多 2 MiB。")
+            }
         }
-        .labNavigation(path == "/ext" ? "设备文件" : (path as NSString).lastPathComponent)
+        .listStyle(.insetGrouped)
+        .navigationTitle(path == "/ext" ? "设备文件" : (path as NSString).lastPathComponent)
+        .navigationBarTitleDisplayMode(.inline)
         .toolbar {
             Button("刷新", systemImage: "arrow.clockwise") { revision += 1 }
                 .disabled(model.busy || !model.device.ready)
@@ -39,32 +54,18 @@ import FlipperCore
 
     @ViewBuilder private var listing: some View {
         if loading {
-            LabPanel {
-                ProgressView("读取目录…")
-                    .tint(LabColor.ink)
-                    .foregroundStyle(LabColor.inkSecondary)
-                    .frame(maxWidth: .infinity)
-            }
+            BusyRow("读取目录…")
         } else if let failure {
-            ErrorPanel(title: "无法读取目录", message: failure)
+            ErrorRow(title: "无法读取目录", message: failure)
         } else if files.isEmpty {
-            LabPanel {
-                Text("此目录为空。")
-                    .font(.subheadline)
-                    .foregroundStyle(LabColor.inkSecondary)
-            }
+            Text("此目录为空。")
+                .foregroundStyle(.secondary)
         } else {
-            PixelLabel("目录内容", meta: "\(files.count) 项")
-            LabPanel(padded: false) {
-                ForEach(Array(files.enumerated()), id: \.element.id) { index, file in
-                    if index > 0 {
-                        LabDivider()
-                    }
-                    if file.isDirectory {
-                        directoryRow(file)
-                    } else {
-                        fileRow(file)
-                    }
+            ForEach(files) { file in
+                if file.isDirectory {
+                    directoryRow(file)
+                } else {
+                    fileRow(file)
                 }
             }
         }
@@ -72,19 +73,13 @@ import FlipperCore
 
     private func directoryRow(_ file: DeviceFile) -> some View {
         NavigationLink { DeviceFilesView(model: model, path: file.path) } label: {
-            HStack(spacing: 12) {
-                SymbolTile(systemName: "folder", size: 36)
+            Label {
                 Text(verbatim: file.name)
-                    .font(.headline)
                     .lineLimit(3)
-                    .multilineTextAlignment(.leading)
-                Spacer(minLength: 8)
-                LabChevron()
+            } icon: {
+                Image(systemName: "folder")
             }
-            .padding(.horizontal, 16)
-            .padding(.vertical, 10)
         }
-        .buttonStyle(.labRow)
         .disabled(model.busy)
         .accessibilityLabel("文件夹 \(file.name)")
         .accessibilityIdentifier("files.folder.\(file.name)")
@@ -94,21 +89,23 @@ import FlipperCore
         let reason = importBlockReason(file)
         return VStack(alignment: .leading, spacing: 8) {
             AdaptiveStack(verticalAlignment: .center, spacing: 12) {
-                HStack(alignment: .top, spacing: 12) {
-                    SymbolTile(systemName: "doc.plaintext", size: 36, fill: LabColor.surfaceAlt)
-                    VStack(alignment: .leading, spacing: 4) {
+                Label {
+                    VStack(alignment: .leading, spacing: 2) {
                         Text(verbatim: file.name)
-                            .font(.headline)
-                            .foregroundStyle(LabColor.ink)
                             .lineLimit(3)
                         Text(verbatim: ByteCountFormatter.string(fromByteCount: Int64(clamping: file.size), countStyle: .file))
                             .font(LabFont.mono)
-                            .foregroundStyle(LabColor.inkSecondary)
+                            .foregroundStyle(.secondary)
                     }
+                } icon: {
+                    Image(systemName: "doc.plaintext")
+                        .foregroundStyle(.secondary)
                 }
                 Spacer(minLength: 0)
                 Button("导入") { model.importDeviceFile(file) }
-                    .buttonStyle(.labCompact)
+                    .buttonStyle(.bordered)
+                    .buttonBorderShape(.capsule)
+                    .controlSize(.large)
                     .disabled(reason != nil)
                     .accessibilityLabel("导入 \(file.name)")
                     .accessibilityIdentifier("files.import.\(file.name)")
@@ -117,8 +114,7 @@ import FlipperCore
                 ReasonNote(reason)
             }
         }
-        .padding(.horizontal, 16)
-        .padding(.vertical, 12)
+        .padding(.vertical, 4)
     }
 
     /// Same conditions as before the redesign (busy, not ready, over 2 MiB), each with its reason.

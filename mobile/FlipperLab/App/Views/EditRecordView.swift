@@ -1,7 +1,7 @@
 import SwiftUI
 import FlipperCore
 
-/// 编辑记录: native Form for data entry, themed with the warm palette (§5.6).
+/// 编辑记录: plain system Form (UI_APPLE_DESIGN.md §4).
 /// Save, cancel and dismissal rules are unchanged from before the redesign.
 @MainActor struct EditRecordView: View {
     let model: AppModel
@@ -23,33 +23,27 @@ import FlipperCore
                     ReasonNote("名称不能为空，填写后才能保存。")
                 }
             } header: {
-                PixelLabel("中文名称", spaced: false)
+                SectionHeader("中文名称")
             }
-            .listRowBackground(LabColor.surface)
             Section {
                 TextField("标签，用逗号分隔", text: $tags)
                     .accessibilityIdentifier("edit.tags")
             } header: {
-                PixelLabel("标签", spaced: false)
+                SectionHeader("标签")
             }
-            .listRowBackground(LabColor.surface)
             Section {
                 TextEditor(text: $record.notes)
                     .frame(minHeight: 160)
                     .accessibilityLabel("备注")
                     .accessibilityIdentifier("edit.notes")
             } header: {
-                PixelLabel("备注", spaced: false)
+                SectionHeader("备注")
             } footer: {
                 Text("只修改手机资料库里的名称与说明，保留原始采集数据。")
-                    .labFootnote()
             }
-            .listRowBackground(LabColor.surface)
         }
-        .scrollContentBackground(.hidden)
-        .background(LabColor.bg.ignoresSafeArea())
-        .foregroundStyle(LabColor.ink)
-        .labNavigation("编辑记录")
+        .navigationTitle("编辑记录")
+        .navigationBarTitleDisplayMode(.inline)
         .toolbar {
             ToolbarItem(placement: .cancellationAction) { Button("取消") { dismiss() }.disabled(saving && model.busy) }
             ToolbarItem(placement: .confirmationAction) {

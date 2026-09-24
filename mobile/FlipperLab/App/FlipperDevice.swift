@@ -312,8 +312,13 @@ final class FlipperDevice: NSObject, CBCentralManagerDelegate, CBPeripheralDeleg
 
     private func updateBluetoothState() {
         guard central.state == .poweredOn else {
-            if central.state == .unauthorized { lastError = "请在 iPhone 设置中允许本应用使用蓝牙。" }
-            else { lastError = "请开启蓝牙；模拟器不能代替 iPhone 蓝牙真机测试。" }
+            switch central.state {
+            case .unauthorized: lastError = "请在 iPhone 设置中允许本应用使用蓝牙。"
+            case .poweredOff: lastError = "请在 iPhone 设置中开启蓝牙。"
+            case .unsupported: lastError = "当前设备不支持蓝牙连接。"
+            case .resetting: lastError = "蓝牙正在重置，请稍后重试。"
+            default: lastError = "正在检查蓝牙状态，请稍后重试。"
+            }
             close(error: RPCError.disconnected); return
         }
         if state == .unavailable { state = .idle; lastError = nil }
