@@ -24,6 +24,12 @@ final class AppModel {
     @ObservationIgnored private var running: Task<Void, Never>?
 
     init() {
+        #if DEBUG
+        if ProcessInfo.processInfo.arguments.contains("-ui-testing-fixtures") {
+            store = RecordStore(directory: FileManager.default.temporaryDirectory.appendingPathComponent("UITest-" + UUID().uuidString))
+            return
+        }
+        #endif
         let documents = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0]
         store = RecordStore(directory: documents.appendingPathComponent("Library", isDirectory: true))
     }
@@ -34,6 +40,11 @@ final class AppModel {
         do {
             guides = try FeatureGuide.load()
             records = try await store.load()
+            #if DEBUG
+            if ProcessInfo.processInfo.arguments.contains("-ui-testing-fixtures") {
+                records = PreviewRecords.samples
+            }
+            #endif
             libraryReady = true
         } catch { self.error = "资料库加载失败，原文件已保留：" + error.localizedDescription }
     }

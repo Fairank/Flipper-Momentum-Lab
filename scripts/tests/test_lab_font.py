@@ -94,7 +94,10 @@ def make_font(ascii_items, unicode_items, block=2, lasts=None):
     body += b"\0\0"
     chunks = [unicode_items[i : i + block] for i in range(0, len(unicode_items), block)]
     blocks = [
-        b"".join(struct.pack(">HB", code, 3 + len(payload)) + payload for code, payload in chunk)
+        b"".join(
+            struct.pack(">HB", code, 3 + len(payload)) + payload
+            for code, payload in chunk
+        )
         for chunk in chunks
     ]
     lasts = lasts or [chunk[-1][0] for chunk in chunks[:-1]] + [0xFFFF]
@@ -103,24 +106,37 @@ def make_font(ascii_items, unicode_items, block=2, lasts=None):
         table += struct.pack(">HH", step, last)
         step = len(data)
     count = (len(ascii_items) + len(unicode_items)) & 0xFF
-    header = bytes((count, 0)) + bytes(PARAMS) + bytes((12, 13, 0, 0xFE, 8, 0xFE, 10, 0xFF))
-    starts = (terminator if upper is None else upper, terminator if lower is None else lower)
+    header = (
+        bytes((count, 0)) + bytes(PARAMS) + bytes((12, 13, 0, 0xFE, 8, 0xFE, 10, 0xFF))
+    )
+    starts = (
+        terminator if upper is None else upper,
+        terminator if lower is None else lower,
+    )
     header += struct.pack(">HHH", *starts, len(body))
     return header + bytes(body) + bytes(table) + b"".join(blocks) + b"\0\0"
 
 
 def font_from(glyphs):
     items = sorted(glyphs.items())
-    return make_font([i for i in items if i[0] <= 0xFF], [i for i in items if i[0] > 0xFF])
+    return make_font(
+        [i for i in items if i[0] <= 0xFF], [i for i in items if i[0] > 0xFF]
+    )
 
 
-def c_source(data, symbol=SYMBOL, comment=("Fontname: test", "Copyright: (null)", "Glyphs: 1/1")):
+def c_source(
+    data, symbol=SYMBOL, comment=("Fontname: test", "Copyright: (null)", "Glyphs: 1/1")
+):
     """Write a font the way u8g2_fonts.c does: octal escapes, digits escaped
     after an escape, and the literal's own NUL as the last zero byte."""
     tokens, octal = [], False
     for byte in data[:-1]:
         char = chr(byte)
-        if " " <= char <= "~" and char not in '"\\?' and not (octal and char in "01234567"):
+        if (
+            " " <= char <= "~"
+            and char not in '"\\?'
+            and not (octal and char in "01234567")
+        ):
             tokens.append(char)
             octal = False
         else:
@@ -149,15 +165,30 @@ def sample_content():
             "indicator": "{index}/{count}",
         },
         "topics": [
-            {"id": "one", "menu": "中文", "title": "一", "launch": None, "pages": [["中文 OK", "g"]]},
-            {"id": "two", "menu": "二", "title": "三", "launch": "Demo", "pages": [["中"], ["文"]]},
+            {
+                "id": "one",
+                "menu": "中文",
+                "title": "一",
+                "launch": None,
+                "pages": [["中文 OK", "g"]],
+            },
+            {
+                "id": "two",
+                "menu": "二",
+                "title": "三",
+                "launch": "Demo",
+                "pages": [["中"], ["文"]],
+            },
         ],
     }
 
 
 def header_bytes(text):
     body = text[text.index("lab_font[] = {") :]
-    return bytes(int(value, 16) for value in re.findall(r"0x([0-9a-f]{2})", body[: body.index("};")]))
+    return bytes(
+        int(value, 16)
+        for value in re.findall(r"0x([0-9a-f]{2})", body[: body.index("};")])
+    )
 
 
 def set_word(data, offset, value):
@@ -191,8 +222,12 @@ class CLiteralTests(unittest.TestCase):
 
     def test_extracts_the_named_font_and_its_comment(self):
         data = font_from(synthetic_glyphs())
-        decoy = font_from({0x41: encode_glyph(BOX), 0x4E2D: encode_glyph(HAN, y=-1, advance=12)})
-        extracted, comment = gen.extract_font(c_source(decoy, SYMBOL + "_b") + c_source(data), SYMBOL)
+        decoy = font_from(
+            {0x41: encode_glyph(BOX), 0x4E2D: encode_glyph(HAN, y=-1, advance=12)}
+        )
+        extracted, comment = gen.extract_font(
+            c_source(decoy, SYMBOL + "_b") + c_source(data), SYMBOL
+        )
         self.assertEqual(extracted, data)
         self.assertIn("Copyright: (null)", comment)
         self.assertIn("(definition guarded by: #ifdef U8G2_USE_LARGE_FONTS)", comment)
@@ -247,8 +282,12 @@ class FormatTests(unittest.TestCase):
             "duplicate Unicode glyph": make_font(a, u + u[-1:]),
             "8-bit code in Unicode section": make_font(a, [(0x7F, u[0][1])] + u),
             "unsorted lookup table": make_font(a, u, lasts=[0x4E2D, 0x4E09, 0xFFFF]),
-            "block unreachable by lookup": make_font(a, u, lasts=[0x4E05, 0x4E8C, 0xFFFF]),
-            "lookup table without 0xFFFF": make_font(a, u, lasts=[0x4E09, 0x4E8C, 0x6587]),
+            "block unreachable by lookup": make_font(
+                a, u, lasts=[0x4E05, 0x4E8C, 0xFFFF]
+            ),
+            "lookup table without 0xFFFF": make_font(
+                a, u, lasts=[0x4E09, 0x4E8C, 0x6587]
+            ),
             "'A' start inside a record": set_word(self.data, 17, upper + 1),
             "Unicode start misplaced": set_word(self.data, 21, unicode_start + 1),
             "zero bit width": bytes(zero_bits),
@@ -262,7 +301,12 @@ class FormatTests(unittest.TestCase):
         rows = ["#..#.", ".##..", "....#", "#####"]
         glyph = gen.decode_glyph(PARAMS, encode_glyph(rows, x=1, y=-2, advance=7))
         self.assertEqual(glyph[:5], (5, 4, 1, -2, 7))
-        ink = {(col, row) for row, line in enumerate(rows) for col, c in enumerate(line) if c == "#"}
+        ink = {
+            (col, row)
+            for row, line in enumerate(rows)
+            for col, c in enumerate(line)
+            if c == "#"
+        }
         self.assertEqual(glyph.pixels, ink)
 
     def test_decoder_rejects_damaged_glyphs(self):
@@ -286,7 +330,9 @@ class SubsetTests(unittest.TestCase):
             self.assertEqual(gen.u8g2_lookup(data, code), self.font.payload(code))
         self.assertIsNone(gen.u8g2_lookup(data, ord("一")))
         self.assertEqual(data[0], len(self.codes) & 0xFF)
-        self.assertEqual(data[1:17], self.font.header[1:17])  # bit widths and metrics kept
+        self.assertEqual(
+            data[1:17], self.font.header[1:17]
+        )  # bit widths and metrics kept
         table = gen.HEADER_SIZE + gen.be16(data, 21)
         self.assertEqual(data[table : table + 4], b"\x00\x04\xff\xff")
         self.assertEqual(data[-2:], b"\0\0")
@@ -309,7 +355,9 @@ class ContentTests(unittest.TestCase):
 
     def measure(self, data):
         content = gen.load_content(data)
-        subset = gen.parse_font(gen.build_subset(self.font, gen.required_codes(content)))
+        subset = gen.parse_font(
+            gen.build_subset(self.font, gen.required_codes(content))
+        )
         gen.check_layout(content, gen.Metrics(subset))
         return content
 
@@ -330,7 +378,9 @@ class ContentTests(unittest.TestCase):
             "slash taller than a row": line("中/文"),
             "control character": line("中\n文"),
             "leading space": line(" 中"),
-            "title against indicator": lambda d: d["topics"][0].__setitem__("title", "中" * 9),
+            "title against indicator": lambda d: d["topics"][0].__setitem__(
+                "title", "中" * 9
+            ),
             "four lines": lambda d: d["topics"][0]["pages"][0].extend(["一", "二"]),
             "unknown key": lambda d: d["topics"][0].__setitem__("icon", "x"),
             "duplicate id": lambda d: d["topics"][1].__setitem__("id", "one"),
@@ -356,7 +406,9 @@ class CliTests(unittest.TestCase):
         self.dir = Path(self.tmp.name)
         self.source = self.dir / "fonts.c"
         self.content = self.dir / "content.json"
-        self.source.write_text(c_source(font_from(synthetic_glyphs())), encoding="utf-8")
+        self.source.write_text(
+            c_source(font_from(synthetic_glyphs())), encoding="utf-8"
+        )
         self.write_content(sample_content())
 
     def tearDown(self):
@@ -373,7 +425,9 @@ class CliTests(unittest.TestCase):
         ]  # fmt: skip
 
     def main(self, *argv):
-        with contextlib.redirect_stdout(io.StringIO()), contextlib.redirect_stderr(io.StringIO()):
+        with contextlib.redirect_stdout(io.StringIO()), contextlib.redirect_stderr(
+            io.StringIO()
+        ):
             return gen.main(list(argv))
 
     def test_check_detects_stale_and_missing_outputs(self):
@@ -391,7 +445,9 @@ class CliTests(unittest.TestCase):
         self.assertEqual(self.main(*self.args(self.dir, "--check")), 0)
 
         changed = sample_content()
-        changed["topics"][1]["pages"][1] = ["一"]  # edited JSON, headers not regenerated
+        changed["topics"][1]["pages"][1] = [
+            "一"
+        ]  # edited JSON, headers not regenerated
         self.write_content(changed)
         self.assertEqual(self.main(*self.args(self.dir, "--check")), 1)
         self.content.write_text("{", encoding="utf-8")
@@ -400,17 +456,25 @@ class CliTests(unittest.TestCase):
     def test_headers_describe_the_inputs(self):
         self.assertEqual(self.main(*self.args(self.dir)), 0)
         content_h = (self.dir / "lab_content.h").read_text(encoding="utf-8")
-        defines = dict(re.findall(r"#define (LAB_\w+) (\d+)", content_h))
+        defines = dict(re.findall(r"#define (LAB_\w+)\s+(\d+)", content_h))
         self.assertEqual(defines["LAB_TOPIC_COUNT"], "2")
         self.assertEqual(defines["LAB_ROWS"], "3")
-        self.assertEqual(defines["LAB_TEXT_MAX_BYTES"], str(len("中文 OK".encode("utf-8"))))
+        self.assertEqual(
+            defines["LAB_TEXT_MAX_BYTES"], str(len("中文 OK".encode("utf-8")))
+        )
         self.assertEqual(defines["LAB_RULE_BOTTOM"], "50")
         self.assertIn('.launch = "Demo",', content_h)
         self.assertIn(".launch = NULL,", content_h)
         self.assertIn('{"1/1", {"中文 OK", "g", ""}},', content_h)
 
         font = gen.parse_font(font_from(synthetic_glyphs()))
-        codes = set(range(0x20, 0x7F)) | {ord("中"), ord("文"), ord("一"), ord("二"), ord("三")}
+        codes = set(range(0x20, 0x7F)) | {
+            ord("中"),
+            ord("文"),
+            ord("一"),
+            ord("二"),
+            ord("三"),
+        }
         font_h = (self.dir / "lab_font.h").read_text(encoding="utf-8")
         self.assertEqual(header_bytes(font_h), gen.build_subset(font, codes))
         self.assertIn(f"#define LAB_FONT_GLYPHS {len(codes)}", font_h)
@@ -426,7 +490,12 @@ class CliTests(unittest.TestCase):
                 capture_output=True,
                 env={**os.environ, "PYTHONHASHSEED": seed, "PYTHONIOENCODING": "utf-8"},
             )
-            outputs.add(((out / "lab_font.h").read_bytes(), (out / "lab_content.h").read_bytes()))
+            outputs.add(
+                (
+                    (out / "lab_font.h").read_bytes(),
+                    (out / "lab_content.h").read_bytes(),
+                )
+            )
         self.assertEqual(len(outputs), 1)
 
 
@@ -444,7 +513,9 @@ class RealFontTests(unittest.TestCase):
         self.assertEqual(tuple(self.font.params), (3, 2, 4, 4, 5, 5, 5))
         self.assertIn("Copyright: (null)", self.comment)
         self.assertTrue(any("wenquanyi bitmap song" in line for line in self.comment))
-        self.assertIn("(definition guarded by: #ifdef U8G2_USE_LARGE_FONTS)", self.comment)
+        self.assertIn(
+            "(definition guarded by: #ifdef U8G2_USE_LARGE_FONTS)", self.comment
+        )
 
     def test_known_glyphs_decode_as_drawn(self):
         dash = self.metrics.glyph(ord("-"))
@@ -490,7 +561,9 @@ class GeneratedHeaderTests(unittest.TestCase):
         wanted = set(range(0x20, 0x7F)) | {ord(char) for char in text}
         self.assertEqual(set(subset.ascii) | set(subset.unicode), wanted)
         for code in wanted:
-            self.assertEqual(subset.payload(code), source.payload(code), gen.describe(code))
+            self.assertEqual(
+                subset.payload(code), source.payload(code), gen.describe(code)
+            )
             self.assertEqual(gen.u8g2_lookup(data, code), source.payload(code))
         self.assertLess(len(data), 32 * 1024)
         self.assertIn(f"#define LAB_FONT_GLYPHS {len(wanted)}", font_h)
@@ -498,7 +571,7 @@ class GeneratedHeaderTests(unittest.TestCase):
 
     def test_content_header_matches_json(self):
         content_h, content = self.headers[1], real_content()
-        defines = dict(re.findall(r"#define (LAB_\w+) (\d+)", content_h))
+        defines = dict(re.findall(r"#define (LAB_\w+)\s+(\d+)", content_h))
         self.assertEqual(int(defines["LAB_TOPIC_COUNT"]), len(content.topics))
         for topic in content.topics:
             self.assertIn(f"static const LabPage lab_pages_{topic.id}[]", content_h)
@@ -507,25 +580,41 @@ class GeneratedHeaderTests(unittest.TestCase):
             self.assertIn(f".launch = {launch},", content_h)
 
     def test_generation_is_repeatable(self):
-        again = gen.generate(gen.DEFAULT_SOURCE, gen.DEFAULT_SYMBOL, gen.DEFAULT_CONTENT)
+        again = gen.generate(
+            gen.DEFAULT_SOURCE, gen.DEFAULT_SYMBOL, gen.DEFAULT_CONTENT
+        )
         self.assertEqual(again, self.headers)
 
     def test_committed_headers_are_current(self):
         stderr = io.StringIO()
-        with contextlib.redirect_stdout(io.StringIO()), contextlib.redirect_stderr(stderr):
+        with contextlib.redirect_stdout(io.StringIO()), contextlib.redirect_stderr(
+            stderr
+        ):
             status = gen.main(["--check"])
-        self.assertEqual(status, 0, "run python scripts/generate_lab_font.py\n" + stderr.getvalue())
+        self.assertEqual(
+            status, 0, "run python scripts/generate_lab_font.py\n" + stderr.getvalue()
+        )
 
 
 class AppSourceTests(unittest.TestCase):
     def test_manifest(self):
         tree = ast.parse((LAB / "application.fam").read_text(encoding="utf-8"))
-        (call,) = [n for n in ast.walk(tree) if isinstance(n, ast.Call) and getattr(n.func, "id", "") == "App"]
+        (call,) = [
+            n
+            for n in ast.walk(tree)
+            if isinstance(n, ast.Call) and getattr(n.func, "id", "") == "App"
+        ]
         args = {kw.arg: kw.value for kw in call.keywords}
         self.assertEqual(args["apptype"].attr, "MENUEXTERNAL")
         stack = ast.fix_missing_locations(ast.Expression(body=args["stack_size"]))
-        self.assertEqual(eval(compile(stack, "application.fam", "eval"), {"__builtins__": {}}), 3072)
-        fields = {key: ast.literal_eval(args[key]) for key in args if key not in ("apptype", "stack_size")}
+        self.assertEqual(
+            eval(compile(stack, "application.fam", "eval"), {"__builtins__": {}}), 3072
+        )
+        fields = {
+            key: ast.literal_eval(args[key])
+            for key in args
+            if key not in ("apptype", "stack_size")
+        }
         expected = {
             "appid": "lab", "name": "Flipper Lab", "entry_point": "lab_app",
             "requires": ["gui", "loader"], "icon": "A_Infrared_14", "order": 5,
@@ -536,19 +625,39 @@ class AppSourceTests(unittest.TestCase):
 
     def test_launch_targets_are_existing_apps(self):
         names = gen.known_launch_names(gen.DEFAULT_APPS_ROOT)
-        wanted = {"Bluetooth", "Infrared", "Sub-GHz", "NFC", "125 kHz RFID", "iButton", "GPIO"}
+        wanted = {
+            "Bluetooth",
+            "Infrared",
+            "Sub-GHz",
+            "NFC",
+            "125 kHz RFID",
+            "iButton",
+            "GPIO",
+        }
         self.assertTrue(wanted <= names, wanted - names)
         content = real_content()
         gen.check_launch_targets(content, names)
-        self.assertEqual({topic.launch for topic in content.topics if topic.launch}, wanted)
+        self.assertEqual(
+            {topic.launch for topic in content.topics if topic.launch}, wanted
+        )
 
     def test_app_source_uses_generated_constants_only(self):
         source = (LAB / "lab_app.c").read_text(encoding="utf-8")
-        generated = set(re.findall(r"#define (LAB_\w+)", gen.render_content_header(real_content())))
+        generated = set(
+            re.findall(r"#define (LAB_\w+)", gen.render_content_header(real_content()))
+        )
         generated |= {"LAB_FONT_GLYPHS"} | set(re.findall(r"#define (LAB_\w+)", source))
-        self.assertEqual(set(re.findall(r"\bLAB_[A-Z0-9_]+\b", source)) - generated, set())
+        self.assertEqual(
+            set(re.findall(r"\bLAB_[A-Z0-9_]+\b", source)) - generated, set()
+        )
         includes = set(re.findall(r'#include [<"]([^>"]+)[>"]', source))
-        allowed = {"furi.h", "gui/gui.h", "gui/elements.h", "input/input.h", "loader/loader.h"}
+        allowed = {
+            "furi.h",
+            "gui/gui.h",
+            "gui/elements.h",
+            "input/input.h",
+            "loader/loader.h",
+        }
         self.assertEqual(includes, allowed | {"lab_content.h", "lab_font.h"})
         self.assertNotIn("furi_hal", source)  # no direct hardware access
         self.assertIn("furi_message_queue_put(app->queue, event, 0)", source)

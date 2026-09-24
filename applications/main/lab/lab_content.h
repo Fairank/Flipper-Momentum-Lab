@@ -7,21 +7,21 @@
 #include <stddef.h>
 #include <stdint.h>
 
-#define LAB_TEXT_X 2
-#define LAB_TEXT_MAX_W 120
-#define LAB_LIST_W 124
+#define LAB_TEXT_X          2
+#define LAB_TEXT_MAX_W      120
+#define LAB_LIST_W          124
 #define LAB_INDICATOR_RIGHT 126
-#define LAB_INDICATOR_GAP 4
-#define LAB_TITLE_Y 11
-#define LAB_RULE_TOP 13
-#define LAB_ROWS_TOP 14
-#define LAB_ROW_H 12
-#define LAB_ROW_BASELINE 10
-#define LAB_ROWS 3
-#define LAB_RULE_BOTTOM 50
-#define LAB_FOOTER_Y 62
-#define LAB_TEXT_MAX_BYTES 30
-#define LAB_TOPIC_COUNT 10
+#define LAB_INDICATOR_GAP   4
+#define LAB_TITLE_Y         11
+#define LAB_RULE_TOP        13
+#define LAB_ROWS_TOP        14
+#define LAB_ROW_H           12
+#define LAB_ROW_BASELINE    10
+#define LAB_ROWS            3
+#define LAB_RULE_BOTTOM     50
+#define LAB_FOOTER_Y        62
+#define LAB_TEXT_MAX_BYTES  30
+#define LAB_TOPIC_COUNT     10
 
 typedef struct {
     const char* indicator;

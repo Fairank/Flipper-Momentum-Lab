@@ -159,9 +159,7 @@ def native_test(source):
         )
         if build.returncode != 0:
             raise AssertionError(f"Native regression failed to build:\n{build.stderr}")
-        result = subprocess.run(
-            [str(exe)], capture_output=True, text=True, timeout=120
-        )
+        result = subprocess.run([str(exe)], capture_output=True, text=True, timeout=120)
         if result.returncode != 0:
             raise AssertionError(
                 f"Native regression returned {result.returncode}:\n"

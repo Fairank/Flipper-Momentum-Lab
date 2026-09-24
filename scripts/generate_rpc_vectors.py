@@ -39,54 +39,78 @@ def generate(protoc):
             message = pb.Main(command_id=3)
             message.system_protobuf_version_response.major = 0
             message.system_protobuf_version_response.minor = 25
-            case("Version", message, [
-                "XCTAssertEqual(frame.tag, 40)",
-                "XCTAssertEqual(try PBMessage(frame.payload).uint(2), 25)",
-            ])
-            message = pb.Main(command_id=0xffffffff, has_next=True)
+            case(
+                "Version",
+                message,
+                [
+                    "XCTAssertEqual(frame.tag, 40)",
+                    "XCTAssertEqual(try PBMessage(frame.payload).uint(2), 25)",
+                ],
+            )
+            message = pb.Main(command_id=0xFFFFFFFF, has_next=True)
             entry = message.storage_list_response.file.add()
             entry.type = 1
             entry.name = "infrared"
             entry = message.storage_list_response.file.add()
             entry.name = "remote.ir"
             entry.size = 512
-            case("Directory", message, [
-                "XCTAssertEqual(frame.commandID, UInt32.max)",
-                "XCTAssertTrue(frame.hasNext)",
-                "XCTAssertEqual(frame.tag, 8)",
-                "let files = try PBMessage(frame.payload).blobs(1).map { try DeviceFile(parent: \"/ext\", message: PBMessage($0)) }",
-                "XCTAssertEqual(files.map(\\.name), [\"infrared\", \"remote.ir\"])",
-                "XCTAssertTrue(files[0].isDirectory)",
-                "XCTAssertFalse(files[1].isDirectory)",
-                "XCTAssertEqual(files[1].size, 512)",
-            ])
+            case(
+                "Directory",
+                message,
+                [
+                    "XCTAssertEqual(frame.commandID, UInt32.max)",
+                    "XCTAssertTrue(frame.hasNext)",
+                    "XCTAssertEqual(frame.tag, 8)",
+                    'let files = try PBMessage(frame.payload).blobs(1).map { try DeviceFile(parent: "/ext", message: PBMessage($0)) }',
+                    'XCTAssertEqual(files.map(\\.name), ["infrared", "remote.ir"])',
+                    "XCTAssertTrue(files[0].isDirectory)",
+                    "XCTAssertFalse(files[1].isDirectory)",
+                    "XCTAssertEqual(files[1].size, 512)",
+                ],
+            )
             message = pb.Main(command_id=9, command_status=6)
             message.empty.SetInParent()
-            case("ExistingDirectory", message, [
-                "XCTAssertEqual(frame.status, 6)",
-                "XCTAssertEqual(frame.tag, 4)",
-                "XCTAssertTrue(frame.payload.isEmpty)",
-            ])
+            case(
+                "ExistingDirectory",
+                message,
+                [
+                    "XCTAssertEqual(frame.status, 6)",
+                    "XCTAssertEqual(frame.tag, 4)",
+                    "XCTAssertTrue(frame.payload.isEmpty)",
+                ],
+            )
             message = pb.Main(command_id=10)
             message.storage_read_response.file.data = bytes([0, 10, 128, 255])
-            case("ReadBinary", message, [
-                "XCTAssertEqual(frame.tag, 10)",
-                "let file = try XCTUnwrap(PBMessage(frame.payload).bytes(1))",
-                "XCTAssertEqual(try PBMessage(file).bytes(4), Data([0, 10, 128, 255]))",
-            ])
+            case(
+                "ReadBinary",
+                message,
+                [
+                    "XCTAssertEqual(frame.tag, 10)",
+                    "let file = try XCTUnwrap(PBMessage(frame.payload).bytes(1))",
+                    "XCTAssertEqual(try PBMessage(file).bytes(4), Data([0, 10, 128, 255]))",
+                ],
+            )
             message = pb.Main()
             message.app_state_response.state = 1
-            case("UnsolicitedApplicationState", message, [
-                "XCTAssertEqual(frame.commandID, 0)",
-                "XCTAssertEqual(frame.tag, 58)",
-                "XCTAssertEqual(try PBMessage(frame.payload).uint(1), 1)",
-            ])
+            case(
+                "UnsolicitedApplicationState",
+                message,
+                [
+                    "XCTAssertEqual(frame.commandID, 0)",
+                    "XCTAssertEqual(frame.tag, 58)",
+                    "XCTAssertEqual(try PBMessage(frame.payload).uint(1), 1)",
+                ],
+            )
             message = pb.Main(command_id=11)
             message.app_button_press_release_request.index = 0
-            case("FirstInfraredButtonUsesProtoDefaultIndex", message, [
-                "XCTAssertEqual(frame.tag, 75)",
-                "XCTAssertEqual(try PBMessage(frame.payload).uint(2), 0)",
-            ])
+            case(
+                "FirstInfraredButtonUsesProtoDefaultIndex",
+                message,
+                [
+                    "XCTAssertEqual(frame.tag, 75)",
+                    "XCTAssertEqual(try PBMessage(frame.payload).uint(2), 0)",
+                ],
+            )
         finally:
             sys.path.pop(0)
     lines = [

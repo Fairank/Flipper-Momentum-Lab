@@ -474,7 +474,13 @@ LAYOUT_KEYS = (
     "title_baseline", "rows_top", "row_height", "row_baseline", "rows",
     "footer_baseline", "max_wide_chars",
 )  # fmt: skip
-UI_KEYS = ("menu_title", "menu_footer", "detail_footer", "detail_footer_launch", "indicator")
+UI_KEYS = (
+    "menu_title",
+    "menu_footer",
+    "detail_footer",
+    "detail_footer_launch",
+    "indicator",
+)
 TOPIC_KEYS = ("id", "menu", "title", "launch", "pages")
 
 
@@ -509,7 +515,9 @@ class Content(NamedTuple):
                 yield from page.lines
 
 
-def _object(value, where: str, keys: Tuple[str, ...], optional: Tuple[str, ...] = ()) -> dict:
+def _object(
+    value, where: str, keys: Tuple[str, ...], optional: Tuple[str, ...] = ()
+) -> dict:
     if not isinstance(value, dict):
         raise ContentError(f"{where} must be an object")
     unknown = sorted(set(value) - set(keys) - set(optional))
@@ -526,7 +534,12 @@ def _text(value, where: str, max_wide: int) -> str:
         raise ContentError(f"{where} has leading or trailing whitespace")
     for char in value:
         code = ord(char)
-        if code < 0x20 or 0x7F <= code < 0xA0 or 0xD800 <= code < 0xE000 or code > 0xFFFD:
+        if (
+            code < 0x20
+            or 0x7F <= code < 0xA0
+            or 0xD800 <= code < 0xE000
+            or code > 0xFFFD
+        ):
             raise ContentError(f"{where} contains unsupported {describe(code)}")
     wide = sum(1 for char in value if ord(char) > 0x7F)
     if wide > max_wide:
@@ -543,14 +556,20 @@ def _indicator(template: str, index: int, count: int) -> str:
 
 def load_content(raw) -> Content:
     """Validate the JSON structure and expand indicators and footers."""
-    raw = _object(raw, "content", ("schema_version", "layout", "ui", "topics"), ("notes",))
+    raw = _object(
+        raw, "content", ("schema_version", "layout", "ui", "topics"), ("notes",)
+    )
     if raw["schema_version"] != 1 or isinstance(raw["schema_version"], bool):
         raise ContentError("schema_version must be 1")
     if not isinstance(raw.get("notes", ""), str):
         raise ContentError("notes must be a string")
     layout = _object(raw["layout"], "layout", LAYOUT_KEYS)
     for key, value in layout.items():
-        if not isinstance(value, int) or isinstance(value, bool) or not 0 < value <= SCREEN_W:
+        if (
+            not isinstance(value, int)
+            or isinstance(value, bool)
+            or not 0 < value <= SCREEN_W
+        ):
             raise ContentError(f"layout.{key} must be an integer in 1..{SCREEN_W}")
     wide = layout["max_wide_chars"]
     ui = _object(raw["ui"], "ui", UI_KEYS)
@@ -564,7 +583,9 @@ def load_content(raw) -> Content:
         where = f"topics[{number - 1}]"
         item = _object(item, where, TOPIC_KEYS)
         topic_id = item["id"]
-        if not isinstance(topic_id, str) or not re.fullmatch(r"[a-z][a-z0-9_]*", topic_id):
+        if not isinstance(topic_id, str) or not re.fullmatch(
+            r"[a-z][a-z0-9_]*", topic_id
+        ):
             raise ContentError(f"{where}.id must be a lowercase C identifier")
         if topic_id in ids:
             raise ContentError(f"duplicate topic id {topic_id!r}")
@@ -580,10 +601,14 @@ def load_content(raw) -> Content:
             page_where = f"{where}.pages[{page_number - 1}]"
             if not isinstance(lines, list) or not 1 <= len(lines) <= layout["rows"]:
                 raise ContentError(f"{page_where} must hold 1..{layout['rows']} lines")
-            lines = [_text(line, f"{page_where}[{i}]", wide) for i, line in enumerate(lines)]
+            lines = [
+                _text(line, f"{page_where}[{i}]", wide) for i, line in enumerate(lines)
+            ]
             lines += [""] * (layout["rows"] - len(lines))
             indicator = _indicator(text["indicator"], page_number, len(pages_raw))
-            pages.append(Page(_text(indicator, f"{page_where} indicator", wide), tuple(lines)))
+            pages.append(
+                Page(_text(indicator, f"{page_where} indicator", wide), tuple(lines))
+            )
         footer = text["detail_footer_launch" if launch else "detail_footer"]
         indicator = _indicator(text["indicator"], number, len(topics_raw))
         topics.append(
@@ -607,7 +632,9 @@ def known_launch_names(apps_root: Path) -> Set[str]:
         for manifest in sorted((apps_root / group).glob("*/application.fam")):
             tree = ast.parse(manifest.read_text(encoding="utf-8"), str(manifest))
             for node in ast.walk(tree):
-                if not (isinstance(node, ast.Call) and getattr(node.func, "id", "") == "App"):
+                if not (
+                    isinstance(node, ast.Call) and getattr(node.func, "id", "") == "App"
+                ):
                     continue
                 args = {kw.arg: kw.value for kw in node.keywords}
                 apptype, name = args.get("apptype"), args.get("name")
@@ -662,7 +689,9 @@ def check_layout(content: Content, metrics: Metrics):
         left, right, above, below = metrics.ink(text)
         top, bottom, baseline = bands[band]
         if width > limit or right > limit or x + left < 0:
-            raise ContentError(f"{where} {text!r} is {max(width, right)} px, limit {limit}")
+            raise ContentError(
+                f"{where} {text!r} is {max(width, right)} px, limit {limit}"
+            )
         if baseline - above < top or baseline + below - 1 > bottom:
             raise ContentError(f"{where} {text!r} leaves its {band} band vertically")
 
@@ -679,14 +708,18 @@ def check_layout(content: Content, metrics: Metrics):
         where = f"topic {topic.id!r}"
         fit(topic.label, "row", max_width, f"{where} menu label")
         fit(topic.footer, "footer", max_width, f"{where} footer")
-        fit_title(topic.title, [page.indicator for page in topic.pages], f"{where} title")
+        fit_title(
+            topic.title, [page.indicator for page in topic.pages], f"{where} title"
+        )
         for number, page in enumerate(topic.pages, 1):
             for line in page.lines:
                 fit(line, "row", max_width, f"{where} page {number}")
 
 
 def required_codes(content: Content) -> Set[int]:
-    return set(PRINTABLE_ASCII) | {ord(char) for text in content.strings() for char in text}
+    return set(PRINTABLE_ASCII) | {
+        ord(char) for text in content.strings() for char in text
+    }
 
 
 def verify_subset(source: Font, subset_data: bytes, codes: Set[int]) -> Font:
@@ -716,8 +749,8 @@ def c_string(text: str) -> str:
 def render_font_header(data: bytes, subset: Font, comment: List[str], source: str,
                        symbol: str, source_data: bytes) -> str:  # fmt: skip
     rows = [
-        "    " + ", ".join(f"0x{byte:02x}" for byte in data[i : i + 12]) + ","
-        for i in range(0, len(data), 12)
+        "    " + ", ".join(f"0x{byte:02x}" for byte in data[i : i + 16]) + ","
+        for i in range(0, len(data), 16)
     ]
     upstream = "\n".join(f" *   {line}" for line in comment)
     return f"""/* {GENERATED_NOTE}
@@ -730,6 +763,8 @@ def render_font_header(data: bytes, subset: Font, comment: List[str], source: st
  * Glyph payloads are copied unchanged. Only the header offsets, glyph count and
  * the single-block Unicode lookup table are rebuilt. Origin and licence notes:
  * applications/main/lab/README.md
+ * Copyright (C) 2004-2010 WenQuanYi Project Board of Trustees and Qianqian Fang.
+ * GPL v2 with font embedding exception; see FONT_LICENSE.md beside this file.
  *
  * Subset: {len(subset.ascii)} 8-bit + {len(subset.unicode)} Unicode glyphs, {len(data)} bytes.
  */
@@ -777,7 +812,8 @@ def render_content_header(content: Content) -> str:
         "#include <stdint.h>",
         "",
     ]
-    out += [f"#define {name} {value}" for name, value in defines.items()]
+    width = max(map(len, defines))
+    out += [f"#define {name:<{width}} {value}" for name, value in defines.items()]
     out += [
         "",
         "typedef struct {",
@@ -839,7 +875,9 @@ def generate(source: Path, symbol: str, content_path: Path,
     data = build_subset(font, codes)
     subset = verify_subset(font, data, codes)
     check_layout(content, Metrics(subset))
-    source_name = _shown(source) if source.resolve().is_relative_to(ROOT) else source.name
+    source_name = (
+        _shown(source) if source.resolve().is_relative_to(ROOT) else source.name
+    )
     return (
         render_font_header(data, subset, comment, source_name, symbol, source_data),
         render_content_header(content),
@@ -848,7 +886,9 @@ def generate(source: Path, symbol: str, content_path: Path,
 
 def main(argv: Optional[List[str]] = None) -> int:
     parser = argparse.ArgumentParser(description=__doc__.splitlines()[0])
-    parser.add_argument("--check", action="store_true", help="fail if outputs are stale")
+    parser.add_argument(
+        "--check", action="store_true", help="fail if outputs are stale"
+    )
     parser.add_argument("--source", type=Path, default=DEFAULT_SOURCE)
     parser.add_argument("--symbol", default=DEFAULT_SYMBOL)
     parser.add_argument("--content", type=Path, default=DEFAULT_CONTENT)
@@ -860,7 +900,9 @@ def main(argv: Optional[List[str]] = None) -> int:
         default=DEFAULT_APPS_ROOT,
         help="applications/ directory used to validate launch names",
     )
-    parser.add_argument("--no-app-check", action="store_true", help="skip launch-name check")
+    parser.add_argument(
+        "--no-app-check", action="store_true", help="skip launch-name check"
+    )
     args = parser.parse_args(argv)
 
     try:
@@ -881,7 +923,9 @@ def main(argv: Optional[List[str]] = None) -> int:
             path.write_bytes(data)
             print(f"wrote {_shown(path)}")
     for path in stale:
-        print(f"stale: {_shown(path)} (run scripts/generate_lab_font.py)", file=sys.stderr)
+        print(
+            f"stale: {_shown(path)} (run scripts/generate_lab_font.py)", file=sys.stderr
+        )
     return 1 if stale else 0
 
 

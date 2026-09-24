@@ -57,11 +57,8 @@ static void lab_draw_text(Canvas* canvas, int32_t x, int32_t y, uint16_t max_w, 
     canvas_draw_str(canvas, x, y, buf);
 }
 
-static void lab_draw_chrome(
-    Canvas* canvas,
-    const char* title,
-    const char* indicator,
-    const char* footer) {
+static void
+    lab_draw_chrome(Canvas* canvas, const char* title, const char* indicator, const char* footer) {
     uint16_t indicator_w = canvas_string_width(canvas, indicator);
     uint16_t title_w = LAB_INDICATOR_RIGHT - LAB_INDICATOR_GAP - LAB_TEXT_X;
     if(indicator_w < title_w) {

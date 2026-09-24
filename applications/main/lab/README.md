@@ -68,15 +68,11 @@ verbatim, identifies the source as
 (WenQuanYi Bitmap Song, 12 px) and gives `Copyright: (null)`: no copyright
 string was recorded when u8g2 converted the font.
 
-No file in this repository states the licence of the WenQuanYi glyph data. The
-u8g2 C sources in `lib/u8g2` carry the u8g2 authors' BSD-2-Clause notice, which
-covers that library code, and the repository `LICENSE` (GPL-3.0) covers the
-firmware. Neither names a licence for this font, and upstream u8g2's per-font
-licence notes are not vendored here. This README therefore does not claim a
-licence for the glyphs. Before distributing a firmware image or `.fap` that
-contains `lab_font.h` beyond personal use, check the licence published by the
-WenQuanYi project and u8g2's font licence notes; that check was not done here
-(no network access).
+The upstream font documentation and original BDF header were checked on
+2026-09-24: copyright belongs to WenQuanYi Project Board of Trustees and
+Qianqian Fang (2004–2010), under GPL v2 with the font embedding exception.
+See [FONT_LICENSE.md](FONT_LICENSE.md) for the source links and attribution.
+The converted C comment's `(null)` does not remove that attribution.
 
 ## Limits
 

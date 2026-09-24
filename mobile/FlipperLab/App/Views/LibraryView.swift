@@ -152,7 +152,7 @@ struct RawRecordDocument: FileDocument {
                 Chart(Array(report.pulseDurations.enumerated()), id: \.offset) { index, duration in
                     BarMark(x: .value("顺序", index + 1), y: .value("微秒", duration))
                 }.frame(height: 180).accessibilityLabel("脉冲时序图，共 \(report.pulseDurations.count) 个采样间隔，单位微秒")
-                Text("横轴为记录顺序，纵轴为持续时间（微秒）。最多显示前 512 个间隔；它不是载波波形。")
+                Text("横轴为记录顺序，纵轴为持续时间（微秒）。最多显示 512 个点；数据较多时按区间取代表值，统计仍覆盖全部数据。这是包络时序。")
                     .font(.caption).foregroundStyle(.secondary)
             }
         }

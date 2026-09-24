@@ -104,6 +104,19 @@ jobs:
             -resultBundlePath "$RUNNER_TEMP/FlipperLab.xcresult" \
             CODE_SIGNING_ALLOWED=NO
 
+      - name: "Export simulator screenshots"
+        if: ${{ !cancelled() && steps.build.outcome == 'success' }}
+        run: xcrun xcresulttool export attachments --path "$RUNNER_TEMP/FlipperLab.xcresult" --output-path "$RUNNER_TEMP/screenshots"
+
+      - name: "Upload simulator screenshots"
+        if: ${{ !cancelled() && steps.build.outcome == 'success' }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: iphone-screenshots-${{ github.run_attempt }}
+          path: ${{ runner.temp }}/screenshots
+          retention-days: 14
+          if-no-files-found: warn
+
       - name: "Upload simulator test evidence"
         if: ${{ !cancelled() && steps.build.outcome == 'success' }}
         uses: actions/upload-artifact@v4

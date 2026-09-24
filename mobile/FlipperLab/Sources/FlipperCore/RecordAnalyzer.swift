@@ -82,7 +82,7 @@ extension RecordAnalysisError: LocalizedError {
 
 /// Flipper 记录文本的类型识别与离线分析（仅依赖 Foundation）。
 ///
-/// 解析在 UTF-8 字节上进行：输入不超过 2 MiB，所有循环随输入长度线性有界；
+/// 解析在 UTF-8 字节上进行：输入不超过 2 MiB，统计排序至多 O(n log n)；
 /// 数值溢出、NaN、无穷大都以错误返回，不会触发运行时陷阱。
 /// 报告只描述文件内容与时长统计，不做协议识别、解码或安全判断。
 public enum RecordAnalyzer {

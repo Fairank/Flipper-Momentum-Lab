@@ -39,8 +39,9 @@ private struct RecordComparison: Sendable {
         let left = try RecordAnalyzer.analyze(a.rawText, kind: a.kind)
         let right = try RecordAnalyzer.analyze(b.rawText, kind: b.kind)
         // Positional comparison is deliberately bounded; it is not a protocol decoder.
-        let aLines = a.rawText.components(separatedBy: .newlines)
-        let bLines = b.rawText.components(separatedBy: .newlines)
+        // Stop splitting once the display limit is reached; retain bounded substrings.
+        let aLines = a.rawText.split(maxSplits: 5_000, omittingEmptySubsequences: false, whereSeparator: { $0.isNewline })
+        let bLines = b.rawText.split(maxSplits: 5_000, omittingEmptySubsequences: false, whereSeparator: { $0.isNewline })
         let count = min(max(aLines.count, bLines.count), 5_000)
         var differences: [String] = []
         var limited = max(aLines.count, bLines.count) > count
