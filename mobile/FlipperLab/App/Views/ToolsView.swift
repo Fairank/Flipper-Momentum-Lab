@@ -1,114 +1,154 @@
 import SwiftUI
 import FlipperCore
 
+/// 工具: three large tool cards, a short guide index and the expansion-board note (§5.3).
 @MainActor struct ToolsView: View {
     let model: AppModel
-    var body: some View {
-        List {
-            Section {
-                Label("让手机处理记录，让 Flipper 连接硬件", systemImage: "iphone.and.arrow.forward").font(.headline)
-                Text("导入真实采集文件后，在手机本地完成统计、图表、搜索和比较。分析过程不上传云端。")
-                    .foregroundStyle(.secondary)
-            }
-            Section("记录工具") {
-                NavigationLink { LibraryView(model: model) } label: { Label("分析与整理记录", systemImage: "waveform.path") }
-                NavigationLink { CompareRecordsView(model: model) } label: { Label("比较两次记录", systemImage: "rectangle.split.2x1") }
-                NavigationLink { DeviceFilesView(model: model, path: "/ext") } label: { Label("从 Flipper 导入", systemImage: "arrow.down.doc") }
-                    .disabled(!model.device.ready || model.busy)
-            }
-            Section("功能介绍") {
-                ForEach(model.guides.prefix(6)) { guide in
-                    NavigationLink(guide.title) { GuideDetail(guide: guide) }
-                }
-            }
-            Section("扩展板") {
-                Label("等待确认板卡型号", systemImage: "puzzlepiece.extension")
-                Text("ESP32 和“WiFi 终结者”需要精确型号、接线与固件版本后才能适配。当前可以导入已保存的文本日志，尚未实现实时串口采集。")
-                    .font(.footnote).foregroundStyle(.secondary)
-            }
-        }.navigationTitle("工具")
-    }
-}
 
-private struct RecordComparison: Sendable {
-    let left: AnalysisReport
-    let right: AnalysisReport
-    let differences: [String]
-    let limited: Bool
-    static func make(_ a: CaptureRecord, _ b: CaptureRecord) throws -> Self {
-        let left = try RecordAnalyzer.analyze(a.rawText, kind: a.kind)
-        let right = try RecordAnalyzer.analyze(b.rawText, kind: b.kind)
-        // Positional comparison is deliberately bounded; it is not a protocol decoder.
-        // Stop splitting once the display limit is reached; retain bounded substrings.
-        let aLines = a.rawText.split(maxSplits: 5_000, omittingEmptySubsequences: false, whereSeparator: { $0.isNewline })
-        let bLines = b.rawText.split(maxSplits: 5_000, omittingEmptySubsequences: false, whereSeparator: { $0.isNewline })
-        let count = min(max(aLines.count, bLines.count), 5_000)
-        var differences: [String] = []
-        var limited = max(aLines.count, bLines.count) > count
-        for index in 0..<count {
-            let x = index < aLines.count ? aLines[index] : nil
-            let y = index < bLines.count ? bLines[index] : nil
-            if x != y {
-                if differences.count == 200 { limited = true; break }
-                differences.append("第 \(index + 1) 行\nA: \(String((x ?? "[无此行]").prefix(240)))\nB: \(String((y ?? "[无此行]").prefix(240)))")
-                if (x?.count ?? 0) > 240 || (y?.count ?? 0) > 240 { limited = true }
+    var body: some View {
+        LabPage {
+            intro
+            PixelLabel("记录工具")
+            analyzeCard
+            compareCard
+            importCard
+            guideSection
+            expansionSection
+        }
+        .labNavigation("工具")
+    }
+
+    private var intro: some View {
+        LabPanel(.muted) {
+            HStack(alignment: .top, spacing: 12) {
+                SymbolTile(systemName: "iphone.and.arrow.forward", size: 40, fill: LabColor.surface)
+                VStack(alignment: .leading, spacing: 6) {
+                    Text("让手机处理记录，让 Flipper 连接硬件")
+                        .font(.headline)
+                        .foregroundStyle(LabColor.ink)
+                    Text("导入真实采集文件后，在手机本地完成统计、图表、搜索和比较。分析过程不上传云端。")
+                        .font(.subheadline)
+                        .foregroundStyle(LabColor.inkSecondary)
+                }
             }
         }
-        return Self(left: left, right: right, differences: differences, limited: limited)
     }
-}
 
-@MainActor struct CompareRecordsView: View {
-    let model: AppModel
-    @State private var first: UUID?
-    @State private var second: UUID?
-    @State private var result: RecordComparison?
-    @State private var failure: String?
-    @State private var comparing = false
-    private var selection: String { "\(first?.uuidString ?? ""):\(second?.uuidString ?? "")" }
-    var body: some View {
-        List {
-            Section("选择记录") {
-                picker("记录 A", selection: $first)
-                picker("记录 B", selection: $second)
-                Text("同类型记录更容易比较。文本按相同行号对比；插入一行会影响后续行的对应关系。")
-                    .font(.footnote).foregroundStyle(.secondary)
-            }
-            if comparing { ProgressView("正在比较…") }
-            if let failure { Text(failure).foregroundStyle(.red) }
-            if let result {
-                Section("记录 A 的统计") {
-                    ForEach(Array(result.left.facts.enumerated()), id: \.offset) { _, fact in Text("\(fact.title)：\(fact.value)") }
-                }
-                Section("记录 B 的统计") {
-                    ForEach(Array(result.right.facts.enumerated()), id: \.offset) { _, fact in Text("\(fact.title)：\(fact.value)") }
-                }
-                Section("按行对比") {
-                    if result.differences.isEmpty { Text(result.limited ? "已比较范围内没有差异。" : "两份文本内容相同。") }
-                    ForEach(Array(result.differences.enumerated()), id: \.offset) { _, line in
-                        Text(line).font(.system(.caption, design: .monospaced)).textSelection(.enabled)
+    private var analyzeCard: some View {
+        NavigationLink { LibraryView(model: model) } label: {
+            ToolCardLabel(title: "分析与整理记录", subtitle: "统计、图表、搜索，全部在手机本地完成。",
+                          systemImage: "waveform.path")
+        }
+        .buttonStyle(.labCard(emphasis: true))
+        .accessibilityLabel("分析与整理记录")
+        .accessibilityHint("统计、图表、搜索，全部在手机本地完成。")
+        .accessibilityIdentifier("tools.analyze")
+    }
+
+    private var compareCard: some View {
+        NavigationLink { CompareRecordsView(model: model) } label: {
+            ToolCardLabel(title: "比较两次记录", subtitle: "同类型的两条记录按行对比。",
+                          systemImage: "rectangle.split.2x1")
+        }
+        .buttonStyle(.labCard(emphasis: true))
+        .accessibilityLabel("比较两次记录")
+        .accessibilityHint("同类型的两条记录按行对比。")
+        .accessibilityIdentifier("tools.compare")
+    }
+
+    private var importCard: some View {
+        let reason: String? = !model.device.ready ? "需要先在“设备”页连接 Flipper。"
+            : (model.busy ? "有任务正在进行。" : nil)
+        return NavigationLink { DeviceFilesView(model: model, path: "/ext") } label: {
+            ToolCardLabel(title: "从 Flipper 导入", subtitle: "浏览设备存储，把文件导入资料库。",
+                          systemImage: "arrow.down.doc", reason: reason)
+        }
+        .buttonStyle(.labCard(emphasis: true))
+        .disabled(!model.device.ready || model.busy)
+        .accessibilityLabel("从 Flipper 导入")
+        .accessibilityHint(reason ?? "浏览设备存储，把文件导入资料库。")
+        .accessibilityIdentifier("tools.import")
+    }
+
+    @ViewBuilder private var guideSection: some View {
+        if !model.guides.isEmpty {
+            PixelLabel("功能介绍", meta: "前 \(min(model.guides.count, 6)) 篇")
+            LabPanel(padded: false) {
+                ForEach(Array(model.guides.prefix(6).enumerated()), id: \.element.id) { index, guide in
+                    if index > 0 {
+                        LabDivider()
                     }
-                    if result.limited { Text("内容较多，结果已截短。最多比较前 5,000 行、显示 200 处差异，每行预览 240 个字符；可导出完整原文进一步查看。")
-                            .font(.footnote).foregroundStyle(.secondary) }
+                    NavigationLink { GuideDetailView(guide: guide) } label: {
+                        HStack(spacing: 12) {
+                            NumberBox(number: index + 1, fill: LabColor.surfaceAlt)
+                            Text(verbatim: guide.title)
+                                .font(.headline)
+                                .multilineTextAlignment(.leading)
+                            Spacer(minLength: 8)
+                            LabChevron()
+                        }
+                        .padding(.horizontal, 16)
+                        .padding(.vertical, 10)
+                    }
+                    .buttonStyle(.labRow)
+                    .accessibilityLabel(guide.title)
+                    .accessibilityIdentifier("tools.guide.\(guide.id)")
                 }
             }
         }
-        .navigationTitle("比较记录")
-        .task(id: selection) {
-            result = nil; failure = nil
-            guard let a = model.records.first(where: { $0.id == first }),
-                  let b = model.records.first(where: { $0.id == second }) else { return }
-            comparing = true; defer { comparing = false }
-            do {
-                let output = try await Task.detached(priority: .userInitiated) { try RecordComparison.make(a, b) }.value
-                try Task.checkCancellation(); result = output
-            } catch { if !Task.isCancelled { failure = error.localizedDescription } }
+    }
+
+    /// Information only: no action or status is offered until the hardware is confirmed.
+    @ViewBuilder private var expansionSection: some View {
+        PixelLabel("扩展板")
+        LabPanel(.muted) {
+            AdaptiveStack(verticalAlignment: .firstTextBaseline, spacing: 8) {
+                Text("待确认硬件")
+                    .font(.caption.weight(.semibold))
+                    .foregroundStyle(LabColor.inkSecondary)
+                    .padding(.horizontal, 8)
+                    .padding(.vertical, 4)
+                    .background(LabColor.surface, in: RoundedRectangle(cornerRadius: 4, style: .continuous))
+                    .overlay(RoundedRectangle(cornerRadius: 4, style: .continuous).strokeBorder(LabColor.line, lineWidth: 1))
+                Text("等待确认板卡型号")
+                    .font(.headline)
+                    .foregroundStyle(LabColor.ink)
+            }
+            Text("ESP32 和“WiFi 终结者”需要精确型号、接线与固件版本后才能适配。当前可以导入已保存的文本日志，尚未实现实时串口采集。")
+                .font(.footnote)
+                .foregroundStyle(LabColor.inkSecondary)
         }
     }
-    private func picker(_ title: String, selection: Binding<UUID?>) -> some View {
-        Picker(title, selection: selection) {
-            Text("请选择").tag(nil as UUID?)
-            ForEach(model.records) { Text($0.name + " · " + $0.kind.title).tag(Optional($0.id)) }
+}
+
+/// Tool card body: large symbol tile, title, subtitle and — only when disabled — the reason.
+private struct ToolCardLabel: View {
+    let title: String
+    let subtitle: String
+    let systemImage: String
+    var reason: String? = nil
+    @Environment(\.isEnabled) private var isEnabled
+
+    var body: some View {
+        HStack(alignment: .top, spacing: 14) {
+            SymbolTile(systemName: systemImage, size: 56,
+                       fill: isEnabled ? LabColor.orangeSoft : LabColor.surfaceAlt)
+            VStack(alignment: .leading, spacing: 6) {
+                Text(title)
+                    .font(.headline)
+                    .foregroundStyle(isEnabled ? LabColor.ink : LabColor.inkTertiary)
+                Text(subtitle)
+                    .font(.subheadline)
+                    .foregroundStyle(LabColor.inkSecondary)
+                if let reason {
+                    ReasonNote(reason)
+                }
+            }
+            .multilineTextAlignment(.leading)
+            Spacer(minLength: 8)
+            LabChevron()
         }
+        .padding(16)
+        .frame(maxWidth: .infinity, minHeight: 88, alignment: .leading)
     }
 }

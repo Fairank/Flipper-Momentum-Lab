@@ -7,10 +7,10 @@
 | 项目 | 状态 |
 | --- | --- |
 | 工程配置与本说明 | 在 Windows 电脑上编写，本地没有 Xcode 或可用的 Mac。下文的本地命令只在 GitHub macOS CI 中以等效步骤运行过 |
-| Swift 包测试（`swift test`） | 首个提交的 CI 运行 [35974984160](https://github.com/Fairank/Flipper-Momentum-Lab/actions/runs/35974984160)：51 项通过 |
+| Swift 包测试（`swift test`） | 提交 `43bd0358` 的 [CI 35977973407](https://github.com/Fairank/Flipper-Momentum-Lab/actions/runs/35977973407)：52 项通过 |
 | 模拟器构建（不签名） | 同一运行通过 |
-| 模拟器 UI 测试 | 同一运行 1 项通过：走完五个页面并打开“设备连接”指南。只证明离线界面，不证明蓝牙；所用模拟器机型与 iOS 版本未记录 |
-| 模拟器截图导出、示例记录固定样本测试 | 首个运行之后加入，结果待记录 |
+| 模拟器 UI 测试 | 基线 2 项通过：五个页面、中文指南、示例记录分析与图表；iPhone 17 Pro Max / iOS 26.5，Xcode 26.6。只证明离线界面，不证明蓝牙 |
+| 模拟器截图导出、示例记录固定样本测试 | 基线通过，导出 10 张截图；新版 UI 另行验收 |
 | GitHub Actions（[`lab-validation.yml`](../../.github/workflows/lab-validation.yml)） | 已运行；后续提交的结果以 PR [#1](https://github.com/Fairank/Flipper-Momentum-Lab/pull/1) 的检查为准 |
 | 真机：蓝牙配对、设备文件导入、上传读回、红外执行 | 均未验证；没有可用的 Mac 和 Flipper |
 | App Store / TestFlight | 未准备：没有 App 图标，未做上架或审核相关准备 |
@@ -69,7 +69,7 @@ open FlipperLab.xcodeproj
 swift test --package-path mobile/FlipperLab
 ```
 
-测试位于 `Tests/FlipperCoreTests/`，共 51 项，覆盖 RPC 帧编码、BLE 分包在任意位置切开后的重组、超长/截断/溢出输入的拒绝、设备文件名不能改变路径、protoc 生成的协议向量、六类记录的解析与拒绝（空文件、非法文本、超过 2 MiB、头部与扩展名矛盾）、资料库存储的上限与损坏处理，以及内置指南的完整性。首个提交的 CI 运行为 51 项通过；本地是否通过以实际输出为准。
+测试位于 `Tests/FlipperCoreTests/`，共 52 项，覆盖 RPC 帧编码、BLE 分包在任意位置切开后的重组、超长/截断/溢出输入的拒绝、设备文件名不能改变路径、protoc 生成的协议向量、六类记录的解析与拒绝（空文件、非法文本、超过 2 MiB、头部与扩展名矛盾）、资料库存储的上限与损坏处理，以及内置指南的完整性。最新基线增加资料库编码前总量检查，52 项通过；本地是否通过以实际输出为准。
 
 ## 3. 模拟器构建与运行
 
@@ -239,9 +239,9 @@ xcodebuild build \
 | `simulator-test-evidence-<attempt>` | `FlipperLab.xcresult` 结果包 | 7 天 |
 | `xcodebuild-log-<attempt>` | 只在模拟器构建失败时上传的 xcodebuild 日志 | 7 天 |
 
-设备端固件由另一个工作流 [`lab-firmware.yml`](../../.github/workflows/lab-firmware.yml) 构建，产物 `flipper-lab-firmware-<提交>` 含更新包、`SHA256SUMS.txt` 和 `dist/f7-C/apps/Tools/lab.fap`，保留 14 天；它的运行结果待记录。
+设备端固件由另一个工作流 [`lab-firmware.yml`](../../.github/workflows/lab-firmware.yml) 构建，产物 `flipper-lab-firmware-<提交>` 含更新包、`SHA256SUMS.txt` 和 `dist/f7-C/apps/Tools/lab.fap`，保留 14 天；运行 [35977973532](https://github.com/Fairank/Flipper-Momentum-Lab/actions/runs/35977973532) 已通过。
 
-状态：首个提交的运行 [35974984160](https://github.com/Fairank/Flipper-Momentum-Lab/actions/runs/35974984160) 通过 51 项包测试、模拟器构建和 1 项 UI 测试；截图导出与示例记录测试在那之后加入，结果待记录。CI 通过只能说明能编译并通过单元测试和离线界面测试，不代表蓝牙、上传或红外功能在真机上可用。
+状态：基线提交 `43bd0358` 通过 52 项包测试、模拟器构建和 2 项 UI 测试，导出 10 张截图。用户要求按 Flipper 理念重做界面，设计与实施见 [UI_REDESIGN.md](../../documentation/custom/UI_REDESIGN.md) 和 [UI_REVIEW.md](../../documentation/custom/UI_REVIEW.md)，新版结果需另行记录。CI 通过不代表蓝牙、上传或红外功能在真机上可用。
 
 ## 真机验证清单（尚未执行，没有可用的 Mac 和 Flipper）
 

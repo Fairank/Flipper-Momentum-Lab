@@ -79,3 +79,4 @@ DerivedData/
 *.xcuserstate
 xcuserdata/
 mobile/FlipperLab/FlipperLab.xcodeproj/
+/documentation/custom/previews/

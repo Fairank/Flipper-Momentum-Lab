@@ -10,6 +10,10 @@
 - 全部固定子模块已递归初始化，未升级任何 gitlink；版本见 [SOURCE_LOCK.json](SOURCE_LOCK.json)。
 - 本机没有 Xcode，也没有可用的 Mac；iPhone、Flipper 和扩展板均未接入测试。
 
+## 新测试环境基线（提交 43bd0358）
+
+2026-09-24，[Lab validation 35977973407](https://github.com/Fairank/Flipper-Momentum-Lab/actions/runs/35977973407) 在 Xcode 26.6、iPhone 17 Pro Max / iOS 26.5 上完成：52 项核心测试、2 项 UI 测试、36 项桌面回归通过，65 个 Flipper 源码画面成功生成。Lint 与 Lab firmware 同样通过。此提交仍为旧手机界面，视觉重做的结果必须另行记录。
+
 ## 后续核验（提交 `8a1347be`）
 
 - [Lab validation 35975959905](https://github.com/Fairank/Flipper-Momentum-Lab/actions/runs/35975959905)：51 项 Swift 包测试、模拟器构建、2 项 UI 测试、36 项 Python/C 回归全部通过。截图附件 10 张已导出，并查看设备、示例资料库和脉冲图。模拟器为 **iPhone 16 Pro / iOS 18.5**，工具为 Xcode 16.4；不是用户的 17 Pro Max 真机。
