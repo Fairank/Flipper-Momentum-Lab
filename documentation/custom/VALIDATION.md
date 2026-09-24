@@ -126,12 +126,6 @@
 
 这些测试从生产实现抽取函数，以桌面存储/绘图替身执行，没有验证真实 SD 卡、GUI 线程调度、板上内存和硬件行为。
 
-## 手机界面最终验收（2026-09-24）
-
-代码版本 `bfc43b4a949a6d4b4e4fa791e26f053c7abcf3d1` 在 [35985874280](https://github.com/Fairank/Flipper-Momentum-Lab/actions/runs/35985874280) 通过 52 项核心测试、3 项 UI 测试、36 项桌面回归与模拟器构建；完整固件构建 [35985874510](https://github.com/Fairank/Flipper-Momentum-Lab/actions/runs/35985874510) 和 Lint 亦通过。运行环境为 Xcode 26.6 / iPhone 17 Pro Max / iOS 26.5；17 张原始截图，含修正后的浅色栏、完整波形和深色大字页面。模型分工、实际返回值、主控修正和截图 SHA256 见 [UI_REVIEW.md](UI_REVIEW.md)。
-
-设计由本机 `claude-fable-5-1 --effort max` 完成，实现由用户本轮指定的 `claude-opus-5-5 --effort max` 完成；实际模型一致，均退出码 0。主控审阅后采纳，并修复截图检查发现的问题。
-
 当时 `applications/external` 只稀疏检出三个目录，嵌套依赖也未完整初始化。`FBT_NO_SYNC=1 ./fbt SKIP_EXTERNAL=1 updater_package` 以退出码 2 失败：
 
 ```text
@@ -140,3 +134,10 @@ applications/external/subghz_playlist/playlist_file.h: No such file or directory
 ```
 
 本轮在完整初始化的子模块上，Windows 核心构建与完整包构建均已通过；macOS 上没有重新构建。
+
+## 手机界面最终验收（2026-09-24）
+
+代码版本 `bfc43b4a949a6d4b4e4fa791e26f053c7abcf3d1` 在 [35985874280](https://github.com/Fairank/Flipper-Momentum-Lab/actions/runs/35985874280) 通过 52 项核心测试、3 项 UI 测试、36 项桌面回归与模拟器构建；完整固件构建 [35985874510](https://github.com/Fairank/Flipper-Momentum-Lab/actions/runs/35985874510) 和 Lint 亦通过。运行环境为 Xcode 26.6 / iPhone 17 Pro Max / iOS 26.5；17 张原始截图，含修正后的浅色栏、完整波形和深色大字页面。模型分工、实际返回值、主控修正和截图 SHA256 见 [UI_REVIEW.md](UI_REVIEW.md)。
+
+设计由本机 `claude-fable-5-1 --effort max` 完成，实现由用户本轮指定的 `claude-opus-5-5 --effort max` 完成；实际模型一致，均退出码 0。主控审阅后采纳，并修复截图检查发现的问题。
+
