@@ -90,6 +90,20 @@ final class RecordStoreTests: XCTestCase {
 
     // MARK: - 保存失败时保留原文件
 
+    func testAggregateTextLimitRejectsBeforeReplacingLibrary() async throws {
+        let store = RecordStore(directory: directory)
+        let initial = [record("Existing")]
+        try await store.save(initial)
+        let text = String(repeating: "a", count: 2 * 1024 * 1024)
+        let oversized = (0..<17).map { record("R\($0)", rawText: text) }
+        await expectStoreError({ try await store.save(oversized) }) {
+            if case .storeTooLarge = $0 { return true }
+            return false
+        }
+        let loaded = try await store.load()
+        XCTAssertEqual(loaded, initial)
+    }
+
     func testRejectedSavesLeavePreviousPrimaryUntouched() async throws {
         let store = RecordStore(directory: directory)
         let original = [record("A"), record("B")]

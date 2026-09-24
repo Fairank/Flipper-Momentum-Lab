@@ -236,6 +236,7 @@ extension RecordStore {
             return .tooManyRecords(count: records.count, limit: maxRecordCount)
         }
         var identifiers = Set<UUID>()
+        var totalTextBytes = 0
         for record in records {
             guard identifiers.insert(record.id).inserted else { return .duplicateRecordID(record.id) }
             let rawBytes = record.rawText.utf8.count
@@ -247,6 +248,13 @@ extension RecordStore {
             ) { $0 + $1.utf8.count + 1 }
             guard metadataBytes <= maxMetadataBytes else {
                 return .metadataTooLarge(id: record.id, byteCount: metadataBytes, limit: maxMetadataBytes)
+            }
+            // Reject an oversized library before JSONEncoder allocates its output.
+            // JSON escaping can only make these text fields larger; the exact
+            // encoded size is checked again after encoding.
+            totalTextBytes += rawBytes + metadataBytes
+            if totalTextBytes > maxFileBytes {
+                return .storeTooLarge(byteCount: totalTextBytes, limit: maxFileBytes)
             }
         }
         return nil

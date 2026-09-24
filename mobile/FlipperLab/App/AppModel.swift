@@ -93,7 +93,9 @@ final class AppModel {
             defer { if granted { url.stopAccessingSecurityScopedResource() } }
             let values = try url.resourceValues(forKeys: [.fileSizeKey, .isRegularFileKey])
             guard values.isRegularFile == true, let size = values.fileSize, size <= 2 * 1024 * 1024 else { throw RPCError.tooLarge }
-            let data = try Data(contentsOf: url, options: .mappedIfSafe)
+            let handle = try FileHandle(forReadingFrom: url)
+            defer { try? handle.close() }
+            let data = try handle.read(upToCount: 2 * 1024 * 1024 + 1) ?? Data()
             try await self.importData(data, name: url.lastPathComponent, path: nil)
             return "记录已保存。原文件保持不变。"
         }

@@ -6,23 +6,26 @@
 
 | 项目 | 状态 |
 | --- | --- |
-| 工程配置与本说明 | 在 Windows 电脑上编写。Windows 不能生成 Xcode 工程、编译 iOS App 或运行 iOS 模拟器，下文命令均未实际运行 |
-| Swift 包测试（`swift test`） | 未运行，没有通过记录 |
-| 模拟器构建 | 未运行，没有编译成功记录 |
-| GitHub Actions（[`lab-validation.yml`](../../.github/workflows/lab-validation.yml)） | 已编写，尚未运行，结果待记录 |
-| 真机：蓝牙配对、设备文件导入、上传读回、红外执行 | 均未验证 |
+| 工程配置与本说明 | 在 Windows 电脑上编写，本地没有 Xcode 或可用的 Mac。下文的本地命令只在 GitHub macOS CI 中以等效步骤运行过 |
+| Swift 包测试（`swift test`） | 首个提交的 CI 运行 [35974984160](https://github.com/Fairank/Flipper-Momentum-Lab/actions/runs/35974984160)：51 项通过 |
+| 模拟器构建（不签名） | 同一运行通过 |
+| 模拟器 UI 测试 | 同一运行 1 项通过：走完五个页面并打开“设备连接”指南。只证明离线界面，不证明蓝牙；所用模拟器机型与 iOS 版本未记录 |
+| 模拟器截图导出、示例记录固定样本测试 | 首个运行之后加入，结果待记录 |
+| GitHub Actions（[`lab-validation.yml`](../../.github/workflows/lab-validation.yml)） | 已运行；后续提交的结果以 PR [#1](https://github.com/Fairank/Flipper-Momentum-Lab/pull/1) 的检查为准 |
+| 真机：蓝牙配对、设备文件导入、上传读回、红外执行 | 均未验证；没有可用的 Mac 和 Flipper |
 | App Store / TestFlight | 未准备：没有 App 图标，未做上架或审核相关准备 |
 
-下文是预期的使用方法。第一次在 Mac 上执行时请记录实际输出和错误，不要把这些步骤当作已验证的流程。
+下文的本地步骤尚未在 Mac 上手动执行过。第一次在 Mac 上执行时请记录实际输出和错误。
 
 ## 目录结构
 
 | 路径 | 内容 |
 | --- | --- |
 | `Package.swift` | Swift 包 `FlipperLab`（swift-tools-version 5.9），唯一产品为库 `FlipperCore`，没有第三方依赖 |
-| `Sources/FlipperCore/` | 与界面无关的核心代码：RPC/protobuf 编解码与分包重组、记录模型等，以及离线指南资源 `Resources/FeatureCatalog.json` |
-| `Tests/FlipperCoreTests/` | `FlipperCore` 的 XCTest 单元测试 |
+| `Sources/FlipperCore/` | 与界面无关的核心代码：RPC/protobuf 编解码与分包重组、六类记录解析与分析、资料库存储、记录模型，以及离线指南资源 `Resources/FeatureCatalog.json` |
+| `Tests/FlipperCoreTests/` | `FlipperCore` 的 XCTest 单元测试；其中 `ProtocolVectorTests.swift` 由 `scripts/generate_rpc_vectors.py` 用固件锁定的 `.proto` 生成 |
 | `App/` | iPhone App 源码（SwiftUI 界面、蓝牙连接、资料库与任务逻辑），只由 Xcode 工程编译 |
+| `UITests/` | XCUITest 界面测试目标 `FlipperLabUITests`：离线导航五个页面并打开中文指南、示例记录分析，每步保存截图附件 |
 | `App/Info.plist` | App 的 Info 模板，构建时 Xcode 会替换其中的 `$(…)` 变量 |
 | `project.yml` | XcodeGen 工程描述 |
 | `FlipperLab.xcodeproj` | 由 XcodeGen 生成在本目录，不是手写文件，不要提交 |
@@ -31,10 +34,11 @@
 
 - `project.yml` 和 `Package.swift` 都在 `mobile/FlipperLab/`。XcodeGen 以规格文件所在目录为工程根目录解析相对路径，所以 `packages.FlipperLab.path: "."` 指的就是 `mobile/FlipperLab/` 自身，与执行命令时的当前目录无关。
 - XcodeGen 默认把 `FlipperLab.xcodeproj` 生成到规格文件所在目录。在本目录执行 `xcodegen generate --spec project.yml`，与在仓库根目录执行 `xcodegen generate --spec mobile/FlipperLab/project.yml`，得到的是同一位置的同一个工程。
-- 生成的工程包含两部分：
+- 生成的工程包含三部分：
   - 应用目标 `FlipperLab`：只编译 `App/` 中的文件（排除 `Info.plist`），产品为 `FlipperLab.app`；
-  - 本地 Swift 包 `FlipperLab`：应用链接其库产品 `FlipperCore`。包里只有 `Package.swift` 声明的 `FlipperCore` 和 `FlipperCoreTests` 两个目标；`App/` 虽在包目录内，但不属于包。
-- 工程定义了一个共享 scheme：`FlipperLab`，用于构建和运行 App（运行用 Debug，归档用 Release）。它不含单元测试，包测试用 `swift test` 运行。
+  - 界面测试目标 `FlipperLabUITests`：编译 `UITests/`，依赖应用目标，在模拟器或真机上启动 App 做黑盒测试；
+  - 本地 Swift 包 `FlipperLab`：应用链接其库产品 `FlipperCore`。包里只有 `Package.swift` 声明的 `FlipperCore` 和 `FlipperCoreTests` 两个目标；`App/` 和 `UITests/` 虽在包目录内，但不属于包。
+- 工程定义了一个共享 scheme：`FlipperLab`，用于构建和运行 App（运行用 Debug，归档用 Release）。它的测试动作只运行 `FlipperLabUITests`；包的单元测试不在 scheme 里，用 `swift test` 运行。
 - 请打开 `FlipperLab.xcodeproj`。如果在 Xcode 中直接打开 `Package.swift` 或整个目录，只会得到 Swift 包（`FlipperCore` 及其测试），没有 iPhone App 目标。
 - 同一目录里同时有 `Package.swift` 和 `.xcodeproj`，命令行调用 `xcodebuild` 时请始终写明 `-project FlipperLab.xcodeproj`。
 - `swift test` 只编译并测试 Swift 包（在 Mac 上以 macOS 为目标平台），不编译 `App/`，不能代替 iOS 构建；模拟器构建也不会运行单元测试。
@@ -65,7 +69,7 @@ open FlipperLab.xcodeproj
 swift test --package-path mobile/FlipperLab
 ```
 
-测试位于 `Tests/FlipperCoreTests/`，目前覆盖 RPC 帧编码、BLE 分包在任意位置切开后的重组、超长/截断/溢出输入的拒绝、设备文件名不能改变路径等。是否通过以实际输出为准，本说明不记录测试结果。
+测试位于 `Tests/FlipperCoreTests/`，共 51 项，覆盖 RPC 帧编码、BLE 分包在任意位置切开后的重组、超长/截断/溢出输入的拒绝、设备文件名不能改变路径、protoc 生成的协议向量、六类记录的解析与拒绝（空文件、非法文本、超过 2 MiB、头部与扩展名矛盾）、资料库存储的上限与损坏处理，以及内置指南的完整性。首个提交的 CI 运行为 51 项通过；本地是否通过以实际输出为准。
 
 ## 3. 模拟器构建与运行
 
@@ -82,6 +86,25 @@ xcodebuild build \
 ```
 
 在 Xcode 中运行：顶部选择 scheme `FlipperLab` 和任一 iPhone 模拟器，按 ⌘R。iOS 模拟器不能使用蓝牙，只能检查界面、离线指南和本地资料库；连接 Flipper 必须用真机。
+
+### 模拟器 UI 测试与截图
+
+与 CI 相同的步骤：在模拟器上运行 `FlipperLabUITests`，再从结果包导出每一步保存的截图。把 `<模拟器名称>` 换成 `xcrun simctl list devices available` 里的一台 iPhone。
+
+```sh
+cd mobile/FlipperLab
+xcodebuild test \
+  -project FlipperLab.xcodeproj \
+  -scheme FlipperLab \
+  -destination 'platform=iOS Simulator,name=<模拟器名称>' \
+  -resultBundlePath "$TMPDIR/FlipperLab.xcresult" \
+  CODE_SIGNING_ALLOWED=NO
+xcrun xcresulttool export attachments \
+  --path "$TMPDIR/FlipperLab.xcresult" \
+  --output-path "$TMPDIR/screenshots"
+```
+
+两项测试都以简体中文启动 App：`testOfflineNavigationAndChineseGuide` 依次进入设备、资料库、工具（含比较记录）、任务、指南五个页面并打开“设备连接”指南；`testExampleRecordAnalysis` 用 `-ui-testing-fixtures` 启动参数载入两条示例记录，打开分析结果和脉冲图。截图文件名以 `01-设备` 到 `10-示例脉冲图` 编号。这些测试证明离线界面能启动和导航，不证明蓝牙、上传或红外。
 
 ## 4. 用自己的团队签名，安装到 iPhone 17 Pro Max
 
@@ -115,7 +138,7 @@ xcodebuild build \
 
 ## 功能（依据当前代码）
 
-以下内容根据 `App/` 与 `Sources/FlipperCore/` 的现有源码整理，均未经真机验证。
+以下内容根据 `App/` 与 `Sources/FlipperCore/` 的现有源码整理。离线界面在 CI 模拟器上走过一遍；所有涉及蓝牙和设备的功能均未经真机验证。
 
 **设备连接**
 
@@ -160,8 +183,9 @@ xcodebuild build \
 
 **离线中文指南**
 
-- 内容来自内置的 `FeatureCatalog.json`，无需连接设备即可阅读。
-- 截至本文编写时，该文件标注为设计初稿（`catalog_status: design_draft`），条目均为规划（`planned`）状态；指南中的描述不等于功能已经实现。
+- 内容来自内置的 `FeatureCatalog.json`，无需连接设备即可阅读；它必须与 `documentation/custom/FEATURE_CATALOG.zh-CN.json` 逐字节一致。
+- 共 8 篇：设备连接、中文资料库、红外工作台、中文入口与功能说明、Sub-GHz 记录分析、NFC/RFID/iButton 记录、串口日志查看、扩展板状态与诊断。
+- 截至本文更新时，该文件标注为实现中（`catalog_status: implementation_in_progress`），条目状态为 `implemented_unverified`、`in_progress` 或 `hardware_required`；指南中的描述不等于功能已经在真机上验证。
 
 ## 未提供的功能与限制
 
@@ -192,6 +216,7 @@ xcodebuild build \
 ## 版本与工程配置
 
 - 版本 0.1.0，构建号 1；开发用 Bundle ID `org.fairank.FlipperLab`；主屏幕名称 “Flipper Lab”；最低 iOS 17.0；设备族 iPhone 与 iPad。
+- 界面测试目标 `FlipperLabUITests` 的 Bundle ID 为 `org.fairank.FlipperLab.UITests`，Info.plist 由 Xcode 自动生成。
 - Swift：`Package.swift` 为 swift-tools-version 5.9；App 目标 `SWIFT_VERSION = 5.0`，即 Swift 5 语言模式，包目标同样按 Swift 5 语言模式编译。
 - 签名：自动签名，未设置 `DEVELOPMENT_TEAM`。
 - Info.plist：开发地区为简体中文（`zh-Hans`）、中文蓝牙用途说明、系统默认启动屏（空的 `UILaunchScreen`）、单窗口。没有后台模式、文件共享、加密出口合规声明或其他权限；导入和导出都经系统文件面板，不需要额外声明。
@@ -201,13 +226,24 @@ xcodebuild build \
 
 工作流为 [`.github/workflows/lab-validation.yml`](../../.github/workflows/lab-validation.yml)：
 
-- 触发：推送到 `codex/**` 分支、Pull Request 或手动运行。推送和 PR 只在 `mobile/`、`scripts/tests/`、`applications/main/lab/`、`scripts/generate_lab_font.py` 或工作流本身有改动时触发；同一分支或 PR 的新运行会取消旧运行。
-- macOS 15：用 Homebrew 安装 XcodeGen，执行 `swift test`，生成工程，再做不签名的模拟器通用构建（`CODE_SIGNING_ALLOWED=NO`，警告不视为错误）；构建失败时上传 xcodebuild 日志，保留 7 天。
-- Ubuntu：执行 `python3 -m unittest discover -s scripts/tests`。其中的 C 回归需要主机 C 编译器，缺少时任务直接失败，不会带着跳过的测试通过。存在 `scripts/generate_lab_font.py` 时运行其 `--check`；不存在时只给出警告，不算作已通过的检查。
+- 触发：推送到 `codex/**` 分支、Pull Request 或手动运行。推送和 PR 只在 `mobile/`、`scripts/tests/`、`applications/main/lab/`、`applications/services/gui/`、`scripts/generate_lab_font.py` 或工作流本身有改动时触发；同一分支或 PR 的新运行会取消旧运行。
+- macOS 15：用 Homebrew 安装 XcodeGen，执行 `swift test`，生成工程，做不签名的模拟器通用构建（`CODE_SIGNING_ALLOWED=NO`，警告不视为错误），然后在可用的第一台 iPhone 模拟器上运行 `FlipperLabUITests`，并从结果包导出截图。
+- Ubuntu 24.04：执行 `python3 -m unittest discover -s scripts/tests`（旧回归、UTF-8 回归、字库生成器测试）和 `scripts/generate_lab_font.py --check`。其中的 C 回归需要主机 C 编译器，缺少时任务直接失败，不会带着跳过的测试通过。
 - 只有读取仓库内容的权限，不使用任何密钥；不签名、不发布，不向上游或更新服务器上传，也不生成可安装的 IPA。
-- 状态：尚未运行，结果待记录。CI 通过只能说明能编译并通过单元测试，不代表蓝牙、上传或红外功能在真机上可用。
 
-## 真机验证清单（尚未执行）
+产物（在运行页面的 Artifacts 下载，`<attempt>` 为该次运行的重试序号）：
+
+| 产物 | 内容 | 保留 |
+| --- | --- | --- |
+| `iphone-screenshots-<attempt>` | UI 测试各步骤的模拟器截图 | 14 天 |
+| `simulator-test-evidence-<attempt>` | `FlipperLab.xcresult` 结果包 | 7 天 |
+| `xcodebuild-log-<attempt>` | 只在模拟器构建失败时上传的 xcodebuild 日志 | 7 天 |
+
+设备端固件由另一个工作流 [`lab-firmware.yml`](../../.github/workflows/lab-firmware.yml) 构建，产物 `flipper-lab-firmware-<提交>` 含更新包、`SHA256SUMS.txt` 和 `dist/f7-C/apps/Tools/lab.fap`，保留 14 天；它的运行结果待记录。
+
+状态：首个提交的运行 [35974984160](https://github.com/Fairank/Flipper-Momentum-Lab/actions/runs/35974984160) 通过 51 项包测试、模拟器构建和 1 项 UI 测试；截图导出与示例记录测试在那之后加入，结果待记录。CI 通过只能说明能编译并通过单元测试和离线界面测试，不代表蓝牙、上传或红外功能在真机上可用。
+
+## 真机验证清单（尚未执行，没有可用的 Mac 和 Flipper）
 
 - [ ] 记录 iPhone 型号、iOS 版本、Xcode 版本和 Flipper 固件版本
 - [ ] 首次配对、拒绝蓝牙权限、蓝牙关闭、断开重连、设备忙碌时的提示

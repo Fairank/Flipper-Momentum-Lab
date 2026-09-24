@@ -10,6 +10,7 @@ on:
       - "applications/main/lab/**"
       - "applications/services/gui/**"
       - "scripts/generate_lab_font.py"
+      - "scripts/render_lab_preview.py"
       - ".github/workflows/lab-validation.yml"
   pull_request:
     paths:
@@ -18,6 +19,7 @@ on:
       - "applications/main/lab/**"
       - "applications/services/gui/**"
       - "scripts/generate_lab_font.py"
+      - "scripts/render_lab_preview.py"
       - ".github/workflows/lab-validation.yml"
   workflow_dispatch:
 
@@ -25,7 +27,7 @@ permissions:
   contents: read
 
 concurrency:
-  group: ${{ github.workflow }}-${{ github.ref }}
+  group: ${{ github.workflow }}-${{ github.head_ref || github.ref_name }}
   cancel-in-progress: true
 
 defaults:
@@ -35,8 +37,10 @@ defaults:
 jobs:
   ios:
     name: "iOS package tests and simulator build"
-    runs-on: macos-15
+    runs-on: macos-26
     timeout-minutes: 30
+    env:
+      DEVELOPER_DIR: /Applications/Xcode_26.6.app/Contents/Developer
     steps:
       - name: "Checkout code"
         uses: actions/checkout@v4
@@ -97,7 +101,8 @@ jobs:
         if: ${{ !cancelled() && steps.build.outcome == 'success' }}
         working-directory: mobile/FlipperLab
         run: |
-          DEVICE_ID=$(xcrun simctl list devices available -j | python3 -c 'import sys,json; d=json.load(sys.stdin); print(next(x["udid"] for k,v in d["devices"].items() if "iOS" in k for x in v if x["name"].startswith("iPhone")))')
+          DEVICE_ID=$(xcrun simctl list devices available -j | python3 -c 'import sys,json; d=json.load(sys.stdin); print(next(x["udid"] for k,v in d["devices"].items() if k.endswith("iOS-26-5") for x in v if x["name"] == "iPhone 17 Pro Max"))')
+          echo "UI evidence: iPhone 17 Pro Max / iOS 26.5 / $DEVICE_ID"
           xcodebuild test -project FlipperLab.xcodeproj -scheme FlipperLab \
             -destination "platform=iOS Simulator,id=$DEVICE_ID" \
             -derivedDataPath "$RUNNER_TEMP/DerivedData" \
@@ -152,3 +157,14 @@ jobs:
         if: ${{ !cancelled() && steps.checkout.outcome == 'success' }}
         run: |
           python3 scripts/generate_lab_font.py --check
+
+      - name: "Render all Flipper Lab screens"
+        run: python3 scripts/render_lab_preview.py --all --output-dir "$RUNNER_TEMP/flipper-previews"
+
+      - name: "Upload Flipper source layout previews"
+        uses: actions/upload-artifact@v4
+        with:
+          name: flipper-source-previews-${{ github.run_attempt }}
+          path: ${{ runner.temp }}/flipper-previews
+          retention-days: 14
+          if-no-files-found: error

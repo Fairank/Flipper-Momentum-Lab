@@ -1,10 +1,10 @@
 # Flipper Momentum 个人定制与换机交接
 
-以 Momentum 保留 Xtreme 风格，逐项适配 Unleashed。当前已完成资源加载进度、插件扫描容错及构建源文件顺序修复；三个桌面回归通过。**完整安装包尚未构建成功，尚未刷写真机。**
+以 Momentum 保留 Xtreme 风格，逐项适配 Unleashed，并新增 iPhone 中文 App（`mobile/FlipperLab`）与设备端中文入口 Flipper Lab（`applications/main/lab`）。当前分支 `codex/iphone-zh-architecture` 已推送，草稿 PR [#1](https://github.com/Fairank/Flipper-Momentum-Lab/pull/1) 指向 `codex/momentum-unleashed`。已完成：资源加载进度、插件扫描容错、构建源文件顺序修复、UTF-8 换行修复；Windows 上完整更新包（含外部应用与 Flipper Lab）构建成功；桌面回归与字库生成器测试通过；iPhone App 的 Swift 包测试、不签名模拟器构建和离线 UI 测试在 GitHub macOS CI 通过。**尚未刷写真机，蓝牙真机未测，现有原生应用的全面中文化仍是待办需求。**
 
-**换电脑继续请先读 [HANDOFF.md](HANDOFF.md)**。其他入口：[已完成改动](LOCAL_CHANGES.md) · [全部需求与待办](documentation/custom/REQUIREMENTS.md) · [验证及编译卡点](documentation/custom/VALIDATION.md) · [初步评估](documentation/custom/INITIAL_ASSESSMENT.md) · [固定源码版本](documentation/custom/SOURCE_LOCK.json)。
+**换电脑继续请先读 [HANDOFF.md](HANDOFF.md)**。其他入口：[已完成改动](LOCAL_CHANGES.md) · [全部需求与待办](documentation/custom/REQUIREMENTS.md) · [验证记录](documentation/custom/VALIDATION.md) · [iPhone App 说明](mobile/FlipperLab/README.zh-CN.md) · [初步评估](documentation/custom/INITIAL_ASSESSMENT.md) · [固定源码版本](documentation/custom/SOURCE_LOCK.json)。
 
-ESP32 和“WiFi 终结者”升级仅列入待办，尚未确认型号或实现。此仓库为 AI 辅助的个人定制，非 Momentum 上游发布；原作者、许可证和上游贡献政策文件保留。以下为上游项目原说明，其中安装链接指向上游发行版，不是本定制版的安装包。
+构建本定制的固件：依次运行 `./fbt updater_package`、`./fbt fap_dist`（分两次调用；Windows 用 `fbt.cmd -j1 …`，步骤见 HANDOFF.md），产物在 `dist/f7-C/`。CI 工作流 `lab-firmware.yml` 上传 `flipper-lab-firmware-<提交>` 产物（更新包、`SHA256SUMS.txt`、`apps/Tools/lab.fap`），`lab-validation.yml` 运行 iPhone 测试并上传模拟器截图；两者的运行结果以 PR 检查为准。ESP32 和“WiFi 终结者”升级仅列入待办，尚未确认型号或实现。此仓库为 AI 辅助的个人定制，非 Momentum 上游发布；原作者、许可证和上游贡献政策文件保留。以下为上游项目原说明，其中安装链接指向上游发行版，不是本定制版的安装包。
 
 ---
 

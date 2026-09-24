@@ -12,7 +12,7 @@ permissions:
   contents: read
 
 concurrency:
-  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  group: ${{ github.workflow }}-${{ github.head_ref || github.ref_name }}
   cancel-in-progress: true
 
 jobs:
@@ -27,7 +27,10 @@ jobs:
       - name: Build pinned firmware and external apps
         env:
           FBT_NO_SYNC: "1"
-        run: ./fbt updater_package fap_dist
+        # Packaging cleans dist; a fresh SCons graph must create fap directories afterward.
+        run: |
+          ./fbt updater_package
+          ./fbt fap_dist
       - name: Verify build did not modify tracked sources
         run: git diff --exit-code
       - name: Package checksums
