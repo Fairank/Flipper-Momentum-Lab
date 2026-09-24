@@ -519,6 +519,12 @@ static LoaderStatusError
     }
 }
 
+static void loader_do_assets_progress(void* context, size_t done, size_t total) {
+    Loader* loader = context;
+    if(total == 0) return;
+    loading_set_progress(loader->loading, (float)done / (float)total);
+}
+
 static LoaderMessageLoaderStatusResult loader_start_external_app(
     Loader* loader,
     Storage* storage,
@@ -535,6 +541,9 @@ static LoaderMessageLoaderStatusResult loader_start_external_app(
 
         FURI_LOG_I(TAG, "Loading %s", path);
 
+        flipper_application_set_assets_progress_callback(
+            loader->app.fap, loader_do_assets_progress, loader);
+
         // Calling preload will load whole FAP file, so need to preload manifest first to
         // get flags value, unload asset packs if requested by flags, then preload whole FAP
         FlipperApplicationFlag flags = FlipperApplicationFlagDefault;
@@ -550,6 +559,7 @@ static LoaderMessageLoaderStatusResult loader_start_external_app(
             }
             preload_res = flipper_application_preload(loader->app.fap, path);
         }
+        loading_reset_progress(loader->loading);
 
         bool api_mismatch = false;
         if(preload_res == FlipperApplicationPreloadStatusApiTooOld ||

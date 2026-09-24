@@ -11,8 +11,8 @@
 #define FURI_LOG_E(...)
 #endif
 
-#define FLIPPER_APPLICATION_ASSETS_MAGIC 0x4F4C5A44
-#define FLIPPER_APPLICATION_ASSETS_VERSION 1
+#define FLIPPER_APPLICATION_ASSETS_MAGIC              0x4F4C5A44
+#define FLIPPER_APPLICATION_ASSETS_VERSION            1
 #define FLIPPER_APPLICATION_ASSETS_SIGNATURE_FILENAME ".assets.signature"
 
 #define BUFFER_SIZE 512
@@ -77,7 +77,9 @@ static bool flipper_application_assets_process_files(
     Storage* storage,
     File* file,
     FuriString* app_name,
-    uint32_t files_count) {
+    uint32_t files_count,
+    FlipperApplicationAssetsProgress progress,
+    void* progress_context) {
     furi_assert(storage);
     furi_assert(file);
     furi_assert(app_name);
@@ -93,6 +95,9 @@ static bool flipper_application_assets_process_files(
     FuriString* full_path = flipper_application_assets_alloc_app_full_path(app_name);
 
     for(uint32_t i = 0; i < files_count; i++) {
+        // Report before writing so the first file starts with a visible zero.
+        if(progress) progress(progress_context, i, files_count);
+
         path = (char*)flipper_application_assets_alloc_and_load_data(file, NULL);
 
         if(path == NULL) {
@@ -253,7 +258,13 @@ static AssetsSignatureResult flipper_application_assets_process_signature(
     return result;
 }
 
-bool flipper_application_assets_load(File* file, const char* elf_path, size_t offset, size_t size) {
+bool flipper_application_assets_load(
+    File* file,
+    const char* elf_path,
+    size_t offset,
+    size_t size,
+    FlipperApplicationAssetsProgress progress,
+    void* progress_context) {
     UNUSED(size);
     furi_assert(file);
     furi_assert(elf_path);
@@ -324,10 +335,12 @@ bool flipper_application_assets_load(File* file, const char* elf_path, size_t of
         }
 
         // process files
-        if(header.files_count && !flipper_application_assets_process_files(
-                                     storage, file, app_name, header.files_count)) {
+        if(header.files_count &&
+           !flipper_application_assets_process_files(
+               storage, file, app_name, header.files_count, progress, progress_context)) {
             break;
         }
+        if(progress) progress(progress_context, header.files_count, header.files_count);
 
         // write signature
         FuriString* signature_file_path =

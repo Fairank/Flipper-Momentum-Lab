@@ -15,6 +15,9 @@
 #define SUBGHZ_RADIO_DEVICE_PLUGIN_APP_ID      "subghz_radio_device"
 #define SUBGHZ_RADIO_DEVICE_PLUGIN_API_VERSION 1
 
+/** File name prefix used to select radio drivers from a shared plugin directory. */
+#define SUBGHZ_RADIO_DEVICE_PLUGIN_FAL_PREFIX "radio_device_"
+
 typedef struct SubGhzDeviceRegistry SubGhzDeviceRegistry;
 typedef struct SubGhzDevice SubGhzDevice;
 typedef struct SubGhzDeviceConf SubGhzDeviceConf;

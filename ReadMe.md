@@ -1,3 +1,13 @@
+# Flipper Momentum 个人定制与换机交接
+
+以 Momentum 保留 Xtreme 风格，逐项适配 Unleashed。当前已完成资源加载进度、插件扫描容错及构建源文件顺序修复；三个桌面回归通过。**完整安装包尚未构建成功，尚未刷写真机。**
+
+**换电脑继续请先读 [HANDOFF.md](HANDOFF.md)**。其他入口：[已完成改动](LOCAL_CHANGES.md) · [全部需求与待办](documentation/custom/REQUIREMENTS.md) · [验证及编译卡点](documentation/custom/VALIDATION.md) · [初步评估](documentation/custom/INITIAL_ASSESSMENT.md) · [固定源码版本](documentation/custom/SOURCE_LOCK.json)。
+
+ESP32 和“WiFi 终结者”升级仅列入待办，尚未确认型号或实现。此仓库为 AI 辅助的个人定制，非 Momentum 上游发布；原作者、许可证和上游贡献政策文件保留。以下为上游项目原说明，其中安装链接指向上游发行版，不是本定制版的安装包。
+
+---
+
 <p align="center">
   <picture>
     <source media="(prefers-color-scheme: dark)" srcset=".github/assets/logo_dark.png">

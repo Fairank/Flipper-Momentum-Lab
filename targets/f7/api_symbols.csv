@@ -1,5 +1,5 @@
 entry,status,name,type,params
-Version,+,87.1,,
+Version,+,87.2,,
 Header,+,applications/drivers/subghz/cc1101_ext/cc1101_ext_interconnect.h,,
 Header,+,applications/main/archive/helpers/archive_helpers_ext.h,,
 Header,+,applications/services/applications.h,,
@@ -1216,6 +1216,7 @@ Function,+,flipper_application_plugin_get_descriptor,const FlipperAppPluginDescr
 Function,+,flipper_application_preload,FlipperApplicationPreloadStatus,"FlipperApplication*, const char*"
 Function,+,flipper_application_preload_manifest,FlipperApplicationPreloadStatus,"FlipperApplication*, const char*"
 Function,+,flipper_application_preload_status_to_string,const char*,FlipperApplicationPreloadStatus
+Function,+,flipper_application_set_assets_progress_callback,void,"FlipperApplication*, FlipperApplicationAssetsProgress, void*"
 Function,+,flipper_format_buffered_file_alloc,FlipperFormat*,Storage*
 Function,+,flipper_format_buffered_file_close,_Bool,FlipperFormat*
 Function,+,flipper_format_buffered_file_open_always,_Bool,"FlipperFormat*, const char*"
@@ -2450,6 +2451,8 @@ Function,+,loader_unlock,void,Loader*
 Function,+,loading_alloc,Loading*,
 Function,+,loading_free,void,Loading*
 Function,+,loading_get_view,View*,Loading*
+Function,+,loading_reset_progress,void,Loading*
+Function,+,loading_set_progress,void,"Loading*, float"
 Function,+,locale_celsius_to_fahrenheit,float,float
 Function,+,locale_fahrenheit_to_celsius,float,float
 Function,+,locale_format_date,void,"FuriString*, const DateTime*, const LocaleDateFormat, const char*"
@@ -3173,6 +3176,7 @@ Function,+,plugin_manager_get,const FlipperAppPluginDescriptor*,"PluginManager*,
 Function,+,plugin_manager_get_count,uint32_t,PluginManager*
 Function,+,plugin_manager_get_ep,const void*,"PluginManager*, uint32_t"
 Function,+,plugin_manager_load_all,PluginManagerError,"PluginManager*, const char*"
+Function,+,plugin_manager_load_all_prefixed,PluginManagerError,"PluginManager*, const char*, const char*"
 Function,+,plugin_manager_load_single,PluginManagerError,"PluginManager*, const char*"
 Function,-,popen,FILE*,"const char*, const char*"
 Function,+,popup_alloc,Popup*,
