@@ -4,13 +4,15 @@
 
 ## 当前状态
 
+手机使用设备、资料库、任务、指南四个主页面，采用原生大标题、分组列表、表单和菜单，保留橙色及像素小屏。比较入口在资料库和记录详情的“更多”菜单中。设计决定、实际模型和运行证据见 [苹果界面优化验收](../../documentation/custom/UI_APPLE_REVIEW.md)。
+
 | 项目 | 状态 |
 | --- | --- |
 | 工程配置与本说明 | 在 Windows 电脑上编写，本地没有 Xcode 或可用的 Mac。下文的本地命令只在 GitHub macOS CI 中以等效步骤运行过 |
-| Swift 包测试（`swift test`） | 提交 `43bd0358` 的 [CI 35977973407](https://github.com/Fairank/Flipper-Momentum-Lab/actions/runs/35977973407)：52 项通过 |
+| Swift 包测试（`swift test`） | 提交 `1a8f4ee8` 的 [CI 35992211349](https://github.com/Fairank/Flipper-Momentum-Lab/actions/runs/35992211349)：通过，确切数量见验收记录 |
 | 模拟器构建（不签名） | 同一运行通过 |
-| 模拟器 UI 测试 | 基线 2 项通过：五个页面、中文指南、示例记录分析与图表；iPhone 17 Pro Max / iOS 26.5，Xcode 26.6。只证明离线界面，不证明蓝牙 |
-| 模拟器截图导出、示例记录固定样本测试 | 基线通过，导出 10 张截图；新版 UI 另行验收 |
+| 模拟器 UI 测试 | 新版三项检查进行中：四页导航、中文指南、示例分析、菜单、深色大字；iPhone 17 Pro Max / iOS 26.5，Xcode 26.6。只证明离线界面，不证明蓝牙 |
+| 模拟器截图导出、示例记录固定样本测试 | 新版运行截图待导出和逐页复核 |
 | GitHub Actions（[`lab-validation.yml`](../../.github/workflows/lab-validation.yml)） | 已运行；后续提交的结果以 PR [#1](https://github.com/Fairank/Flipper-Momentum-Lab/pull/1) 的检查为准 |
 | 真机：蓝牙配对、设备文件导入、上传读回、红外执行 | 均未验证；没有可用的 Mac 和 Flipper |
 | App Store / TestFlight | 未准备：没有 App 图标，未做上架或审核相关准备 |
@@ -25,7 +27,7 @@
 | `Sources/FlipperCore/` | 与界面无关的核心代码：RPC/protobuf 编解码与分包重组、六类记录解析与分析、资料库存储、记录模型，以及离线指南资源 `Resources/FeatureCatalog.json` |
 | `Tests/FlipperCoreTests/` | `FlipperCore` 的 XCTest 单元测试；其中 `ProtocolVectorTests.swift` 由 `scripts/generate_rpc_vectors.py` 用固件锁定的 `.proto` 生成 |
 | `App/` | iPhone App 源码（SwiftUI 界面、蓝牙连接、资料库与任务逻辑），只由 Xcode 工程编译 |
-| `UITests/` | XCUITest 界面测试目标 `FlipperLabUITests`：离线导航五个页面并打开中文指南、示例记录分析，每步保存截图附件 |
+| `UITests/` | XCUITest 界面测试目标 `FlipperLabUITests`：四页导航、指南、示例记录分析、菜单以及深色大字号，每步保存截图附件 |
 | `App/Info.plist` | App 的 Info 模板，构建时 Xcode 会替换其中的 `$(…)` 变量 |
 | `project.yml` | XcodeGen 工程描述 |
 | `FlipperLab.xcodeproj` | 由 XcodeGen 生成在本目录，不是手写文件，不要提交 |
@@ -104,7 +106,7 @@ xcrun xcresulttool export attachments \
   --output-path "$TMPDIR/screenshots"
 ```
 
-两项测试都以简体中文启动 App：`testOfflineNavigationAndChineseGuide` 依次进入设备、资料库、工具（含比较记录）、任务、指南五个页面并打开“设备连接”指南；`testExampleRecordAnalysis` 用 `-ui-testing-fixtures` 启动参数载入两条示例记录，打开分析结果和脉冲图。截图文件名以 `01-设备` 到 `10-示例脉冲图` 编号。这些测试证明离线界面能启动和导航，不证明蓝牙、上传或红外。
+三项测试都以简体中文启动 App：`testOfflineNavigationAndChineseGuide` 进入设备、资料库、任务、指南四个页面，并检查资料库菜单、比较记录和“设备连接”指南；`testExampleRecordAnalysis` 用 `-ui-testing-fixtures` 载入两条示例记录，检查分析、完整脉冲图、离线红外按钮和删除确认；`testDarkAppearanceAndAccessibilityTextNavigation` 检查深色大字页面，以及从记录进入比较时预选记录 A。截图编号为 01–17，其中 03 是资料库菜单、12–17 是深色大字。这些测试只验证离线界面，不证明蓝牙、上传或红外。
 
 ## 4. 用自己的团队签名，安装到 iPhone 17 Pro Max
 
@@ -241,7 +243,7 @@ xcodebuild build \
 
 设备端固件由另一个工作流 [`lab-firmware.yml`](../../.github/workflows/lab-firmware.yml) 构建，产物 `flipper-lab-firmware-<提交>` 含更新包、`SHA256SUMS.txt` 和 `dist/f7-C/apps/Tools/lab.fap`，保留 14 天；运行 [35977973532](https://github.com/Fairank/Flipper-Momentum-Lab/actions/runs/35977973532) 已通过。
 
-状态：新版代码 `bfc43b4a` 通过 52 项包测试、模拟器构建和 3 项 UI 测试，导出 17 张截图，包含深色大字、完整波形和浅色导航栏对比度检查。设备页采用暖白机身、橙色 LCD 与原创像素海豚；资料库、工具、任务及中文指南采用统一主题。设计与验收见 [UI_REDESIGN.md](../../documentation/custom/UI_REDESIGN.md) 和 [UI_REVIEW.md](../../documentation/custom/UI_REVIEW.md)。CI 通过不代表蓝牙、上传或红外功能在真机上可用。
+当前界面和最新运行结果见 [UI_APPLE_DESIGN.md](../../documentation/custom/UI_APPLE_DESIGN.md) 与 [UI_APPLE_REVIEW.md](../../documentation/custom/UI_APPLE_REVIEW.md)。此前五页像素机身方案的历史验证保留在 [UI_REVIEW.md](../../documentation/custom/UI_REVIEW.md)。CI 通过不代表蓝牙、上传或红外功能在真机上可用。
 
 ## 真机验证清单（尚未执行，没有可用的 Mac 和 Flipper）
 

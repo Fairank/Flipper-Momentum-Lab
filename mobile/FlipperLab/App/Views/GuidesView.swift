@@ -50,11 +50,9 @@ import FlipperCore
 
     private var notLoadedSection: some View {
         Section {
-            ContentUnavailableView {
-                Label("指南尚未加载", systemImage: "book.closed")
-            } description: {
-                EmptyView()
-            } actions: {
+            ContentUnavailableView("指南尚未加载", systemImage: "book.closed")
+                .listRowBackground(Color.clear)
+            VStack(spacing: 12) {
                 Button { Task { await model.load() } } label: {
                     PrimaryButtonLabel(title: "重新加载", systemImage: "arrow.clockwise")
                 }
@@ -68,6 +66,7 @@ import FlipperCore
                 }
             }
             .listRowBackground(Color.clear)
+            .listRowSeparator(.hidden)
         }
     }
 

@@ -85,7 +85,12 @@ final class FlipperLabUITests: XCTestCase {
         XCTAssertTrue(app.navigationBars["资料库"].waitForExistence(timeout: 5))
         XCTAssertTrue(button(labeled: "导入文件", in: app).waitForExistence(timeout: 5))
         XCTAssertFalse(buttonContaining("示例：", in: app).exists, "A normal launch must not show example records")
-        XCTAssertTrue(app.buttons["library.emptyImport"].waitForExistence(timeout: 5))
+        let emptyImport = app.buttons["library.emptyImport"]
+        XCTAssertTrue(emptyImport.waitForExistence(timeout: 5))
+        // Regression: an unavailable-view action stretched into a tall icon-only capsule.
+        XCTAssertGreaterThan(emptyImport.frame.width, emptyImport.frame.height * 2,
+                             "The empty-library action should remain a readable horizontal button")
+        XCTAssertLessThan(emptyImport.frame.height, app.frame.height * 0.2)
         capture(app, name: "02-资料库")
 
         // 比较 and 从 Flipper 导入 live in the library's 更多 menu; offline, device import is

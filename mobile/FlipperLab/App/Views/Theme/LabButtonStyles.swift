@@ -20,10 +20,17 @@ struct PrimaryButtonLabel: View {
     }
 
     private var label: some View {
-        Label(title, systemImage: systemImage)
-            .font(.headline)
-            .multilineTextAlignment(.center)
-            .frame(maxWidth: .infinity)
+        HStack(alignment: .firstTextBaseline, spacing: 8) {
+            Image(systemName: systemImage)
+                .accessibilityHidden(true)
+            Text(title)
+                .lineLimit(nil)
+                .fixedSize(horizontal: false, vertical: true)
+        }
+        .font(.headline)
+        .multilineTextAlignment(.center)
+        .frame(maxWidth: .infinity)
+        .fixedSize(horizontal: false, vertical: true)
     }
 }
 
@@ -33,14 +40,17 @@ struct WideButtonLabel: View {
     var systemImage: String?
 
     var body: some View {
-        if let systemImage {
-            Label(title, systemImage: systemImage)
-                .multilineTextAlignment(.center)
-                .frame(maxWidth: .infinity)
-        } else {
+        HStack(alignment: .firstTextBaseline, spacing: 8) {
+            if let systemImage {
+                Image(systemName: systemImage)
+                    .accessibilityHidden(true)
+            }
             Text(title)
-                .multilineTextAlignment(.center)
-                .frame(maxWidth: .infinity)
+                .lineLimit(nil)
+                .fixedSize(horizontal: false, vertical: true)
         }
+        .multilineTextAlignment(.center)
+        .frame(maxWidth: .infinity)
+        .fixedSize(horizontal: false, vertical: true)
     }
 }

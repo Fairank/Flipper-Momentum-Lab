@@ -103,15 +103,15 @@ private struct RecordComparison: Sendable {
                 VStack(alignment: .leading, spacing: 2) {
                     Text(title)
                         .font(.subheadline)
-                        .foregroundStyle(.secondary)
+                        .foregroundStyle(Color.secondary)
                     Text(verbatim: value)
-                        .foregroundStyle(.primary)
+                        .foregroundStyle(Color.primary)
                         .multilineTextAlignment(.leading)
                 }
                 Spacer(minLength: 8)
                 Image(systemName: "chevron.up.chevron.down")
                     .font(.footnote.weight(.semibold))
-                    .foregroundStyle(.secondary)
+                    .foregroundStyle(Color.secondary)
             }
             .frame(maxWidth: .infinity, minHeight: 44, alignment: .leading)
             .contentShape(Rectangle())

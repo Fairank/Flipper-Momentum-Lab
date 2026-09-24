@@ -88,9 +88,11 @@ import FlipperCore
             .disabled(model.busy)
             .accessibilityIdentifier("record.delete")
         } label: {
-            Label("更多", systemImage: "ellipsis.circle")
+            Image(systemName: "ellipsis.circle")
+                .foregroundStyle(LabColor.accent)
         }
         .disabled(record == nil)
+        .accessibilityLabel("更多")
         .accessibilityIdentifier("record.more")
     }
 

@@ -75,8 +75,10 @@ import FlipperCore
             }
             .accessibilityIdentifier("library.compare")
         } label: {
-            Label("更多", systemImage: "ellipsis.circle")
+            Image(systemName: "ellipsis.circle")
+                .foregroundStyle(LabColor.accent)
         }
+        .accessibilityLabel("更多")
         .accessibilityIdentifier("library.more")
     }
 
@@ -91,7 +93,11 @@ import FlipperCore
                     }
                 } description: {
                     Text("从 iPhone 文件或 Flipper 导入采集文件；统计、图表和比较都在手机本地完成，不上传云端。")
-                } actions: {
+                }
+                .listRowBackground(Color.clear)
+                // Keep the full-width action in its own bounded list row. The unavailable
+                // view's action layout can reduce it to an oversized icon-only capsule.
+                VStack(spacing: 12) {
                     Button { importing = true } label: {
                         PrimaryButtonLabel(title: "从 iPhone 文件导入", systemImage: "square.and.arrow.down")
                     }
@@ -105,6 +111,7 @@ import FlipperCore
                     }
                 }
                 .listRowBackground(Color.clear)
+                .listRowSeparator(.hidden)
             }
         } else {
             let shown = visible
