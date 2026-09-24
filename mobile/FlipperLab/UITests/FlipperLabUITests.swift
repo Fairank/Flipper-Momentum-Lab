@@ -173,9 +173,13 @@ final class FlipperLabUITests: XCTestCase {
             return true
         }
         guard drawn else { return nil }
-        let darkCount = stride(from: 0, to: rgba.count, by: 4).filter {
-            0.2126 * Double(rgba[$0]) + 0.7152 * Double(rgba[$0 + 1]) + 0.0722 * Double(rgba[$0 + 2]) < 80
-        }.count
+        var darkCount = 0
+        for index in stride(from: 0, to: rgba.count, by: 4) {
+            let red: Double = 0.2126 * Double(rgba[index])
+            let green: Double = 0.7152 * Double(rgba[index + 1])
+            let blue: Double = 0.0722 * Double(rgba[index + 2])
+            if red + green + blue < 80 { darkCount += 1 }
+        }
         return Double(darkCount) / Double(width * height)
     }
 
