@@ -8,7 +8,7 @@ struct FlipperLabApp: App {
         WindowGroup {
             RootView(model: model)
                 .task { await model.load() }
-                .tint(LabColor.orange)
+                .tint(LabColor.controlTint)
                 #if DEBUG
                 .modifier(UITestPresentation(arguments: ProcessInfo.processInfo.arguments))
                 #endif
@@ -24,7 +24,8 @@ private struct UITestPresentation: ViewModifier {
     let arguments: [String]
 
     @ViewBuilder func body(content: Content) -> some View {
-        let scheme: ColorScheme? = arguments.contains("-ui-testing-dark") ? .dark : nil
+        let scheme: ColorScheme? = arguments.contains("-ui-testing-dark") ? .dark :
+            (arguments.contains("-ui-testing-light") ? .light : nil)
         if arguments.contains("-ui-testing-large-text") {
             content
                 .preferredColorScheme(scheme)

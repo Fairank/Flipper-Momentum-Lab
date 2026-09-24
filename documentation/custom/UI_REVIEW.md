@@ -34,4 +34,6 @@ Opus 实施完成：实际返回 `claude-opus-5-5`，退出码 0，耗时 2,374.
 
 主控修正了正常加载资料库时误显示错误、快速切换比较项时旧任务重置忙碌状态、导航栏橙色文字对比度，以及普通用户页面上的模拟器开发说明。导航按钮改用墨色，橙色继续用于 LCD、主按钮与选中状态。
 
-新版编译与截图尚未验收。旧版已通过的 52 项核心测试、2 项 UI 测试及 36 项桌面回归不能证明新版 UI 已通过。后续结果须在本节与 [VALIDATION.md](VALIDATION.md) 单独记录。
+首轮新版 `4a8e7fba` 在 Xcode 26.6 / iPhone 17 Pro Max / iOS 26.5 编译成功，52 项核心测试、3 项 UI 测试、36 项桌面回归通过；固件构建和 Lint 同样通过。证据：[Lab validation 35983873183](https://github.com/Fairank/Flipper-Momentum-Lab/actions/runs/35983873183)，17 张 PNG 截图，artifact 10801832125，ZIP SHA256 `fe5bfbdbf986d453503852f09cb6c195afa8f9680f13707c7ce963c1bf80bed1`。
+
+主控人工看图发现浅色 Tab 栏白字对比度不足：iOS 26 的玻璃背景没有采用指定墨色，而强制 dark scheme 仍影响标签。现改为 iOS 26 使用系统原生玻璃及明暗适配，旧系统保留墨色栏；系统操作色增加深橙/浅琥珀变体。依据 [Apple Adopting Liquid Glass](https://developer.apple.com/documentation/technologyoverviews/adopting-liquid-glass) 对系统栏移除自定义背景的指导。UI 测试增加浅色未选中 Tab 的截图像素回归，并要求波形面板完整进入可视区域后截图。这些修正需要新一轮运行证据。

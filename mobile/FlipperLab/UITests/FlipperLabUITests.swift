@@ -11,7 +11,7 @@ final class FlipperLabUITests: XCTestCase {
     @MainActor
     func testExampleRecordAnalysis() throws {
         continueAfterFailure = false
-        let app = launch(["-ui-testing-fixtures"])
+        let app = launch(["-ui-testing-fixtures", "-ui-testing-light"])
         XCTAssertTrue(app.navigationBars["设备"].waitForExistence(timeout: 15))
 
         app.tabBars.buttons["资料库"].tap()
@@ -30,6 +30,7 @@ final class FlipperLabUITests: XCTestCase {
         let chart = app.descendants(matching: .any).matching(identifier: "record.pulseChart").firstMatch
         XCTAssertTrue(chart.waitForExistence(timeout: 10))
         XCTAssertTrue(scrollUntilHittable([app.staticTexts["包络时序"], chart], in: app))
+        XCTAssertTrue(scrollFullyIntoView(chart, in: app))
         capture(app, name: "10-示例脉冲图")
 
         // Offline, the single-shot infrared key is disabled and its reason sits beside it.
@@ -44,7 +45,7 @@ final class FlipperLabUITests: XCTestCase {
     @MainActor
     func testOfflineNavigationAndChineseGuide() throws {
         continueAfterFailure = false
-        let app = launch()
+        let app = launch(["-ui-testing-light"])
         XCTAssertTrue(app.navigationBars["设备"].waitForExistence(timeout: 15))
         let scan = app.buttons["device.scan"]
         XCTAssertTrue(scan.waitForExistence(timeout: 5))
@@ -55,6 +56,9 @@ final class FlipperLabUITests: XCTestCase {
         let status = app.staticTexts["device.status"]
         XCTAssertTrue(status.exists)
         XCTAssertTrue(["蓝牙不可用", "尚未连接"].contains(status.label), "Unexpected offline status: \(status.label)")
+        // Regression: forcing a dark tab scheme over iOS 26's light glass made every icon white.
+        let darkFraction = try XCTUnwrap(darkPixelFraction(of: app.tabBars.buttons["工具"]))
+        XCTAssertGreaterThan(darkFraction, 0.02, "Unselected tab icon and text must stay legible on light glass")
         capture(app, name: "01-设备")
 
         app.tabBars.buttons["资料库"].tap()
@@ -140,6 +144,40 @@ final class FlipperLabUITests: XCTestCase {
     }
 
     // MARK: - Helpers
+
+    @MainActor
+    private func scrollFullyIntoView(_ element: XCUIElement, in app: XCUIApplication) -> Bool {
+        for _ in 0..<10 {
+            let frame = element.frame
+            let top = app.navigationBars.firstMatch.frame.maxY + 8
+            let bottom = app.tabBars.firstMatch.frame.minY - 12
+            if frame.minY >= top && frame.maxY <= bottom { return true }
+            let start = app.coordinate(withNormalizedOffset: CGVector(dx: 0.5, dy: 0.65))
+            let end = app.coordinate(withNormalizedOffset: CGVector(dx: 0.5, dy: frame.maxY > bottom ? 0.50 : 0.80))
+            start.press(forDuration: 0.05, thenDragTo: end, withVelocity: .slow, thenHoldForDuration: 0.2)
+        }
+        return false
+    }
+
+    @MainActor
+    private func darkPixelFraction(of element: XCUIElement) -> Double? {
+        guard let image = element.screenshot().image.cgImage else { return nil }
+        let width = image.width, height = image.height
+        guard width > 0, height > 0 else { return nil }
+        var rgba = [UInt8](repeating: 0, count: width * height * 4)
+        let drawn = rgba.withUnsafeMutableBytes { buffer -> Bool in
+            guard let context = CGContext(data: buffer.baseAddress, width: width, height: height,
+                bitsPerComponent: 8, bytesPerRow: width * 4, space: CGColorSpaceCreateDeviceRGB(),
+                bitmapInfo: CGImageAlphaInfo.premultipliedLast.rawValue) else { return false }
+            context.draw(image, in: CGRect(x: 0, y: 0, width: width, height: height))
+            return true
+        }
+        guard drawn else { return nil }
+        let darkCount = stride(from: 0, to: rgba.count, by: 4).filter {
+            0.2126 * Double(rgba[$0]) + 0.7152 * Double(rgba[$0 + 1]) + 0.0722 * Double(rgba[$0 + 2]) < 80
+        }.count
+        return Double(darkCount) / Double(width * height)
+    }
 
     @MainActor
     private func launch(_ extraArguments: [String] = []) -> XCUIApplication {

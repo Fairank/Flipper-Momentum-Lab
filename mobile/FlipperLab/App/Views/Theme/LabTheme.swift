@@ -16,6 +16,8 @@ enum LabColor {
     static let strongLine = dynamic(0x1C1917, 0xBDB4A8)
     static let orange = dynamic(0xFF8200, 0xFF8C1A)
     static let orangeDeep = dynamic(0xD96A00, 0xE07400)
+    /// Legible system control text on light material; warm amber in dark mode.
+    static let controlTint = dynamic(0x994500, 0xFFB566)
     static let orangeSoft = dynamic(0xFFE3C2, 0x4A2C0F)
     static let ok = dynamic(0x2E7D32, 0x6FCF7A)
     static let okBg = dynamic(0xDCEFD9, 0x1F3B22)
@@ -79,11 +81,15 @@ extension View {
             .toolbarBackground(.visible, for: .navigationBar)
     }
 
-    /// Ink tab bar; the selected item takes the app's orange tint (§3).
-    func labTabChrome() -> some View {
-        toolbarBackground(LabColor.tabBar, for: .tabBar)
-            .toolbarBackground(.visible, for: .tabBar)
-            .toolbarColorScheme(.dark, for: .tabBar)
+    /// iOS 26 owns the glass background and its contrasting labels. Older systems use ink.
+    @ViewBuilder func labTabChrome() -> some View {
+        if #available(iOS 26, *) {
+            self
+        } else {
+            toolbarBackground(LabColor.tabBar, for: .tabBar)
+                .toolbarBackground(.visible, for: .tabBar)
+                .toolbarColorScheme(.dark, for: .tabBar)
+        }
     }
 }
 
