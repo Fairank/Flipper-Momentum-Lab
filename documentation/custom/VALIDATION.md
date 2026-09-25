@@ -1,10 +1,10 @@
 # 验证记录
 
-记录日期：2026-09-24。本文只记录实际运行过的检查。源码已编写不等于编译、模拟器或真机通过；CI 通过不等于真机可用。本轮没有刷写设备、部署或发布 App。
+记录日期：2026-09-25。本文只记录实际运行过的检查。源码已编写不等于编译、模拟器或真机通过；CI 通过不等于真机可用。本轮没有刷写设备、部署或发布 App。
 
 ## 当前环境
 
-- 分支 `codex/iphone-zh-architecture`，基于 `b06c940ec326fef33954b49cffbc085f16607aaf`，已推送。草稿 PR：[Fairank/Flipper-Momentum-Lab#1](https://github.com/Fairank/Flipper-Momentum-Lab/pull/1)，目标分支 `codex/momentum-unleashed`，尚未合并。首个提交 `8c4695de2763fa6457d3b0b5c76e803129ea9379`；之后的提交仍在推送和检查中，本文不记录最新提交号。
+- 分支 `codex/iphone-zh-architecture`，基于 `b06c940ec326fef33954b49cffbc085f16607aaf`，已推送。草稿 PR：[Fairank/Flipper-Momentum-Lab#1](https://github.com/Fairank/Flipper-Momentum-Lab/pull/1)，目标分支 `codex/momentum-unleashed`，尚未合并。首个提交 `8c4695de2763fa6457d3b0b5c76e803129ea9379`；当前功能代码提交与运行证据见文末。
 - GitHub 访问：GitHub App 安装 164333683 已限制为只授权 `Fairank/Flipper-Momentum-Lab`，浏览器授权由主控在用户明确许可后完成；连接器可写入该仓库。本机 `gh` 未登录。
 - Windows 11 原生环境，官方工具链 39 可用；工作区内有 Zig 0.16.0，可作为桌面回归的 C 编译器。
 - 全部固定子模块已递归初始化，未升级任何 gitlink；版本见 [SOURCE_LOCK.json](SOURCE_LOCK.json)。
@@ -148,4 +148,15 @@ applications/external/subghz_playlist/playlist_file.h: No such file or directory
 最终验证提交 `9611f7403c5f41df964048c01ee0c622b3c6842d` 已通过 [35998623945](https://github.com/Fairank/Flipper-Momentum-Lab/actions/runs/35998623945) 的 52 项核心测试、3 项 UI 测试、36 项桌面回归与模拟器构建。[完整固件构建](https://github.com/Fairank/Flipper-Momentum-Lab/actions/runs/35998623890) 与 [Lint](https://github.com/Fairank/Flipper-Momentum-Lab/actions/runs/35998623705) 通过。运行环境为 Xcode 26.6 / iPhone 17 Pro Max / iOS 26.5。
 
 应用源码在 `4e80b06e` 后保持不变，后续修正截图测试，使资料库和记录详情的图标检查直接针对保存的整屏原图。最新 17 张截图中一张受到模拟器系统通知遮挡，因此展示选取同一应用代码两次运行中的 17 张无遮挡原图；每张注明出处且未编辑像素。完整来源、ZIP SHA-256、人工核对范围及测试局限见 [UI_APPLE_REVIEW.md](UI_APPLE_REVIEW.md)。之后只更新文档的提交不另作一次代码验证。
+
+## 独立手机功能中心与门禁凭证说明（2026-09-25）
+
+用户决定手机采用自己的中文功能页，点选后仅通过蓝牙要求 Flipper 打开应用，不返回或镜像 Flipper 屏幕。最终功能代码提交 `0729721d0fd85de58029dec2fa64d1067cf00f8f`：
+
+- [Lab validation 36108391458](https://github.com/Fairank/Flipper-Momentum-Lab/actions/runs/36108391458)：54 项 Swift 包测试、3 项离线 UI 测试、37 项 Python/C 桌面回归、iOS 模拟器构建与 65 张 Flipper 源码布局预览全部通过。UI 测试包括五页导航、功能页离线点选提示、示例分析及深色大字。模拟器是 iPhone 17 Pro Max / iOS 26.5，Xcode 26.6。
+- [Lab firmware 36108391450](https://github.com/Fairank/Flipper-Momentum-Lab/actions/runs/36108391450) 与 [Lint 36108391502](https://github.com/Fairank/Flipper-Momentum-Lab/actions/runs/36108391502)：通过。
+- 截图产物 `iphone-screenshots-1`（artifact `10852621263`）包含 18 张模拟器原图，ZIP SHA-256 为 `e509a99e89cb9d5845012c88051f7055987b2ca7be3c030e906d70ecab7380b0`。其中功能页原图 SHA-256 为 `28cf65e85862274036a085f4e75d1274f62e450f7da0789631f1c75c3c7a5cb6`；已查看文字层次，图库中的拷贝与原图校验值一致，没有修改像素。Flipper 预览产物 `flipper-source-previews-1`（artifact `10852128066`）为源码生成，不是真机截图。
+- 本地 Claude CLI 的功能页 UI 委派实际返回 `claude-fable-5-1`、`--effort max`、退出码 0；主助手审核并修正离线可读性、协议和测试。另一次边界清晰的门禁说明 UI 委派因 `ECONNREFUSED` 退出码 1，未返回实际模型或代码；主助手自行实现并在上述模拟器构建中验证编译。
+
+真实 iPhone 与 Flipper 的 BLE 配对、逐项应用启动、已安装 `.fap` 读取，以及门禁发行方数字凭证或刷门均未实测。模拟器不提供这些硬件结论。本次未把 Flipper 卡文件直接转换为 iPhone NFC 凭证。
 
