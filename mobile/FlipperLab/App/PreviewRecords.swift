@@ -21,6 +21,13 @@ enum PreviewRecords {
         0002 [I][Storage] SD ready
         0003 [W][UART] timeout
         0004 [I][UART] connected
+        """),
+        CaptureRecord(name: "示例：Wi-Fi 扫描", kind: .wifiSurvey, tags: ["示例", "离线分析"],
+                      notes: "界面测试样本，并非真实扩展板扫描。", rawText: """
+        # Flipper Lab WiFi Survey v1
+        ssid,bssid,channel,rssi,security
+        Home,02:11:22:33:44:55,6,-54,WPA2
+        "Office, Guest",02:11:22:33:44:66,11,-71,WPA3
         """)
     ]
 }

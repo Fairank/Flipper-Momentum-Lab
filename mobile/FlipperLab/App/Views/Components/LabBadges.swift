@@ -38,6 +38,7 @@ extension RecordKind {
         case .rfid: return "sensor.tag.radiowaves.forward"
         case .iButton: return "key"
         case .serial: return "terminal"
+        case .wifiSurvey: return "wifi"
         }
     }
 }

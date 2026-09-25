@@ -25,6 +25,21 @@ import FlipperCore
                 if record.kind == .nfc || record.kind == .rfid {
                     phoneCredentialSection
                 }
+                if record.kind == .wifiSurvey {
+                    Section {
+                        NavigationLink {
+                            WiFiSurveyView(rawText: record.rawText)
+                        } label: {
+                            Label("查看扫描到的网络", systemImage: "wifi")
+                                .frame(maxWidth: .infinity, minHeight: 44, alignment: .leading)
+                        }
+                        .accessibilityIdentifier("record.wifiNetworks")
+                    } header: {
+                        SectionHeader("Wi-Fi 扫描")
+                    } footer: {
+                        Text("可标记多个网络查看概览；只分析已保存的记录。")
+                    }
+                }
                 AnalysisSections(report: report, failure: failure)
                 if record.kind == .infrared, let buttons = report?.buttons, !buttons.isEmpty {
                     infraredSection(record, buttons: buttons)
@@ -207,7 +222,7 @@ import FlipperCore
             }
         } else {
             Section {
-                Text("串口日志只保存在手机，不能作为设备应用文件上传。")
+                Text("这类分析记录只保存在手机，不能作为设备应用文件上传。")
                     .foregroundStyle(.secondary)
             } header: {
                 SectionHeader("上传")

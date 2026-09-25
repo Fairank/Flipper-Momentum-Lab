@@ -56,6 +56,25 @@ final class FlipperLabUITests: XCTestCase {
     }
 
     @MainActor
+    func testPassiveWiFiSurveyIsLocalAndReadable() throws {
+        continueAfterFailure = false
+        let app = launch(["-ui-testing-fixtures", "-ui-testing-light"])
+        XCTAssertTrue(app.navigationBars["设备"].waitForExistence(timeout: 15))
+        app.tabBars.buttons["资料库"].tap()
+        let record = buttonContaining("示例：Wi-Fi 扫描", in: app)
+        XCTAssertTrue(record.waitForExistence(timeout: 10))
+        XCTAssertTrue(scrollUntilHittable([record], in: app))
+        record.tap()
+        let networks = app.buttons["record.wifiNetworks"]
+        XCTAssertTrue(networks.waitForExistence(timeout: 5))
+        networks.tap()
+        XCTAssertTrue(app.navigationBars["Wi-Fi 扫描"].waitForExistence(timeout: 5))
+        XCTAssertTrue(app.staticTexts["扫描概览"].waitForExistence(timeout: 5))
+        XCTAssertTrue(app.staticTexts["Home"].exists)
+        capture(app, name: "18-离线WiFi扫描")
+    }
+
+    @MainActor
     func testOfflineNavigationAndChineseGuide() throws {
         continueAfterFailure = false
         let app = launch(["-ui-testing-light"])

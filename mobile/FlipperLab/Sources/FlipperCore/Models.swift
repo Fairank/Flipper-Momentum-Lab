@@ -1,7 +1,7 @@
 import Foundation
 
 public enum RecordKind: String, Codable, CaseIterable, Sendable, Identifiable {
-    case infrared, subGHz, nfc, rfid, iButton, serial
+    case infrared, subGHz, nfc, rfid, iButton, serial, wifiSurvey
     public var id: String { rawValue }
     public var title: String {
         switch self {
@@ -11,6 +11,7 @@ public enum RecordKind: String, Codable, CaseIterable, Sendable, Identifiable {
         case .rfid: return "低频 RFID"
         case .iButton: return "iButton"
         case .serial: return "串口日志"
+        case .wifiSurvey: return "Wi-Fi 扫描"
         }
     }
     public var fileExtension: String {
@@ -21,6 +22,7 @@ public enum RecordKind: String, Codable, CaseIterable, Sendable, Identifiable {
         case .rfid: return "rfid"
         case .iButton: return "ibtn"
         case .serial: return "txt"
+        case .wifiSurvey: return "wscan"
         }
     }
     public var deviceDirectory: String? {
@@ -30,7 +32,7 @@ public enum RecordKind: String, Codable, CaseIterable, Sendable, Identifiable {
         case .nfc: return "/ext/nfc"
         case .rfid: return "/ext/lfrfid"
         case .iButton: return "/ext/ibutton"
-        case .serial: return nil
+        case .serial, .wifiSurvey: return nil
         }
     }
 }

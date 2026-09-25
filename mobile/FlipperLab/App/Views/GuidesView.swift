@@ -96,9 +96,9 @@ import FlipperCore
         Section {
             VStack(alignment: .leading, spacing: 6) {
                 TagCapsule(text: "待确认硬件")
-                Text("等待确认板卡型号")
+                Text("三合一板卡待识别")
                     .font(.headline)
-                Text("ESP32 和“WiFi 终结者”需要精确型号、接线与固件版本后才能适配。当前可以导入已保存的文本日志，尚未实现实时串口采集。")
+                Text("可导入已保存的 Wi-Fi 扫描记录，在手机查看多个网络及信道分布。ESP32、CC1101 和你称作 nrf244 的三合一板仍需确认芯片、接线与固件；实时串口采集尚未适配。")
                     .font(.subheadline)
                     .foregroundStyle(.secondary)
             }

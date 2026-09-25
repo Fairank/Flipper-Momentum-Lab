@@ -25,7 +25,9 @@
 
 本轮新增独立的“功能”页作为第五个主页面。手机以中文介绍功能，点击条目通过蓝牙在 Flipper 打开现有应用；不显示设备屏幕镜像。启动范围、设备忙碌时的限制和真机验收边界见 [手机功能中心说明](FUNCTION_LAUNCH.zh-CN.md)。下表的 CI 结果已包含该页的离线界面测试和 2 项功能条目包测试，但不包含通过蓝牙实际启动 Flipper 应用的验证。本轮还修正了设备颜色对应的蓝牙广播服务号，修正后的构建结果以 PR 检查为准。
 
-从 Flipper 导入的 NFC／低频 RFID 记录可以在手机保存、查看与分析，但不能直接变成 iPhone 可刷的门禁凭证。卡类型和正式手机凭证的条件见 [门禁卡记录与 iPhone NFC](CARD_ON_IPHONE.zh-CN.md)；后续手机算力与 ESP32、CC1101、`nrf244` 扩展需求见 [手机算力分析清单](../../documentation/custom/PHONE_COMPUTE_ROADMAP.zh-CN.md)，目前不是已实现功能。
+从 Flipper 导入的 NFC／低频 RFID 记录可以在手机保存、查看与分析，但不能直接变成 iPhone 可刷的门禁凭证。卡类型和正式手机凭证的条件见 [门禁卡记录与 iPhone NFC](CARD_ON_IPHONE.zh-CN.md)；后续手机算力与 ESP32、CC1101、`nrf244` 扩展需求见 [手机算力分析清单](../../documentation/custom/PHONE_COMPUTE_ROADMAP.zh-CN.md)。除下述离线 Wi-Fi 扫描分析外，密钥恢复和扩展板数据链路仍未实现。
+
+新增的 [Wi-Fi 扫描记录说明](WIFI_SURVEY.zh-CN.md)定义了可从 iPhone 文件或 Flipper SD 卡导入的 `.wscan` 文本格式。手机可离线列出多个接入点，查看信道、RSSI 和安全类型，并标记多个网络做本地概览；它不驱动三合一扩展板，也不连接或中断网络。板卡型号、接线和现装固件未明确，实时扫描与真机链路待适配。
 
 | 项目 | 状态 |
 | --- | --- |
@@ -46,7 +48,7 @@
 | 路径 | 内容 |
 | --- | --- |
 | `Package.swift` | Swift 包 `FlipperLab`（swift-tools-version 5.9），唯一产品为库 `FlipperCore`，没有第三方依赖 |
-| `Sources/FlipperCore/` | 与界面无关的核心代码：RPC/protobuf 编解码与分包重组、六类记录解析与分析、资料库存储、记录模型，以及离线指南资源 `Resources/FeatureCatalog.json` |
+| `Sources/FlipperCore/` | 与界面无关的核心代码：RPC/protobuf 编解码与分包重组、七类记录解析与分析、资料库存储、记录模型，以及离线指南资源 `Resources/FeatureCatalog.json` |
 | `Tests/FlipperCoreTests/` | `FlipperCore` 的 XCTest 单元测试；其中 `ProtocolVectorTests.swift` 由 `scripts/generate_rpc_vectors.py` 用固件锁定的 `.proto` 生成 |
 | `App/` | iPhone App 源码（SwiftUI 界面、蓝牙连接、资料库与任务逻辑），只由 Xcode 工程编译 |
 | `UITests/` | XCUITest 界面测试目标 `FlipperLabUITests`：五页导航、功能中心离线状态、指南、示例记录分析、菜单以及深色大字号，每步保存截图附件 |
@@ -223,6 +225,7 @@ xcodebuild build \
 ## 未提供的功能与限制
 
 - 不支持任何扩展板（ESP32、“WiFi 终结者”等）：代码中没有相关实现，也不按名称推断兼容性。
+- `.wscan` 是离线记录格式；扫描来源需要另行确认。手机可分析多个网络，但没有指定网络断连或无线干扰功能。
 - 不做原始射频或红外信号的实时蓝牙流式传输，也不通过蓝牙逐脉冲控制 Flipper；手机只处理已保存的记录文件。
 - 除红外按钮执行外，App 不会让 Flipper 发射或模拟 Sub-GHz、NFC、RFID、iButton 信号；这些记录只能导入、分析、整理、导出和上传。
 - 没有手机触发的采集、实时串口采集或 iCloud 同步。

@@ -46,7 +46,7 @@ extension RecordAnalysisError: LocalizedError {
             return "第 \(line) 行含二进制数据或不允许的控制字符，无法作为文本记录分析。"
         case let .unrecognizedFormat(fileExtension):
             let shown = fileExtension.isEmpty ? "（无扩展名）" : "“.\(fileExtension)”"
-            return "无法识别文件类型：没有 Flipper 文件头，扩展名\(shown)也不是支持的串口日志类型（.txt、.log）。"
+            return "无法识别文件类型：没有 Flipper 文件头或 Wi-Fi 扫描标记，扩展名\(shown)也不是支持的日志类型（.txt、.log）。"
         case let .missingHeader(expected):
             return "缺少 Flipper 文件头（第一条有效内容应为“Filetype: …”），无法按“\(expected.title)”解析。"
         case let .unsupportedFileType(fileType):
@@ -108,11 +108,18 @@ public enum RecordAnalyzer {
     }
 
     /// 识别记录类型。文件头优先；已识别的扩展名与文件头冲突时报错，不做改判。
-    /// 没有文件头时只接受 `.txt`/`.log` 串口日志。
+    /// 没有 Flipper 文件头时接受 `.txt`/`.log` 日志或带专用标记的 Wi-Fi 扫描文件。
     public static func detectKind(text: String, fileExtension: String) throws -> RecordKind {
         let input = try TextInput(text)
         let normalized = normalizedExtension(fileExtension)
         let extensionKind = kind(forExtension: normalized)
+        if isWiFiSurvey(text) {
+            guard ["wscan", "csv", "txt", "log"].contains(normalized) else {
+                throw RecordAnalysisError.extensionMismatch(fileExtension: TextFormat.display(normalized), headerKind: .wifiSurvey)
+            }
+            _ = try WiFiSurvey.parse(text)
+            return .wifiSurvey
+        }
         if let found = try readHeader(input) {
             if let extensionKind, extensionKind != found.header.kind {
                 throw RecordAnalysisError.extensionMismatch(
@@ -124,6 +131,9 @@ public enum RecordAnalyzer {
         switch extensionKind {
         case .some(.serial):
             return .serial
+        case .some(.wifiSurvey):
+            _ = try WiFiSurvey.parse(text)
+            return .wifiSurvey
         case .some(let expected):
             throw RecordAnalysisError.missingHeader(expected: expected)
         case .none:
@@ -134,6 +144,12 @@ public enum RecordAnalyzer {
     /// 校验并分析文本。`kind` 必须与文件头一致；串口日志不能带 Flipper 文件头。
     public static func analyze(_ text: String, kind: RecordKind) throws -> AnalysisReport {
         let input = try TextInput(text)
+        if kind == .wifiSurvey {
+            return try analyzeWiFiSurvey(WiFiSurvey.parse(text))
+        }
+        if isWiFiSurvey(text) {
+            throw RecordAnalysisError.kindMismatch(requested: kind, detected: .wifiSurvey)
+        }
         guard let found = try readHeader(input) else {
             guard kind == .serial else { throw RecordAnalysisError.missingHeader(expected: kind) }
             return analyzeSerial(input)
@@ -150,7 +166,33 @@ public enum RecordAnalyzer {
         case .rfid: return try analyzeRfid(document)
         case .iButton: return try analyzeIButton(document)
         case .serial: throw RecordAnalysisError.kindMismatch(requested: .serial, detected: found.header.kind)
+        case .wifiSurvey: throw RecordAnalysisError.kindMismatch(requested: .wifiSurvey, detected: found.header.kind)
         }
+    }
+
+    private static func isWiFiSurvey(_ text: String) -> Bool {
+        guard let first = text.split(whereSeparator: \.isNewline)
+            .first(where: { !String($0).trimmingCharacters(in: .whitespaces).isEmpty }) else { return false }
+        return String(first).trimmingCharacters(in: .whitespaces) == "# Flipper Lab WiFi Survey v1"
+    }
+
+    private static func analyzeWiFiSurvey(_ survey: WiFiSurvey) -> AnalysisReport {
+        let points = survey.accessPoints
+        let channelCounts = Dictionary(grouping: points, by: \.channel)
+        let distribution = channelCounts.keys.sorted().map { "\($0): \(channelCounts[$0]?.count ?? 0)" }.joined(separator: " · ")
+        var facts = [
+            AnalysisFact("扫描到的接入点", "\(points.count)"),
+            AnalysisFact("不同网络名称", "\(survey.uniqueSSIDCount)"),
+            AnalysisFact("涉及信道", "\(channelCounts.count)"),
+            AnalysisFact("信道分布", distribution.isEmpty ? "无" : distribution),
+        ]
+        if let strongest = points.max(by: { $0.rssi < $1.rssi }) {
+            facts.append(AnalysisFact("最强接收信号", "\(strongest.ssid.isEmpty ? "隐藏网络" : strongest.ssid) · \(strongest.rssi) dBm"))
+        }
+        return AnalysisReport(facts: facts, notes: [
+            "这是已保存的被动扫描记录；RSSI 只表示当时收到的信号强度，不能直接换算距离。",
+            "分析不会连接网络、猜测密码或向扩展板发送无线操作。",
+        ])
     }
 }
 
@@ -237,6 +279,7 @@ extension RecordAnalyzer {
 
     fileprivate static func kind(forExtension fileExtension: String) -> RecordKind? {
         if fileExtension == "log" { return .serial }
+        if fileExtension == "csv" { return .wifiSurvey }
         return RecordKind.allCases.first { $0.fileExtension == fileExtension }
     }
 

@@ -634,6 +634,24 @@ final class RecordAnalyzerTests: XCTestCase {
         XCTAssertEqual(report.pulseDurations, [])
     }
 
+    func testPassiveWiFiSurveyImportsAsItsOwnRecordKind() throws {
+        let scan = """
+        # Flipper Lab WiFi Survey v1
+        ssid,bssid,channel,rssi,security
+        Home,02:11:22:33:44:55,6,-54,WPA2
+        "Office, Guest",02:11:22:33:44:66,11,-71,WPA3
+        """
+        for ext in ["wscan", "csv", "txt"] {
+            XCTAssertEqual(try RecordAnalyzer.detectKind(text: scan, fileExtension: ext), .wifiSurvey)
+        }
+        let report = try RecordAnalyzer.analyze(scan, kind: .wifiSurvey)
+        XCTAssertEqual(fact(report, "扫描到的接入点"), "2")
+        XCTAssertEqual(fact(report, "不同网络名称"), "2")
+        XCTAssertEqual(fact(report, "涉及信道"), "2")
+        XCTAssertTrue(report.notes.contains { $0.contains("不能直接换算距离") })
+        XCTAssertThrowsError(try RecordAnalyzer.analyze(scan, kind: .serial))
+    }
+
     // MARK: - 错误说明
 
     func testEveryErrorHasChineseDescription() {
