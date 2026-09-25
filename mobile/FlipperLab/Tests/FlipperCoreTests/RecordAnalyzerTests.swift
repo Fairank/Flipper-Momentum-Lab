@@ -652,6 +652,23 @@ final class RecordAnalyzerTests: XCTestCase {
         XCTAssertThrowsError(try RecordAnalyzer.analyze(scan, kind: .serial))
     }
 
+    func testSavedESP32APLogIsRecognizedWithoutConvertingFile() throws {
+        let log = """
+        > #scanap
+        Starting AP scan. Stop with stopscan
+        RSSI: -57 Ch: 3 BSSID: 50:ff:20:84:d6:0f ESSID: Home
+        Beacon: 11 18 1 17464
+        """
+        XCTAssertEqual(try RecordAnalyzer.detectKind(text: log, fileExtension: "log"), .wifiSurvey)
+        let report = try RecordAnalyzer.analyze(log, kind: .wifiSurvey)
+        XCTAssertEqual(fact(report, "记录来源"), "ESP32 扫描日志")
+        XCTAssertEqual(fact(report, "扫描到的接入点"), "1")
+        XCTAssertTrue(report.notes.contains { $0.contains("未记录") })
+        XCTAssertThrowsError(try RecordAnalyzer.analyze(log, kind: .serial))
+        let failedScan = "Starting AP scan. Stop with stopscan\nFailed to deinit Wi-Fi driver\n"
+        XCTAssertEqual(try RecordAnalyzer.detectKind(text: failedScan, fileExtension: "log"), .serial)
+    }
+
     // MARK: - 错误说明
 
     func testEveryErrorHasChineseDescription() {

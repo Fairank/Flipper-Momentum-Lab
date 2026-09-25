@@ -173,7 +173,9 @@ public enum RecordAnalyzer {
     private static func isWiFiSurvey(_ text: String) -> Bool {
         guard let first = text.split(whereSeparator: \.isNewline)
             .first(where: { !String($0).trimmingCharacters(in: .whitespaces).isEmpty }) else { return false }
-        return String(first).trimmingCharacters(in: .whitespaces) == "# Flipper Lab WiFi Survey v1"
+        let header = String(first).trimmingCharacters(in: .whitespaces)
+            .replacingOccurrences(of: "\u{FEFF}", with: "")
+        return header == WiFiSurvey.marker || WiFiSurvey.looksLikeMarauderScanLog(text)
     }
 
     private static func analyzeWiFiSurvey(_ survey: WiFiSurvey) -> AnalysisReport {
@@ -181,6 +183,7 @@ public enum RecordAnalyzer {
         let channelCounts = Dictionary(grouping: points, by: \.channel)
         let distribution = channelCounts.keys.sorted().map { "\($0): \(channelCounts[$0]?.count ?? 0)" }.joined(separator: " · ")
         var facts = [
+            AnalysisFact("记录来源", survey.source.title),
             AnalysisFact("扫描到的接入点", "\(points.count)"),
             AnalysisFact("不同网络名称", "\(survey.uniqueSSIDCount)"),
             AnalysisFact("涉及信道", "\(channelCounts.count)"),
@@ -189,10 +192,14 @@ public enum RecordAnalyzer {
         if let strongest = points.max(by: { $0.rssi < $1.rssi }) {
             facts.append(AnalysisFact("最强接收信号", "\(strongest.ssid.isEmpty ? "隐藏网络" : strongest.ssid) · \(strongest.rssi) dBm"))
         }
-        return AnalysisReport(facts: facts, notes: [
+        var notes = [
             "这是已保存的被动扫描记录；RSSI 只表示当时收到的信号强度，不能直接换算距离。",
             "分析不会连接网络、猜测密码或向扩展板发送无线操作。",
-        ])
+        ]
+        if survey.source == .marauderScanLog {
+            notes.append("ESP32 扫描日志未提供安全类型；页面显示“未记录”，不据此判断网络是否开放。")
+        }
+        return AnalysisReport(facts: facts, notes: notes)
     }
 }
 

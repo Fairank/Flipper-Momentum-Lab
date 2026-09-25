@@ -29,6 +29,7 @@ import FlipperCore
                 Section { ErrorRow(title: "无法读取扫描结果", message: failure) }
             } else if let survey {
                 Section {
+                    LabeledContent("记录来源", value: survey.source.title)
                     LabeledContent("发现的接入点", value: "\(survey.accessPoints.count)")
                     LabeledContent("不同网络名称", value: "\(survey.uniqueSSIDCount)")
                     if !selected.isEmpty {
@@ -38,14 +39,16 @@ import FlipperCore
                 } header: {
                     SectionHeader("扫描概览")
                 } footer: {
-                    Text("标记一个或多个网络只用于手机本地比较，不会连接网络或向扩展板发送指令。")
+                    Text(survey.source == .marauderScanLog
+                         ? "ESP32 日志未记录安全类型。标记网络仅用于手机本地比较。"
+                         : "标记网络仅用于手机本地比较，不会连接网络或向扩展板发送指令。")
                 }
 
                 Section {
                     if visible.isEmpty {
                         ContentUnavailableView("没有匹配的网络", systemImage: "magnifyingglass")
                     } else {
-                        ForEach(Array(visible.enumerated()), id: \.offset) { _, point in
+                        ForEach(visible) { point in
                             networkRow(point)
                         }
                     }

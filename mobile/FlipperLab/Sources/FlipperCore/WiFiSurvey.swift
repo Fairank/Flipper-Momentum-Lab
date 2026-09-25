@@ -26,7 +26,7 @@ extension WiFiSurveyError: LocalizedError {
         case .tooLarge:
             return "Wi-Fi 扫描文件超过 2 MiB，未导入。"
         case .invalidHeader:
-            return "缺少 Wi-Fi 扫描格式标记“# Flipper Lab WiFi Survey v1”。"
+            return "未找到受支持的 Wi-Fi 扫描文件头或 ESP32 扫描日志。"
         case .invalidColumns:
             return "扫描文件第二行应为 ssid,bssid,channel,rssi,security。"
         case let .malformedRow(line, reason):
@@ -39,14 +39,27 @@ extension WiFiSurveyError: LocalizedError {
     }
 }
 
-/// Bounded, offline parser for the Flipper Lab passive-scan exchange format.
+/// Bounded, offline parser for saved AP surveys and ESP32 scan console logs.
 public struct WiFiSurvey: Equatable, Sendable {
+    public enum Source: Equatable, Sendable {
+        case flipperLabFile
+        case marauderScanLog
+
+        public var title: String {
+            switch self {
+            case .flipperLabFile: return "Flipper Lab 扫描文件"
+            case .marauderScanLog: return "ESP32 扫描日志"
+            }
+        }
+    }
+
     public static let marker = "# Flipper Lab WiFi Survey v1"
     public static let columns = "ssid,bssid,channel,rssi,security"
     public static let maxBytes = 2 * 1024 * 1024
     public static let maxAccessPoints = 512
 
     public let accessPoints: [WiFiAccessPoint]
+    public let source: Source
 
     public var uniqueSSIDCount: Int {
         Set(accessPoints.map(\.ssid).filter { !$0.isEmpty }).count
@@ -72,7 +85,9 @@ public struct WiFiSurvey: Equatable, Sendable {
             .replacingOccurrences(of: "\r", with: "\n")
             .components(separatedBy: "\n")
         guard let first = lines.firstIndex(where: { !$0.trimmingCharacters(in: .whitespaces).isEmpty }),
-              lines[first] == marker else { throw WiFiSurveyError.invalidHeader }
+              lines[first].replacingOccurrences(of: "\u{FEFF}", with: "") == marker else {
+            return try parseMarauderLog(lines)
+        }
         guard first + 1 < lines.count, lines[first + 1] == columns else {
             throw WiFiSurveyError.invalidColumns
         }
@@ -116,7 +131,66 @@ public struct WiFiSurvey: Equatable, Sendable {
                                               rssi: rssi, security: security))
             }
         }
-        return WiFiSurvey(accessPoints: points)
+        return WiFiSurvey(accessPoints: points, source: .flipperLabFile)
+    }
+
+    /// Recognize saved AP scan output from the bundled ESP32 companion app. Other
+    /// console logs remain serial records, even if they mention RSSI elsewhere.
+    public static func looksLikeMarauderScanLog(_ text: String) -> Bool {
+        let lines = text.split(whereSeparator: \.isNewline)
+        let started = lines.prefix(128).contains { line in
+            line.contains("Starting AP scan") || line.contains("#scanap")
+        }
+        return started && lines.contains { line in
+            line.contains("RSSI:") && line.contains("Ch:") &&
+                line.contains("BSSID:") && line.contains("ESSID:")
+        }
+    }
+
+    private static func parseMarauderLog(_ lines: [String]) throws -> WiFiSurvey {
+        guard looksLikeMarauderScanLog(lines.joined(separator: "\n")) else {
+            throw WiFiSurveyError.invalidHeader
+        }
+        var points: [WiFiAccessPoint] = []
+        var positions: [String: Int] = [:]
+        for (index, line) in lines.enumerated() {
+            guard line.contains("RSSI:"), line.contains("Ch:"),
+                  line.contains("BSSID:"), line.contains("ESSID:") else { continue }
+            let row = line.trimmingCharacters(in: .whitespaces)
+                .replacingOccurrences(of: "> ", with: "", options: .anchored)
+            guard row.hasPrefix("RSSI:"),
+                  let (rssiField, restAfterRssi) = splitOnce(String(row.dropFirst(5)), at: "Ch:"),
+                  let (channelField, restAfterChannel) = splitOnce(restAfterRssi, at: "BSSID:"),
+                  let (bssidField, ssidField) = splitOnce(restAfterChannel, at: "ESSID:"),
+                  let rssi = Int(rssiField.trimmingCharacters(in: .whitespaces)),
+                  (-127...0).contains(rssi),
+                  let channel = Int(channelField.trimmingCharacters(in: .whitespaces)),
+                  (1...196).contains(channel),
+                  let bssid = normalizedBSSID(bssidField.trimmingCharacters(in: .whitespaces)) else {
+                throw WiFiSurveyError.malformedRow(line: index + 1, reason: "ESP32 扫描字段无效")
+            }
+            let ssid = ssidField.trimmingCharacters(in: .whitespaces)
+            guard ssid.utf8.count <= 128, !ssid.contains("\u{FFFD}"),
+                  !ssid.unicodeScalars.contains(where: { $0.value < 32 }) else {
+                throw WiFiSurveyError.malformedRow(line: index + 1, reason: "网络名称含无效字符或过长")
+            }
+            let point = WiFiAccessPoint(ssid: ssid, bssid: bssid, channel: channel,
+                                        rssi: rssi, security: "未记录")
+            let identity = point.id
+            if let existing = positions[identity] {
+                if point.rssi > points[existing].rssi { points[existing] = point }
+            } else {
+                guard points.count < maxAccessPoints else { throw WiFiSurveyError.tooManyNetworks }
+                positions[identity] = points.count
+                points.append(point)
+            }
+        }
+        return WiFiSurvey(accessPoints: points, source: .marauderScanLog)
+    }
+
+    private static func splitOnce(_ value: String, at marker: String) -> (String, String)? {
+        guard let range = value.range(of: marker) else { return nil }
+        return (String(value[..<range.lowerBound]), String(value[range.upperBound...]))
     }
 
     private static func normalizedBSSID(_ value: String) -> String? {
