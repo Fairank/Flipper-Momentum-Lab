@@ -1,0 +1,169 @@
+name: "Lab validation"
+
+on:
+  push:
+    branches:
+      - "codex/**"
+    paths:
+      - "mobile/**"
+      - "scripts/tests/**"
+      - "applications/main/lab/**"
+      - "applications/services/gui/**"
+      - "scripts/generate_lab_font.py"
+      - "scripts/render_lab_preview.py"
+      - ".github/workflows/lab-validation.yml"
+  pull_request:
+    paths:
+      - "mobile/**"
+      - "scripts/tests/**"
+      - "applications/main/lab/**"
+      - "applications/services/gui/**"
+      - "scripts/generate_lab_font.py"
+      - "scripts/render_lab_preview.py"
+      - ".github/workflows/lab-validation.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.head_ref || github.ref_name }}
+  cancel-in-progress: true
+
+defaults:
+  run:
+    shell: bash
+
+jobs:
+  ios:
+    name: "iOS package tests and simulator build"
+    runs-on: macos-26
+    timeout-minutes: 30
+    env:
+      DEVELOPER_DIR: /Applications/Xcode_26.6.app/Contents/Developer
+    steps:
+      - name: "Checkout code"
+        uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+
+      - name: "Show toolchain"
+        run: |
+          sw_vers
+          xcodebuild -version
+          xcrun --sdk iphonesimulator --show-sdk-version
+          swift --version
+
+      - name: "Install XcodeGen"
+        id: xcodegen
+        env:
+          HOMEBREW_NO_AUTO_UPDATE: "1"
+        run: |
+          brew install xcodegen
+          xcodegen --version
+
+      - name: "Swift package tests"
+        run: swift test --package-path mobile/FlipperLab
+
+      # The app build still runs when package tests fail, so both results are reported.
+      - name: "Prepare Mac Xcode project"
+        id: generate
+        if: ${{ !cancelled() && steps.xcodegen.outcome == 'success' }}
+        run: sh mobile/FlipperLab/prepare-mac.sh --prepare-only
+
+      - name: "Build for iOS Simulator (unsigned)"
+        id: build
+        if: ${{ !cancelled() && steps.generate.outcome == 'success' }}
+        working-directory: mobile/FlipperLab
+        run: |
+          set -o pipefail
+          xcodebuild build \
+            -project FlipperLab.xcodeproj \
+            -scheme FlipperLab \
+            -configuration Debug \
+            -destination "generic/platform=iOS Simulator" \
+            -derivedDataPath "$RUNNER_TEMP/DerivedData" \
+            CODE_SIGNING_ALLOWED=NO \
+            SWIFT_TREAT_WARNINGS_AS_ERRORS=NO \
+            2>&1 | tee "$RUNNER_TEMP/xcodebuild.log"
+
+      - name: "Upload xcodebuild log"
+        if: ${{ !cancelled() && steps.build.outcome == 'failure' }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: xcodebuild-log-${{ github.run_attempt }}
+          path: ${{ runner.temp }}/xcodebuild.log
+          retention-days: 7
+          if-no-files-found: ignore
+
+      - name: "Run offline iPhone navigation test"
+        if: ${{ !cancelled() && steps.build.outcome == 'success' }}
+        working-directory: mobile/FlipperLab
+        run: |
+          DEVICE_ID=$(xcrun simctl list devices available -j | python3 -c 'import sys,json; d=json.load(sys.stdin); print(next(x["udid"] for k,v in d["devices"].items() if k.endswith("iOS-26-5") for x in v if x["name"] == "iPhone 17 Pro Max"))')
+          echo "UI evidence: iPhone 17 Pro Max / iOS 26.5 / $DEVICE_ID"
+          xcodebuild test -project FlipperLab.xcodeproj -scheme FlipperLab \
+            -destination "platform=iOS Simulator,id=$DEVICE_ID" \
+            -derivedDataPath "$RUNNER_TEMP/DerivedData" \
+            -resultBundlePath "$RUNNER_TEMP/FlipperLab.xcresult" \
+            CODE_SIGNING_ALLOWED=NO
+
+      - name: "Export simulator screenshots"
+        if: ${{ !cancelled() && steps.build.outcome == 'success' }}
+        run: xcrun xcresulttool export attachments --path "$RUNNER_TEMP/FlipperLab.xcresult" --output-path "$RUNNER_TEMP/screenshots"
+
+      - name: "Upload simulator screenshots"
+        if: ${{ !cancelled() && steps.build.outcome == 'success' }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: iphone-screenshots-${{ github.run_attempt }}
+          path: ${{ runner.temp }}/screenshots
+          retention-days: 14
+          if-no-files-found: warn
+
+      - name: "Upload simulator test evidence"
+        if: ${{ !cancelled() && steps.build.outcome == 'success' }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: simulator-test-evidence-${{ github.run_attempt }}
+          path: ${{ runner.temp }}/FlipperLab.xcresult
+          retention-days: 7
+          if-no-files-found: warn
+
+  host:
+    name: "Python regressions and font check"
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    env:
+      PYTHONUTF8: "1"
+    steps:
+      - name: "Checkout code"
+        id: checkout
+        uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+
+      # The C regressions skip without a host compiler; fail here instead of passing with skips.
+      - name: "Show toolchain"
+        run: |
+          python3 --version
+          cc --version
+
+      - name: "Python unittest discovery"
+        run: python3 -m unittest discover -s scripts/tests -p "test*.py" -v
+
+      - name: "Check generated lab font"
+        if: ${{ !cancelled() && steps.checkout.outcome == 'success' }}
+        run: |
+          python3 scripts/generate_lab_font.py --check
+
+      - name: "Render all Flipper Lab screens"
+        run: python3 scripts/render_lab_preview.py --all --output-dir "$RUNNER_TEMP/flipper-previews"
+
+      - name: "Upload Flipper source layout previews"
+        uses: actions/upload-artifact@v4
+        with:
+          name: flipper-source-previews-${{ github.run_attempt }}
+          path: ${{ runner.temp }}/flipper-previews
+          retention-days: 14
+          if-no-files-found: error

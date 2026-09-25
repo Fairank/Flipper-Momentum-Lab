@@ -1,0 +1,195 @@
+{
+  "schema_version": 1,
+  "locale": "zh-CN",
+  "catalog_status": "implementation_in_progress",
+  "notice": "Flipper Lab 中文离线说明，描述当前源码已实现或正在实现的功能，不是设备探测结果。状态说明：implemented_unverified 表示源码已编写，但尚未经过 iOS 编译、模拟器或 iPhone 与 Flipper 真机验证；in_progress 表示部分源码仍在编写；hardware_required 表示需先确认具体硬件，App 不提供相应操作按钮。记录分析只在手机本地进行，App 不使用云端 AI 服务，也不能升级 Flipper 固件。请只处理自有或已获授权的设备与记录，并遵守当地法规。验证进度见仓库 documentation/custom/VALIDATION.md。",
+  "features": [
+    {
+      "id": "device.connection",
+      "title": "设备连接",
+      "status": "implemented_unverified",
+      "phase": "M1",
+      "summary": "通过蓝牙连接 Flipper，检查通信协议版本并显示设备信息。",
+      "device_help": "打开蓝牙并回到主界面；首次配对时，在 iPhone 输入 Flipper 屏幕上的配对码。",
+      "requires": [
+        "iPhone 已开启蓝牙，并允许 Flipper Lab 使用蓝牙",
+        "Flipper 已开启蓝牙（Settings → Bluetooth）",
+        "固件 RPC 协议版本为 0.25 或更新的 0.x 版本",
+        "手机放在 Flipper 附近"
+      ],
+      "steps": [
+        "在 Flipper 上进入 Settings → Bluetooth，确认蓝牙已打开，然后返回主界面。",
+        "在 iPhone 打开 Flipper Lab 的“设备”页并开始搜索；每次搜索最长 15 秒。",
+        "在搜索结果中选择自己的 Flipper。",
+        "首次配对时，Flipper 屏幕会显示 6 位配对码，在 iPhone 弹出的系统窗口中输入。",
+        "等待状态变为“设备已就绪”，再查看协议版本和设备信息。",
+        "使用结束后在“设备”页断开连接。"
+      ],
+      "phone_role": "搜索 Flipper 的蓝牙广播并建立配对连接；按设备流控分块发送，同一时间只执行一条命令。",
+      "flipper_role": "显示配对码，通过蓝牙串口服务处理命令，返回协议版本和设备信息。",
+      "result": "“设备”页显示连接状态、协议版本和设备报告的信息；失败时显示中文原因。",
+      "limits": "尚未在 iPhone 与 Flipper 上实测，模拟器不能测试蓝牙。配对和准备超过 45 秒会断开；单条命令 45 秒没有数据往来或总耗时超过 10 分钟也会断开；取消正在进行的操作同样会断开，需要重新连接。配对反复失败时，可在 iPhone 蓝牙设置中忽略此设备，并在 Flipper 的 Settings → Bluetooth 中选择 Unpair All Devices 后重试，这会清除 Flipper 上的全部配对记录。"
+    },
+    {
+      "id": "library.records",
+      "title": "中文资料库",
+      "status": "in_progress",
+      "phase": "M2",
+      "summary": "从 Flipper 或 iPhone“文件”App 导入记录，添加中文名称、标签和备注，离线查看。",
+      "device_help": "中文名称只保存在手机；上传回 Flipper 时使用 Lab_ 开头的新文件名，不覆盖原文件。",
+      "requires": [
+        "六类文本记录：红外 .ir、Sub-GHz .sub、NFC .nfc、低频 RFID .rfid、iButton .ibtn、串口日志 .txt",
+        "UTF-8 文本，单个文件不超过 2 MiB",
+        "从 Flipper 导入或上传时需先连接设备"
+      ],
+      "steps": [
+        "从 Flipper 导入：连接后浏览 Flipper 存储（/ext 下的 infrared、subghz、nfc、lfrfid、ibutton 等文件夹），选择文件导入。",
+        "从 iPhone 导入：在“文件”App 中选择记录文件导入。",
+        "在“资料库”打开记录，填写中文名称、标签（如房间、用途）和备注，然后保存。",
+        "需要把记录放到 Flipper 时选择上传；App 会读回核对内容，并记下设备上的新路径。",
+        "不需要的记录可以删除；删除只影响手机资料库，不删除 Flipper 上的文件。"
+      ],
+      "phone_role": "识别记录类型，保存原始内容和来源路径，管理中文名称、标签与备注。",
+      "flipper_role": "提供存储中的原始文件，接收上传的新文件。",
+      "result": "手机上保存一份可离线查看、带中文名称和来源的记录；原始内容保持不变。",
+      "limits": "资料库存储和界面仍在编写，尚未编译或实测。上限为 1000 条记录、总计约 32 MiB；格式不符的文件会导入失败并显示原因。设备文件名固定为 Lab_ 加随机编号（UUID），重复上传会留下多个文件，需要时在 Flipper 上手动删除。串口日志不能上传到 Flipper。“任务”页只保留本次打开 App 期间最多 100 条操作记录。"
+    },
+    {
+      "id": "infrared.workbench",
+      "title": "红外工作台",
+      "status": "in_progress",
+      "phase": "M2",
+      "summary": "查看红外记录的按钮和文件字段，统计原始信号的脉冲时长，比较两条记录，并让 Flipper 发送一次已保存的按钮。",
+      "device_help": "先在 Flipper 的 Infrared 应用中学习并保存遥控按钮，再导入手机。",
+      "requires": [
+        "Flipper 上已保存的 .ir 文件（/ext/infrared）",
+        "发送时已连接 Flipper，且 Flipper 停在主界面、未运行其他应用",
+        "被控制的家电属于自己或已获授权"
+      ],
+      "steps": [
+        "在 Flipper 上打开 Infrared → Learn New Remote，对准遥控器学习按钮并保存。",
+        "在 iPhone 连接 Flipper，从 infrared 文件夹导入这个 .ir 文件。",
+        "在“资料库”打开记录，查看按钮列表和文件中写明的协议、地址或频率等字段；原始（raw）信号还可查看脉冲时长统计和图表。",
+        "需要时选择两条红外记录比较，查看按钮和脉冲差异。",
+        "发送前让 Flipper 回到主界面。从 Flipper 导入的记录可直接发送；从“文件”App 导入的记录需先上传到 Flipper。",
+        "选择一个按钮发送。App 先读回设备文件并确认与手机记录一致，再启动 Flipper 的红外应用发送一次，然后退出该应用。",
+        "观察家电是否响应。任务显示“已完成”只表示 Flipper 确认执行了命令，不代表家电一定响应。"
+      ],
+      "phone_role": "读取文件字段、统计脉冲时长、比较记录；发送时依次下发启动红外应用、加载文件、发送一次和退出命令。",
+      "flipper_role": "学习并保存信号，由原生红外应用按文件内容发射。",
+      "result": "看到按钮列表、文件字段和脉冲统计；发送后“任务”页显示设备是否确认执行。",
+      "limits": "解析和比较界面仍在编写，发送流程尚未真机测试。手机不能让 Flipper 学习新信号，也不猜测未知协议，协议名称只来自文件字段；脉冲时长不能证明载波频率。脉冲图最多显示 512 个样本。每次只发送一次，不支持按住连发。Flipper 正忙或设备文件与手机记录不一致时会拒绝发送；发送过程中出错会断开连接。"
+    },
+    {
+      "id": "device.chinese_help",
+      "title": "中文入口与功能说明",
+      "status": "in_progress",
+      "phase": "M3",
+      "summary": "Flipper 上的 Flipper Lab 提供中文功能入口和分页说明；iPhone“指南”页离线显示本目录。",
+      "device_help": "在 Flipper Lab 中选择功能阅读中文说明，再启动对应的原生应用。",
+      "requires": [
+        "刷入包含 Flipper Lab 的定制固件（该固件尚未构建验证）",
+        "阅读手机指南只需安装 App，无需连接设备"
+      ],
+      "steps": [
+        "在 Flipper 菜单中找到并打开 Flipper Lab。",
+        "选择一项功能，按屏幕提示翻页阅读中文说明。",
+        "需要实际使用时按提示启动；Flipper Lab 会先退出，再由系统打开对应的原生应用。",
+        "原生应用和系统设置保持原有英文界面；不清楚的菜单项可回到 Flipper Lab 或手机“指南”查看。",
+        "在 iPhone“指南”页查看每项功能的准备事项、步骤、结果和限制，无需连接设备。"
+      ],
+      "phone_role": "离线显示本目录中的完整中文说明。",
+      "flipper_role": "Flipper Lab 用文泉驿（WQY）12 像素字体子集显示中文入口和简短说明，并排队启动现有原生应用。",
+      "result": "在设备上用中文了解功能用途和下一步，在手机上查看完整步骤与限制。",
+      "limits": "Flipper Lab 与字库仍在编写，尚未编译、刷写或在真机屏幕上检查。它不翻译现有原生应用、系统设置、启动和恢复界面，系统中也没有“切换中文”的设置项。字库只包含所需汉字；中文长文本换行的 UTF-8 修复另行进行。手机 App 不能刷写或升级 Flipper 固件。"
+    },
+    {
+      "id": "subghz.analysis",
+      "title": "Sub-GHz 记录分析",
+      "status": "in_progress",
+      "phase": "M4",
+      "summary": "查看已保存 .sub 记录的频率、预设和协议等字段，统计 RAW 记录的脉冲时长，并比较两条记录。",
+      "device_help": "先在 Flipper 的 Sub-GHz 应用中保存记录，再导入手机查看。",
+      "requires": [
+        "Flipper 上已保存的 .sub 文件（/ext/subghz）",
+        "记录来自自有或已获授权的设备"
+      ],
+      "steps": [
+        "在 Flipper 上打开 Sub-GHz，用 Read 或 Read RAW 接收自有设备的信号并保存。",
+        "在 iPhone 连接 Flipper，从 subghz 文件夹导入 .sub 文件，或从“文件”App 导入。",
+        "在“资料库”打开记录，查看文件中的频率、预设和协议字段；RAW 记录可查看脉冲时长统计和图表。",
+        "选择两条记录比较字段和脉冲差异，把结论写在备注中。"
+      ],
+      "phone_role": "读取文件字段、统计 RAW 脉冲时长、比较记录。",
+      "flipper_role": "在自身硬件能力内接收并保存记录；手机不控制 Sub-GHz 收发。",
+      "result": "列出文件字段和脉冲统计，便于比较多次记录。",
+      "limits": "解析界面仍在编写，尚未用真实记录验证。手机不发射 Sub-GHz 信号，不实时接收射频数据，也不能扩大 Flipper 的频段或采样能力。不解密内容、不复现滚动码、不推断未知编码。脉冲图最多显示 512 个样本。"
+    },
+    {
+      "id": "nfc_rfid.records",
+      "title": "NFC、RFID 与 iButton 记录",
+      "status": "in_progress",
+      "phase": "M4",
+      "summary": "查看已保存 NFC、低频 RFID 和 iButton 记录中的类型与主要字段，并比较两次读取。",
+      "device_help": "先在 Flipper 的 NFC、125 kHz RFID 或 iButton 应用中读取并保存。",
+      "requires": [
+        "Flipper 上已保存的 .nfc、.rfid 或 .ibtn 文件",
+        "卡片、标签或钥匙属于自己或已获授权"
+      ],
+      "steps": [
+        "在 Flipper 上打开 NFC、125 kHz RFID 或 iButton，读取后保存。",
+        "在 iPhone 连接 Flipper，从 nfc、lfrfid 或 ibutton 文件夹导入记录。",
+        "在“资料库”打开记录，查看文件写明的类型和编号等字段。",
+        "对同一张卡的两次读取进行比较，并添加备注。"
+      ],
+      "phone_role": "展示文件中的类型和字段，比较记录并管理备注。",
+      "flipper_role": "完成对时序敏感的读取交互并保存文件。",
+      "result": "列出文件字段和两次记录的差异；手机不修改原始内容。",
+      "limits": "解析界面仍在编写，尚未用真实记录验证。说明只基于文件内容，不代表已读到卡内全部数据。手机不破解密钥、不恢复加密内容，也不写卡或模拟。NFC、低频 RFID 和 iButton 分别依赖 Flipper 的不同硬件。"
+    },
+    {
+      "id": "gpio.serial_logs",
+      "title": "串口日志查看",
+      "status": "in_progress",
+      "phase": "M4",
+      "summary": "导入已保存的串口文本日志，查看行数和错误、警告的基础计数。",
+      "device_help": "暂不支持实时采集串口；请导入已保存的日志文件。",
+      "requires": [
+        "UTF-8 文本日志（.txt），不超过 2 MiB",
+        "日志保存在 iPhone“文件”App 或 Flipper 存储中"
+      ],
+      "steps": [
+        "把已有的串口日志保存为 .txt 文件，放到 iPhone“文件”App 或 Flipper 存储中。",
+        "在 Flipper Lab App 中导入该文件；从 Flipper 导入时需先连接。",
+        "在“资料库”打开记录，查看总行数以及含错误、警告关键字的行数。",
+        "添加标签和备注，方便以后查找。"
+      ],
+      "phone_role": "在本地统计行数和错误、警告关键字，保存标签与备注。",
+      "flipper_role": "暂不参与采集；日志已在 Flipper 存储中时只提供文件。",
+      "result": "得到日志的基础统计和带标签、备注的记录。",
+      "limits": "解析仍在编写，尚未验证。暂不支持通过 Flipper 或蓝牙实时采集 UART，也不能把日志上传到 Flipper。错误和警告计数只按关键字匹配，不能判断故障原因。"
+    },
+    {
+      "id": "expansion.diagnostics",
+      "title": "AIO Board 1.4 参考与状态",
+      "status": "hardware_required",
+      "phase": "M4",
+      "summary": "已知板名为 AIO Board 1.4；手机可查看参考模块和导入已保存的扫描日志，实时连接与诊断未验证。",
+      "device_help": "同名板卡可能来自不同厂商；参考资料列出 ESP32、CC1101 和 nRF24，实物芯片与固件仍须核对。",
+      "requires": [
+        "板卡厂商或购买页面（用户目前无法确认）",
+        "ESP32 芯片丝印、当前固件版本、接线与供电方式",
+        "与实物版本匹配的通信协议或说明文档"
+      ],
+      "steps": [
+        "核对 AIO Board 1.4 标识、厂商和 ESP32 芯片丝印。",
+        "记录板卡当前固件版本，以及与 Flipper 的接线和供电方式。",
+        "如已有接入点扫描日志，在手机资料库导入并核对字段。"
+      ],
+      "phone_role": "显示 AIO Board 1.4 的参考资料与验收状态，离线解析已保存的 ESP32 接入点扫描日志。",
+      "flipper_role": "继续使用现有扩展板应用；本项目没有新增实时诊断或驱动。",
+      "result": "可整理板型信息与离线扫描记录；不能据此判断实物板卡已连通。",
+      "limits": "某卖家资料将其 V1.4 版本标为 ESP32-S2，但用户板卡的厂商与芯片尚未核实。手机不能替代扩展板的无线硬件，实时连接仍待真机验收。"
+    }
+  ]
+}

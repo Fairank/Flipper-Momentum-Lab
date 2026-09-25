@@ -1,0 +1,163 @@
+{
+  "schema_version": 1,
+  "notes": "设备端中文短说明。修改后运行 python scripts/generate_lab_font.py 重新生成 lab_content.h 和 lab_font.h。每行最多 10 个非 ASCII 字符，像素宽度和上下边界由生成器按实际字形检查。launch 必须是 applications/main 或 applications/settings 中 MENUEXTERNAL/SETTINGS 应用的 name。",
+  "layout": {
+    "text_x": 2,
+    "text_max_width": 120,
+    "list_width": 124,
+    "indicator_right": 126,
+    "indicator_gap": 4,
+    "title_baseline": 11,
+    "rows_top": 14,
+    "row_height": 12,
+    "row_baseline": 10,
+    "rows": 3,
+    "footer_baseline": 62,
+    "max_wide_chars": 10
+  },
+  "ui": {
+    "menu_title": "中文功能指南",
+    "menu_footer": "↑↓选择 OK查看",
+    "detail_footer": "←→翻页 返回列表",
+    "detail_footer_launch": "←→翻页 OK打开应用",
+    "indicator": "{index}/{count}"
+  },
+  "topics": [
+    {
+      "id": "about",
+      "menu": "使用说明",
+      "title": "使用说明",
+      "launch": null,
+      "pages": [
+        ["这里是中文说明台", "介绍各功能怎么用", "本页不收发任何信号"],
+        ["↑↓选择主题", "OK查看 ←→翻页", "返回键回到上一级"],
+        ["详情页按OK", "可打开对应原应用", "原应用界面仍是英文"],
+        ["本工具只做说明", "没有汉化或重写", "原有的功能应用"]
+      ]
+    },
+    {
+      "id": "bluetooth",
+      "menu": "蓝牙连接",
+      "title": "蓝牙连接",
+      "launch": "Bluetooth",
+      "pages": [
+        ["蓝牙让手机App", "连上Flipper", "传文件和看状态"],
+        ["清单1 打开蓝牙", "进Settings", "Bluetooth选ON"],
+        ["清单2 手机授权", "iPhone蓝牙已打开", "允许App使用蓝牙"],
+        ["清单3 在手机配对", "Flipper显示6位码", "照提示输入或确认"],
+        ["清单4 打开App", "打开配套手机App", "在App里选这台设备"],
+        ["还连不上就重配", "Flipper：Unpair All", "iPhone：忽略此设备"],
+        ["蓝牙连上只是通道", "能用哪些功能", "取决于App和固件"]
+      ]
+    },
+    {
+      "id": "infrared",
+      "menu": "红外遥控",
+      "title": "红外遥控",
+      "launch": "Infrared",
+      "pages": [
+        ["学习家电遥控按键", "保存后可随时发射", "像一个万能遥控器"],
+        ["步骤1 学习", "Learn New Remote", "遥控对准顶部窗口"],
+        ["按一下遥控按键", "成功后起名保存", "其他按键逐个学"],
+        ["步骤2 使用", "Saved Remotes", "选按键即可发射"],
+        ["万能遥控", "Universal Remotes", "会依次尝试多种码"],
+        ["收发由Flipper完成", "手机App规划做", "脉冲统计和整理"],
+        ["只对红外设备有效", "蓝牙或射频遥控不行", "未知协议存为RAW"]
+      ]
+    },
+    {
+      "id": "subghz",
+      "menu": "Sub-GHz无线",
+      "title": "Sub-GHz无线",
+      "launch": "Sub-GHz",
+      "pages": [
+        ["收发1GHz以下的", "无线遥控信号", "如门铃和遥控插座"],
+        ["默认可用频段：", "300-348 387-464", "779-928 MHz"],
+        ["Read 解码常见协议", "Read RAW 录波形", "Saved 看已存记录"],
+        ["Frequency Analyzer", "先找出信号频率", "再用Read接收"],
+        ["收发由Flipper完成", "手机App规划做", "时序统计和比较"],
+        ["滚动码通常无法重放", "加密内容无法解读", "仅用于自有设备"],
+        ["发射受地区法规", "和频段限制", "使用前先确认合法"]
+      ]
+    },
+    {
+      "id": "nfc",
+      "menu": "NFC卡片",
+      "title": "NFC卡片",
+      "launch": "NFC",
+      "pages": [
+        ["读取13.56MHz卡片", "如门禁卡和公交卡", "可保存并模拟部分卡"],
+        ["步骤1 选Read", "卡片贴在背面", "读完点More再Save"],
+        ["步骤2 选Saved", "选中卡后Emulate", "读卡器靠近背面"],
+        ["读卡由Flipper完成", "手机App规划做", "字段解释和比较"],
+        ["加密扇区需要密钥", "银行卡不能复制", "部分卡只能模拟UID"],
+        ["NFC和125kHz", "是两种不同硬件", "卡片类型要分清"]
+      ]
+    },
+    {
+      "id": "lfrfid",
+      "menu": "125kHz RFID",
+      "title": "125kHz RFID",
+      "launch": "125 kHz RFID",
+      "pages": [
+        ["读取低频ID卡", "如EM4100和HID", "可保存模拟或写入"],
+        ["步骤1 选Read", "卡片贴在背面", "等几秒显示卡号"],
+        ["步骤2 选Saved", "Emulate模拟卡片", "Write写入空白卡"],
+        ["只支持125kHz低频", "加密卡不能复制", "需T5577等空白卡"],
+        ["读写由Flipper完成", "手机App规划做", "记录整理和比较"]
+      ]
+    },
+    {
+      "id": "ibutton",
+      "menu": "iButton钥匙",
+      "title": "iButton钥匙",
+      "launch": "iButton",
+      "pages": [
+        ["读取接触式钥匙扣", "如DS1990门禁钥匙", "可保存模拟或写入"],
+        ["步骤1 选Read", "钥匙扣贴住背面", "的iButton触点"],
+        ["步骤2 选Saved", "Emulate模拟钥匙", "Write ID写入空白件"],
+        ["触点要接触良好", "支持Dallas等协议", "写入需兼容空白件"],
+        ["读写由Flipper完成", "手机App规划做", "记录整理和比较"]
+      ]
+    },
+    {
+      "id": "gpio",
+      "menu": "GPIO串口",
+      "title": "GPIO串口",
+      "launch": "GPIO",
+      "pages": [
+        ["USB-UART Bridge", "让电脑经Flipper", "连接板子的串口"],
+        ["接线 默认13和14脚", "13为TX 14为RX", "TX与RX交叉相接"],
+        ["GND与GND相连", "按3.3V电平使用", "5V设备要电平转换"],
+        ["步骤 进入Bridge", "波特率与板子一致", "电脑用串口软件看"],
+        ["USB串口不经手机", "手机日志助手规划中", "高速数据经蓝牙可能丢"],
+        ["AIO Board 1.4", "芯片固件待核实", "本机连接未验证"]
+      ]
+    },
+    {
+      "id": "files",
+      "menu": "文件管理",
+      "title": "文件管理",
+      "launch": null,
+      "pages": [
+        ["记录存在SD卡", "各功能分目录", "如infrared nfc"],
+        ["桌面短按下键", "打开Archive浏览", "按键设置改过则不同"],
+        ["电脑可用qFlipper", "或拔卡用读卡器", "手机App也可传文件"],
+        ["蓝牙传大文件较慢", "文件名建议用英文", "改动前请先备份"]
+      ]
+    },
+    {
+      "id": "phone",
+      "menu": "手机算力",
+      "title": "手机算力",
+      "launch": null,
+      "pages": [
+        ["手机负责重计算", "Flipper负责硬件", "和实时收发"],
+        ["配套App仍在开发", "下列为规划功能", "以实际版本为准"],
+        ["规划：红外脉冲统计", "记录比较与搜索", "已知协议候选匹配"],
+        ["不能扩大射频频段", "也不增加发射距离", "未知信号未必能识别"],
+        ["蓝牙断开后", "Flipper仍可单独用", "本机按返回可停止"]
+      ]
+    }
+  ]
+}

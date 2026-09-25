@@ -7,6 +7,7 @@ on:
 
 jobs:
   release:
+    if: github.repository == 'Next-Flip/Momentum-Firmware'
     permissions:
       contents: write
     runs-on: ubuntu-latest

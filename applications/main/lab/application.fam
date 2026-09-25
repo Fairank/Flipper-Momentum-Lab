@@ -1,0 +1,12 @@
+App(
+    appid="lab",
+    name="Flipper Lab",
+    apptype=FlipperAppType.MENUEXTERNAL,
+    entry_point="lab_app",
+    requires=["gui", "loader"],
+    stack_size=3 * 1024,
+    icon="A_Infrared_14",
+    order=5,
+    fap_category="Tools",
+    fap_description="Chinese help for the built-in apps",
+)
