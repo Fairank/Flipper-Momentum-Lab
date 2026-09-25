@@ -75,20 +75,6 @@ final class FlipperLabUITests: XCTestCase {
     }
 
     @MainActor
-    func testAIOBoardProfileShowsUnverifiedState() throws {
-        continueAfterFailure = false
-        let app = launch(["-ui-testing-light"])
-        XCTAssertTrue(app.navigationBars["设备"].waitForExistence(timeout: 15))
-        app.tabBars.buttons["指南"].tap()
-        let board = app.buttons["guides.aioBoard"]
-        XCTAssertTrue(reveal([board], in: app))
-        board.tap()
-        XCTAssertTrue(app.navigationBars["AIO Board 1.4"].waitForExistence(timeout: 5))
-        XCTAssertTrue(app.staticTexts["尚待验收"].exists)
-        capture(app, name: "19-AIO板卡状态")
-    }
-
-    @MainActor
     func testOfflineNavigationAndChineseGuide() throws {
         continueAfterFailure = false
         let app = launch(["-ui-testing-light"])
@@ -167,6 +153,13 @@ final class FlipperLabUITests: XCTestCase {
         XCTAssertTrue(app.navigationBars["设备连接"].waitForExistence(timeout: 5))
         XCTAssertTrue(app.staticTexts["操作步骤"].waitForExistence(timeout: 5))
         capture(app, name: "07-中文连接指南")
+        app.navigationBars.buttons["指南"].tap()
+        let board = app.buttons["guides.aioBoard"]
+        XCTAssertTrue(reveal([board], in: app))
+        board.tap()
+        XCTAssertTrue(app.navigationBars["AIO Board 1.4"].waitForExistence(timeout: 5))
+        XCTAssertTrue(app.staticTexts["尚待验收"].exists)
+        capture(app, name: "19-AIO板卡状态")
     }
 
     @MainActor
