@@ -79,6 +79,17 @@ final class AppModel {
         busy = true; defer { busy = false }
         return try await device.listFiles(path)
     }
+    func installedDeviceApps() async throws -> [FlipperFunction] {
+        guard !busy else { throw RPCError.busy }
+        busy = true; defer { busy = false }
+        return try await device.listInstalledApps()
+    }
+    func openOnFlipper(_ feature: FlipperFunction) {
+        perform("在 Flipper 打开\(feature.title)") {
+            try await self.device.launch(feature)
+            return "Flipper 已接受启动请求。后续交互在设备上继续。"
+        }
+    }
     func importDeviceFile(_ file: DeviceFile) {
         perform("从 Flipper 导入 \(file.name)") {
             guard !file.isDirectory, file.size <= 2 * 1024 * 1024 else { throw RPCError.tooLarge }

@@ -3,16 +3,12 @@ import SwiftUI
 @main
 @MainActor
 struct FlipperLabApp: App {
-    @Environment(\.scenePhase) private var scenePhase
     @State private var model = AppModel()
     var body: some Scene {
         WindowGroup {
             RootView(model: model)
                 .task { await model.load() }
                 .tint(LabColor.accent)
-                .onChange(of: scenePhase) { _, phase in
-                    if phase != .active { model.device.suspendRemoteSession() }
-                }
                 #if DEBUG
                 .modifier(UITestPresentation(arguments: ProcessInfo.processInfo.arguments))
                 #endif

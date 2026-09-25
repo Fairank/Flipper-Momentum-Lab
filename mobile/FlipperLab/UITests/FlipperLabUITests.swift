@@ -60,8 +60,8 @@ final class FlipperLabUITests: XCTestCase {
         continueAfterFailure = false
         let app = launch(["-ui-testing-light"])
         XCTAssertTrue(app.navigationBars["设备"].waitForExistence(timeout: 15))
-        // Four destinations: 设备 · 资料库 · 任务 · 指南.
-        XCTAssertEqual(app.tabBars.buttons.count, 4)
+        // Five destinations: 设备 · 功能 · 资料库 · 任务 · 指南.
+        XCTAssertEqual(app.tabBars.buttons.count, 5)
         let scan = app.buttons["device.scan"]
         XCTAssertTrue(scan.waitForExistence(timeout: 5))
         XCTAssertEqual(scan.label, "搜索附近的 Flipper")
@@ -83,6 +83,11 @@ final class FlipperLabUITests: XCTestCase {
         let darkFraction = try XCTUnwrap(darkPixelFraction(of: app.tabBars.buttons["资料库"]))
         XCTAssertGreaterThan(darkFraction, 0.02, "Unselected tab icon and text must stay legible on light glass")
         capture(app, name: "01-设备")
+
+        app.tabBars.buttons["功能"].tap()
+        XCTAssertTrue(app.navigationBars["功能"].waitForExistence(timeout: 5))
+        XCTAssertTrue(buttonContaining("红外遥控", in: app).exists)
+        capture(app, name: "01b-功能中心离线预览")
 
         app.tabBars.buttons["资料库"].tap()
         XCTAssertTrue(app.navigationBars["资料库"].waitForExistence(timeout: 5))
