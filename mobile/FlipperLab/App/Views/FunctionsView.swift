@@ -206,6 +206,7 @@ import FlipperCore
         Button { open(function) } label: {
             FunctionRow(function: function)
         }
+        .buttonStyle(.plain)
         .accessibilityLabel(rowDescription(function))
         .accessibilityHint(blockReason ?? (function.isInstalledApp ? "在 Flipper 上打开此应用" : "在 Flipper 上打开此功能"))
         .accessibilityIdentifier((function.isInstalledApp ? "functions.app." : "functions.builtin.") + function.id)
@@ -333,27 +334,27 @@ private struct FunctionRow: View {
                 if function.isInstalledApp {
                     Text(verbatim: function.title)
                         .font(.headline)
-                        .foregroundStyle(.primary)
+                        .foregroundStyle(Color.primary)
                     Text(verbatim: function.launchName)
                         .font(LabFont.mono)
-                        .foregroundStyle(.secondary)
+                        .foregroundStyle(Color.secondary)
                         .lineLimit(2)
                         .truncationMode(.middle)
                 } else {
                     AdaptiveStack(verticalAlignment: .firstTextBaseline, spacing: 8) {
                         Text(verbatim: function.title)
                             .font(.headline)
-                            .foregroundStyle(.primary)
+                            .foregroundStyle(Color.primary)
                         Text(verbatim: function.launchName)
                             .font(.footnote)
-                            .foregroundStyle(.secondary)
+                            .foregroundStyle(Color.secondary)
                     }
                     Text(verbatim: function.summary)
                         .font(.subheadline)
-                        .foregroundStyle(.secondary)
+                        .foregroundStyle(Color.secondary)
                     Text(verbatim: function.requirement)
                         .font(.footnote)
-                        .foregroundStyle(.secondary)
+                        .foregroundStyle(Color.secondary)
                 }
             }
             .frame(maxWidth: .infinity, alignment: .leading)
@@ -365,6 +366,7 @@ private struct FunctionRow: View {
         .multilineTextAlignment(.leading)
         .padding(.vertical, 4)
         .frame(minHeight: 44)
+        .contentShape(Rectangle())
     }
 }
 
