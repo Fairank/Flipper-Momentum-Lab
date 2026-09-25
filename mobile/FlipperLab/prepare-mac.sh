@@ -15,6 +15,12 @@ fail() {
     exit 1
 }
 
+case "${1:-}" in
+    '') prepare_only=0 ;;
+    --prepare-only) prepare_only=1 ;;
+    *) fail '用法：sh mobile/FlipperLab/prepare-mac.sh [--prepare-only]' ;;
+esac
+
 if [ "$(uname -s 2>/dev/null || true)" != "Darwin" ]; then
     fail '请在 Mac 上运行此脚本；Windows 或 Linux 无法生成、编译或签名 iPhone App。'
 fi
@@ -31,7 +37,7 @@ if [ ! -f "$spec" ]; then
 fi
 
 # A full Xcode.app must be selected; the Command Line Tools alone cannot build iPhone apps.
-developer_dir=$(xcode-select -p 2>/dev/null || true)
+developer_dir=${DEVELOPER_DIR:-$(xcode-select -p 2>/dev/null || true)}
 case "$developer_dir" in
     */Contents/Developer) xcode_app=${developer_dir%/Contents/Developer} ;;
     *)
@@ -85,6 +91,11 @@ fi
 
 if [ -n "$before" ] && [ "$before" != "$(cksum < "$pbxproj")" ]; then
     printf '%s\n' '工程已重新生成：之前在 Xcode 的 Signing & Capabilities 中选择的 Team 和 Bundle ID 已被重置，请重新选择。'
+fi
+
+if [ "$prepare_only" -eq 1 ]; then
+    printf 'Mac 工程已准备好：%s\n' "$project"
+    exit 0
 fi
 
 if ! open -a "$xcode_app" "$project"; then

@@ -66,11 +66,10 @@ jobs:
         run: swift test --package-path mobile/FlipperLab
 
       # The app build still runs when package tests fail, so both results are reported.
-      - name: "Generate Xcode project"
+      - name: "Prepare Mac Xcode project"
         id: generate
         if: ${{ !cancelled() && steps.xcodegen.outcome == 'success' }}
-        working-directory: mobile/FlipperLab
-        run: xcodegen generate --spec project.yml
+        run: sh mobile/FlipperLab/prepare-mac.sh --prepare-only
 
       - name: "Build for iOS Simulator (unsigned)"
         id: build

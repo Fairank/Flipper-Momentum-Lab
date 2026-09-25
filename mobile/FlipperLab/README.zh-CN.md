@@ -260,7 +260,7 @@ xcodebuild build \
 工作流为 [`.github/workflows/lab-validation.yml`](../../.github/workflows/lab-validation.yml)：
 
 - 触发：推送到 `codex/**` 分支、Pull Request 或手动运行。推送和 PR 只在 `mobile/`、`scripts/tests/`、`applications/main/lab/`、`applications/services/gui/`、`scripts/generate_lab_font.py` 或工作流本身有改动时触发；同一分支或 PR 的新运行会取消旧运行。
-- macOS 26 / Xcode 26.6：安装 XcodeGen，执行 `swift test`，生成工程，做不签名的模拟器通用构建（`CODE_SIGNING_ALLOWED=NO`，警告不视为错误），然后在指定的 iPhone 17 Pro Max / iOS 26.5 模拟器上运行 `FlipperLabUITests`，并从结果包导出截图。
+- macOS 26 / Xcode 26.6：安装 XcodeGen，执行 `swift test`，再调用 `sh mobile/FlipperLab/prepare-mac.sh --prepare-only` 检查 Mac 环境并生成工程（不打开 Xcode、不签名），随后做不签名的模拟器通用构建（`CODE_SIGNING_ALLOWED=NO`，警告不视为错误），在指定的 iPhone 17 Pro Max / iOS 26.5 模拟器上运行 `FlipperLabUITests` 并导出截图。
 - Ubuntu 24.04：执行 `python3 -m unittest discover -s scripts/tests`（旧回归、UTF-8 回归、字库生成器和功能启动目录测试）和 `scripts/generate_lab_font.py --check`，再用 `scripts/render_lab_preview.py --all` 渲染 Flipper 源码布局预览。其中的 C 回归需要主机 C 编译器，缺少时任务直接失败，不会带着跳过的测试通过。
 - 只有读取仓库内容的权限，不使用任何密钥；不签名、不发布，不向上游或更新服务器上传，也不生成可安装的 IPA。
 
