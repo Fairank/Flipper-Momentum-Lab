@@ -1,4 +1,5 @@
 """Keep iPhone launcher names aligned with this pinned firmware's app manifests."""
+
 import re
 import unittest
 from pathlib import Path
@@ -9,9 +10,9 @@ ROOT = Path(__file__).resolve().parents[2]
 
 class FunctionLaunchCatalogTests(unittest.TestCase):
     def test_built_in_launch_names_exist_in_firmware(self):
-        source = (ROOT / "mobile/FlipperLab/Sources/FlipperCore/FlipperFunction.swift").read_text(
-            encoding="utf-8"
-        )
+        source = (
+            ROOT / "mobile/FlipperLab/Sources/FlipperCore/FlipperFunction.swift"
+        ).read_text(encoding="utf-8")
         names = re.findall(r'launchName: "([^"]+)"', source)
         self.assertGreaterEqual(len(names), 10)
         manifests = set()
