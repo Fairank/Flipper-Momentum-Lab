@@ -2,26 +2,44 @@
 
 本目录是个人 Flipper 固件分支（基于 Momentum 的定制，经用户授权）中的原生 iPhone App：SwiftUI 界面，Core Bluetooth 连接，经 Flipper 现有的 BLE 串口服务与 RPC 协议通信，界面为简体中文。它不是 Flipper Devices 的官方 App，也不代表上游项目认可。总体方案见 [iPhone 与中文协作方案](../../documentation/custom/IPHONE_ZH_PLAN.md)。
 
+## 在 Mac 上装到自己的 iPhone（快速入口）
+
+> **GitHub 分支 `codex/iphone-zh-architecture` 只有源码，没有可以直接在 iPhone 上下载安装的签名包**：没有 IPA、TestFlight 或 App Store 版本。安装必须在一台 Mac 上用 Xcode 和自己的 Apple ID 签名完成；用普通（免费）Apple ID 签名的测试版约 7 天到期，到期后重新安装即可。
+
+1. 在 Mac 上从 App Store 安装完整的 Xcode，打开一次完成首次设置；再安装 [Homebrew](https://brew.sh) 并执行 `brew install xcodegen`。
+2. 在 GitHub 切换到分支 `codex/iphone-zh-architecture`，用 **Code → Download ZIP** 下载并解压，或执行 `git clone -b codex/iphone-zh-architecture https://github.com/Fairank/Flipper-Momentum-Lab.git`。
+3. 打开“终端”，进入解压后的仓库根目录，执行：
+
+   ```sh
+   sh mobile/FlipperLab/prepare-mac.sh
+   ```
+
+   脚本 [`prepare-mac.sh`](prepare-mac.sh) 只检查完整 Xcode 与 XcodeGen、生成并打开 `FlipperLab.xcodeproj`，然后打印后续步骤；它不安装工具、不登录 Apple ID、不改签名、不生成 IPA，也不执行 Git 操作。检查不通过时会用中文说明原因并退出。
+4. 在 Xcode 中登录 Apple ID、选择自己的团队、连接 iPhone 后按 ⌘R 安装，逐步说明见[第 4 节](#4-用自己的团队签名安装到-iphone-17-pro-max)。
+
+该脚本和真机安装尚未在真实 Mac 上执行过，真实 iPhone 与 Flipper 的蓝牙连接也未验收；第一次执行请记录实际输出和错误。
+
 ## 当前状态
 
 手机使用设备、功能、资料库、任务、指南五个主页面，采用原生大标题、分组列表、表单和菜单，保留橙色及像素小屏。比较入口在资料库和记录详情的“更多”菜单中。既有四页的设计决定、实际模型和运行证据见 [苹果界面优化验收](../../documentation/custom/UI_APPLE_REVIEW.md)。
 
-本轮新增独立的“功能”页作为第五个主页面。手机以中文介绍功能，点击条目通过蓝牙在 Flipper 打开现有应用；不显示设备屏幕镜像。启动范围、设备忙碌时的限制和真机验收边界见 [手机功能中心说明](FUNCTION_LAUNCH.zh-CN.md)。下表历史 CI 结果来自加入该页之前，不能当作新功能的验证结果。
+本轮新增独立的“功能”页作为第五个主页面。手机以中文介绍功能，点击条目通过蓝牙在 Flipper 打开现有应用；不显示设备屏幕镜像。启动范围、设备忙碌时的限制和真机验收边界见 [手机功能中心说明](FUNCTION_LAUNCH.zh-CN.md)。下表的 CI 结果已包含该页的离线界面测试和 2 项功能条目包测试，但不包含通过蓝牙实际启动 Flipper 应用的验证。本轮还修正了设备颜色对应的蓝牙广播服务号，修正后的构建结果以 PR 检查为准。
 
-从 Flipper 导入的 NFC／低频 RFID 记录可以在手机保存、查看与分析，但不能直接变成 iPhone 可刷的门禁凭证。卡类型和正式手机凭证的条件见 [门禁卡记录与 iPhone NFC](CARD_ON_IPHONE.zh-CN.md)。
+从 Flipper 导入的 NFC／低频 RFID 记录可以在手机保存、查看与分析，但不能直接变成 iPhone 可刷的门禁凭证。卡类型和正式手机凭证的条件见 [门禁卡记录与 iPhone NFC](CARD_ON_IPHONE.zh-CN.md)；后续手机算力与 ESP32、CC1101、`nrf244` 扩展需求见 [手机算力分析清单](../../documentation/custom/PHONE_COMPUTE_ROADMAP.zh-CN.md)，目前不是已实现功能。
 
 | 项目 | 状态 |
 | --- | --- |
-| 工程配置与本说明 | 在 Windows 电脑上编写，本地没有 Xcode 或可用的 Mac。下文的本地命令只在 GitHub macOS CI 中以等效步骤运行过 |
-| Swift 包测试（`swift test`） | 提交 `9611f740` 的 [CI 35998623945](https://github.com/Fairank/Flipper-Momentum-Lab/actions/runs/35998623945)：52 项通过 |
+| 工程配置与本说明 | 在 Windows 电脑上编写；主助手的环境没有 Xcode，下文的本地命令只在 GitHub macOS CI 中以等效步骤运行过。用户可用自己或借用的 Mac 按上方快速入口安装，`prepare-mac.sh` 尚未在真实 Mac 上执行过 |
+| Swift 包测试（`swift test`） | 上一次完整检查 [Lab validation 36109714508](https://github.com/Fairank/Flipper-Momentum-Lab/actions/runs/36109714508)：54 项通过；本轮蓝牙修正以 PR 的最新检查为准 |
 | 模拟器构建（不签名） | 同一运行通过 |
-| 模拟器 UI 测试 | 同一运行的 3 项测试通过：四页导航、中文指南、示例分析、菜单、深色大字；iPhone 17 Pro Max / iOS 26.5，Xcode 26.6。只证明离线界面，不证明蓝牙 |
-| 模拟器截图导出、示例记录固定样本测试 | 已导出 17 张。展示的 17 张逐页复核原图选自应用代码完全相同的两次运行，以避开系统通知和过渡帧；出处与校验值见验收记录 |
-| GitHub Actions（[`lab-validation.yml`](../../.github/workflows/lab-validation.yml)） | 已运行；后续提交的结果以 PR [#1](https://github.com/Fairank/Flipper-Momentum-Lab/pull/1) 的检查为准 |
-| 真机：蓝牙配对、设备文件导入、上传读回、红外执行 | 均未验证；没有可用的 Mac 和 Flipper |
-| App Store / TestFlight | 未准备：没有 App 图标，未做上架或审核相关准备 |
+| 模拟器 UI 测试 | 同一运行的 3 项离线测试通过：五页导航、功能页离线状态、中文指南、示例分析、菜单、深色大字；iPhone 17 Pro Max / iOS 26.5，Xcode 26.6。只证明离线界面，不证明蓝牙 |
+| 模拟器截图与 Flipper 预览 | 同一运行导出 18 张 iPhone 17 Pro Max / iOS 26.5 模拟器原图，并生成 65 张 Flipper 源码布局预览（由源码渲染，不是真机截图）；出处与校验值见[验收记录](../../documentation/custom/VALIDATION.md) |
+| Python/C 桌面回归 | 同一运行的 Ubuntu 任务：37 项通过 |
+| GitHub Actions（[`lab-validation.yml`](../../.github/workflows/lab-validation.yml)） | 上一次完整检查的 Lab validation 36109714508、[Lab firmware 36109714494](https://github.com/Fairank/Flipper-Momentum-Lab/actions/runs/36109714494)、[Lint 36109714519](https://github.com/Fairank/Flipper-Momentum-Lab/actions/runs/36109714519) 均成功；本轮提交结果以 PR [#1](https://github.com/Fairank/Flipper-Momentum-Lab/pull/1) 的检查为准 |
+| 真机：蓝牙配对、功能启动、设备文件导入、上传读回、红外执行 | 均未验证。主助手的 Windows 环境没有 Xcode，尚未做真实 iPhone 与 Flipper 的蓝牙验收；需要在 Mac 上安装后按文末清单执行 |
+| App Store / TestFlight | 未准备：没有 App 图标，未做上架或审核相关准备；GitHub 上没有可直接安装的签名包 |
 
-下文的本地步骤尚未在 Mac 上手动执行过。第一次在 Mac 上执行时请记录实际输出和错误。
+下文的本地步骤和 `prepare-mac.sh` 都尚未在 Mac 上手动执行过。第一次在 Mac 上执行时请记录实际输出和错误。
 
 ## 目录结构
 
@@ -34,6 +52,7 @@
 | `UITests/` | XCUITest 界面测试目标 `FlipperLabUITests`：五页导航、功能中心离线状态、指南、示例记录分析、菜单以及深色大字号，每步保存截图附件 |
 | `App/Info.plist` | App 的 Info 模板，构建时 Xcode 会替换其中的 `$(…)` 变量 |
 | `project.yml` | XcodeGen 工程描述 |
+| `prepare-mac.sh` | Mac 上的准备脚本：检查完整 Xcode 与 XcodeGen，生成并打开工程，打印签名与安装步骤；在仓库根目录用 `sh mobile/FlipperLab/prepare-mac.sh` 运行 |
 | `FlipperLab.xcodeproj` | 由 XcodeGen 生成在本目录，不是手写文件，不要提交 |
 
 ## 工程语义：包与工程在同一目录
@@ -68,6 +87,8 @@ xcodegen generate --spec project.yml
 open FlipperLab.xcodeproj
 ```
 
+也可以在仓库根目录执行 `sh mobile/FlipperLab/prepare-mac.sh`：它先检查 `xcode-select` 指向完整 Xcode、`xcodebuild` 可运行、iOS SDK 存在和 XcodeGen 已安装，再以 `xcodegen generate --use-cache` 生成工程（XcodeGen 的缓存写在 `~/.xcodegen/cache/`），最后用同一个 Xcode 打开工程。已有工程且工程输入未变化时不会重写工程，Xcode 中选择的团队和 Bundle ID 得以保留；检查不通过时脚本会说明原因并退出，不会自动安装任何东西。
+
 ## 2. 运行 Swift 包测试
 
 ```sh
@@ -75,7 +96,7 @@ open FlipperLab.xcodeproj
 swift test --package-path mobile/FlipperLab
 ```
 
-测试位于 `Tests/FlipperCoreTests/`，共 52 项，覆盖 RPC 帧编码、BLE 分包在任意位置切开后的重组、超长/截断/溢出输入的拒绝、设备文件名不能改变路径、protoc 生成的协议向量、六类记录的解析与拒绝（空文件、非法文本、超过 2 MiB、头部与扩展名矛盾）、资料库存储的上限与损坏处理，以及内置指南的完整性。最新基线增加资料库编码前总量检查，52 项通过；本地是否通过以实际输出为准。
+测试位于 `Tests/FlipperCoreTests/`，共 54 项，覆盖 RPC 帧编码、BLE 分包在任意位置切开后的重组、超长/截断/溢出输入的拒绝、设备文件名不能改变路径、protoc 生成的协议向量、六类记录的解析与拒绝（空文件、非法文本、超过 2 MiB、头部与扩展名矛盾）、资料库存储的上限与损坏处理、内置指南的完整性，以及功能条目（已安装 `.fap` 的路径必须位于 `/ext/apps` 下、内置启动名唯一）。最终提交的 CI 运行 54 项通过；本地是否通过以实际输出为准。
 
 ## 3. 模拟器构建与运行
 
@@ -114,7 +135,7 @@ xcrun xcresulttool export attachments \
 
 ## 4. 用自己的团队签名，安装到 iPhone 17 Pro Max
 
-目标手机为 iPhone 17 Pro Max，运行用户已安装的较新 iOS，具体版本号尚未记录。签名和安装必须在 Mac 上的 Xcode 中完成；CI 只做不签名的模拟器构建，产物不能装到 iPhone，本仓库也不提供 IPA。
+目标手机为 iPhone 17 Pro Max，运行用户已安装的较新 iOS，具体版本号尚未记录。签名和安装必须在 Mac 上的 Xcode 中完成；GitHub 分支只有源码，CI 只做不签名的模拟器构建，两者都没有能直接装到 iPhone 的签名包，本仓库也不提供 IPA。开始前可先在仓库根目录执行 `sh mobile/FlipperLab/prepare-mac.sh` 检查环境、生成并打开工程。
 
 1. 在 iPhone 的 **设置 → 通用 → 关于本机** 查看 iOS 版本，确认 Mac 上的 Xcode 支持它。
 2. Xcode → **Settings… → Accounts**，登录自己的 Apple ID。免费 Apple ID 显示为 “Personal Team”；加入付费 Apple Developer Program 的账号显示团队名称。
@@ -127,8 +148,8 @@ xcrun xcresulttool export attachments \
 
 注意：
 
-- 重新运行 `xcodegen generate` 会清除第 5、6 步在 Xcode 中的设置，需要重新选择。若要长期使用自己的 Bundle ID，可修改 `project.yml` 中的 `PRODUCT_BUNDLE_IDENTIFIER` 后重新生成；这会改动受版本控制的文件，提交前请自行确认。
-- 免费个人团队签名的 App 约 7 天后失效，需要从 Xcode 重新安装；免费团队对可安装的 App 数量等也有限制。付费开发者账号的开发签名有效期更长。
+- 重新运行普通的 `xcodegen generate` 会清除第 5、6 步在 Xcode 中的设置，需要重新选择；`prepare-mac.sh` 借助 XcodeGen 缓存，在工程输入未变化时跳过重写，并在实际重写后提示重新选择。若要长期使用自己的 Bundle ID，可修改 `project.yml` 中的 `PRODUCT_BUNDLE_IDENTIFIER` 后重新生成；这会改动受版本控制的文件，提交前请自行确认。
+- 免费个人团队（普通 Apple ID）签名的 App 约 7 天后失效，到期后无法打开，需要从 Xcode 重新安装：再次执行 `prepare-mac.sh` 或直接打开工程，选择 iPhone 后按 ⌘R；免费团队对可安装的 App 数量等也有限制。付费开发者账号的开发签名有效期更长。
 - 可选的命令行真机构建。需要先在 Xcode 的 Accounts 中登录同一账号；它只编译和签名，安装与调试仍建议在 Xcode 中进行：
 
 ```sh
@@ -148,7 +169,7 @@ xcodebuild build \
 
 **设备连接**
 
-- 搜索广播 Flipper 服务标识 `0x3080` 的设备，15 秒后自动停止，列表最多 100 台。
+- 搜索广播 Flipper 串口标识 `0x3080`–`0x3083` 的设备（固件按设备颜色选择其中之一），15 秒后自动停止，列表最多 100 台。
 - 连接所选设备并按提示配对（Flipper 串口服务的读写要求认证）；45 秒内未就绪则断开并提示超时。
 - 连接后订阅串口服务，检查 RPC 协议主版本（目前只接受 0），读取设备报告的系统信息（键值列表）。
 - 状态依次为：尚未连接、正在搜索、正在配对与连接、正在准备通信、正在检查设备、设备已就绪；蓝牙关闭或无权限时显示“蓝牙不可用”。
@@ -240,7 +261,7 @@ xcodebuild build \
 
 - 触发：推送到 `codex/**` 分支、Pull Request 或手动运行。推送和 PR 只在 `mobile/`、`scripts/tests/`、`applications/main/lab/`、`applications/services/gui/`、`scripts/generate_lab_font.py` 或工作流本身有改动时触发；同一分支或 PR 的新运行会取消旧运行。
 - macOS 26 / Xcode 26.6：安装 XcodeGen，执行 `swift test`，生成工程，做不签名的模拟器通用构建（`CODE_SIGNING_ALLOWED=NO`，警告不视为错误），然后在指定的 iPhone 17 Pro Max / iOS 26.5 模拟器上运行 `FlipperLabUITests`，并从结果包导出截图。
-- Ubuntu 24.04：执行 `python3 -m unittest discover -s scripts/tests`（旧回归、UTF-8 回归、字库生成器测试）和 `scripts/generate_lab_font.py --check`。其中的 C 回归需要主机 C 编译器，缺少时任务直接失败，不会带着跳过的测试通过。
+- Ubuntu 24.04：执行 `python3 -m unittest discover -s scripts/tests`（旧回归、UTF-8 回归、字库生成器和功能启动目录测试）和 `scripts/generate_lab_font.py --check`，再用 `scripts/render_lab_preview.py --all` 渲染 Flipper 源码布局预览。其中的 C 回归需要主机 C 编译器，缺少时任务直接失败，不会带着跳过的测试通过。
 - 只有读取仓库内容的权限，不使用任何密钥；不签名、不发布，不向上游或更新服务器上传，也不生成可安装的 IPA。
 
 产物（在运行页面的 Artifacts 下载，`<attempt>` 为该次运行的重试序号）：
@@ -250,12 +271,15 @@ xcodebuild build \
 | `iphone-screenshots-<attempt>` | UI 测试各步骤的模拟器截图 | 14 天 |
 | `simulator-test-evidence-<attempt>` | `FlipperLab.xcresult` 结果包 | 7 天 |
 | `xcodebuild-log-<attempt>` | 只在模拟器构建失败时上传的 xcodebuild 日志 | 7 天 |
+| `flipper-source-previews-<attempt>` | Ubuntu 任务渲染的 Flipper 源码布局预览（由源码生成，不是真机截图） | 14 天 |
 
-设备端固件由另一个工作流 [`lab-firmware.yml`](../../.github/workflows/lab-firmware.yml) 构建，产物 `flipper-lab-firmware-<提交>` 含更新包、`SHA256SUMS.txt` 和 `dist/f7-C/apps/Tools/lab.fap`，保留 14 天；运行 [35977973532](https://github.com/Fairank/Flipper-Momentum-Lab/actions/runs/35977973532) 已通过。
+设备端固件由另一个工作流 [`lab-firmware.yml`](../../.github/workflows/lab-firmware.yml) 构建，产物 `flipper-lab-firmware-<提交>` 含更新包、`SHA256SUMS.txt` 和 `dist/f7-C/apps/Tools/lab.fap`，保留 14 天；最终提交的运行 [36109714494](https://github.com/Fairank/Flipper-Momentum-Lab/actions/runs/36109714494) 已通过。
 
 当前界面和最新运行结果见 [UI_APPLE_DESIGN.md](../../documentation/custom/UI_APPLE_DESIGN.md) 与 [UI_APPLE_REVIEW.md](../../documentation/custom/UI_APPLE_REVIEW.md)。此前五页像素机身方案的历史验证保留在 [UI_REVIEW.md](../../documentation/custom/UI_REVIEW.md)。CI 通过不代表蓝牙、上传或红外功能在真机上可用。
 
-## 真机验证清单（尚未执行，没有可用的 Mac 和 Flipper）
+## 真机验证清单（尚未执行）
+
+主助手的 Windows 环境没有 Xcode，尚未做真实 iPhone 与 Flipper 的蓝牙验收。用户在自己或借用的 Mac 上按第 4 节安装后，可按此清单验收并记录结果。
 
 - [ ] 记录 iPhone 型号、iOS 版本、Xcode 版本和 Flipper 固件版本
 - [ ] 首次配对、拒绝蓝牙权限、蓝牙关闭、断开重连、设备忙碌时的提示

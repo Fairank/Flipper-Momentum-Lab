@@ -21,6 +21,9 @@ final class FlipperDevice: NSObject, CBCentralManagerDelegate, CBPeripheralDeleg
     private(set) var protocolVersion = "未检查"
     var ready: Bool { state == .ready }
 
+    // serial_profile.c ORs the 0x3080 advertisement with hardware color (0...3).
+    // Scan for every firmware-advertised variant, including spoofed colors.
+    private static let advertisedServices = ["3080", "3081", "3082", "3083"].map { CBUUID(string: $0) }
     // UUIDs are reversed from the little-endian arrays in serial_service_uuid.inc.
     private static let service = CBUUID(string: "8FE5B3D5-2E7F-4A98-2A48-7ACC60FE0000")
     private static let tx = CBUUID(string: "19ED82AE-ED21-4C9D-4145-228E61FE0000")
@@ -63,8 +66,8 @@ final class FlipperDevice: NSObject, CBCentralManagerDelegate, CBPeripheralDeleg
         guard central.state == .poweredOn else { updateBluetoothState(); return }
         guard peripheral == nil else { return }
         nearby = []; peripherals = [:]; lastError = nil; state = .scanning
-        // Firmware advertises 0x3080 rather than its 128-bit serial service.
-        central.scanForPeripherals(withServices: [CBUUID(string: "3080")], options: nil)
+        // Firmware advertises a color-dependent 16-bit UUID, not its 128-bit serial service.
+        central.scanForPeripherals(withServices: Self.advertisedServices, options: nil)
         connectionTimer?.cancel()
         connectionTimer = Task { [weak self] in
             try? await Task.sleep(for: .seconds(15))
