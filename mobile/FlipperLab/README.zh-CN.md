@@ -25,9 +25,11 @@
 
 本轮新增独立的“功能”页作为第五个主页面。手机以中文介绍功能，点击条目通过蓝牙在 Flipper 打开现有应用；不显示设备屏幕镜像。启动范围、设备忙碌时的限制和真机验收边界见 [手机功能中心说明](FUNCTION_LAUNCH.zh-CN.md)。下表的 CI 结果已包含该页的离线界面测试和 2 项功能条目包测试，但不包含通过蓝牙实际启动 Flipper 应用的验证。本轮还修正了设备颜色对应的蓝牙广播服务号，修正后的构建结果以 PR 检查为准。
 
-从 Flipper 导入的 NFC／低频 RFID 记录可以在手机保存、查看与分析，但不能直接变成 iPhone 可刷的门禁凭证。卡类型和正式手机凭证的条件见 [门禁卡记录与 iPhone NFC](CARD_ON_IPHONE.zh-CN.md)；后续手机算力与 ESP32、CC1101、`nrf244` 扩展需求见 [手机算力分析清单](../../documentation/custom/PHONE_COMPUTE_ROADMAP.zh-CN.md)。除下述离线 Wi-Fi 扫描分析外，密钥恢复和扩展板数据链路仍未实现。
+从 Flipper 导入的 NFC／低频 RFID 记录可以在手机保存、查看与分析，但不能直接变成 iPhone 可刷的门禁凭证。卡类型和正式手机凭证的条件见 [门禁卡记录与 iPhone NFC](CARD_ON_IPHONE.zh-CN.md)；后续手机算力与 AIO Board 1.4 的 ESP32、CC1101、nRF24 扩展需求见 [手机算力分析清单](../../documentation/custom/PHONE_COMPUTE_ROADMAP.zh-CN.md)。除下述离线 Wi-Fi 扫描分析外，密钥恢复和扩展板数据链路仍未实现。
 
-新增的 [Wi-Fi 扫描记录说明](WIFI_SURVEY.zh-CN.md)定义了可从 iPhone 文件或 Flipper SD 卡导入的 `.wscan` 文本格式，也可识别现有 ESP32 伴侣应用保存的接入点扫描 `.log`。手机可离线列出多个接入点，查看信道和 RSSI，并标记多个网络做本地概览；扫描日志未提供安全类型时会明确显示“未记录”。它不驱动三合一扩展板，也不连接或中断网络。板卡型号、接线和现装固件未明确，实时扫描与真机链路待适配。
+新增的 [Wi-Fi 扫描记录说明](WIFI_SURVEY.zh-CN.md)定义了可从 iPhone 文件或 Flipper SD 卡导入的 `.wscan` 文本格式，也可识别现有 ESP32 伴侣应用保存的接入点扫描 `.log`。手机可离线列出多个接入点，查看信道和 RSSI，并标记多个网络做本地概览；扫描日志未提供安全类型时会明确显示“未记录”。它不驱动三合一扩展板，也不连接或中断网络。板卡名称已知，厂商、实物芯片、接线和现装固件未明确，实时扫描与真机链路待适配。
+
+用户现已提供板名 AIO Board 1.4；[板卡参考与验收状态](AIO_BOARD_1_4.zh-CN.md)区分卖家资料和实物未知项。App“指南”页可打开对应状态卡；它不代表板卡已连通。
 
 | 项目 | 状态 |
 | --- | --- |
@@ -35,7 +37,7 @@
 | Swift 包测试（`swift test`） | 上一次完整检查 [Lab validation 36109714508](https://github.com/Fairank/Flipper-Momentum-Lab/actions/runs/36109714508)：54 项通过；本轮蓝牙修正以 PR 的最新检查为准 |
 | 模拟器构建（不签名） | 同一运行通过 |
 | 模拟器 UI 测试 | 同一运行的 3 项离线测试通过：五页导航、功能页离线状态、中文指南、示例分析、菜单、深色大字；iPhone 17 Pro Max / iOS 26.5，Xcode 26.6。只证明离线界面，不证明蓝牙 |
-| 模拟器截图与 Flipper 预览 | 同一运行导出 18 张 iPhone 17 Pro Max / iOS 26.5 模拟器原图，并生成 65 张 Flipper 源码布局预览（由源码渲染，不是真机截图）；出处与校验值见[验收记录](../../documentation/custom/VALIDATION.md) |
+| 模拟器截图与 Flipper 预览 | iPhone 17 Pro Max / iOS 26.5 模拟器导出页面原图；新增板卡页后生成 66 张 Flipper 源码布局预览（由源码渲染，不是真机截图）；出处与校验值见[验收记录](../../documentation/custom/VALIDATION.md) |
 | Python/C 桌面回归 | 同一运行的 Ubuntu 任务：37 项通过 |
 | GitHub Actions（[`lab-validation.yml`](../../.github/workflows/lab-validation.yml)） | 上一次完整检查的 Lab validation 36109714508、[Lab firmware 36109714494](https://github.com/Fairank/Flipper-Momentum-Lab/actions/runs/36109714494)、[Lint 36109714519](https://github.com/Fairank/Flipper-Momentum-Lab/actions/runs/36109714519) 均成功；本轮提交结果以 PR [#1](https://github.com/Fairank/Flipper-Momentum-Lab/pull/1) 的检查为准 |
 | 真机：蓝牙配对、功能启动、设备文件导入、上传读回、红外执行 | 均未验证。主助手的 Windows 环境没有 Xcode，尚未做真实 iPhone 与 Flipper 的蓝牙验收；需要在 Mac 上安装后按文末清单执行 |
@@ -219,7 +221,7 @@ xcodebuild build \
 **离线中文指南**
 
 - 内容来自内置的 `FeatureCatalog.json`，无需连接设备即可阅读；它必须与 `documentation/custom/FEATURE_CATALOG.zh-CN.json` 逐字节一致。
-- 共 8 篇：设备连接、中文资料库、红外工作台、中文入口与功能说明、Sub-GHz 记录分析、NFC/RFID/iButton 记录、串口日志查看、扩展板状态与诊断。
+- 共 8 篇：设备连接、中文资料库、红外工作台、中文入口与功能说明、Sub-GHz 记录分析、NFC/RFID/iButton 记录、串口日志查看、AIO Board 1.4 参考与状态。
 - 截至本文更新时，该文件标注为实现中（`catalog_status: implementation_in_progress`），条目状态为 `implemented_unverified`、`in_progress` 或 `hardware_required`；指南中的描述不等于功能已经在真机上验证。
 
 ## 未提供的功能与限制

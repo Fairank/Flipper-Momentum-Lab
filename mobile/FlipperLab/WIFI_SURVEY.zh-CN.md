@@ -25,7 +25,7 @@ Home,02:11:22:33:44:55,6,-54,WPA2
 
 SSID 含逗号时用双引号包围，SSID 内的双引号写成两个双引号。隐藏网络的 SSID 可留空。文件最多 2 MiB、512 个接入点；BSSID 与信道的组合不能重复。记录不包含密码、密钥或客户端身份信息。导入前可从文件来源核对这些字段，避免把含密码的扩展板配置文件误当扫描结果。
 
-在“资料库”选择“导入文件”即可从 iPhone 导入；如果扫描文件或日志已保存到 Flipper 的 SD 卡，可以先连接 Flipper，再从“资料库”的“从 Flipper 导入”浏览该文件。现有伴侣应用可选择将控制台日志保存到 SD 卡，但是否成功取决于板卡与固件；参考[仓库中的保存逻辑](https://github.com/Fairank/Flipper-Momentum-Lab/blob/codex/iphone-zh-architecture/applications/external/wifi_marauder_companion/scenes/wifi_marauder_scene_console_output.c)。当前三合一扩展板的 ESP32 型号、接线与固件尚未确认，因此**实时扫描、自动生成 `.wscan` 文件、直接控制扩展板仍未适配或真机验证**。
+在“资料库”选择“导入文件”即可从 iPhone 导入；如果扫描文件或日志已保存到 Flipper 的 SD 卡，可以先连接 Flipper，再从“资料库”的“从 Flipper 导入”浏览该文件。现有伴侣应用可选择将控制台日志保存到 SD 卡，但是否成功取决于板卡与固件；参考[仓库中的保存逻辑](https://github.com/Fairank/Flipper-Momentum-Lab/blob/codex/iphone-zh-architecture/applications/external/wifi_marauder_companion/scenes/wifi_marauder_scene_console_output.c)。用户已提供 AIO Board 1.4 名称，厂商、ESP32 实际芯片、接线与固件尚未确认，因此**实时扫描、自动生成 `.wscan` 文件、直接控制扩展板仍未适配或真机验证**。
 
 此功能仅做接收信号和配置概览。距离不能从一个 RSSI 数字可靠换算；需要明确板卡型号、天线、室内外环境后，才能在真机上测量可扫描范围。经典 ESP32 的 Wi‑Fi 为 2.4 GHz；若板卡使用其他 ESP32 变种，以实际芯片规格为准。
 

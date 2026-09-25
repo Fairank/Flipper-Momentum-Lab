@@ -91,18 +91,23 @@ import FlipperCore
         .accessibilityIdentifier("guides.row.\(entry.guide.id)")
     }
 
-    /// Information only: no action or status is offered until the hardware is confirmed.
+    /// A reference profile, not a live board-detection result.
     private var expansionSection: some View {
         Section {
-            VStack(alignment: .leading, spacing: 6) {
-                TagCapsule(text: "待确认硬件")
-                Text("三合一板卡待识别")
-                    .font(.headline)
-                Text("可导入已保存的 Wi-Fi 扫描记录，在手机查看多个网络及信道分布。ESP32、CC1101 和你称作 nrf244 的三合一板仍需确认芯片、接线与固件；实时串口采集尚未适配。")
-                    .font(.subheadline)
-                    .foregroundStyle(.secondary)
+            NavigationLink {
+                AIOBoardView()
+            } label: {
+                VStack(alignment: .leading, spacing: 6) {
+                    TagCapsule(text: "待真机验证")
+                    Text("AIO Board 1.4")
+                        .font(.headline)
+                    Text("查看 ESP32、CC1101、nRF24 的参考信息与当前适配状态。")
+                        .font(.subheadline)
+                        .foregroundStyle(.secondary)
+                }
+                .padding(.vertical, 4)
             }
-            .padding(.vertical, 4)
+            .accessibilityIdentifier("guides.aioBoard")
         } header: {
             SectionHeader("扩展板")
         }

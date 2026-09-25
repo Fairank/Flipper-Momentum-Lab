@@ -20,9 +20,9 @@
 - 新做 iPhone App，连接 Flipper，利用手机算力增强功能。目标设备为 iPhone 17 Pro Max，运行已安装的最新 iOS（确切版本未记录）。
 - Flipper 本机功能重写：已新增中文入口应用 Flipper Lab，保留已验证的硬件驱动。现有原生应用目前仍是英文，**全面中文化仍是用户需求中未完成的部分**，不是已被放弃或缩减的范围。
 - 手机与设备提供中文界面和功能介绍。
-- 用户当前还要求提供手机页面和 Flipper 页面的预览。旧手机界面已导出 10 张模拟器截图，用户否定其设计并要求重做：Claude 5.1 Max 设计、Opus 5.5 实现，由主控复核。Flipper 预览脚本已输出 65 个画面，它不是真机截图。
+- 用户当前还要求提供手机页面和 Flipper 页面的预览。旧手机界面已导出 10 张模拟器截图，用户否定其设计并要求重做：Claude 5.1 Max 设计、Opus 5.5 实现，由主控复核。Flipper 预览脚本现已输出 66 个画面，它不是真机截图。
 
-Mac、Flipper 硬件版本和扩展板的确切型号仍未知。本轮没有可用的 Mac，也没有 Flipper 真机可测。
+Mac、Flipper 硬件版本仍未知。用户已提供扩展板名称 AIO Board 1.4，但厂商、芯片丝印与固件未确认；本轮没有可用的 Mac，也没有 Flipper 真机可测。
 
 分工：主控负责决策与验收，编写蓝牙连接和设备控制代码，并审查全部改动。委派给本机 Claude CLI 的工作及其返回模型见 VALIDATION.md 的“委派记录”：记录解析与存储、设备端中文说明、字库生成器和 UTF-8 修复已经主控复核并跑过测试，iOS 界面由主控直接实现。本机 Claude 只是开发工具，App 不调用任何云端 AI 服务。
 
@@ -36,13 +36,13 @@ Mac、Flipper 硬件版本和扩展板的确切型号仍未知。本轮没有可
 | 桌面 C 回归 | Windows 上以工作区 Zig 0.16.0 充当 `cc` 真实编译：3 项旧回归 + 3 项 UTF-8 全部通过，无跳过；GitHub Ubuntu 任务 36 项通过（含 30 项字库生成器测试） |
 | iPhone App（`mobile/FlipperLab`） | 五个中文页面、蓝牙 RPC、文件列目录与下载、唯一文件名上传读回、六类记录离线分析与脉冲统计和比较、资料库编辑/导出/删除、任务记录、一次性红外发送、8 篇指南已编写。首个提交的 GitHub macOS CI：51 项 Swift 包测试通过，不签名模拟器构建通过，1 项离线 UI 测试走完五个页面并打开中文连接指南 |
 | iPhone 截图导出、两条示例记录的固定样本 UI 测试 | 提交 `8a1347be`：2 项 UI 测试通过，10 张截图；iPhone 16 Pro / iOS 18.5。正在重做界面，新版须重新验收 |
-| Flipper Lab（`applications/main/lab`） | 10 个中文主题与快捷启动、423 字形字库子集已编写并编译进完整包（`lab.fap` 22,360 字节）；真机未验证，源码渲染预览 65 个画面已生成 |
+| Flipper Lab（`applications/main/lab`） | 10 个中文主题与快捷启动；新增 AIO Board 1.4 提示页后字库子集为 428 字形，源码预览 66 个画面已生成。原包的 `lab.fap` 为 22,360 字节，新版尺寸待 CI 构建；真机未验证 |
 | UTF-8 文字换行修复（`text_box.c`、`utf8_internal.h`） | 已编写，3 项桌面回归通过；真机未验证 |
 | 现有原生应用与系统设置的全面中文化 | 未开始；仍是用户需求（REQUIREMENTS.md R9/R10） |
 | 蓝牙真机、Flipper 真机屏幕 | 未运行；没有可用的 Mac 和真机 |
 | 实时串口采集、更多手机端离线分析、固件升级功能 | 未实现 |
 | 刷写、部署、App Store 发布 | 未进行，不在本轮范围 |
-| ESP32、“WiFi 终结者” | 型号和固件未确认，没有驱动或相关实现 |
+| AIO Board 1.4（ESP32、CC1101、nRF24） | 板名已知，具体卖家、芯片与固件未确认；手机可离线导入已保存的 ESP32 扫描日志，无实时驱动或真机通信验收 |
 
 构建命令、产物路径和未完成的证据见 [VALIDATION.md](documentation/custom/VALIDATION.md)。
 
@@ -124,7 +124,7 @@ subst P: /D                                     # 只删除盘符映射，不删
 
 ## 可直接交给下一台电脑的助手
 
-> 请先阅读 HANDOFF.md、mobile/FlipperLab/README.zh-CN.md、documentation/custom/REQUIREMENTS.md 和 VALIDATION.md。继续我授权的个人 Momentum 定制：按 REQUIREMENTS.md 实现全部需求，iPhone 优先（iPhone 17 Pro Max）。分支 codex/iphone-zh-architecture 已推送，草稿 PR #1 指向 codex/momentum-unleashed。保留 Momentum/Xtreme 风格和已验证的硬件驱动；现有原生应用的全面中文化仍是需求，未做完前不要写成已完成或已取消。验收只按实际运行结果勾选，源码、编译、CI、模拟器和真机分别记录，不把计划或未运行的测试写成完成。ESP32 与“WiFi 终结者”型号确认前不实现相关驱动。保留上游贡献政策文件，不向上游投稿；合并、刷写或发布前先征得我的确认。
+> 请先阅读 HANDOFF.md、mobile/FlipperLab/README.zh-CN.md、documentation/custom/REQUIREMENTS.md 和 VALIDATION.md。继续我授权的个人 Momentum 定制：按 REQUIREMENTS.md 实现全部需求，iPhone 优先（iPhone 17 Pro Max）。分支 codex/iphone-zh-architecture 已推送，草稿 PR #1 指向 codex/momentum-unleashed。保留 Momentum/Xtreme 风格和已验证的硬件驱动；现有原生应用的全面中文化仍是需求，未做完前不要写成已完成或已取消。验收只按实际运行结果勾选，源码、编译、CI、模拟器和真机分别记录，不把计划或未运行的测试写成完成。AIO Board 1.4 的厂商、实际芯片和固件未确认前不声称实时通信可用。保留上游贡献政策文件，不向上游投稿；合并、刷写或发布前先征得我的确认。
 
 ## 历史记录
 

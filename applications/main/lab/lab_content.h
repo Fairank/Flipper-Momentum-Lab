@@ -104,11 +104,12 @@ static const LabPage lab_pages_ibutton[] = {
 };
 
 static const LabPage lab_pages_gpio[] = {
-    {"1/5", {"USB-UART Bridge", "让电脑经Flipper", "连接板子的串口"}},
-    {"2/5", {"接线 默认13和14脚", "13为TX 14为RX", "TX与RX交叉相接"}},
-    {"3/5", {"GND与GND相连", "按3.3V电平使用", "5V设备要电平转换"}},
-    {"4/5", {"步骤 进入Bridge", "波特率与板子一致", "电脑用串口软件看"}},
-    {"5/5", {"USB串口不经手机", "手机日志助手规划中", "高速数据经蓝牙可能丢"}},
+    {"1/6", {"USB-UART Bridge", "让电脑经Flipper", "连接板子的串口"}},
+    {"2/6", {"接线 默认13和14脚", "13为TX 14为RX", "TX与RX交叉相接"}},
+    {"3/6", {"GND与GND相连", "按3.3V电平使用", "5V设备要电平转换"}},
+    {"4/6", {"步骤 进入Bridge", "波特率与板子一致", "电脑用串口软件看"}},
+    {"5/6", {"USB串口不经手机", "手机日志助手规划中", "高速数据经蓝牙可能丢"}},
+    {"6/6", {"AIO Board 1.4", "芯片固件待核实", "本机连接未验证"}},
 };
 
 static const LabPage lab_pages_files[] = {
@@ -197,7 +198,7 @@ static const LabTopic lab_topics[LAB_TOPIC_COUNT] = {
         .footer = "←→翻页 OK打开应用",
         .launch = "GPIO",
         .pages = lab_pages_gpio,
-        .page_count = 5,
+        .page_count = 6,
     },
     {
         .label = "文件管理",
