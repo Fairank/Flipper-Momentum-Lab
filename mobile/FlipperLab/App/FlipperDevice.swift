@@ -1,6 +1,7 @@
 import Foundation
 import CoreBluetooth
 import Observation
+import UIKit
 import FlipperCore
 
 struct NearbyDevice: Identifiable { let id: UUID; let name: String; let rssi: Int }
@@ -19,6 +20,8 @@ final class FlipperDevice: NSObject, CBCentralManagerDelegate, CBPeripheralDeleg
     private(set) var lastError: String?
     private(set) var transferredBytes = 0
     private(set) var protocolVersion = "未检查"
+    private(set) var remoteImage: UIImage?
+    private(set) var remoteActive = false
     var ready: Bool { state == .ready }
 
     // UUIDs are reversed from the little-endian arrays in serial_service_uuid.inc.
@@ -52,6 +55,9 @@ final class FlipperDevice: NSObject, CBCentralManagerDelegate, CBPeripheralDeleg
     @ObservationIgnored private var handshake: Task<Void, Never>?
     @ObservationIgnored private var generation = UUID()
     @ObservationIgnored private var appReady = false
+    @ObservationIgnored private var remoteRequested = false
+    @ObservationIgnored private var remoteKeyInFlight = false
+    @ObservationIgnored private var lastRemoteFrameAt: TimeInterval = 0
 
     override init() {
         super.init()
@@ -87,6 +93,9 @@ final class FlipperDevice: NSObject, CBCentralManagerDelegate, CBPeripheralDeleg
 
     func disconnect() { close(error: RPCError.disconnected) }
     func cancelOperation() { close(error: RPCError.cancelled) }
+    func suspendRemoteSession() {
+        if remoteRequested { close(error: RPCError.cancelled) }
+    }
     func clearError() { lastError = nil }
 
     private func close(error: Error) {
@@ -96,6 +105,8 @@ final class FlipperDevice: NSObject, CBCentralManagerDelegate, CBPeripheralDeleg
         if let peripheral { central.cancelPeripheralConnection(peripheral) }
         peripheral = nil; characteristics = [:]; subscriptions = []; credits = nil
         outbound = Data(); outboundOffset = 0; writeInFlight = false; decoder.reset(); appReady = false
+        remoteRequested = false; remoteActive = false; remoteImage = nil; lastRemoteFrameAt = 0
+        remoteKeyInFlight = false
         finish(.failure(error)); info = [:]; protocolVersion = "未检查"
         state = central.state == .poweredOn ? .idle : .unavailable
     }
@@ -164,6 +175,18 @@ final class FlipperDevice: NSObject, CBCentralManagerDelegate, CBPeripheralDeleg
 
     private func accept(_ envelope: RPCEnvelope) throws {
         if envelope.tag == 58 { appReady = try PBMessage(envelope.payload).uint(1) == 1; return }
+        if envelope.tag == 22 && envelope.commandID == 0 && remoteRequested {
+            // Unsolicited screen frames share the same BLE channel as ordinary RPC replies.
+            // Never append them to a pending file operation's response.
+            guard envelope.status == 0 else { throw RPCError.remote(envelope.status) }
+            let frame = try RemoteScreenFrame(payload: envelope.payload)
+            let now = ProcessInfo.processInfo.systemUptime
+            if now - lastRemoteFrameAt >= 1.0 / 12.0 {
+                lastRemoteFrameAt = now
+                remoteImage = Self.image(from: frame)
+            }
+            return
+        }
         guard envelope.commandID == pendingID else { return }
         refreshTimeout()
         // Stop queued continuation frames on a device error, rather than completing
@@ -179,6 +202,75 @@ final class FlipperDevice: NSObject, CBCentralManagerDelegate, CBPeripheralDeleg
         guard response.count < 8192, responseBytes + envelope.payload.count <= 2_200_000 else { throw RPCError.tooLarge }
         response.append(envelope); responseBytes += envelope.payload.count
         if !envelope.hasNext { responseComplete = true; completeIfDrained() }
+    }
+
+    func startRemoteScreen() async throws {
+        guard ready else { throw RPCError.disconnected }
+        if remoteActive { return }
+        guard !remoteRequested else { throw RPCError.busy }
+        remoteRequested = true
+        remoteImage = nil
+        lastRemoteFrameAt = 0
+        do {
+            _ = try await request(tag: 20)
+            remoteActive = true
+        } catch {
+            remoteRequested = false
+            remoteImage = nil
+            throw error
+        }
+    }
+
+    func stopRemoteScreen() async throws {
+        guard remoteRequested || remoteActive else { return }
+        // The firmware owns the framebuffer callback until the stop reply arrives.
+        // A pending key sequence must finish before stop is sent on this RPC channel.
+        for _ in 0..<50 where continuation != nil || hasUnsentBytes || writeInFlight {
+            try await Task.sleep(for: .milliseconds(100))
+        }
+        do {
+            guard ready else { throw RPCError.disconnected }
+            _ = try await request(tag: 21)
+            remoteRequested = false
+            remoteActive = false
+            remoteImage = nil
+        } catch {
+            // Closing the BLE RPC session also releases the firmware screen callback.
+            close(error: error)
+            throw error
+        }
+    }
+
+    func sendRemoteKey(_ key: RemoteKey, longPress: Bool = false) async throws {
+        guard ready, remoteActive else { throw RPCError.disconnected }
+        guard !remoteKeyInFlight, continuation == nil else { throw RPCError.busy }
+        remoteKeyInFlight = true
+        defer { remoteKeyInFlight = false }
+        let keyField = PBMessage.uint(1, UInt64(key.rawValue))
+        var pressed = false
+        do {
+            _ = try await request(tag: 23, payload: keyField + PBMessage.uint(2, 0)) // PRESS
+            pressed = true
+            _ = try await request(tag: 23, payload: keyField + PBMessage.uint(2, longPress ? 3 : 2)) // LONG or SHORT
+            _ = try await request(tag: 23, payload: keyField + PBMessage.uint(2, 1)) // RELEASE
+        } catch {
+            if pressed { close(error: error) }
+            throw error
+        }
+    }
+
+    private static func image(from frame: RemoteScreenFrame) -> UIImage? {
+        let pixels = frame.rgbaPixels()
+        guard let provider = CGDataProvider(data: pixels as CFData),
+              let cgImage = CGImage(width: RemoteScreenFrame.width,
+                                    height: RemoteScreenFrame.height,
+                                    bitsPerComponent: 8, bitsPerPixel: 32,
+                                    bytesPerRow: RemoteScreenFrame.width * 4,
+                                    space: CGColorSpaceCreateDeviceRGB(),
+                                    bitmapInfo: CGBitmapInfo(rawValue: CGImageAlphaInfo.last.rawValue),
+                                    provider: provider, decode: nil,
+                                    shouldInterpolate: false, intent: .defaultIntent) else { return nil }
+        return UIImage(cgImage: cgImage)
     }
 
     private func completeIfDrained() {

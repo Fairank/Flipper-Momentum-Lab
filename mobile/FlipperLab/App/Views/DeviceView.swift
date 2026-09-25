@@ -8,6 +8,7 @@ import FlipperCore
     let model: AppModel
     @Environment(\.openURL) private var openURL
     @State private var browsing = false
+    @State private var remoteControlling = false
 
     private var device: FlipperDevice { model.device }
 
@@ -52,6 +53,9 @@ import FlipperCore
         .listStyle(.insetGrouped)
         .navigationTitle("设备")
         .navigationBarTitleDisplayMode(.large)
+        .navigationDestination(isPresented: $remoteControlling) {
+            RemoteControlView(model: model)
+        }
         .navigationDestination(isPresented: $browsing) {
             DeviceFilesView(model: model, path: "/ext")
         }
@@ -64,7 +68,7 @@ import FlipperCore
         case .connecting: return "首次配对时，在 iPhone 弹出的窗口中输入 Flipper 屏幕上的 6 位配对码；超过 45 秒未完成会自动断开。"
         case .discovering: return "正在准备连接…"
         case .negotiating: return "正在检查协议版本并读取设备信息。"
-        case .ready: return "可以浏览设备文件并导入记录；资料库中的记录可以上传到 Flipper。"
+        case .ready: return "可以远程查看 Flipper 屏幕并发送按键，也可以浏览设备文件并导入记录；资料库中的记录可以上传到 Flipper。"
         case .unavailable: return device.lastError ?? "请开启 iPhone 蓝牙。"
         }
     }
@@ -115,12 +119,22 @@ import FlipperCore
                 .controlSize(.large)
                 .accessibilityIdentifier("device.cancelConnect")
             case .ready:
-                Button { browsing = true } label: {
-                    PrimaryButtonLabel(title: "浏览设备文件", systemImage: "folder")
+                // Remote control is the one prominent action once connected; the file
+                // browser stays as the secondary button with its existing identifier.
+                Button { remoteControlling = true } label: {
+                    PrimaryButtonLabel(title: "远程操作 Flipper", systemImage: "dpad")
                 }
                 .buttonStyle(.borderedProminent)
                 .controlSize(.large)
                 .tint(LabColor.brandOrange)
+                .disabled(model.busy)
+                .accessibilityHint("查看已连接 Flipper 的屏幕并发送按键")
+                .accessibilityIdentifier("device.remoteControl")
+                Button { browsing = true } label: {
+                    WideButtonLabel(title: "浏览设备文件", systemImage: "folder")
+                }
+                .buttonStyle(.bordered)
+                .controlSize(.large)
                 .disabled(model.busy)
                 .accessibilityIdentifier("device.browseFiles")
                 Button(role: .destructive) { device.disconnect() } label: {
