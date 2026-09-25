@@ -7,7 +7,7 @@ import FlipperCore
 /// Flipper screen. Built-in entries come from `FlipperFunction.builtIns`; installed `.fap`
 /// files are read from `/ext/apps` on the first visit while connected and afterwards only when
 /// the user asks. Every row is disabled with a stated reason while the device is not ready or
-/// a task is running, so no request is sent to a Flipper that cannot answer.
+/// a task is running, tapping a row explains why it cannot open yet; no request is sent.
 @MainActor struct FunctionsView: View {
     let model: AppModel
     @State private var search = ""
@@ -15,6 +15,7 @@ import FlipperCore
     @State private var installedState: InstalledState = .idle
     @State private var loadedAt: Date?
     @State private var lastLaunchID: UUID?
+    @State private var blockedActionMessage: String?
 
     private enum InstalledState: Equatable {
         case idle
@@ -87,6 +88,14 @@ import FlipperCore
                 loadedAt = nil
                 installedState = .idle
             }
+        }
+        .alert("暂时无法打开", isPresented: Binding(
+            get: { blockedActionMessage != nil },
+            set: { if !$0 { blockedActionMessage = nil } }
+        )) {
+            Button("知道了") { blockedActionMessage = nil }
+        } message: {
+            Text(blockedActionMessage ?? "")
         }
     }
 
@@ -191,12 +200,12 @@ import FlipperCore
 
     // MARK: Rows
 
-    /// The whole row is the button; the launch request goes out on the tap, without a dialog.
+    /// The whole row is the button; a ready device launches immediately. Offline taps explain
+    /// the requirement while keeping the catalogue legible and discoverable.
     private func functionRow(_ function: FlipperFunction) -> some View {
         Button { open(function) } label: {
             FunctionRow(function: function)
         }
-        .disabled(blockReason != nil)
         .accessibilityLabel(rowDescription(function))
         .accessibilityHint(blockReason ?? (function.isInstalledApp ? "在 Flipper 上打开此应用" : "在 Flipper 上打开此功能"))
         .accessibilityIdentifier((function.isInstalledApp ? "functions.app." : "functions.builtin.") + function.id)
@@ -212,6 +221,10 @@ import FlipperCore
     /// `perform` inserts the task entry synchronously, so the newest entry is ours; when the
     /// model is busy it inserts nothing and raises the shared alert instead.
     private func open(_ function: FlipperFunction) {
+        if let reason = blockReason {
+            blockedActionMessage = reason
+            return
+        }
         let previous = model.tasks.first?.id
         model.openOnFlipper(function)
         if let current = model.tasks.first?.id, current != previous {
@@ -308,11 +321,10 @@ import FlipperCore
 
 /// Function row: symbol tile, Chinese title with the name the Flipper menu shows, then the
 /// summary and the key condition. Installed apps show their device path instead, because the
-/// title is only the file name and nothing about the app is known. Disabled rows drop to
-/// secondary text; the reason is stated once at the top and in the row's accessibility hint.
+/// title is only the file name and nothing about the app is known. The row remains readable
+/// offline; the reason is stated at the top, on tap, and in the accessibility hint.
 private struct FunctionRow: View {
     let function: FlipperFunction
-    @Environment(\.isEnabled) private var isEnabled
 
     var body: some View {
         HStack(alignment: .top, spacing: 12) {
@@ -321,7 +333,7 @@ private struct FunctionRow: View {
                 if function.isInstalledApp {
                     Text(verbatim: function.title)
                         .font(.headline)
-                        .foregroundStyle(isEnabled ? Color.primary : Color.secondary)
+                        .foregroundStyle(.primary)
                     Text(verbatim: function.launchName)
                         .font(LabFont.mono)
                         .foregroundStyle(.secondary)
@@ -331,7 +343,7 @@ private struct FunctionRow: View {
                     AdaptiveStack(verticalAlignment: .firstTextBaseline, spacing: 8) {
                         Text(verbatim: function.title)
                             .font(.headline)
-                            .foregroundStyle(isEnabled ? Color.primary : Color.secondary)
+                            .foregroundStyle(.primary)
                         Text(verbatim: function.launchName)
                             .font(.footnote)
                             .foregroundStyle(.secondary)
@@ -347,7 +359,7 @@ private struct FunctionRow: View {
             .frame(maxWidth: .infinity, alignment: .leading)
             Image(systemName: "arrow.up.right.square")
                 .font(.body)
-                .foregroundStyle(isEnabled ? LabColor.accent : Color.secondary)
+                .foregroundStyle(LabColor.accent)
                 .accessibilityHidden(true)
         }
         .multilineTextAlignment(.leading)

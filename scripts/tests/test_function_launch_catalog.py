@@ -16,7 +16,11 @@ class FunctionLaunchCatalogTests(unittest.TestCase):
         self.assertGreaterEqual(len(names), 10)
         manifests = set()
         for path in (ROOT / "applications").rglob("application.fam"):
-            manifests.update(re.findall(r'^\s*name="([^"]+)"', path.read_text(encoding="utf-8"), re.M))
+            manifests.update(
+                re.findall(
+                    r'^\s*name="([^"]+)"', path.read_text(encoding="utf-8"), re.M
+                )
+            )
         # "Apps" is the loader's built-in application-browser entry, not an app manifest.
         self.assertEqual(sorted(set(names) - manifests - {"Apps"}), [])
 

@@ -8,6 +8,8 @@
 
 本轮新增独立的“功能”页作为第五个主页面。手机以中文介绍功能，点击条目通过蓝牙在 Flipper 打开现有应用；不显示设备屏幕镜像。启动范围、设备忙碌时的限制和真机验收边界见 [手机功能中心说明](FUNCTION_LAUNCH.zh-CN.md)。下表历史 CI 结果来自加入该页之前，不能当作新功能的验证结果。
 
+从 Flipper 导入的 NFC／低频 RFID 记录可以在手机保存、查看与分析，但不能直接变成 iPhone 可刷的门禁凭证。卡类型和正式手机凭证的条件见 [门禁卡记录与 iPhone NFC](CARD_ON_IPHONE.zh-CN.md)。
+
 | 项目 | 状态 |
 | --- | --- |
 | 工程配置与本说明 | 在 Windows 电脑上编写，本地没有 Xcode 或可用的 Mac。下文的本地命令只在 GitHub macOS CI 中以等效步骤运行过 |
@@ -29,7 +31,7 @@
 | `Sources/FlipperCore/` | 与界面无关的核心代码：RPC/protobuf 编解码与分包重组、六类记录解析与分析、资料库存储、记录模型，以及离线指南资源 `Resources/FeatureCatalog.json` |
 | `Tests/FlipperCoreTests/` | `FlipperCore` 的 XCTest 单元测试；其中 `ProtocolVectorTests.swift` 由 `scripts/generate_rpc_vectors.py` 用固件锁定的 `.proto` 生成 |
 | `App/` | iPhone App 源码（SwiftUI 界面、蓝牙连接、资料库与任务逻辑），只由 Xcode 工程编译 |
-| `UITests/` | XCUITest 界面测试目标 `FlipperLabUITests`：四页导航、指南、示例记录分析、菜单以及深色大字号，每步保存截图附件 |
+| `UITests/` | XCUITest 界面测试目标 `FlipperLabUITests`：五页导航、功能中心离线状态、指南、示例记录分析、菜单以及深色大字号，每步保存截图附件 |
 | `App/Info.plist` | App 的 Info 模板，构建时 Xcode 会替换其中的 `$(…)` 变量 |
 | `project.yml` | XcodeGen 工程描述 |
 | `FlipperLab.xcodeproj` | 由 XcodeGen 生成在本目录，不是手写文件，不要提交 |
@@ -108,7 +110,7 @@ xcrun xcresulttool export attachments \
   --output-path "$TMPDIR/screenshots"
 ```
 
-三项测试都以简体中文启动 App：`testOfflineNavigationAndChineseGuide` 进入设备、资料库、任务、指南四个页面，并检查资料库菜单、比较记录和“设备连接”指南；`testExampleRecordAnalysis` 用 `-ui-testing-fixtures` 载入两条示例记录，检查分析、完整脉冲图、离线红外按钮和删除确认；`testDarkAppearanceAndAccessibilityTextNavigation` 检查深色大字页面，以及从记录进入比较时预选记录 A。截图编号为 01–17，其中 03 是资料库菜单、12–17 是深色大字。这些测试只验证离线界面，不证明蓝牙、上传或红外。
+三项测试都以简体中文启动 App：`testOfflineNavigationAndChineseGuide` 进入设备、功能、资料库、任务、指南五个页面，检查功能中心离线状态、资料库菜单、比较记录和“设备连接”指南；`testExampleRecordAnalysis` 用 `-ui-testing-fixtures` 载入两条示例记录，检查分析、完整脉冲图、离线红外按钮和删除确认；`testDarkAppearanceAndAccessibilityTextNavigation` 检查深色大字页面，以及从记录进入比较时预选记录 A。新增的“01b-功能中心离线预览”是模拟器截图；这些测试只验证离线界面，不证明蓝牙、上传或红外。
 
 ## 4. 用自己的团队签名，安装到 iPhone 17 Pro Max
 

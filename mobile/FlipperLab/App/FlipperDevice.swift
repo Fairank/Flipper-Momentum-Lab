@@ -275,6 +275,8 @@ final class FlipperDevice: NSObject, CBCentralManagerDelegate, CBPeripheralDeleg
             guard rows.count == 1, rows[0].tag == 4 else { throw RPCError.malformed }
         } catch RPCError.remote(15) {
             throw RPCError.message("设备未安装这个应用，或当前固件不支持直接打开。")
+        } catch RPCError.remote(16) {
+            throw RPCError.message("Flipper 无法启动该应用，请检查 SD 卡、应用版本和设备提示。")
         }
     }
 

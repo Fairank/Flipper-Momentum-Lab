@@ -15,12 +15,16 @@ import FlipperCore
     @State private var deleting = false
     @State private var exporting = false
     @State private var comparing = false
+    @State private var showingPhoneCredentialInfo = false
     private var record: CaptureRecord? { model.records.first { $0.id == id } }
 
     var body: some View {
         List {
             if let record {
                 RecordHeaderSection(record: record, busy: model.busy)
+                if record.kind == .nfc || record.kind == .rfid {
+                    phoneCredentialSection
+                }
                 AnalysisSections(report: report, failure: failure)
                 if record.kind == .infrared, let buttons = report?.buttons, !buttons.isEmpty {
                     infraredSection(record, buttons: buttons)
@@ -55,6 +59,9 @@ import FlipperCore
         .sheet(isPresented: $editing) {
             if let record { NavigationStack { EditRecordView(model: model, record: record) } }
         }
+        .sheet(isPresented: $showingPhoneCredentialInfo) {
+            if let record { NavigationStack { PhoneCredentialInfoView(kind: record.kind) } }
+        }
         .fileExporter(isPresented: $exporting, document: RawRecordDocument(text: record?.rawText ?? ""), contentType: .data,
                       defaultFilename: "Lab_\(id.uuidString).\(record?.kind.fileExtension ?? "txt")") { result in
             if case .failure(let error) = result { model.error = error.localizedDescription }
@@ -65,6 +72,20 @@ import FlipperCore
         .onChange(of: record == nil) { _, removed in if removed { dismiss() } }
         .navigationDestination(isPresented: $comparing) {
             CompareRecordsView(model: model, initialFirst: id)
+        }
+    }
+
+    private var phoneCredentialSection: some View {
+        Section {
+            Button { showingPhoneCredentialInfo = true } label: {
+                Label("iPhone 能否使用这张卡？", systemImage: "iphone")
+                    .frame(maxWidth: .infinity, minHeight: 44, alignment: .leading)
+            }
+            .accessibilityIdentifier("record.phoneCredentialInfo")
+        } header: {
+            SectionHeader("iPhone 使用")
+        } footer: {
+            Text("手机可保存记录；能否刷门取决于卡类型和门禁发行方。")
         }
     }
 
