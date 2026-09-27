@@ -19,6 +19,9 @@ final class AppModel {
     private(set) var tasks: [TaskEntry] = []
     private(set) var busy = false
     private(set) var libraryReady = false
+    private(set) var serialCapture = SerialCapture()
+    private(set) var serialRunning = false
+    @ObservationIgnored private var serialStopRequested = false
     var error: String?
     @ObservationIgnored private let store: RecordStore
     @ObservationIgnored private var running: Task<Void, Never>?
@@ -157,4 +160,38 @@ final class AppModel {
             return "设备已确认执行；请检查实际家电响应。"
         }
     }
+
+    func startSerial(port: UInt8, baud: UInt32) {
+        perform("接收扩展板串口") {
+            self.serialCapture = SerialCapture()
+            self.serialStopRequested = false
+            self.serialRunning = true
+            defer { self.serialRunning = false }
+            do {
+                try await self.device.startSerialBridge(port: port, baud: baud)
+                var capture = SerialCapture()
+                var displayedAt = Date.distantPast
+                while !self.serialStopRequested {
+                    try Task.checkCancellation()
+                    let reply = try await self.device.readSerialBridge()
+                    capture.append(reply)
+                    if Date().timeIntervalSince(displayedAt) >= 0.2 {
+                        self.serialCapture = capture
+                        displayedAt = Date()
+                    }
+                    if reply.payload.isEmpty { try await Task.sleep(for: .milliseconds(100)) }
+                    else { await Task.yield() }
+                }
+                self.serialCapture = capture
+                try await self.device.stopSerialBridge()
+                return "收到 \(capture.receivedBytes) 字节；设备缓冲丢失 \(capture.deviceDroppedBytes) 字节；手机截断 \(capture.trimmedBytes) 字节。"
+            } catch {
+                // Disconnect releases UART on the Flipper even if a normal close failed.
+                self.device.disconnect()
+                throw error
+            }
+        }
+    }
+
+    func stopSerial() { serialStopRequested = true }
 }

@@ -56,6 +56,9 @@ final class FlipperDevice: NSObject, CBCentralManagerDelegate, CBPeripheralDeleg
     @ObservationIgnored private var generation = UUID()
     @ObservationIgnored private var appReady = false
     @ObservationIgnored private var installedAppPaths: Set<String> = []
+    @ObservationIgnored private var bridgeActive = false
+    @ObservationIgnored private var bridgeSequence: UInt16 = 0
+    @ObservationIgnored private var bridgeReply: Data?
 
     override init() {
         super.init()
@@ -101,6 +104,7 @@ final class FlipperDevice: NSObject, CBCentralManagerDelegate, CBPeripheralDeleg
         peripheral = nil; characteristics = [:]; subscriptions = []; credits = nil
         outbound = Data(); outboundOffset = 0; writeInFlight = false; decoder.reset(); appReady = false
         installedAppPaths = []
+        bridgeActive = false; bridgeReply = nil
         finish(.failure(error)); info = [:]; protocolVersion = "未检查"
         state = central.state == .poweredOn ? .idle : .unavailable
     }
@@ -169,6 +173,16 @@ final class FlipperDevice: NSObject, CBCentralManagerDelegate, CBPeripheralDeleg
 
     private func accept(_ envelope: RPCEnvelope) throws {
         if envelope.tag == 58 { appReady = try PBMessage(envelope.payload).uint(1) == 1; return }
+        if envelope.tag == 65, bridgeActive {
+            guard let data = try PBMessage(envelope.payload).bytes(1), data.count <= SerialBridge.maxChunk + 12 else {
+                throw RPCError.malformed
+            }
+            // Application data is unsolicited; the inner sequence correlates it with our request.
+            guard data.count >= 6, (UInt16(data[4]) | UInt16(data[5]) << 8) == bridgeSequence else { return }
+            guard bridgeReply == nil else { throw RPCError.malformed }
+            bridgeReply = data
+            return
+        }
         guard envelope.commandID == pendingID else { return }
         refreshTimeout()
         // Stop queued continuation frames on a device error, rather than completing
@@ -351,6 +365,52 @@ final class FlipperDevice: NSObject, CBCentralManagerDelegate, CBPeripheralDeleg
             fail(error)
             throw error
         }
+    }
+
+    func startSerialBridge(port: UInt8, baud: UInt32) async throws {
+        guard ready, !bridgeActive else { throw RPCError.busy }
+        let configuration = try SerialBridge.configuration(port: port, baud: baud)
+        appReady = false
+        _ = try await request(tag: 16, payload: PBMessage.string(1, "Lab Bridge") + PBMessage.string(2, "RPC"))
+        do {
+            for _ in 0..<100 {
+                if appReady { break }
+                try await Task.sleep(for: .milliseconds(50))
+            }
+            guard appReady else { throw RPCError.message("Lab Bridge 没有就绪，请安装本项目的新固件。") }
+            bridgeActive = true
+            let hello = try await serialBridgeRequest(.hello)
+            guard String(data: hello.payload, encoding: .utf8) == "FlipperLab.Serial/1" else {
+                throw RPCError.message("串口桥版本不兼容。")
+            }
+            _ = try await serialBridgeRequest(.open, payload: configuration)
+        } catch {
+            fail(error)
+            throw error
+        }
+    }
+
+    func readSerialBridge() async throws -> SerialBridge.Reply {
+        try await serialBridgeRequest(.read)
+    }
+
+    func stopSerialBridge() async throws {
+        guard bridgeActive else { return }
+        _ = try await serialBridgeRequest(.close)
+        _ = try await request(tag: 47)
+        bridgeActive = false; bridgeReply = nil
+    }
+
+    private func serialBridgeRequest(_ operation: SerialBridge.Operation, payload: Data = Data()) async throws -> SerialBridge.Reply {
+        guard bridgeActive, appReady else { throw RPCError.message("扩展板串口会话已结束。") }
+        bridgeSequence &+= 1
+        bridgeReply = nil
+        let packet = try SerialBridge.request(operation, sequence: bridgeSequence, payload: payload)
+        let result = try await request(tag: 65, payload: PBMessage.bytes(1, packet))
+        guard result.count == 1, result[0].tag == 4, let data = bridgeReply else { throw RPCError.malformed }
+        let reply = try SerialBridge.Reply(data)
+        guard reply.sequence == bridgeSequence, reply.operation == operation else { throw RPCError.malformed }
+        return reply
     }
 
     private func validate(_ path: String) throws {

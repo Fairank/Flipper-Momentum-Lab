@@ -10,6 +10,39 @@ final class FlipperLabUITests: XCTestCase {
     private let chineseLocale = ["-AppleLanguages", "(zh-Hans)", "-AppleLocale", "zh_CN"]
 
     @MainActor
+    func testOfflineClassicWorkbenchAndSerialEntry() throws {
+        continueAfterFailure = false
+        let app = launch(["-ui-testing-light"])
+        XCTAssertTrue(app.navigationBars["设备"].waitForExistence(timeout: 15))
+        app.tabBars.buttons["功能"].tap()
+        let workbench = app.buttons["functions.nfcWorkbench"]
+        XCTAssertTrue(scrollUntilHittable([workbench], in: app))
+        workbench.tap()
+        XCTAssertTrue(app.navigationBars["NFC 离线工作台"].waitForExistence(timeout: 5))
+        let run = app.buttons["nfc.verify"]
+        XCTAssertFalse(run.isEnabled)
+        let example = app.buttons["nfc.loadExample"]
+        XCTAssertTrue(scrollUntilHittable([example], in: app))
+        example.tap()
+        XCTAssertTrue(scrollUntilHittable([run], in: app))
+        XCTAssertTrue(run.isEnabled)
+        run.tap()
+        let result = app.staticTexts["A0A1A2A3A4A5"]
+        XCTAssertTrue(reveal([result], in: app))
+        XCTAssertTrue(result.waitForExistence(timeout: 10))
+        capture(app, name: "19-NFC离线公开样本验证")
+        app.navigationBars.buttons.firstMatch.tap()
+        let serial = app.buttons["functions.serialBridge"]
+        XCTAssertTrue(scrollUntilHittable([serial], in: app))
+        serial.tap()
+        XCTAssertTrue(app.navigationBars["扩展板实时数据"].waitForExistence(timeout: 5))
+        let start = app.buttons["serial.start"]
+        XCTAssertTrue(start.exists)
+        XCTAssertFalse(start.isEnabled)
+        capture(app, name: "20-扩展板串口等待连接")
+    }
+
+    @MainActor
     func testExampleRecordAnalysis() throws {
         continueAfterFailure = false
         let app = launch(["-ui-testing-fixtures", "-ui-testing-light"])
@@ -108,6 +141,7 @@ final class FlipperLabUITests: XCTestCase {
         let infraredFunction = buttonContaining("红外遥控", in: app)
         XCTAssertTrue(infraredFunction.exists)
         capture(app, name: "01b-功能中心离线预览")
+        XCTAssertTrue(scrollUntilHittable([infraredFunction], in: app))
         infraredFunction.tap()
         let offlineExplanation = app.alerts["暂时无法打开"]
         XCTAssertTrue(offlineExplanation.waitForExistence(timeout: 5))

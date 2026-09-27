@@ -4,6 +4,7 @@ App(
     apptype=FlipperAppType.METAPACKAGE,
     provides=[
         "lab",
+        "lab_bridge",
         "gpio",
         "ibutton",
         "infrared",

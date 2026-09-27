@@ -45,6 +45,18 @@ import FlipperCore
         let apps = Self.groups(installed.filter { matches($0) }, sortCategories: true)
         List {
             statusSection
+            if search.isEmpty {
+                Section {
+                    NavigationLink { NFCWorkbenchView() } label: {
+                        Label("NFC 离线工作台", systemImage: "wave.3.right")
+                    }
+                    .accessibilityIdentifier("functions.nfcWorkbench")
+                    NavigationLink { SerialBridgeView(model: model) } label: {
+                        Label("扩展板实时数据", systemImage: "cable.connector")
+                    }
+                    .accessibilityIdentifier("functions.serialBridge")
+                } header: { SectionHeader("手机工作台") }
+            }
             if !search.isEmpty, builtIns.isEmpty, apps.isEmpty {
                 Section {
                     ContentUnavailableView.search(text: search)

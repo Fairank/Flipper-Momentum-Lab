@@ -1,0 +1,12 @@
+App(
+    appid="lab_bridge",
+    name="Lab Bridge",
+    apptype=FlipperAppType.MENUEXTERNAL,
+    entry_point="lab_bridge_app",
+    requires=["gui", "rpc_start", "expansion_start"],
+    stack_size=3 * 1024,
+    icon="A_GPIO_14",
+    order=6,
+    fap_category="Tools",
+    fap_description="Bounded serial data exchange with the phone companion",
+)
