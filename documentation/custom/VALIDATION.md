@@ -20,6 +20,13 @@
 - 本地完整更新包构建通过。首次发现恢复升级器 138,753 字节超过旧固件 131,072 字节上限；主助手把中文子集排除出 RAM 恢复镜像，重建为 121,469 字节。CI 增加尺寸与两个伴侣应用存在性检查。
 - 字库和 UTF-8 改动最终提交的 GitHub 结果另行追加，不能把前一提交的 iOS 结果当作新提交已经通过。
 
+### 原生中文提交 `5cc450fe` 的云端结果
+
+- [Lab validation 36304012415](https://github.com/Fairank/Flipper-Momentum-Lab/actions/runs/36304012415) 全部通过：88 项 Swift 测试、5 项 iPhone UI 测试、46 项 Python/C 回归、两套字体同步检查、iOS 模拟器构建和 70 张设备源码布局预览。Linux C 检查包含 ASan/UBSan。
+- [Lab firmware 36304012490](https://github.com/Fairank/Flipper-Momentum-Lab/actions/runs/36304012490) 与 [Lint 36304012396](https://github.com/Fairank/Flipper-Momentum-Lab/actions/runs/36304012396) 全部通过；更新器大小与两项伴侣应用存在性检查通过。固件包基于 PR 合并提交 `e46e8da64aa2223b7e17ff57ee29638cb20cadb4`。
+- 22 张 iPhone 原始截图 artifact `10927026485` 已下载并核对 ZIP SHA-256：`14d08421701f968afda38ea2c716b1ea6c83bf3104570607f1722f4d71417d81`。本地展示页保留原图和来源提交，不把源码预览称为真机画面。
+- 最后对照发现设备帮助还使用旧英文菜单名，并把已经实现的手机分析列作规划；已更新 `lab_content.json` 并重新生成两套字体。更新后原生子集为 677 字形、16,980 字节；66 张帮助预览和 4 张原生菜单预览生成通过，46 项本地回归无跳过。这项帮助修订不修改手机或恢复引擎代码。
+
 ### 本地 Claude 实际记录
 
 四项均请求 `claude-fable-5-1 --effort max`，只通过 CLI，无模型替换。记录位于仓库外开发日志，主助手审核后采用。
