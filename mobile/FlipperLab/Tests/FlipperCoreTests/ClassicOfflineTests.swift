@@ -59,6 +59,26 @@ final class ClassicOfflineTests: XCTestCase {
         XCTAssertNil(absent.first?.key)
     }
 
+    func testRecoveryWithoutDictionaryAndIndependentVerification() async throws {
+        let samples = try ClassicSample.parse(Self.vector)
+        let recovered = try await ClassicOffline.recover(samples: samples)
+        XCTAssertEqual(recovered.first?.key, "A0A1A2A3A4A5")
+        let malformed = Self.vector.replacingOccurrences(of: "837AC61A", with: "837AC61B")
+        let absent = try await ClassicOffline.recover(samples: ClassicSample.parse(malformed))
+        XCTAssertNil(absent.first?.key)
+    }
+
+    func testRecoveryCancellation() async throws {
+        let samples = try ClassicSample.parse(Self.vector)
+        let task = Task {
+            withUnsafeCurrentTask { $0?.cancel() }
+            return try await ClassicOffline.recover(samples: samples)
+        }
+        do { _ = try await task.value; XCTFail("Expected cancellation") }
+        catch is CancellationError { }
+        catch { XCTFail("Unexpected error: \(error)") }
+    }
+
     func testCancellation() async throws {
         let samples = try ClassicSample.parse(Self.vector)
         let dictionary = try NFCKeyDictionary(text: "FFFFFFFFFFFF")

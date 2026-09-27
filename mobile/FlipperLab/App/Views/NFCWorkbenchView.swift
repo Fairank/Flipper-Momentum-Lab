@@ -15,7 +15,7 @@ import FlipperCore
             Section {
                 Label("MIFARE Classic", systemImage: "wave.3.right")
                     .font(.headline)
-                Text("导入自有测试卡的两组认证样本，在手机上复核候选密钥。支持 Flipper 的 .mfkey32.log；普通 .nfc 卡片备份不能代替认证样本。")
+                Text("导入自有测试卡的两组认证样本，在手机上恢复或验证密钥。支持 Flipper 的 .mfkey32.log；普通 .nfc 卡片备份不能代替认证样本。")
                     .font(.subheadline).foregroundStyle(.secondary)
             }
             Section {
@@ -33,12 +33,16 @@ import FlipperCore
               footer: { Text("字典仅合并你导入的密钥，保留顺序并去除重复项。单文件上限 2 MiB，最多 10 万个候选密钥、64 组样本。") }
               .disabled(workbench.running)
             Section {
+                Picker("计算方式", selection: $workbench.recoveryMode) {
+                    Text("密钥恢复").tag(true)
+                    Text("字典验证").tag(false)
+                }.disabled(workbench.running)
                 if workbench.running {
                     ProgressView(value: workbench.fraction) { Text(workbench.status) }
                     Button("取消分析", role: .destructive) { workbench.cancel() }
                 } else {
-                    Button("开始离线验证") { workbench.verify() }
-                        .disabled(workbench.dictionary == nil || workbench.samples.isEmpty)
+                    Button("开始离线分析") { workbench.verify() }
+                        .disabled((!workbench.recoveryMode && workbench.dictionary == nil) || workbench.samples.isEmpty)
                         .accessibilityIdentifier("nfc.verify")
                     Text(workbench.status).foregroundStyle(.secondary)
                         .accessibilityIdentifier("nfc.status")
@@ -48,7 +52,9 @@ import FlipperCore
                         .foregroundStyle(.red).font(.subheadline)
                 }
             } header: { SectionHeader("手机计算") }
-              footer: { Text("此模式在候选字典中查找匹配项。未命中表示当前字典没有找到答案；不代表卡片无法分析。计算和文件均留在手机。") }
+              footer: { Text(workbench.recoveryMode
+                  ? "密钥恢复使用 MFKey32 算法，不依赖字典。仅适用于符合条件的 MIFARE Classic 认证样本，不支持所有 NFC 卡型。每次计算使用约 17 MiB 工作内存，结果须再通过两组样本复核。"
+                  : "字典验证只在候选字典中查找匹配项。未命中表示当前字典没有找到答案。计算和文件均留在手机。") }
             if !workbench.results.isEmpty {
                 Section {
                     ForEach(Array(workbench.results.enumerated()), id: \.offset) { _, result in
@@ -56,13 +62,15 @@ import FlipperCore
                             Text("扇区 \(result.sample.sector) · Key \(result.sample.keyType)").font(.headline)
                             Text(String(format: "CUID %08X", result.sample.cuid))
                                 .font(.system(.caption, design: .monospaced)).foregroundStyle(.secondary)
-                            Text(result.key ?? "当前字典未命中")
+                            Text(result.key ?? "本次未找到匹配密钥")
                                 .font(.system(.body, design: .monospaced)).textSelection(.enabled)
                         }
                     }
                     Button("导出已验证密钥") {
                         exportText = workbench.verifiedText; exporting = true
                     }.disabled(workbench.verifiedText.isEmpty)
+                    Button("把已验证密钥加入字典") { workbench.mergeVerified() }
+                        .disabled(workbench.verifiedText.isEmpty || workbench.running)
                 } header: { SectionHeader("验证结果") }
                   footer: { Text("命中的密钥已通过两组认证数据复核。导出的 .nfc 文件是密钥字典，不是可直接刷门的卡片文件。") }
             }
@@ -88,6 +96,7 @@ import FlipperCore
     var samples: [ClassicSample] = []
     var dictionary: NFCKeyDictionary?
     var results: [ClassicMatch] = []
+    var recoveryMode = true
     var running = false
     var fraction = 0.0
     var status = "导入材料后即可开始，不需要连接 Flipper。"
@@ -129,22 +138,34 @@ import FlipperCore
     }
 
     func verify() {
-        guard !running, let dictionary, !samples.isEmpty else { return }
+        guard !running, !samples.isEmpty, recoveryMode || dictionary != nil else { return }
         running = true; error = nil; results = []; fraction = 0; status = "正在复核候选密钥…"
         let input = samples
+        let dictionary = dictionary
+        let recover = recoveryMode
         task = Task {
             defer { running = false; task = nil }
             do {
-                results = try await ClassicOffline.verify(samples: input, dictionary: dictionary) { [weak self] progress in
+                let update: @Sendable (ClassicProgress) async -> Void = { [weak self] progress in
                     await MainActor.run {
                         self?.fraction = Double(progress.completed) / Double(max(1, progress.total))
                         self?.status = "已命中 \(progress.matchedSamples) 组样本"
                     }
                 }
+                if recover { results = try await ClassicOffline.recover(samples: input, progress: update) }
+                else if let dictionary { results = try await ClassicOffline.verify(samples: input, dictionary: dictionary, progress: update) }
                 status = "验证完成：\(results.filter { $0.key != nil }.count)/\(results.count) 组样本命中。"
             } catch is CancellationError { status = "已取消分析。" }
             catch { self.error = error.localizedDescription; status = "分析未完成。" }
         }
+    }
+    func mergeVerified() {
+        guard !running, !verifiedText.isEmpty else { return }
+        do {
+            let recovered = try NFCKeyDictionary(text: verifiedText)
+            dictionary = try NFCKeyDictionary.merge((dictionary.map { [$0] } ?? []) + [recovered])
+            status = "已合并并去重，可以导出增强后的字典。"
+        } catch { self.error = error.localizedDescription }
     }
     func cancel() { task?.cancel() }
 }

@@ -1,4 +1,5 @@
 """Compile the actual firmware request validator; no device or radio is needed."""
+
 from pathlib import Path
 import shutil
 import subprocess
@@ -13,7 +14,7 @@ class SerialBridgeTests(unittest.TestCase):
         compiler = shutil.which("cc")
         if not compiler:
             self.skipTest("host C compiler not installed")
-        source = r'''
+        source = r"""
 #include <assert.h>
 #include "applications/main/lab_bridge/bridge_protocol.h"
 int main(void) {
@@ -62,14 +63,28 @@ int main(void) {
     assert(lab_bridge_read_u32(word) == UINT32_MAX);
     return 0;
 }
-'''
+"""
         with tempfile.TemporaryDirectory() as directory:
             path = Path(directory)
             program = path / "bridge_test.c"
             program.write_text(source, encoding="utf-8")
             executable = path / "bridge_test.exe"
-            subprocess.run([compiler, "-std=c11", "-Wall", "-Wextra", "-Werror", "-I", str(ROOT),
-                            str(program), "-o", str(executable)], check=True, timeout=120)
+            subprocess.run(
+                [
+                    compiler,
+                    "-std=c11",
+                    "-Wall",
+                    "-Wextra",
+                    "-Werror",
+                    "-I",
+                    str(ROOT),
+                    str(program),
+                    "-o",
+                    str(executable),
+                ],
+                check=True,
+                timeout=120,
+            )
             subprocess.run([str(executable)], check=True, timeout=30)
 
 

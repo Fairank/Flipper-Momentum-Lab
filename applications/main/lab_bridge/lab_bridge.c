@@ -54,8 +54,8 @@ static void lab_bridge_close(LabBridge* app) {
 
 static uint8_t lab_bridge_open(LabBridge* app, uint8_t port, uint32_t baud) {
     lab_bridge_close(app);
-    app->serial = furi_hal_serial_control_acquire(
-        port == 0 ? FuriHalSerialIdUsart : FuriHalSerialIdLpuart);
+    app->serial =
+        furi_hal_serial_control_acquire(port == 0 ? FuriHalSerialIdUsart : FuriHalSerialIdLpuart);
     if(!app->serial) return 2;
     if(!furi_hal_serial_is_baud_rate_supported(app->serial, baud)) {
         furi_hal_serial_control_release(app->serial);
@@ -122,7 +122,8 @@ static void lab_bridge_rpc(const RpcAppSystemEvent* event, void* context) {
                 reply[7] = lab_bridge_open(app, request[7], lab_bridge_read_u32(request + 8));
                 break;
             case LabBridgeRead:
-                if(!app->serial) reply[7] = 3;
+                if(!app->serial)
+                    reply[7] = 3;
                 else {
                     count = furi_stream_buffer_receive(
                         app->stream, reply + LAB_BRIDGE_REPLY_HEADER, LAB_BRIDGE_CHUNK, 0);
@@ -130,9 +131,12 @@ static void lab_bridge_rpc(const RpcAppSystemEvent* event, void* context) {
                 }
                 break;
             case LabBridgeWrite:
-                if(!app->serial) reply[7] = 3;
+                if(!app->serial)
+                    reply[7] = 3;
                 else {
-                    furi_hal_serial_tx(app->serial, request + LAB_BRIDGE_REQUEST_HEADER,
+                    furi_hal_serial_tx(
+                        app->serial,
+                        request + LAB_BRIDGE_REQUEST_HEADER,
                         size - LAB_BRIDGE_REQUEST_HEADER);
                     furi_hal_serial_tx_wait_complete(app->serial);
                 }
@@ -161,8 +165,13 @@ static void lab_bridge_draw(Canvas* canvas, void* context) {
     canvas_set_font(canvas, FontPrimary);
     canvas_draw_str(canvas, 2, 12, "扩展板串口");
     canvas_set_font(canvas, FontSecondary);
-    canvas_draw_str(canvas, 2, 25, model->busy ? "串口已被占用" :
-        model->opened ? "正在接收" : "串口未打开");
+    canvas_draw_str(
+        canvas,
+        2,
+        25,
+        model->busy   ? "串口已被占用" :
+        model->opened ? "正在接收" :
+                        "串口未打开");
     snprintf(line, sizeof(line), "%lu baud  RX %lu", model->baud, model->received);
     canvas_draw_str(canvas, 2, 37, line);
     snprintf(line, sizeof(line), "丢失: %lu", model->dropped);
@@ -176,8 +185,10 @@ static bool lab_bridge_input(InputEvent* event, void* context) {
     furi_mutex_acquire(app->mutex, FuriWaitForever);
     if(!app->rpc) {
         uint8_t status = 0;
-        if(app->serial) lab_bridge_close(app);
-        else status = lab_bridge_open(app, 0, 115200);
+        if(app->serial)
+            lab_bridge_close(app);
+        else
+            status = lab_bridge_open(app, 0, 115200);
         lab_bridge_update(app, status == 2);
     }
     furi_mutex_release(app->mutex);

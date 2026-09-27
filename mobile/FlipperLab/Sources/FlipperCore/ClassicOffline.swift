@@ -1,4 +1,5 @@
 import Foundation
+import ClassicRecovery
 
 /// Two independent reader authentications from Flipper's .mfkey32.log format.
 /// A card dump alone does not contain these exchanges.
@@ -85,6 +86,39 @@ public struct ClassicProgress: Sendable {
 }
 
 public enum ClassicOffline {
+    /// MFKey32/Moebius recovery from two imported authentication exchanges. Scratch allocation
+    /// is 17 MiB per sample, with no global lookup table and no initialization work at app launch.
+    /// C state recovery is followed by an independent Swift forward check of both exchanges.
+    public static func recover(samples: [ClassicSample],
+        progress: @escaping @Sendable (ClassicProgress) async -> Void = { _ in }) async throws -> [ClassicMatch] {
+        guard !samples.isEmpty, samples.count <= ClassicSample.maxSamples else { throw RPCError.malformed }
+        var results: [ClassicMatch] = []
+        var matched = 0
+        for (index, sample) in samples.enumerated() {
+            try Task.checkCancellation()
+            await progress(ClassicProgress(completed: index, total: samples.count, matchedSamples: matched))
+            let words = [sample.cuid, sample.nt0, sample.nr0, sample.ar0, sample.nt1, sample.nr1, sample.ar1]
+            var key: UInt64 = 0
+            let status = words.withUnsafeBufferPointer { buffer in
+                fl_classic_recover(buffer.baseAddress, &key, { _ in Task<Never, Never>.isCancelled }, nil)
+            }
+            try Task.checkCancellation()
+            switch status {
+            case 1:
+                guard sample.matches(key: key) else { throw RPCError.message("恢复结果未通过独立复核，未保存密钥。") }
+                matched += 1
+                results.append(ClassicMatch(sample: sample, key: String(format: "%012llX", key)))
+            case 0: results.append(ClassicMatch(sample: sample, key: nil))
+            case -1: throw CancellationError()
+            case -2: throw RPCError.message("手机可用内存不足，未完成本次密钥恢复。")
+            default: throw RPCError.message("本组样本超出计算限制，请检查样本格式和来源。")
+            }
+            await progress(ClassicProgress(completed: index + 1, total: samples.count, matchedSamples: matched))
+            await Task.yield()
+        }
+        return results
+    }
+
     /// CPU work runs on the generic executor, not SwiftUI's main actor. Cancellation is checked
     /// at most every 64 keys. A non-match means absent from this dictionary, not an unbreakable card.
     public static func verify(samples: [ClassicSample], dictionary: NFCKeyDictionary,

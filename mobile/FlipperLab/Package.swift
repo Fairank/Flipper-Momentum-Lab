@@ -6,7 +6,8 @@ let package = Package(
     platforms: [.iOS(.v17), .macOS(.v13)],
     products: [.library(name: "FlipperCore", targets: ["FlipperCore"])],
     targets: [
-        .target(name: "FlipperCore", resources: [.process("Resources")]),
+        .target(name: "ClassicRecovery"),
+        .target(name: "FlipperCore", dependencies: ["ClassicRecovery"], resources: [.process("Resources")]),
         .testTarget(name: "FlipperCoreTests", dependencies: ["FlipperCore"])
     ]
 )
