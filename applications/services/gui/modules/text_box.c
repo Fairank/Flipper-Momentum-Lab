@@ -4,6 +4,7 @@
 #include <gui/utf8_internal.h>
 #include <furi.h>
 #include <stdint.h>
+#include <string.h>
 
 #define TEXT_BOX_TEXT_WIDTH           (120)
 #define TEXT_BOX_TEXT_HEIGHT          (56)
@@ -27,6 +28,9 @@ typedef struct {
     int32_t scroll_pos;
     int32_t scroll_num;
     int32_t lines_on_screen;
+    // Row spacing chosen by the draw callback with the font: the font height, or
+    // GUI_CJK_LINE_HEIGHT for text with Chinese glyphs. 0 until the first draw.
+    int32_t line_height;
 
     int32_t line_offset;
     int32_t text_offset;
@@ -224,7 +228,13 @@ static void text_box_prepare_model(Canvas* canvas, TextBoxModel* model) {
     model->scroll_num = 0;
     model->scroll_pos = 0;
     model->line_offset = 0;
-    model->lines_on_screen = TEXT_BOX_TEXT_HEIGHT / canvas_current_font_height(canvas);
+    if(model->line_height <= 0) {
+        model->line_height = canvas_current_font_height(canvas);
+    }
+    model->lines_on_screen = TEXT_BOX_TEXT_HEIGHT / model->line_height;
+    if(model->lines_on_screen > TEXT_BOX_MAX_LINES_PER_SCREEN) {
+        model->lines_on_screen = TEXT_BOX_MAX_LINES_PER_SCREEN;
+    }
 
     // Cache text offset to quick final text offset update if TextBoxFocusEnd is set
     int32_t window_offset[TEXT_BOX_MAX_LINES_PER_SCREEN] = {};
@@ -266,6 +276,9 @@ static void text_box_view_draw_callback(Canvas* canvas, void* _model) {
     }
 
     if(!model->formatted) {
+        // Chinese glyphs need taller rows than the ASCII fonts; decided once for the
+        // whole text so every screen of it scrolls with the same spacing
+        model->line_height = gui_utf8_line_height(canvas_current_font_height(canvas), model->text);
         text_box_prepare_model(canvas, model);
         model->formatted = true;
     }
@@ -276,7 +289,18 @@ static void text_box_view_draw_callback(Canvas* canvas, void* _model) {
     if(model->line_offset != model->scroll_pos) {
         text_box_update_text_on_screen(canvas, model);
     }
-    elements_multiline_text(canvas, 3, 11, furi_string_get_cstr(model->text_on_screen));
+
+    // One screen line per '\n' of text_on_screen, model->line_height rows apart
+    int32_t y = 11;
+    const char* text = furi_string_get_cstr(model->text_on_screen);
+    while(*text && y < (int32_t)canvas_height(canvas)) {
+        const char* end = strchr(text, '\n');
+        size_t length = end ? (size_t)(end - text) : strlen(text);
+        furi_string_set_strn(model->text_line, text, length);
+        canvas_draw_str(canvas, 3, y, furi_string_get_cstr(model->text_line));
+        y += model->line_height;
+        text = end ? end + 1 : text + length;
+    }
 }
 
 TextBox* text_box_alloc(void) {
@@ -296,6 +320,7 @@ TextBox* text_box_alloc(void) {
             model->text_line = furi_string_alloc();
             model->formatted = false;
             model->font = TextBoxFontText;
+            model->line_height = 0;
         },
         true);
 
@@ -337,6 +362,7 @@ void text_box_reset(TextBox* text_box) {
             model->line_offset = 0;
             model->text_offset = 0;
             model->lines_on_screen = 0;
+            model->line_height = 0;
             model->scroll_num = 0;
             model->scroll_pos = 0;
             model->formatted = false;

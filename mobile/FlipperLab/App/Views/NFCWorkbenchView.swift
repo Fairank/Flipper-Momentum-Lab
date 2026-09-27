@@ -139,7 +139,8 @@ import FlipperCore
 
     func verify() {
         guard !running, !samples.isEmpty, recoveryMode || dictionary != nil else { return }
-        running = true; error = nil; results = []; fraction = 0; status = "正在复核候选密钥…"
+        running = true; error = nil; results = []; fraction = 0
+        status = recoveryMode ? "正在从离线样本恢复密钥…" : "正在复核候选密钥…"
         let input = samples
         let dictionary = dictionary
         let recover = recoveryMode

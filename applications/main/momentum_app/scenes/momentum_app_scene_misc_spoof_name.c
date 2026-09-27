@@ -33,7 +33,7 @@ void momentum_app_scene_misc_spoof_name_on_enter(void* context) {
     MomentumApp* app = context;
     TextInput* text_input = app->text_input;
 
-    text_input_set_header_text(text_input, "Leave empty for real name");
+    text_input_set_header_text(text_input, "留空使用真实名称");
 
     text_input_set_validator(text_input, momentum_app_scene_misc_spoof_name_validator, NULL);
 

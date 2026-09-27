@@ -12,12 +12,12 @@ void lfrfid_scene_raw_success_on_enter(void* context) {
         64,
         AlignLeft,
         AlignTop,
-        "\e#RAW RFID Read Success\e#\n"
-        "Now you can analyze files or\n"
-        "send them to developers",
+        "\e#RAW RFID读取成功\e#\n"
+        "现在可以分析文件\n"
+        "或发送给开发者",
         false);
 
-    widget_add_button_element(widget, GuiButtonTypeCenter, "OK", lfrfid_widget_callback, app);
+    widget_add_button_element(widget, GuiButtonTypeCenter, "确定", lfrfid_widget_callback, app);
 
     view_dispatcher_switch_to_view(app->view_dispatcher, LfRfidViewWidget);
 }

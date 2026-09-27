@@ -30,16 +30,15 @@ void nfc_scene_mf_ultralight_unlock_warn_on_enter(void* context) {
                                                                      "Risky Action!";
         dialog_ex_set_header(dialog_ex, message, 64, 0, AlignCenter, AlignTop);
         dialog_ex_set_text(dialog_ex, nfc->text_store, 64, 10, AlignCenter, AlignTop);
-        dialog_ex_set_left_button_text(dialog_ex, "Cancel");
-        dialog_ex_set_right_button_text(dialog_ex, "Continue");
+        dialog_ex_set_left_button_text(dialog_ex, "取消");
+        dialog_ex_set_right_button_text(dialog_ex, "继续");
 
         if(type == MfUltralightAuthTypeReader) {
             notification_message(nfc->notifications, &sequence_set_green_255);
         }
     } else {
-        dialog_ex_set_header(dialog_ex, "Risky action!", 64, 4, AlignCenter, AlignTop);
-        dialog_ex_set_text(
-            dialog_ex, "Wrong password\ncan block your\ncard.", 4, 18, AlignLeft, AlignTop);
+        dialog_ex_set_header(dialog_ex, "高风险操作!", 64, 4, AlignCenter, AlignTop);
+        dialog_ex_set_text(dialog_ex, "错误密码\n可能锁死\n卡片", 4, 18, AlignLeft, AlignTop);
         dialog_ex_set_icon(dialog_ex, 83, 22, &I_WarningDolphinFlip_45x42);
         dialog_ex_set_center_button_text(dialog_ex, "OK");
     }

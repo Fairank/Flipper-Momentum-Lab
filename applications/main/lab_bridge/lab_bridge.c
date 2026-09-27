@@ -100,6 +100,9 @@ static void lab_bridge_rpc(const RpcAppSystemEvent* event, void* context) {
     } else if(event->type == RpcAppEventTypeAppExit) {
         lab_bridge_close(app);
         rpc_system_app_confirm(app->rpc, true);
+        rpc_system_app_set_callback(app->rpc, NULL, NULL);
+        rpc_system_app_send_exited(app->rpc);
+        app->rpc = NULL;
         view_dispatcher_stop(app->dispatcher);
     } else if(event->type == RpcAppEventTypeDataExchange) {
         const uint8_t* request = event->data.bytes.ptr;
@@ -176,7 +179,7 @@ static void lab_bridge_draw(Canvas* canvas, void* context) {
     canvas_draw_str(canvas, 2, 37, line);
     snprintf(line, sizeof(line), "丢失: %lu", model->dropped);
     canvas_draw_str(canvas, 2, 49, line);
-    canvas_draw_str(canvas, 2, 62, model->remote ? "手机控制  返回退出" : "OK 接收  返回退出");
+    canvas_draw_str(canvas, 2, 62, model->remote ? "请在手机停止接收" : "OK 接收  返回退出");
 }
 
 static bool lab_bridge_input(InputEvent* event, void* context) {
@@ -196,8 +199,13 @@ static bool lab_bridge_input(InputEvent* event, void* context) {
 }
 
 static uint32_t lab_bridge_back(void* context) {
-    UNUSED(context);
-    return VIEW_NONE;
+    LabBridge* app = context;
+    // The RPC session detaches its own callback before stopping the dispatcher.
+    // Back must not free the app while a callback is waiting on this mutex.
+    furi_mutex_acquire(app->mutex, FuriWaitForever);
+    const bool remote = app->rpc != NULL;
+    furi_mutex_release(app->mutex);
+    return remote ? VIEW_IGNORE : VIEW_NONE;
 }
 
 static void lab_bridge_tick(void* context) {

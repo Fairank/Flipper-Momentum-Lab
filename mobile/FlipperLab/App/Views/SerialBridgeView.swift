@@ -34,12 +34,12 @@ import FlipperCore
                 }
                 if !model.device.ready { Text("请先在设备页连接 Flipper。").foregroundStyle(.secondary) }
                 LabeledContent("已接收", value: "\(model.serialCapture.receivedBytes) 字节")
-                LabeledContent("设备缓冲丢失", value: "\(model.serialCapture.deviceDroppedBytes) 字节")
+                LabeledContent("设备至少丢失", value: "\(model.serialCapture.deviceDroppedBytes) 字节")
                 LabeledContent("手机日志截断", value: "\(model.serialCapture.trimmedBytes) 字节")
                 Button("导出原始数据") { exporting = true }
                     .disabled(model.serialCapture.data.isEmpty || model.serialRunning)
             } header: { SectionHeader("实时接收") }
-              footer: { Text("保留最近 64 KiB 原始数据，屏幕显示末尾 8 KiB。出现丢失或截断时，导出内容不是完整记录。") }
+              footer: { Text("保留最近 64 KiB 原始数据，屏幕显示末尾 8 KiB。串口硬件溢出无法精确计数，因此丢失量是下限。出现丢失或截断时，导出内容不是完整记录。") }
             Section {
                 Text(model.serialCapture.data.isEmpty ? "等待扩展板输出…" : model.serialCapture.displayText)
                     .font(.system(.caption, design: .monospaced))

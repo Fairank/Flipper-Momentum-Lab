@@ -42,8 +42,8 @@ void lfrfid_scene_read_success_on_enter(void* context) {
     furi_string_free(rendered_data);
 
     widget_add_text_scroll_element(widget, 0, 16, 128, 35, furi_string_get_cstr(display_text));
-    widget_add_button_element(widget, GuiButtonTypeLeft, "Retry", lfrfid_widget_callback, app);
-    widget_add_button_element(widget, GuiButtonTypeRight, "More", lfrfid_widget_callback, app);
+    widget_add_button_element(widget, GuiButtonTypeLeft, "重试", lfrfid_widget_callback, app);
+    widget_add_button_element(widget, GuiButtonTypeRight, "更多", lfrfid_widget_callback, app);
 
     widget_add_icon_element(app->widget, 0, 0, &I_RFIDSmallChip_14x14);
 

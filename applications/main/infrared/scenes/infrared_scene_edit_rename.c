@@ -33,7 +33,7 @@ void infrared_scene_edit_rename_on_enter(void* context) {
 
     const InfraredEditTarget edit_target = infrared->app_state.edit_target;
     if(edit_target == InfraredEditTargetButton) {
-        text_input_set_header_text(text_input, "Name the button");
+        text_input_set_header_text(text_input, "命名按键");
 
         const int32_t current_button_index = infrared->app_state.current_button_index;
         furi_check(current_button_index != InfraredButtonIndexNone);
@@ -45,7 +45,7 @@ void infrared_scene_edit_rename_on_enter(void* context) {
             enter_name_length);
 
     } else if(edit_target == InfraredEditTargetRemote) {
-        text_input_set_header_text(text_input, "Name the remote");
+        text_input_set_header_text(text_input, "命名遥控器");
         enter_name_length = INFRARED_MAX_REMOTE_NAME_LENGTH;
         strlcpy(infrared->text_store[0], infrared_remote_get_name(remote), enter_name_length);
 
@@ -98,12 +98,11 @@ bool infrared_scene_edit_rename_on_event(void* context, SceneManagerEvent event)
                 bool long_signal = INFRARED_ERROR_CHECK(
                     task_error, InfraredErrorCodeSignalRawUnableToReadTooLongData);
 
-                const char* format = "Failed to rename\n%s";
-                const char* target = infrared->app_state.edit_target == InfraredEditTargetButton ?
-                                         "button" :
-                                         "file";
+                const char* format = "重命名%s\n失败";
+                const char* target =
+                    infrared->app_state.edit_target == InfraredEditTargetButton ? "按键" : "文件";
                 if(long_signal) {
-                    format = "Failed to rename\n\"%s\" is too long.\nTry to edit file from pc";
+                    format = "重命名失败\n\"%s\"过长\n请在电脑上编辑文件";
                     target = infrared_remote_get_signal_name(
                         infrared->remote, INFRARED_ERROR_GET_INDEX(task_error));
                 }

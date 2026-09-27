@@ -26,7 +26,7 @@ static void momentum_app_scene_protocols_subghz_extend_changed(VariableItem* ite
 static void momentum_app_scene_protocols_file_naming_prefix_changed(VariableItem* item) {
     MomentumApp* app = variable_item_get_context(item);
     bool value = variable_item_get_current_value_index(item);
-    variable_item_set_current_value_text(item, value ? "After" : "Before");
+    variable_item_set_current_value_text(item, value ? "之后" : "之前");
     momentum_settings.file_naming_prefix_after = value;
     app->save_settings = true;
 }
@@ -36,40 +36,40 @@ void momentum_app_scene_protocols_on_enter(void* context) {
     VariableItemList* var_item_list = app->var_item_list;
     VariableItem* item;
 
-    item = variable_item_list_add(var_item_list, "SubGHz Freqs", 0, NULL, app);
+    item = variable_item_list_add(var_item_list, "SubGHz 频率", 0, NULL, app);
     variable_item_set_current_value_text(item, ">");
 
     item = variable_item_list_add(
         var_item_list,
-        "SubGHz Bypass Region Lock",
+        "SubGHz 绕过区域限制",
         2,
         momentum_app_scene_protocols_subghz_bypass_changed,
         app);
     variable_item_set_current_value_index(item, app->subghz_bypass);
-    variable_item_set_current_value_text(item, app->subghz_bypass ? "ON" : "OFF");
+    variable_item_set_current_value_text(item, app->subghz_bypass ? "开" : "关");
 
     item = variable_item_list_add(
         var_item_list,
-        "SubGHz Extend Freq Bands",
+        "SubGHz 扩展频段",
         2,
         momentum_app_scene_protocols_subghz_extend_changed,
         app);
     variable_item_set_current_value_index(item, app->subghz_extend);
-    variable_item_set_current_value_text(item, app->subghz_extend ? "ON" : "OFF");
+    variable_item_set_current_value_text(item, app->subghz_extend ? "开" : "关");
     variable_item_set_locked(item, !app->subghz_bypass, "Must bypass\nregion lock\nfirst!");
 
-    item = variable_item_list_add(var_item_list, "GPIO Pins", 0, NULL, app);
+    item = variable_item_list_add(var_item_list, "GPIO 引脚", 0, NULL, app);
     variable_item_set_current_value_text(item, ">");
 
     item = variable_item_list_add(
         var_item_list,
-        "File Naming Prefix",
+        "文件名前缀",
         2,
         momentum_app_scene_protocols_file_naming_prefix_changed,
         app);
     variable_item_set_current_value_index(item, momentum_settings.file_naming_prefix_after);
     variable_item_set_current_value_text(
-        item, momentum_settings.file_naming_prefix_after ? "After" : "Before");
+        item, momentum_settings.file_naming_prefix_after ? "之后" : "之前");
 
     variable_item_list_set_enter_callback(
         var_item_list, momentum_app_scene_protocols_var_item_list_callback, app);
@@ -103,18 +103,18 @@ bool momentum_app_scene_protocols_on_event(void* context, SceneManagerEvent even
             bool change = !value; // Change without confirm if going from ON to OFF
             if(value) {
                 DialogMessage* msg = dialog_message_alloc();
-                dialog_message_set_header(msg, "Are you sure?", 64, 4, AlignCenter, AlignTop);
-                dialog_message_set_buttons(msg, "No", NULL, "Yes");
+                dialog_message_set_header(msg, "确认此操作?", 64, 4, AlignCenter, AlignTop);
+                dialog_message_set_buttons(msg, "否", NULL, "是");
                 dialog_message_set_text(
                     msg,
-                    (event.event == VarItemListIndexSubghzBypass) ? "Unlocks TX to 300-350,\n"
+                    (event.event == VarItemListIndexSubghzBypass) ? "解锁发射 300-350,\n"
                                                                     "387-467, 779-928 MHz\n"
-                                                                    "Use responsibly, check\n"
-                                                                    "local laws" :
-                                                                    "Extends TX to 281-361,\n"
+                                                                    "请谨慎使用并遵守\n"
+                                                                    "当地法律" :
+                                                                    "扩展发射 281-361,\n"
                                                                     "378-481, 749-962 MHz\n"
-                                                                    "Use at own risk, may\n"
-                                                                    "damage Flipper",
+                                                                    "风险自负,可能\n"
+                                                                    "损坏 Flipper",
                     64,
                     36,
                     AlignCenter,
@@ -138,7 +138,7 @@ bool momentum_app_scene_protocols_on_event(void* context, SceneManagerEvent even
                 value = !value;
             }
             variable_item_set_current_value_index(item, value);
-            variable_item_set_current_value_text(item, value ? "ON" : "OFF");
+            variable_item_set_current_value_text(item, value ? "开" : "关");
             break;
         }
         case VarItemListIndexGpioPins:

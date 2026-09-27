@@ -30,8 +30,8 @@ void lfrfid_scene_raw_read_on_enter(void* context) {
     Popup* popup = app->popup;
 
     popup_set_icon(popup, 0, 0, &I_NFC_dolphin_emulation_51x64);
-    popup_set_header(popup, "Reading ASK", 91, 16, AlignCenter, AlignTop);
-    popup_set_text(popup, "Don't move\nfor 5 sec.", 91, 29, AlignCenter, AlignTop);
+    popup_set_header(popup, "读取ASK", 91, 16, AlignCenter, AlignTop);
+    popup_set_text(popup, "请保持不动\n5秒", 91, 29, AlignCenter, AlignTop);
 
     view_dispatcher_switch_to_view(app->view_dispatcher, LfRfidViewPopup);
 
@@ -79,9 +79,8 @@ bool lfrfid_scene_raw_read_on_event(void* context, SceneManagerEvent event) {
             furi_timer_stop(state->timer);
 
             popup_set_icon(popup, 83, 22, &I_WarningDolphinFlip_45x42);
-            popup_set_header(popup, "RAW Reading error!", 64, 0, AlignCenter, AlignTop);
-            popup_set_text(
-                popup, "This may be\ncaused by SD\ncard issues", 0, 13, AlignLeft, AlignTop);
+            popup_set_header(popup, "RAW读取错误!", 64, 0, AlignCenter, AlignTop);
+            popup_set_text(popup, "可能是SD卡\n问题导致", 0, 13, AlignLeft, AlignTop);
 
             notification_message(app->notifications, &sequence_blink_start_red);
             state->error = true;
@@ -115,7 +114,7 @@ bool lfrfid_scene_raw_read_on_event(void* context, SceneManagerEvent event) {
 
                     furi_timer_start(state->timer, RAW_READ_TIME_MS);
 
-                    popup_set_header(popup, "Reading PSK", 91, 16, AlignCenter, AlignTop);
+                    popup_set_header(popup, "读取PSK", 91, 16, AlignCenter, AlignTop);
                     notification_message(app->notifications, &sequence_blink_start_yellow);
                 }
             }

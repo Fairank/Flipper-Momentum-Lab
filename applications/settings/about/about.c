@@ -18,8 +18,8 @@ static DialogMessageButton about_screen_product(DialogsApp* dialogs, DialogMessa
     DialogMessageButton result;
 
     FuriString* screen_header = furi_string_alloc_printf(
-        "Product: %s\n"
-        "Model: %s",
+        "产品: %s\n"
+        "型号: %s",
         furi_hal_version_get_model_name(),
         furi_hal_version_get_model_code());
 
@@ -58,8 +58,8 @@ static DialogMessageButton about_screen_address(DialogsApp* dialogs, DialogMessa
 static DialogMessageButton about_screen_compliance(DialogsApp* dialogs, DialogMessage* message) {
     DialogMessageButton result;
 
-    const char* screen_text = "For all compliance\n"
-                              "certificates, please visit:\n"
+    const char* screen_text = "全部合规证书\n"
+                              "请访问:\n"
                               "www.flipp.dev/compliance";
 
     dialog_message_set_text(message, screen_text, 0, 0, AlignLeft, AlignTop);
@@ -143,15 +143,15 @@ static DialogMessageButton about_screen_hw_version(DialogsApp* dialogs, DialogMe
         furi_hal_version_get_hw_connect(),
         furi_hal_version_get_hw_region_name(),
         furi_hal_region_get_name(),
-        my_name ? my_name : "Unknown");
+        my_name ? my_name : "未知");
 
-    furi_string_cat_printf(buffer, "Serial Number:\n");
+    furi_string_cat_printf(buffer, "序列号:\n");
     const uint8_t* uid = furi_hal_version_uid();
     for(size_t i = 0; i < furi_hal_version_uid_size(); i++) {
         furi_string_cat_printf(buffer, "%02X", uid[i]);
     }
 
-    dialog_message_set_header(message, "Hardware Info:", 0, 0, AlignLeft, AlignTop);
+    dialog_message_set_header(message, "硬件信息:", 0, 0, AlignLeft, AlignTop);
     dialog_message_set_text(message, furi_string_get_cstr(buffer), 0, 13, AlignLeft, AlignTop);
     result = dialog_message_show(dialogs, message);
     furi_string_free(buffer);
@@ -170,7 +170,7 @@ static DialogMessageButton about_screen_fw_version(DialogsApp* dialogs, DialogMe
 #endif
 
     if(!ver) { //-V1051
-        furi_string_cat_printf(buffer, "No info\n");
+        furi_string_cat_printf(buffer, "无信息\n");
     } else {
         uint16_t api_major, api_minor;
         furi_hal_info_get_api_version(&api_major, &api_minor);
@@ -194,7 +194,7 @@ static DialogMessageButton about_screen_fw_version(DialogsApp* dialogs, DialogMe
         }
     }
 
-    dialog_message_set_header(message, "Firmware Info:", 0, 0, AlignLeft, AlignTop);
+    dialog_message_set_header(message, "固件信息:", 0, 0, AlignLeft, AlignTop);
     dialog_message_set_text(message, furi_string_get_cstr(buffer), 0, 13, AlignLeft, AlignTop);
     result = dialog_message_show(dialogs, message);
     furi_string_free(buffer);
@@ -235,11 +235,11 @@ int32_t about_settings_app(void* p) {
     int32_t ret = 0;
     while(1) {
         if(screen_index >= COUNT_OF(about_screens) - 1) {
-            dialog_message_set_buttons(message, "Prev.", NULL, NULL);
+            dialog_message_set_buttons(message, "上一页", NULL, NULL);
         } else if(screen_index == 0 && !about_battery) {
-            dialog_message_set_buttons(message, NULL, NULL, "Next");
+            dialog_message_set_buttons(message, NULL, NULL, "下一页");
         } else {
-            dialog_message_set_buttons(message, "Prev.", NULL, "Next");
+            dialog_message_set_buttons(message, "上一页", NULL, "下一页");
         }
 
         screen_result = about_screens[screen_index](dialogs, message);

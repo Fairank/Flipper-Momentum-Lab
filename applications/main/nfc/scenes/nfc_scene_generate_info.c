@@ -22,7 +22,7 @@ void nfc_scene_generate_info_on_enter(void* context) {
     // Setup dialog view
     Widget* widget = instance->widget;
     widget_add_button_element(
-        widget, GuiButtonTypeRight, "More", nfc_scene_generate_info_widget_callback, instance);
+        widget, GuiButtonTypeRight, "更多", nfc_scene_generate_info_widget_callback, instance);
 
     // Create info text
     NfcDataGeneratorType type =

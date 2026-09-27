@@ -44,7 +44,7 @@ void ibutton_scene_write_on_enter(void* context) {
         tmp,
         "[%s]\n%s",
         ibutton_protocols_get_name(ibutton->protocols, protocol_id),
-        furi_string_empty(ibutton->file_path) ? "Unsaved Key" : ibutton->key_name);
+        furi_string_empty(ibutton->file_path) ? "未保存钥匙" : ibutton->key_name);
 
     widget_add_text_box_element(
         widget, 52, 24, 75, 40, AlignCenter, AlignTop, furi_string_get_cstr(tmp), true);
@@ -52,11 +52,11 @@ void ibutton_scene_write_on_enter(void* context) {
     ibutton_worker_write_set_callback(worker, ibutton_scene_write_callback, ibutton);
 
     if(ibutton->write_mode == iButtonWriteModeId) {
-        furi_string_set(tmp, "Writing ID");
+        furi_string_set(tmp, "写入ID中");
         ibutton_worker_write_id_start(worker, key);
 
     } else if(ibutton->write_mode == iButtonWriteModeCopy) {
-        furi_string_set(tmp, "Full Writing");
+        furi_string_set(tmp, "完整写入中");
         ibutton_worker_write_copy_start(worker, key);
     }
 

@@ -24,12 +24,12 @@ typedef struct {
 static void gpio_usb_uart_draw_callback(Canvas* canvas, void* _model) {
     GpioUsbUartModel* model = _model;
     char temp_str[18];
-    elements_button_left(canvas, "Config");
+    elements_button_left(canvas, "配置");
     canvas_draw_line(canvas, 2, 10, 125, 10);
     canvas_draw_line(canvas, 44, 52, 123, 52);
 
     canvas_set_font(canvas, FontPrimary);
-    canvas_draw_str(canvas, 2, 9, "USB Serial");
+    canvas_draw_str(canvas, 2, 9, "USB 串口");
     canvas_draw_str(canvas, 3, 25, "TX:");
     canvas_draw_str(canvas, 3, 42, "RX:");
 

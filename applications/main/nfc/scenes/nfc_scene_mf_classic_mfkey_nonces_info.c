@@ -21,7 +21,7 @@ void nfc_scene_mf_classic_mfkey_nonces_info_on_enter(void* context) {
     widget_add_string_element(
         instance->widget, 0, 0, AlignLeft, AlignTop, FontPrimary, furi_string_get_cstr(temp_str));
     widget_add_string_element(
-        instance->widget, 0, 12, AlignLeft, AlignTop, FontSecondary, "Authenticated sectors:");
+        instance->widget, 0, 12, AlignLeft, AlignTop, FontSecondary, "已认证扇区:");
 
     mfkey32_logger_get_params_data(instance->mfkey32_logger, temp_str);
     widget_add_text_scroll_element(

@@ -19,13 +19,13 @@ enum VarItemListIndex {
 };
 
 const char* const log_level_text[] = {
-    "Default",
-    "None",
-    "Error",
-    "Warning",
-    "Info",
-    "Debug",
-    "Trace",
+    "默认",
+    "无",
+    "错误",
+    "警告",
+    "信息",
+    "调试",
+    "跟踪",
 };
 
 const uint32_t log_level_value[] = {
@@ -47,7 +47,7 @@ static void log_level_changed(VariableItem* item) {
 const char* const log_device_text[] = {
     "USART",
     "LPUART",
-    "None",
+    "无",
 };
 
 const uint32_t log_device_value[] = {
@@ -90,8 +90,8 @@ static void log_baud_rate_changed(VariableItem* item) {
 }
 
 const char* const debug_text[] = {
-    "OFF",
-    "ON",
+    "关",
+    "开",
 };
 
 static void debug_changed(VariableItem* item) {
@@ -106,11 +106,11 @@ static void debug_changed(VariableItem* item) {
 }
 
 const char* const heap_trace_mode_text[] = {
-    "None",
-    "Main",
+    "无",
+    "主线程",
 #ifdef FURI_DEBUG
-    "Tree",
-    "All",
+    "线程树",
+    "全部",
 #endif
 };
 
@@ -134,8 +134,8 @@ static void heap_trace_mode_changed(VariableItem* item) {
 }
 
 const char* const measurement_units_text[] = {
-    "Metric",
-    "Imperial",
+    "公制",
+    "英制",
 };
 
 const uint32_t measurement_units_value[] = {
@@ -150,8 +150,8 @@ static void measurement_units_changed(VariableItem* item) {
 }
 
 const char* const time_format_text[] = {
-    "24h",
-    "12h",
+    "24小时",
+    "12小时",
 };
 
 const uint32_t time_format_value[] = {
@@ -166,9 +166,9 @@ static void time_format_changed(VariableItem* item) {
 }
 
 const char* const date_format_text[] = {
-    "D/M/Y",
-    "M/D/Y",
-    "Y/M/D",
+    "日月年",
+    "月日年",
+    "年月日",
 };
 
 const uint32_t date_format_value[] = {
@@ -184,8 +184,8 @@ static void date_format_changed(VariableItem* item) {
 }
 
 const char* const hand_mode[] = {
-    "Righty",
-    "Lefty",
+    "右手",
+    "左手",
 };
 
 static void hand_orient_changed(VariableItem* item) {
@@ -199,8 +199,8 @@ static void hand_orient_changed(VariableItem* item) {
 }
 
 const char* const sleep_method[] = {
-    "Default",
-    "Legacy",
+    "默认",
+    "传统",
 };
 
 static void sleep_method_changed(VariableItem* item) {
@@ -215,8 +215,8 @@ static void sleep_method_changed(VariableItem* item) {
 }
 
 const char* const filename_scheme[] = {
-    "Time",
-    "Random",
+    "时间",
+    "随机",
 };
 
 static void filename_scheme_changed(VariableItem* item) {
@@ -241,17 +241,16 @@ static bool system_settings_custom_event_callback(void* context, uint32_t event)
     VariableItem* item = variable_item_list_get(app->var_item_list, event);
     DialogsApp* dialogs = furi_record_open(RECORD_DIALOGS);
     DialogMessage* msg = dialog_message_alloc();
-    dialog_message_set_buttons(msg, "No", NULL, "Yes");
+    dialog_message_set_buttons(msg, "否", NULL, "是");
 
     switch(event) {
     case VarItemListIndexDebug:
-        dialog_message_set_header(msg, "Enable Debug?", 64, 4, AlignCenter, AlignTop);
+        dialog_message_set_header(msg, "开启调试?", 64, 4, AlignCenter, AlignTop);
         dialog_message_set_text(
             msg,
-            "This consumes 400% more\n"
-            "battery life. Don't use unless\n"
-            "you know exactly what\n"
-            "you're doing.",
+            "耗电量将增加 400%.\n"
+            "除非你确切知道用途,\n"
+            "否则请勿开启.",
             64,
             36,
             AlignCenter,
@@ -264,13 +263,12 @@ static bool system_settings_custom_event_callback(void* context, uint32_t event)
         }
         break;
     case VarItemListIndexSleepMethod:
-        dialog_message_set_header(msg, "Disable DeepSleep?", 64, 4, AlignCenter, AlignTop);
+        dialog_message_set_header(msg, "关闭深度休眠?", 64, 4, AlignCenter, AlignTop);
         dialog_message_set_text(
             msg,
-            "Disabling will consume 400%\n"
-            "more battery life. Only\n"
-            "disable if you have a\n"
-            "specific reason.",
+            "关闭后耗电增加 400%.\n"
+            "仅在有特定原因时\n"
+            "才应关闭.",
             64,
             36,
             AlignCenter,
@@ -283,13 +281,12 @@ static bool system_settings_custom_event_callback(void* context, uint32_t event)
         }
         break;
     case VarItemListIndexHeapTrace:
-        dialog_message_set_header(msg, "Enable Heap Trace?", 64, 4, AlignCenter, AlignTop);
+        dialog_message_set_header(msg, "开启堆内存跟踪?", 64, 4, AlignCenter, AlignTop);
         dialog_message_set_text(
             msg,
-            "Will use more RAM and might\n"
-            "cause Out Of Memory errors.\n"
-            "Don't enable without a\n"
-            "specific reason.",
+            "会占用更多 RAM,\n"
+            "可能导致内存不足.\n"
+            "无特定原因请勿开启.",
             64,
             36,
             AlignCenter,
@@ -327,14 +324,14 @@ SystemSettings* system_settings_alloc(void) {
     app->var_item_list = variable_item_list_alloc();
 
     item = variable_item_list_add(
-        app->var_item_list, "Hand Orient", COUNT_OF(hand_mode), hand_orient_changed, app);
+        app->var_item_list, "惯用手", COUNT_OF(hand_mode), hand_orient_changed, app);
     value_index = furi_hal_rtc_is_flag_set(FuriHalRtcFlagHandOrient) ? 1 : 0;
     variable_item_set_current_value_index(item, value_index);
     variable_item_set_current_value_text(item, hand_mode[value_index]);
 
     item = variable_item_list_add(
         app->var_item_list,
-        "Units",
+        "单位",
         COUNT_OF(measurement_units_text),
         measurement_units_changed,
         app);
@@ -344,53 +341,49 @@ SystemSettings* system_settings_alloc(void) {
     variable_item_set_current_value_text(item, measurement_units_text[value_index]);
 
     item = variable_item_list_add(
-        app->var_item_list, "Time Format", COUNT_OF(time_format_text), time_format_changed, app);
+        app->var_item_list, "时间格式", COUNT_OF(time_format_text), time_format_changed, app);
     value_index = value_index_uint32(
         locale_get_time_format(), time_format_value, COUNT_OF(time_format_value));
     variable_item_set_current_value_index(item, value_index);
     variable_item_set_current_value_text(item, time_format_text[value_index]);
 
     item = variable_item_list_add(
-        app->var_item_list, "Date Format", COUNT_OF(date_format_text), date_format_changed, app);
+        app->var_item_list, "日期格式", COUNT_OF(date_format_text), date_format_changed, app);
     value_index = value_index_uint32(
         locale_get_date_format(), date_format_value, COUNT_OF(date_format_value));
     variable_item_set_current_value_index(item, value_index);
     variable_item_set_current_value_text(item, date_format_text[value_index]);
 
     item = variable_item_list_add(
-        app->var_item_list, "Log Level", COUNT_OF(log_level_text), log_level_changed, app);
+        app->var_item_list, "日志级别", COUNT_OF(log_level_text), log_level_changed, app);
     value_index = value_index_uint32(
         furi_hal_rtc_get_log_level(), log_level_value, COUNT_OF(log_level_text));
     variable_item_set_current_value_index(item, value_index);
     variable_item_set_current_value_text(item, log_level_text[value_index]);
 
     item = variable_item_list_add(
-        app->var_item_list, "Log Device", COUNT_OF(log_device_text), log_device_changed, app);
+        app->var_item_list, "日志设备", COUNT_OF(log_device_text), log_device_changed, app);
     value_index = value_index_uint32(
         furi_hal_rtc_get_log_device(), log_device_value, COUNT_OF(log_device_text));
     variable_item_set_current_value_index(item, value_index);
     variable_item_set_current_value_text(item, log_device_text[value_index]);
 
     item = variable_item_list_add(
-        app->var_item_list,
-        "Log Baud Rate",
-        COUNT_OF(log_baud_rate_text),
-        log_baud_rate_changed,
-        app);
+        app->var_item_list, "日志波特率", COUNT_OF(log_baud_rate_text), log_baud_rate_changed, app);
     value_index = value_index_uint32(
         furi_hal_rtc_get_log_baud_rate(), log_baud_rate_value, COUNT_OF(log_baud_rate_text));
     variable_item_set_current_value_index(item, value_index);
     variable_item_set_current_value_text(item, log_baud_rate_text[value_index]);
 
     item = variable_item_list_add(
-        app->var_item_list, "Debug", COUNT_OF(debug_text), debug_changed, app);
+        app->var_item_list, "调试", COUNT_OF(debug_text), debug_changed, app);
     value_index = furi_hal_rtc_is_flag_set(FuriHalRtcFlagDebug) ? 1 : 0;
     variable_item_set_current_value_index(item, value_index);
     variable_item_set_current_value_text(item, debug_text[value_index]);
 
     item = variable_item_list_add(
         app->var_item_list,
-        "Heap Trace",
+        "堆内存跟踪",
         COUNT_OF(heap_trace_mode_text),
         heap_trace_mode_changed,
         app);
@@ -401,13 +394,13 @@ SystemSettings* system_settings_alloc(void) {
     variable_item_set_current_value_text(item, heap_trace_mode_text[value_index]);
 
     item = variable_item_list_add(
-        app->var_item_list, "Sleep Method", COUNT_OF(sleep_method), sleep_method_changed, app);
+        app->var_item_list, "休眠方式", COUNT_OF(sleep_method), sleep_method_changed, app);
     value_index = furi_hal_rtc_is_flag_set(FuriHalRtcFlagLegacySleep) ? 1 : 0;
     variable_item_set_current_value_index(item, value_index);
     variable_item_set_current_value_text(item, sleep_method[value_index]);
 
     item = variable_item_list_add(
-        app->var_item_list, "File Naming", COUNT_OF(filename_scheme), filename_scheme_changed, app);
+        app->var_item_list, "文件命名", COUNT_OF(filename_scheme), filename_scheme_changed, app);
     value_index = furi_hal_rtc_is_flag_set(FuriHalRtcFlagRandomFilename) ? 1 : 0;
     variable_item_set_current_value_index(item, value_index);
     variable_item_set_current_value_text(item, filename_scheme[value_index]);

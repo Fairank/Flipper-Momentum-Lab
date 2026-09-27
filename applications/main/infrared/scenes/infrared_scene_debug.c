@@ -9,7 +9,7 @@ void infrared_scene_debug_on_enter(void* context) {
     infrared_worker_rx_enable_blink_on_receiving(worker, true);
     infrared_worker_rx_start(worker);
 
-    infrared_debug_view_set_text(infrared->debug_view, "Received signals\nwill appear here");
+    infrared_debug_view_set_text(infrared->debug_view, "收到的信号\n将显示在此");
     view_dispatcher_switch_to_view(infrared->view_dispatcher, InfraredViewDebugView);
 }
 
@@ -24,7 +24,7 @@ bool infrared_scene_debug_on_event(void* context, SceneManagerEvent event) {
 
             if(infrared_signal_is_raw(signal)) {
                 const InfraredRawSignal* raw = infrared_signal_get_raw_signal(signal);
-                infrared_debug_view_set_text(debug_view, "RAW\n%d samples\n", raw->timings_size);
+                infrared_debug_view_set_text(debug_view, "RAW\n%d 采样\n", raw->timings_size);
 
                 printf("RAW, %zu samples:\r\n", raw->timings_size);
                 for(size_t i = 0; i < raw->timings_size; ++i) {

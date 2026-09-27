@@ -135,7 +135,7 @@ static void nfc_scene_read_menu_on_enter_felica(NfcApp* instance) {
     if(data->blocks_read != data->blocks_total) {
         submenu_add_item(
             instance->submenu,
-            "Unlock",
+            "解锁",
             SubmenuIndexUnlock,
             nfc_protocol_support_common_submenu_callback,
             instance);

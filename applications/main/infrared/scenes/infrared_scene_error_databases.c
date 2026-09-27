@@ -5,8 +5,7 @@ void infrared_scene_error_databases_on_enter(void* context) {
     Popup* popup = infrared->popup;
 
     popup_set_icon(popup, 5, 11, &I_SDQuestion_35x43);
-    popup_set_text(
-        popup, "Function requires\nSD card with fresh\ndatabases.", 47, 17, AlignLeft, AlignTop);
+    popup_set_text(popup, "此功能需要\n带最新数据库\n的SD卡", 47, 17, AlignLeft, AlignTop);
 
     popup_set_context(popup, context);
     popup_set_callback(popup, infrared_popup_closed_callback);

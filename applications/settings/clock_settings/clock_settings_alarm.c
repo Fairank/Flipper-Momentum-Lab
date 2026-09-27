@@ -76,7 +76,7 @@ static void clock_settings_alarm_draw_callback(Canvas* canvas, void* ctx) {
     // Press Back to snooze
     canvas_set_font(canvas, FontPrimary);
     canvas_draw_icon_ex(canvas, 5, 50, &I_Pin_back_arrow_10x8, 0);
-    canvas_draw_str_aligned(canvas, 20, 50, AlignLeft, AlignTop, "Snooze");
+    canvas_draw_str_aligned(canvas, 20, 50, AlignLeft, AlignTop, "稍后提醒");
 }
 
 static void clock_settings_alarm_input_callback(InputEvent* input_event, void* ctx) {

@@ -15,12 +15,7 @@ void desktop_scene_fault_on_enter(void* context) {
     Popup* popup = desktop->popup;
     popup_set_context(popup, desktop);
     popup_set_header(
-        popup,
-        "Flipper crashed\n and was rebooted",
-        64,
-        14 + STATUS_BAR_Y_SHIFT,
-        AlignCenter,
-        AlignCenter);
+        popup, "Flipper 已崩溃\n并重新启动", 64, 14 + STATUS_BAR_Y_SHIFT, AlignCenter, AlignCenter);
 
     char* message = (char*)furi_hal_rtc_get_fault_data();
     popup_set_text(popup, message, 64, 37 + STATUS_BAR_Y_SHIFT, AlignCenter, AlignCenter);

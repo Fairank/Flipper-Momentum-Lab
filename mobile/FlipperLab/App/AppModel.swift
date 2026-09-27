@@ -166,10 +166,13 @@ final class AppModel {
             self.serialCapture = SerialCapture()
             self.serialStopRequested = false
             self.serialRunning = true
-            defer { self.serialRunning = false }
+            var capture = SerialCapture()
+            defer {
+                self.serialCapture = capture
+                self.serialRunning = false
+            }
             do {
                 try await self.device.startSerialBridge(port: port, baud: baud)
-                var capture = SerialCapture()
                 var displayedAt = Date.distantPast
                 while !self.serialStopRequested {
                     try Task.checkCancellation()
@@ -184,7 +187,7 @@ final class AppModel {
                 }
                 self.serialCapture = capture
                 try await self.device.stopSerialBridge()
-                return "收到 \(capture.receivedBytes) 字节；设备缓冲丢失 \(capture.deviceDroppedBytes) 字节；手机截断 \(capture.trimmedBytes) 字节。"
+                return "收到 \(capture.receivedBytes) 字节；设备至少丢失 \(capture.deviceDroppedBytes) 字节；手机截断 \(capture.trimmedBytes) 字节。"
             } catch {
                 // Disconnect releases UART on the Flipper even if a normal close failed.
                 self.device.disconnect()

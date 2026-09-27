@@ -32,16 +32,17 @@ import SwiftUI
             Section {
                 Label("可导入已保存的 ESP32 接入点扫描日志", systemImage: "doc.text")
                 Label("可在手机本地查看网络、信道与信号强度", systemImage: "chart.bar")
+                Label("可通过 Flipper 转发串口输出到手机", systemImage: "cable.connector")
             } header: {
                 SectionHeader("手机现有能力")
             } footer: {
-                Text("这些功能读取已有文件，不代表手机已连上扩展板。")
+                Text("实时入口位于“功能 → 扩展板实时数据”。需安装配套 Lab Bridge，并确认端口、波特率和供电。源码和构建已验证，实物通信尚待验收。")
             }
 
             Section {
                 LabeledContent("板卡固件版本", value: "未读取")
                 LabeledContent("Flipper 与板卡通信", value: "未真机验证")
-                LabeledContent("手机实时接收", value: "未实现")
+                LabeledContent("手机实时接收", value: "待真机验证")
             } header: {
                 SectionHeader("尚待验收")
             }

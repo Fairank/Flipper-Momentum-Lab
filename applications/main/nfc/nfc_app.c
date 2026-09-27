@@ -258,7 +258,7 @@ void nfc_make_app_folders(NfcApp* instance) {
     furi_assert(instance);
 
     if(!storage_simply_mkdir(instance->storage, NFC_APP_FOLDER)) {
-        dialog_message_show_storage_error(instance->dialogs, "Cannot create\napp folder");
+        dialog_message_show_storage_error(instance->dialogs, "无法创建\n应用目录");
     }
 }
 
@@ -269,7 +269,7 @@ bool nfc_save_file(NfcApp* instance, FuriString* path) {
     bool result = nfc_device_save(instance->nfc_device, furi_string_get_cstr(instance->file_path));
 
     if(!result) {
-        dialog_message_show_storage_error(instance->dialogs, "Cannot save\nkey file");
+        dialog_message_show_storage_error(instance->dialogs, "无法保存\n密钥文件");
     }
 
     return result;
@@ -376,7 +376,7 @@ bool nfc_load_file(NfcApp* instance, FuriString* path, bool show_dialog) {
     }
 
     if((!result) && (show_dialog)) {
-        dialog_message_show_storage_error(instance->dialogs, "Cannot load\nkey file");
+        dialog_message_show_storage_error(instance->dialogs, "无法加载\n密钥文件");
     }
 
     furi_string_free(load_path);
@@ -463,9 +463,9 @@ static bool nfc_is_hal_ready(void) {
         // No connection to the chip, show an error screen
         DialogsApp* dialogs = furi_record_open(RECORD_DIALOGS);
         DialogMessage* message = dialog_message_alloc();
-        dialog_message_set_header(message, "Error: NFC Chip Failed", 64, 0, AlignCenter, AlignTop);
+        dialog_message_set_header(message, "NFC 芯片故障", 64, 0, AlignCenter, AlignTop);
         dialog_message_set_text(
-            message, "Send error photo via\nsupport.flipper.net", 0, 63, AlignLeft, AlignBottom);
+            message, "请将故障照片发至\nsupport.flipper.net", 0, 63, AlignLeft, AlignBottom);
         dialog_message_set_icon(message, &I_err_09, 128 - 25, 64 - 25);
         dialog_message_show(dialogs, message);
         dialog_message_free(message);

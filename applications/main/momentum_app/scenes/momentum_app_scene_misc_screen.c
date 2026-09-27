@@ -21,14 +21,14 @@ void momentum_app_scene_misc_screen_var_item_list_callback(void* context, uint32
 static void momentum_app_scene_misc_screen_dark_mode_changed(VariableItem* item) {
     MomentumApp* app = variable_item_get_context(item);
     bool value = variable_item_get_current_value_index(item);
-    variable_item_set_current_value_text(item, value ? "ON" : "OFF");
+    variable_item_set_current_value_text(item, value ? "开" : "关");
     momentum_settings.dark_mode = value;
     app->save_settings = true;
 }
 
 static void momentum_app_scene_misc_screen_hand_orient_changed(VariableItem* item) {
     bool value = variable_item_get_current_value_index(item);
-    variable_item_set_current_value_text(item, value ? "ON" : "OFF");
+    variable_item_set_current_value_text(item, value ? "开" : "关");
     if(value) {
         furi_hal_rtc_set_flag(FuriHalRtcFlagHandOrient);
     } else {
@@ -173,25 +173,21 @@ void momentum_app_scene_misc_screen_on_enter(void* context) {
     uint8_t value_index;
 
     item = variable_item_list_add(
-        var_item_list, "Dark Mode", 2, momentum_app_scene_misc_screen_dark_mode_changed, app);
+        var_item_list, "深色模式", 2, momentum_app_scene_misc_screen_dark_mode_changed, app);
     variable_item_set_current_value_index(item, momentum_settings.dark_mode);
-    variable_item_set_current_value_text(item, momentum_settings.dark_mode ? "ON" : "OFF");
+    variable_item_set_current_value_text(item, momentum_settings.dark_mode ? "开" : "关");
 
     item = variable_item_list_add(
-        var_item_list, "Left Handed", 2, momentum_app_scene_misc_screen_hand_orient_changed, app);
+        var_item_list, "左手模式", 2, momentum_app_scene_misc_screen_hand_orient_changed, app);
     value_index = furi_hal_rtc_is_flag_set(FuriHalRtcFlagHandOrient);
     variable_item_set_current_value_index(item, value_index);
-    variable_item_set_current_value_text(item, value_index ? "ON" : "OFF");
+    variable_item_set_current_value_text(item, value_index ? "开" : "关");
 
     item = variable_item_list_add(
-        var_item_list,
-        "RGB Backlight",
-        2,
-        momentum_app_scene_misc_screen_rgb_backlight_changed,
-        app);
+        var_item_list, "RGB 背光", 2, momentum_app_scene_misc_screen_rgb_backlight_changed, app);
     value_index = momentum_settings.rgb_backlight;
     variable_item_set_current_value_index(item, value_index);
-    variable_item_set_current_value_text(item, value_index ? "ON" : "OFF");
+    variable_item_set_current_value_text(item, value_index ? "开" : "关");
 
     RgbColor color;
     for(size_t i = 0; i < COUNT_OF(lcd_cols); i++) {
@@ -219,7 +215,7 @@ void momentum_app_scene_misc_screen_on_enter(void* context) {
 
     item = variable_item_list_add(
         var_item_list,
-        "Rainbow LCD",
+        "彩虹屏幕",
         RGBBacklightRainbowModeCount,
         momentum_app_scene_misc_screen_rainbow_lcd_changed,
         app);
@@ -229,11 +225,7 @@ void momentum_app_scene_misc_screen_on_enter(void* context) {
     variable_item_set_locked(item, !momentum_settings.rgb_backlight, "Needs RGB\nBacklight!");
 
     item = variable_item_list_add(
-        var_item_list,
-        "Rainbow Speed",
-        25,
-        momentum_app_scene_misc_screen_rainbow_speed_changed,
-        app);
+        var_item_list, "彩虹速度", 25, momentum_app_scene_misc_screen_rainbow_speed_changed, app);
     value_index = rgb_backlight_get_rainbow_speed();
     variable_item_set_current_value_index(item, value_index - 1);
     char speed_str[4];
@@ -243,7 +235,7 @@ void momentum_app_scene_misc_screen_on_enter(void* context) {
 
     item = variable_item_list_add(
         var_item_list,
-        "Rainbow Interval",
+        "彩虹间隔",
         COUNT_OF(rainbow_interval_values),
         momentum_app_scene_misc_screen_rainbow_interval_changed,
         app);
@@ -257,7 +249,7 @@ void momentum_app_scene_misc_screen_on_enter(void* context) {
 
     item = variable_item_list_add(
         var_item_list,
-        "Rainbow Saturation",
+        "彩虹饱和度",
         255,
         momentum_app_scene_misc_screen_rainbow_saturation_changed,
         app);
@@ -294,15 +286,10 @@ bool momentum_app_scene_misc_screen_on_event(void* context, SceneManagerEvent ev
             bool change = !value; // Change without confirm if going from ON to OFF
             if(value) {
                 DialogMessage* msg = dialog_message_alloc();
-                dialog_message_set_header(msg, "RGB Backlight", 64, 0, AlignCenter, AlignTop);
-                dialog_message_set_buttons(msg, "No", NULL, "Yes");
+                dialog_message_set_header(msg, "RGB 背光", 64, 0, AlignCenter, AlignTop);
+                dialog_message_set_buttons(msg, "否", NULL, "是");
                 dialog_message_set_text(
-                    msg,
-                    "This option requires installing\na hardware modification!\nIs it installed?",
-                    64,
-                    32,
-                    AlignCenter,
-                    AlignCenter);
+                    msg, "此选项需要\n改装硬件!\n已经安装了吗?", 64, 32, AlignCenter, AlignCenter);
                 if(dialog_message_show(app->dialogs, msg) == DialogMessageButtonRight) {
                     change = true;
                 }
@@ -341,7 +328,7 @@ bool momentum_app_scene_misc_screen_on_event(void* context, SceneManagerEvent ev
                 value = !value;
             }
             variable_item_set_current_value_index(item, value);
-            variable_item_set_current_value_text(item, value ? "ON" : "OFF");
+            variable_item_set_current_value_text(item, value ? "开" : "关");
             break;
         }
         case VarItemListIndexLcdColor0:

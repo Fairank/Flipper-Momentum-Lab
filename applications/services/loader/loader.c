@@ -143,23 +143,17 @@ static void loader_show_gui_error(
             loader_dialog_prepare_and_show(dialogs, &err_outdated_firmware);
             break;
         case LoaderStatusErrorOutOfMemory:
-            dialog_message_set_header(
-                message, "Error: Out of Memory", 64, 0, AlignCenter, AlignTop);
+            dialog_message_set_header(message, "内存不足", 64, 0, AlignCenter, AlignTop);
             dialog_message_set_text(
-                message,
-                "Not enough RAM to run the\napp. Please reboot the device",
-                64,
-                13,
-                AlignCenter,
-                AlignTop);
-            dialog_message_set_buttons(message, NULL, NULL, "Reboot");
+                message, "内存不足以运行应用\n请重新启动设备", 64, 13, AlignCenter, AlignTop);
+            dialog_message_set_buttons(message, NULL, NULL, "重启");
             if(dialog_message_show(dialogs, message) == DialogMessageButtonRight) {
                 furi_hal_power_reset();
             }
             break;
         default:
             // Generic error
-            dialog_message_set_header(message, "Error", 64, 0, AlignCenter, AlignTop);
+            dialog_message_set_header(message, "错误", 64, 0, AlignCenter, AlignTop);
 
             furi_string_replace(error_message, "/ext/apps/", "");
             furi_string_replace(error_message, ", ", "\n");
@@ -603,7 +597,7 @@ static LoaderMessageLoaderStatusResult loader_start_external_app(
 
             DialogMessage* message = dialog_message_alloc();
             dialog_message_set_header(message, header, 64, 0, AlignCenter, AlignTop);
-            dialog_message_set_buttons(message, "Cancel", NULL, "Continue");
+            dialog_message_set_buttons(message, "取消", NULL, "继续");
             dialog_message_set_text(message, text, 64, 32, AlignCenter, AlignCenter);
             DialogMessageButton res =
                 dialog_message_show(furi_record_open(RECORD_DIALOGS), message);

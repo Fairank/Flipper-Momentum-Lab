@@ -124,8 +124,8 @@ bool momentum_app_apply(MomentumApp* app) {
     if(app->show_slideshow) {
         callback_reboot(NULL);
     } else if(app->require_reboot) {
-        popup_set_header(app->popup, "Rebooting...", 64, 26, AlignCenter, AlignCenter);
-        popup_set_text(app->popup, "Applying changes...", 64, 40, AlignCenter, AlignCenter);
+        popup_set_header(app->popup, "正在重启...", 64, 26, AlignCenter, AlignCenter);
+        popup_set_text(app->popup, "正在应用设置...", 64, 40, AlignCenter, AlignCenter);
         popup_set_callback(app->popup, callback_reboot);
         popup_set_context(app->popup, app);
         popup_set_timeout(app->popup, 1000);
@@ -134,8 +134,8 @@ bool momentum_app_apply(MomentumApp* app) {
         return true;
     } else if(app->apply_pack) {
         asset_packs_free();
-        popup_set_header(app->popup, "Reloading...", 64, 26, AlignCenter, AlignCenter);
-        popup_set_text(app->popup, "Applying asset pack...", 64, 40, AlignCenter, AlignCenter);
+        popup_set_header(app->popup, "正在重新加载...", 64, 26, AlignCenter, AlignCenter);
+        popup_set_text(app->popup, "正在应用资源包...", 64, 40, AlignCenter, AlignCenter);
         popup_set_callback(app->popup, NULL);
         popup_set_context(app->popup, NULL);
         popup_set_timeout(app->popup, 0);

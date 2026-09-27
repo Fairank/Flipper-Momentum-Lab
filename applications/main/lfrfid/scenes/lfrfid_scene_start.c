@@ -12,21 +12,13 @@ void lfrfid_scene_start_on_enter(void* context) {
     Submenu* submenu = app->submenu;
 
     submenu_add_item(
-        submenu, "Read", LfRfidMenuIndexRead, lfrfid_scene_start_submenu_callback, app);
+        submenu, "读取", LfRfidMenuIndexRead, lfrfid_scene_start_submenu_callback, app);
     submenu_add_item(
-        submenu, "Saved", LfRfidMenuIndexSaved, lfrfid_scene_start_submenu_callback, app);
+        submenu, "已保存", LfRfidMenuIndexSaved, lfrfid_scene_start_submenu_callback, app);
     submenu_add_item(
-        submenu,
-        "Add Manually",
-        LfRfidMenuIndexAddManually,
-        lfrfid_scene_start_submenu_callback,
-        app);
+        submenu, "手动添加", LfRfidMenuIndexAddManually, lfrfid_scene_start_submenu_callback, app);
     submenu_add_item(
-        submenu,
-        "Extra Actions",
-        LfRfidMenuIndexExtraActions,
-        lfrfid_scene_start_submenu_callback,
-        app);
+        submenu, "更多操作", LfRfidMenuIndexExtraActions, lfrfid_scene_start_submenu_callback, app);
 
     submenu_set_selected_item(
         submenu, scene_manager_get_scene_state(app->scene_manager, LfRfidSceneStart));

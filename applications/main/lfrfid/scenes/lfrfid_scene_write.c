@@ -22,7 +22,7 @@ void lfrfid_scene_write_on_enter(void* context) {
     Popup* popup = app->popup;
 
     popup_set_icon(popup, 0, 8, &I_NFC_manual_60x50);
-    popup_set_header(popup, "Writing", 94, 16, AlignCenter, AlignTop);
+    popup_set_header(popup, "写入中", 94, 16, AlignCenter, AlignTop);
 
     if(!furi_string_empty(app->file_name)) {
         snprintf(
@@ -36,7 +36,7 @@ void lfrfid_scene_write_on_enter(void* context) {
         snprintf(
             app->text_store,
             LFRFID_TEXT_STORE_SIZE,
-            "[%s]\nUnsaved Tag",
+            "[%s]\n未保存标签",
             protocol_dict_get_name(app->dict, app->protocol_id));
         popup_set_text(popup, app->text_store, 94, 29, AlignCenter, AlignTop);
     }
@@ -64,20 +64,20 @@ bool lfrfid_scene_write_on_event(void* context, SceneManagerEvent event) {
             consumed = true;
         } else if(event.event == LfRfidEventWriteProtocolCannotBeWritten) {
             popup_set_icon(popup, 83, 22, &I_WarningDolphinFlip_45x42);
-            popup_set_header(popup, "Error", 64, 3, AlignCenter, AlignTop);
-            popup_set_text(popup, "This protocol\ncannot be written", 3, 17, AlignLeft, AlignTop);
+            popup_set_header(popup, "错误", 64, 3, AlignCenter, AlignTop);
+            popup_set_text(popup, "此协议\n无法写入", 3, 17, AlignLeft, AlignTop);
             notification_message(app->notifications, &sequence_blink_start_red);
             consumed = true;
         } else if(
             (event.event == LfRfidEventWriteFobCannotBeWritten) ||
             (event.event == LfRfidEventWriteTooLongToWrite)) {
             popup_set_icon(popup, 83, 22, &I_WarningDolphinFlip_45x42);
-            popup_set_header(popup, "Still Trying to Write...", 64, 0, AlignCenter, AlignTop);
+            popup_set_header(popup, "仍在尝试写入...", 64, 0, AlignCenter, AlignTop);
             popup_set_text(
                 popup,
-                "Make sure this\n"
-                "card is writable\n"
-                "and not protected",
+                "请确认此卡\n"
+                "可写入且\n"
+                "未受保护",
                 0,
                 13,
                 AlignLeft,

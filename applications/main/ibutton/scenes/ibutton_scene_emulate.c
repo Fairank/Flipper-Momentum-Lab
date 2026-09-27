@@ -25,13 +25,13 @@ void ibutton_scene_emulate_on_enter(void* context) {
         tmp,
         "[%s]\n%s",
         ibutton_protocols_get_name(ibutton->protocols, ibutton_key_get_protocol_id(key)),
-        furi_string_empty(ibutton->file_path) ? "Unsaved Key" : ibutton->key_name);
+        furi_string_empty(ibutton->file_path) ? "未保存钥匙" : ibutton->key_name);
 
     widget_add_text_box_element(
         widget, 52, 24, 75, 40, AlignCenter, AlignTop, furi_string_get_cstr(tmp), true);
 
     widget_add_string_multiline_element(
-        widget, 88, 10, AlignCenter, AlignTop, FontPrimary, "Emulating");
+        widget, 88, 10, AlignCenter, AlignTop, FontPrimary, "模拟中");
 
     ibutton_worker_emulate_set_callback(ibutton->worker, ibutton_scene_emulate_callback, ibutton);
     ibutton_worker_emulate_start(ibutton->worker, key);

@@ -43,7 +43,7 @@ void subghz_scene_show_error_on_enter(void* context) {
     }
 
     widget_add_button_element(
-        subghz->widget, GuiButtonTypeLeft, "Back", subghz_scene_show_error_callback, subghz);
+        subghz->widget, GuiButtonTypeLeft, "返回", subghz_scene_show_error_callback, subghz);
 
     view_dispatcher_switch_to_view(subghz->view_dispatcher, SubGhzViewIdWidget);
 }

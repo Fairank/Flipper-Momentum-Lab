@@ -138,7 +138,7 @@ void archive_scene_info_on_enter(void* context) {
     ArchiveApp* instance = context;
 
     widget_add_button_element(
-        instance->widget, GuiButtonTypeLeft, "Back", archive_scene_info_widget_callback, instance);
+        instance->widget, GuiButtonTypeLeft, "返回", archive_scene_info_widget_callback, instance);
 
     FuriString* filename = furi_string_alloc();
     FuriString* dirname = furi_string_alloc();

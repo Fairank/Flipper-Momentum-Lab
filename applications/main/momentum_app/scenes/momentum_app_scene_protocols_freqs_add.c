@@ -58,10 +58,10 @@ bool momentum_app_scene_protocols_freqs_add_on_event(void* context, SceneManager
             scene_manager_previous_scene(app->scene_manager);
             break;
         case NumberInputResultError:
-            popup_set_header(app->popup, "Invalid frequency!", 64, 18, AlignCenter, AlignCenter);
+            popup_set_header(app->popup, "频率无效!", 64, 18, AlignCenter, AlignCenter);
             popup_set_text(
                 app->popup,
-                "Must be 281-361,\n"
+                "须为 281-361,\n"
                 "378-481, 749-962 MHz",
                 64,
                 40,

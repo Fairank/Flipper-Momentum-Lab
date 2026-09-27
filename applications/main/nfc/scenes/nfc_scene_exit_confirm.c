@@ -10,10 +10,10 @@ void nfc_scene_exit_confirm_on_enter(void* context) {
     NfcApp* nfc = context;
     DialogEx* dialog_ex = nfc->dialog_ex;
 
-    dialog_ex_set_left_button_text(dialog_ex, "Exit");
-    dialog_ex_set_right_button_text(dialog_ex, "Stay");
-    dialog_ex_set_header(dialog_ex, "Exit to NFC Menu?", 64, 0, AlignCenter, AlignTop);
-    dialog_ex_set_text(dialog_ex, "All unsaved data will be lost", 64, 12, AlignCenter, AlignTop);
+    dialog_ex_set_left_button_text(dialog_ex, "退出");
+    dialog_ex_set_right_button_text(dialog_ex, "留下");
+    dialog_ex_set_header(dialog_ex, "返回 NFC 菜单?", 64, 0, AlignCenter, AlignTop);
+    dialog_ex_set_text(dialog_ex, "未保存数据将丢失", 64, 12, AlignCenter, AlignTop);
     dialog_ex_set_context(dialog_ex, nfc);
     dialog_ex_set_result_callback(dialog_ex, nfc_scene_exit_confirm_dialog_callback);
 

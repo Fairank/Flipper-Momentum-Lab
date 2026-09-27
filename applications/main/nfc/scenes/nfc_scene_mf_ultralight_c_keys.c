@@ -33,7 +33,7 @@ void nfc_scene_mf_ultralight_c_keys_on_enter(void* context) {
 
     FuriString* temp_str = furi_string_alloc();
     widget_add_string_element(
-        instance->widget, 0, 0, AlignLeft, AlignTop, FontPrimary, "MIFARE Ultralight C Keys");
+        instance->widget, 0, 0, AlignLeft, AlignTop, FontPrimary, "Ultralight C 密钥");
     furi_string_printf(temp_str, "System dict: %lu", flipper_dict_keys_total);
     widget_add_string_element(
         instance->widget,
@@ -56,14 +56,14 @@ void nfc_scene_mf_ultralight_c_keys_on_enter(void* context) {
     widget_add_button_element(
         instance->widget,
         GuiButtonTypeCenter,
-        "Add",
+        "添加",
         nfc_scene_mf_ultralight_c_keys_widget_callback,
         instance);
     if(user_dict_keys_total > 0) {
         widget_add_button_element(
             instance->widget,
             GuiButtonTypeRight,
-            "List",
+            "列表",
             nfc_scene_mf_ultralight_c_keys_widget_callback,
             instance);
     }

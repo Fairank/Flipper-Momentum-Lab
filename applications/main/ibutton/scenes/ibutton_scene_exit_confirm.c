@@ -15,13 +15,13 @@ void ibutton_scene_exit_confirm_on_enter(void* context) {
     Widget* widget = ibutton->widget;
 
     widget_add_button_element(
-        widget, GuiButtonTypeLeft, "Exit", ibutton_scene_exit_confirm_widget_callback, ibutton);
+        widget, GuiButtonTypeLeft, "退出", ibutton_scene_exit_confirm_widget_callback, ibutton);
     widget_add_button_element(
-        widget, GuiButtonTypeRight, "Stay", ibutton_scene_exit_confirm_widget_callback, ibutton);
+        widget, GuiButtonTypeRight, "留下", ibutton_scene_exit_confirm_widget_callback, ibutton);
     widget_add_string_element(
-        widget, 64, 19, AlignCenter, AlignBottom, FontPrimary, "Exit to iButton Menu?");
+        widget, 64, 19, AlignCenter, AlignBottom, FontPrimary, "退出到iButton菜单?");
     widget_add_string_element(
-        widget, 64, 31, AlignCenter, AlignBottom, FontSecondary, "All unsaved data will be lost!");
+        widget, 64, 31, AlignCenter, AlignBottom, FontSecondary, "未保存数据将丢失!");
 
     view_dispatcher_switch_to_view(ibutton->view_dispatcher, iButtonViewWidget);
 }

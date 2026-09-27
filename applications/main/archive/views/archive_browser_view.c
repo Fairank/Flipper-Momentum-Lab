@@ -201,7 +201,7 @@ static void render_item_menu(Canvas* canvas, ArchiveBrowserViewModel* model) {
     canvas_draw_rframe(canvas, 71, 2, 57, calc_height + 4, 3);
 
     canvas_draw_str_aligned(
-        canvas, 100, 11, AlignCenter, AlignBottom, model->menu_manage ? "Manage:" : "Actions:");
+        canvas, 100, 11, AlignCenter, AlignBottom, model->menu_manage ? "管理:" : "操作:");
     if(model->menu_can_switch) {
         if(model->menu_manage) {
             canvas_draw_icon(canvas, 74, 4, &I_ButtonLeft_4x7);
@@ -391,7 +391,7 @@ static void archive_render_status_bar(Canvas* canvas, ArchiveBrowserViewModel* m
         canvas_draw_line(canvas, 92, 1, 92, 11);
         canvas_draw_line(canvas, 70, 11, 92, 11);
         canvas_draw_str_aligned(
-            canvas, 81, 9, AlignCenter, AlignBottom, model->clipboard_copy ? "Copy" : "Cut");
+            canvas, 81, 9, AlignCenter, AlignBottom, model->clipboard_copy ? "复制" : "剪切");
     }
 
     canvas_draw_rframe(canvas, 107, 0, 21, 13, 1);
@@ -424,8 +424,7 @@ static void archive_view_render(Canvas* canvas, void* mdl) {
     } else if(model->item_cnt > 0) {
         draw_list(canvas, model);
     } else {
-        canvas_draw_str_aligned(
-            canvas, GUI_DISPLAY_WIDTH / 2, 40, AlignCenter, AlignCenter, "Empty");
+        canvas_draw_str_aligned(canvas, GUI_DISPLAY_WIDTH / 2, 40, AlignCenter, AlignCenter, "空");
         if(model->menu) {
             render_item_menu(canvas, model);
         }

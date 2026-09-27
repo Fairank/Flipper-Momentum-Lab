@@ -7,19 +7,33 @@ on:
     paths:
       - "mobile/**"
       - "scripts/tests/**"
-      - "applications/main/lab/**"
+      - "applications/main/**"
+      - "applications/settings/**"
       - "applications/services/gui/**"
+      - "applications/services/desktop/**"
+      - "applications/services/loader/**"
+      - "applications/services/locale/**"
+      - "lib/toolbox/settings_helpers/**"
       - "scripts/generate_lab_font.py"
+      - "scripts/generate_native_zh_font.py"
       - "scripts/render_lab_preview.py"
+      - "scripts/render_native_zh_preview.py"
       - ".github/workflows/lab-validation.yml"
   pull_request:
     paths:
       - "mobile/**"
       - "scripts/tests/**"
-      - "applications/main/lab/**"
+      - "applications/main/**"
+      - "applications/settings/**"
       - "applications/services/gui/**"
+      - "applications/services/desktop/**"
+      - "applications/services/loader/**"
+      - "applications/services/locale/**"
+      - "lib/toolbox/settings_helpers/**"
       - "scripts/generate_lab_font.py"
+      - "scripts/generate_native_zh_font.py"
       - "scripts/render_lab_preview.py"
+      - "scripts/render_native_zh_preview.py"
       - ".github/workflows/lab-validation.yml"
   workflow_dispatch:
 
@@ -156,9 +170,12 @@ jobs:
         if: ${{ !cancelled() && steps.checkout.outcome == 'success' }}
         run: |
           python3 scripts/generate_lab_font.py --check
+          python3 scripts/generate_native_zh_font.py --check
 
       - name: "Render all Flipper Lab screens"
-        run: python3 scripts/render_lab_preview.py --all --output-dir "$RUNNER_TEMP/flipper-previews"
+        run: |
+          python3 scripts/render_lab_preview.py --all --output-dir "$RUNNER_TEMP/flipper-previews"
+          python3 scripts/render_native_zh_preview.py --output-dir "$RUNNER_TEMP/flipper-previews/native"
 
       - name: "Upload Flipper source layout previews"
         uses: actions/upload-artifact@v4

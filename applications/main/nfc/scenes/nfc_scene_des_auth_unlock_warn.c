@@ -32,8 +32,8 @@ void nfc_scene_des_auth_unlock_warn_on_enter(void* context) {
 
     dialog_ex_set_text(dialog_ex, nfc->text_store, 0, 12, AlignLeft, AlignTop);
 
-    dialog_ex_set_left_button_text(dialog_ex, "Cancel");
-    dialog_ex_set_right_button_text(dialog_ex, "Unlock");
+    dialog_ex_set_left_button_text(dialog_ex, "取消");
+    dialog_ex_set_right_button_text(dialog_ex, "解锁");
 
     view_dispatcher_switch_to_view(nfc->view_dispatcher, NfcViewDialogEx);
 }

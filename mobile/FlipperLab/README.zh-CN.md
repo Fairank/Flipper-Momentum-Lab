@@ -25,7 +25,7 @@
 
 本轮新增独立的“功能”页作为第五个主页面。手机以中文介绍功能，点击条目通过蓝牙在 Flipper 打开现有应用；不显示设备屏幕镜像。启动范围、设备忙碌时的限制和真机验收边界见 [手机功能中心说明](FUNCTION_LAUNCH.zh-CN.md)。下表的 CI 结果已包含该页的离线界面测试和 2 项功能条目包测试，但不包含通过蓝牙实际启动 Flipper 应用的验证。本轮还修正了设备颜色对应的蓝牙广播服务号，修正后的构建结果以 PR 检查为准。
 
-从 Flipper 导入的 NFC／低频 RFID 记录可以在手机保存、查看与分析，但不能直接变成 iPhone 可刷的门禁凭证。卡类型和正式手机凭证的条件见 [门禁卡记录与 iPhone NFC](CARD_ON_IPHONE.zh-CN.md)；后续手机算力与 AIO Board 1.4 的 ESP32、CC1101、nRF24 扩展需求见 [手机算力分析清单](../../documentation/custom/PHONE_COMPUTE_ROADMAP.zh-CN.md)。除下述离线 Wi-Fi 扫描分析外，密钥恢复和扩展板数据链路仍未实现。
+从 Flipper 导入的 NFC／低频 RFID 记录可以在手机保存、查看与分析，但不能直接变成 iPhone 可刷的门禁凭证。卡类型和正式手机凭证的条件见 [门禁卡记录与 iPhone NFC](CARD_ON_IPHONE.zh-CN.md)；后续手机算力与 AIO Board 1.4 的 ESP32、CC1101、nRF24 扩展需求见 [手机算力分析清单](../../documentation/custom/PHONE_COMPUTE_ROADMAP.zh-CN.md)。新增 [MIFARE Classic 离线密钥恢复、字典验证与合并](CLASSIC_OFFLINE.zh-CN.md)，以及 [Flipper 串口输出经蓝牙到手机](SERIAL_BRIDGE.zh-CN.md)。离线计算、协议和 iOS 界面已通过自动测试；扩展板实物通信仍待验证。
 
 新增的 [Wi-Fi 扫描记录说明](WIFI_SURVEY.zh-CN.md)定义了可从 iPhone 文件或 Flipper SD 卡导入的 `.wscan` 文本格式，也可识别现有 ESP32 伴侣应用保存的接入点扫描 `.log`。手机可离线列出多个接入点，查看信道和 RSSI，并标记多个网络做本地概览；扫描日志未提供安全类型时会明确显示“未记录”。它不驱动三合一扩展板，也不连接或中断网络。板卡名称已知，厂商、实物芯片、接线和现装固件未明确，实时扫描与真机链路待适配。
 
@@ -34,12 +34,12 @@
 | 项目 | 状态 |
 | --- | --- |
 | 工程配置与本说明 | 在 Windows 电脑上编写；主助手的环境没有 Xcode，下文的本地命令只在 GitHub macOS CI 中以等效步骤运行过。用户可用自己或借用的 Mac 按上方快速入口安装，`prepare-mac.sh` 尚未在真实 Mac 上执行过 |
-| Swift 包测试（`swift test`） | 上一次完整检查 [Lab validation 36109714508](https://github.com/Fairank/Flipper-Momentum-Lab/actions/runs/36109714508)：54 项通过；本轮蓝牙修正以 PR 的最新检查为准 |
+| Swift 包测试（`swift test`） | 提交 `0d741468` 的 [Lab validation 36301957045](https://github.com/Fairank/Flipper-Momentum-Lab/actions/runs/36301957045)：88 项通过，包含实际离线密钥恢复、字典处理和串口协议 |
 | 模拟器构建（不签名） | 同一运行通过 |
-| 模拟器 UI 测试 | 同一运行的 3 项离线测试通过：五页导航、功能页离线状态、中文指南、示例分析、菜单、深色大字；iPhone 17 Pro Max / iOS 26.5，Xcode 26.6。只证明离线界面，不证明蓝牙 |
+| 模拟器 UI 测试 | 同一运行的 5 项离线测试通过：五页导航、功能页离线状态、中文指南、示例分析、菜单、深色大字、公开样本密钥恢复和串口入口；iPhone 17 Pro Max / iOS 26.5，Xcode 26.6。只证明离线界面，不证明蓝牙 |
 | 模拟器截图与 Flipper 预览 | iPhone 17 Pro Max / iOS 26.5 模拟器导出页面原图；新增板卡页后生成 66 张 Flipper 源码布局预览（由源码渲染，不是真机截图）；出处与校验值见[验收记录](../../documentation/custom/VALIDATION.md) |
-| Python/C 桌面回归 | 同一运行的 Ubuntu 任务：37 项通过 |
-| GitHub Actions（[`lab-validation.yml`](../../.github/workflows/lab-validation.yml)） | 上一次完整检查的 Lab validation 36109714508、[Lab firmware 36109714494](https://github.com/Fairank/Flipper-Momentum-Lab/actions/runs/36109714494)、[Lint 36109714519](https://github.com/Fairank/Flipper-Momentum-Lab/actions/runs/36109714519) 均成功；本轮提交结果以 PR [#1](https://github.com/Fairank/Flipper-Momentum-Lab/pull/1) 的检查为准 |
+| Python/C 桌面回归 | 同一运行的 Ubuntu 任务通过；包括真实 C 恢复引擎、取消、错误样本及串口协议边界，C 恢复同时启用 ASan/UBSan |
+| GitHub Actions（[`lab-validation.yml`](../../.github/workflows/lab-validation.yml)） | 提交 `0d741468` 的 Lab validation 36301957045、[Lab firmware 36301957047](https://github.com/Fairank/Flipper-Momentum-Lab/actions/runs/36301957047)、[Lint 36301957054](https://github.com/Fairank/Flipper-Momentum-Lab/actions/runs/36301957054) 均成功；本轮提交结果以 PR [#1](https://github.com/Fairank/Flipper-Momentum-Lab/pull/1) 的检查为准 |
 | 真机：蓝牙配对、功能启动、设备文件导入、上传读回、红外执行 | 均未验证。主助手的 Windows 环境没有 Xcode，尚未做真实 iPhone 与 Flipper 的蓝牙验收；需要在 Mac 上安装后按文末清单执行 |
 | App Store / TestFlight | 未准备：没有 App 图标，未做上架或审核相关准备；GitHub 上没有可直接安装的签名包 |
 
@@ -50,6 +50,7 @@
 | 路径 | 内容 |
 | --- | --- |
 | `Package.swift` | Swift 包 `FlipperLab`（swift-tools-version 5.9），唯一产品为库 `FlipperCore`，没有第三方依赖 |
+| `Sources/ClassicRecovery/` | 本地 C 恢复引擎，算法改编与 GPL 来源保留在源文件中；有内存、工作量和取消限制 |
 | `Sources/FlipperCore/` | 与界面无关的核心代码：RPC/protobuf 编解码与分包重组、七类记录解析与分析、资料库存储、记录模型，以及离线指南资源 `Resources/FeatureCatalog.json` |
 | `Tests/FlipperCoreTests/` | `FlipperCore` 的 XCTest 单元测试；其中 `ProtocolVectorTests.swift` 由 `scripts/generate_rpc_vectors.py` 用固件锁定的 `.proto` 生成 |
 | `App/` | iPhone App 源码（SwiftUI 界面、蓝牙连接、资料库与任务逻辑），只由 Xcode 工程编译 |
@@ -66,7 +67,7 @@
 - 生成的工程包含三部分：
   - 应用目标 `FlipperLab`：只编译 `App/` 中的文件（排除 `Info.plist`），产品为 `FlipperLab.app`；
   - 界面测试目标 `FlipperLabUITests`：编译 `UITests/`，依赖应用目标，在模拟器或真机上启动 App 做黑盒测试；
-  - 本地 Swift 包 `FlipperLab`：应用链接其库产品 `FlipperCore`。包里只有 `Package.swift` 声明的 `FlipperCore` 和 `FlipperCoreTests` 两个目标；`App/` 和 `UITests/` 虽在包目录内，但不属于包。
+  - 本地 Swift 包 `FlipperLab`：应用链接其库产品 `FlipperCore`。包里只有 `Package.swift` 声明的 `ClassicRecovery`、`FlipperCore` 和 `FlipperCoreTests` 三个目标；`App/` 和 `UITests/` 虽在包目录内，但不属于包。
 - 工程定义了一个共享 scheme：`FlipperLab`，用于构建和运行 App（运行用 Debug，归档用 Release）。它的测试动作只运行 `FlipperLabUITests`；包的单元测试不在 scheme 里，用 `swift test` 运行。
 - 请打开 `FlipperLab.xcodeproj`。如果在 Xcode 中直接打开 `Package.swift` 或整个目录，只会得到 Swift 包（`FlipperCore` 及其测试），没有 iPhone App 目标。
 - 同一目录里同时有 `Package.swift` 和 `.xcodeproj`，命令行调用 `xcodebuild` 时请始终写明 `-project FlipperLab.xcodeproj`。
@@ -100,7 +101,7 @@ open FlipperLab.xcodeproj
 swift test --package-path mobile/FlipperLab
 ```
 
-测试位于 `Tests/FlipperCoreTests/`，共 54 项，覆盖 RPC 帧编码、BLE 分包在任意位置切开后的重组、超长/截断/溢出输入的拒绝、设备文件名不能改变路径、protoc 生成的协议向量、六类记录的解析与拒绝（空文件、非法文本、超过 2 MiB、头部与扩展名矛盾）、资料库存储的上限与损坏处理、内置指南的完整性，以及功能条目（已安装 `.fap` 的路径必须位于 `/ext/apps` 下、内置启动名唯一）。最终提交的 CI 运行 54 项通过；本地是否通过以实际输出为准。
+测试位于 `Tests/FlipperCoreTests/`，在 `0d741468` 中共 88 项通过，覆盖离线 Classic 密钥恢复、字典校验/合并、串口桥协议与缓冲，以及 RPC 帧编码、BLE 分包在任意位置切开后的重组、超长/截断/溢出输入的拒绝、设备文件名不能改变路径、protoc 生成的协议向量、六类记录的解析与拒绝（空文件、非法文本、超过 2 MiB、头部与扩展名矛盾）、资料库存储的上限与损坏处理、内置指南的完整性，以及功能条目（已安装 `.fap` 的路径必须位于 `/ext/apps` 下、内置启动名唯一）。后续提交的结果以 PR 检查为准；本地是否通过以实际输出为准。
 
 ## 3. 模拟器构建与运行
 

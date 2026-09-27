@@ -64,14 +64,14 @@ static void nfc_scene_more_info_on_enter_mf_ultralight(NfcApp* instance) {
         widget_add_button_element(
             instance->widget,
             GuiButtonTypeRight,
-            "Raw Data",
+            "原始数据",
             nfc_protocol_support_common_widget_callback,
             instance);
 
         widget_add_button_element(
             instance->widget,
             GuiButtonTypeLeft,
-            "Info",
+            "信息",
             nfc_protocol_support_common_widget_callback,
             instance);
     } else if(scene_state == NfcSceneMoreInfoStateRawData) {
@@ -226,13 +226,13 @@ static void nfc_scene_read_and_saved_menu_on_enter_mf_ultralight(NfcApp* instanc
         submenu_remove_item(submenu, SubmenuIndexCommonWrite);
         submenu_add_item(
             submenu,
-            "Write (Keep Key)",
+            "写入并保留密钥",
             SubmenuIndexWriteKeepKey,
             nfc_protocol_support_common_submenu_callback,
             instance);
         submenu_add_item(
             submenu,
-            "Write (Copy Key)",
+            "写入并复制密钥",
             SubmenuIndexWriteCopyKey,
             nfc_protocol_support_common_submenu_callback,
             instance);
@@ -241,14 +241,14 @@ static void nfc_scene_read_and_saved_menu_on_enter_mf_ultralight(NfcApp* instanc
     if(is_locked) {
         submenu_add_item(
             submenu,
-            "Unlock",
+            "解锁",
             SubmenuIndexUnlock,
             nfc_protocol_support_common_submenu_callback,
             instance);
         if(data->type == MfUltralightTypeMfulC) {
             submenu_add_item(
                 submenu,
-                "Unlock with Dictionary",
+                "使用字典解锁",
                 SubmenuIndexDictAttack,
                 nfc_protocol_support_common_submenu_callback,
                 instance);

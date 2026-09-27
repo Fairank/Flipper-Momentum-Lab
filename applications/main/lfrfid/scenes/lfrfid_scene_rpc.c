@@ -8,7 +8,7 @@ void lfrfid_scene_rpc_on_enter(void* context) {
 static void lfrfid_rpc_start_emulation(LfRfid* app) {
     Popup* popup = app->popup;
 
-    lfrfid_text_store_set(app, "emulating\n%s", furi_string_get_cstr(app->file_name));
+    lfrfid_text_store_set(app, "模拟中\n%s", furi_string_get_cstr(app->file_name));
 
     popup_set_header(popup, "LF RFID", 89, 42, AlignCenter, AlignBottom);
     popup_set_text(popup, app->text_store, 89, 44, AlignCenter, AlignTop);
@@ -45,6 +45,7 @@ bool lfrfid_scene_rpc_on_event(void* context, SceneManagerEvent event) {
                     result = true;
                 } else {
                     rpc_system_app_set_error_code(app->rpc_ctx, RpcAppSystemErrorCodeParseFile);
+                    // RPC error text is sent to the companion app, kept in English
                     rpc_system_app_set_error_text(app->rpc_ctx, "Cannot load key file");
                 }
             }

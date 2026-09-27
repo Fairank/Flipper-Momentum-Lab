@@ -194,7 +194,7 @@ void subghz_scene_radio_settings_on_enter(void* context) {
         value_count_device = 1; // Only 1 item if external disconnected
     item = variable_item_list_add(
         subghz->variable_item_list,
-        "Module",
+        "模块",
         value_count_device,
         subghz_scene_radio_settings_set_device,
         subghz);
@@ -206,7 +206,7 @@ void subghz_scene_radio_settings_on_enter(void* context) {
     //Add TX Power
     item = variable_item_list_add(
         subghz->variable_item_list,
-        "TX Power",
+        "发射功率",
         TX_POWER_COUNT,
         subghz_scene_radio_settings_set_tx_power,
         subghz);
@@ -216,11 +216,7 @@ void subghz_scene_radio_settings_on_enter(void* context) {
     variable_item_set_current_value_text(item, tx_power_text[value_index]);
 
     item = variable_item_list_add(
-        variable_item_list,
-        "GPS Baudrate",
-        GPS_COUNT,
-        subghz_scene_receiver_config_set_gps,
-        subghz);
+        variable_item_list, "GPS 波特率", GPS_COUNT, subghz_scene_receiver_config_set_gps, subghz);
     value_index = value_index_uint32(
         subghz->last_settings->gps_baudrate,
         (const uint32_t[]){0, 9600, 19200, 38400, 57600, 115200},
@@ -230,7 +226,7 @@ void subghz_scene_radio_settings_on_enter(void* context) {
 
     item = variable_item_list_add(
         variable_item_list,
-        "Protocol Names",
+        "协议名称",
         ON_OFF_COUNT,
         subghz_scene_receiver_config_set_protocol_file_names,
         subghz);
@@ -240,7 +236,7 @@ void subghz_scene_radio_settings_on_enter(void* context) {
 
     item = variable_item_list_add(
         variable_item_list,
-        "Counter Incr.",
+        "计数器增量",
         furi_hal_rtc_is_flag_set(FuriHalRtcFlagDebug) ? DEBUG_COUNTER_COUNT : 3,
         subghz_scene_receiver_config_set_debug_counter,
         subghz);
@@ -255,7 +251,7 @@ void subghz_scene_radio_settings_on_enter(void* context) {
 
     item = variable_item_list_add(
         variable_item_list,
-        "Debug Pin",
+        "调试引脚",
         DEBUG_P_COUNT,
         subghz_scene_receiver_config_set_debug_pin,
         subghz);
