@@ -1,6 +1,6 @@
 # 验证记录
 
-## 上游融合工作树（2026-09-29）
+## 上游融合提交 `22904e309`（2026-09-29）
 
 来源和未完成范围见 [UPSTREAM_FUSION.md](UPSTREAM_FUSION.md)。本轮适配 Momentum `d3f89dfe` 与 Unleashed `15bca58e`，本分支 API 为 89.0，协议为 0.29 并保留 ASCII 输入扩展。
 
@@ -10,11 +10,19 @@
 - 旧协议 73 个 content 字段（含 Empty / StopSession）保留名称、类型及编号；新增 15 字段无冲突。实际 nanopb 生成代码已检查 ASCII 扩展及协议 0.29。
 - 两套字库同步检查通过。原生中文子集为 690 字形、17,336 字节；生成了 66 张帮助页与 4 张原生页面源码布局预览，均不是真机截图。
 - `fap_dist` 成功，输出 322 个 FAP 与 124 个独立 FAL，另有嵌入父应用的插件。NFC 插件接口检查按父应用实际导出表匹配，未解析接口警告已清除；两项上游非法 appid 仍按融合记录说明跳过。
-- 三个新增示例图标已用仓库工具转换为无元数据的单色格式；Windows 图像检查的路径分隔符问题已修复。`git diff --check` 通过。
+- 三个新增示例图标已用仓库工具转换为无元数据的单色格式；Windows 图像检查的路径分隔符问题已修复。`lint_all`、2,031 张图标检查、289 个 Python/构建文件格式检查和 `git diff --check` 通过。
 - 追加了设备侧 Sub-GHz 样本/驱动注册测试，但未在 Flipper 上执行。没有把这些测试列作已通过。
 - 本轮本机没有 Xcode，未连接 iPhone、Flipper 或 AIO，未刷机。当前新增 GPS/网络代理的 iPhone 处理端未实现。
 
-最终格式检查及新提交 CI 结果在本节后续追加；下面旧提交的绿色结果不能代替新一轮验证。
+### 本提交的 GitHub 结果
+
+- [Lab validation 36516344087](https://github.com/Fairank/Flipper-Momentum-Lab/actions/runs/36516344087)：60 项主机回归、88 项 Swift 核心测试、5 项 iPhone UI 测试、iOS 模拟器构建和两套字库检查全部通过。环境为 Xcode 26.6、iPhone 17 Pro Max / iOS 26.5。输出 66 张帮助页和 4 张设备原生页面源码预览。
+- [Lab firmware 36516344066](https://github.com/Fairank/Flipper-Momentum-Lab/actions/runs/36516344066) 与 [Lint 36516344121](https://github.com/Fairank/Flipper-Momentum-Lab/actions/runs/36516344121) 通过。云端构建未修改跟踪源码；恢复升级器为 120,049 字节，两个伴侣应用存在性检查通过。云端包使用 PR 合并提交 `0831a35b219e18b0f706a011621dd5c17ac07145`，对应分支代码 `22904e3091920052099fa025f7b5f47146847808`。
+- [固件下载附件 11010948604](https://github.com/Fairank/Flipper-Momentum-Lab/actions/runs/36516344066/artifacts/11010948604) 已下载核对：ZIP SHA-256 为 `1ac9207c19738c5257081e9ad12dd18138f28b99b86accef7e67825a37e14417`；内含升级包为 12,741,083 字节，SHA-256 为 `7e15b20a7764d3f41c24be78a5e2335fac4a88321091554b1e95b584232c7b9f`，与包内校验文件一致。包中有固件、无线协处理器镜像、升级器和资源，未执行刷机。
+- [iPhone 模拟器截图附件](https://github.com/Fairank/Flipper-Momentum-Lab/actions/runs/36516344087/artifacts/11011472896) 和 [Flipper 源码布局预览附件](https://github.com/Fairank/Flipper-Momentum-Lab/actions/runs/36516344087/artifacts/11011157232) 已生成。它们不是真机验收；本轮未更改 iPhone 页面设计。
+- 这些附件按当前保留期于 2026-10-13 到期；源码和构建入口保留在仓库，可重新构建。不要将附件包名的合并提交与本地构建前 HEAD 混淆。
+
+本节明确针对代码提交 `22904e309`；后续仅补录验证文档的提交不代表重新执行了一遍硬件或软件测试。下面保留的历史结果不代替本次验证。
 
 ## 离线 Classic、串口接收与原生中文（2026-09-27）
 
