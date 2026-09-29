@@ -14,9 +14,9 @@ Active cooldown: 7
 Bubble slots: 1
 
 Slot: 0
-X: 67
+X: 38
 Y: 24
-Text: Am I a joke\nto you?!?!
+Text: 你在笑我吗？！
 AlignH: Left
 AlignV: Center
 StartFrame: 15

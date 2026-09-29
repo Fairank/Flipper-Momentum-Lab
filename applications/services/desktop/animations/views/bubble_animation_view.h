@@ -48,7 +48,8 @@ void bubble_animation_view_set_interact_callback(
  */
 void bubble_animation_view_set_animation(
     BubbleAnimationView* view,
-    const BubbleAnimation* new_bubble_animation);
+    const BubbleAnimation* new_bubble_animation,
+    const char* builtin_name);
 
 /**
  * Get view of bubble animation.

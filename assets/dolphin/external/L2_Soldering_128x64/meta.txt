@@ -14,9 +14,9 @@ Active cooldown: 7
 Bubble slots: 1
 
 Slot: 0
-X: 71
+X: 57
 Y: 28
-Text: I am busy rn
+Text: 我正忙着呢
 AlignH: Left
 AlignV: Center
 StartFrame: 10

@@ -1,0 +1,16 @@
+App(
+    appid="ocarina",
+    name="陶笛",
+    apptype=FlipperAppType.EXTERNAL,
+    entry_point="ocarina_app",
+    cdefines=["APP_OCARINA"],
+    requires=["gui"],
+    stack_size=1 * 1024,
+    fap_icon="icons/music_10px.png",
+    fap_category="Media",
+    fap_icon_assets="icons",
+    fap_author="@invalidna-me",
+    fap_weburl="https://github.com/invalidna-me/flipperzero-ocarina",
+    fap_version="1.3",
+    fap_description="简易版（时之）陶笛，按键操作与 N64 版《时之笛》相同",
+)

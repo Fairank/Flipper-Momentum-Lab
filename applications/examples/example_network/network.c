@@ -1,4 +1,5 @@
 #include <furi.h>
+#include <furi_hal.h>
 #include <gui/gui.h>
 #include <network/network.h>
 #include <storage/storage.h>
@@ -12,9 +13,8 @@
  * the request ends with a single NetworkEventHttpResponse.
  */
 
-#define NETWORK_TEST_REQUEST_ID 1
 #define NETWORK_TEST_URL        "https://example.com/"
-#define NETWORK_TEST_TIMEOUT_MS 1000
+#define NETWORK_TEST_TIMEOUT_MS 30000
 #define NETWORK_TEST_SAVE_PATH  APP_DATA_PATH("networktest_response.txt")
 
 typedef enum {
@@ -32,6 +32,8 @@ typedef struct {
     uint32_t http_status;
     uint32_t body_size;
     bool saved_to_file;
+    uint32_t request_id;
+    uint32_t started_at;
 } NetworkTest;
 
 /* Called from the RPC session thread, not from this app's thread. Events are
@@ -39,9 +41,11 @@ typedef struct {
  * event and all its pointers are valid only for the duration of the call. */
 static void network_test_event_callback(const NetworkEvent* event, void* context) {
     NetworkTest* test = context;
-    if(event->connection_id != NETWORK_TEST_REQUEST_ID) return;
-
     furi_mutex_acquire(test->mutex, FuriWaitForever);
+    if(event->connection_id != test->request_id || test->state != AppStateRequesting) {
+        furi_mutex_release(test->mutex);
+        return;
+    }
     if(event->type == NetworkEventHttpResponse) {
         /* error covers the transport (DNS/TCP/TLS/timeout/file). On success
          * http_status is the HTTP code, size is the body size, saved_to_file
@@ -66,7 +70,7 @@ static void render_callback(Canvas* canvas, void* context) {
     char buffer[64];
 
     canvas_set_font(canvas, FontPrimary);
-    canvas_draw_str_aligned(canvas, 64, 10, AlignCenter, AlignBottom, "Internet test");
+    canvas_draw_str_aligned(canvas, 64, 11, AlignCenter, AlignBottom, "手机联网测试");
 
     canvas_set_font(canvas, FontSecondary);
     canvas_draw_str_aligned(canvas, 64, 21, AlignCenter, AlignBottom, NETWORK_TEST_URL);
@@ -74,17 +78,19 @@ static void render_callback(Canvas* canvas, void* context) {
     const char* status;
     switch(test->state) {
     case AppStateNoBridge:
-        status = "No USB/BLE connection";
+        status = "请连接手机并开启共享";
         break;
     case AppStateInit:
+        status = "按确定键开始";
+        break;
     case AppStateRequesting:
-        status = "Requesting...";
+        status = "正在请求并写入 SD 卡";
         break;
     case AppStateDone:
-        status = "Internet available";
+        status = "手机联网请求已完成";
         break;
     case AppStateError:
-        status = network_error_to_string(test->error);
+        status = "失败，按确定重试";
         break;
     default:
         status = "";
@@ -92,15 +98,18 @@ static void render_callback(Canvas* canvas, void* context) {
     }
     canvas_draw_str_aligned(canvas, 64, 33, AlignCenter, AlignBottom, status);
 
-    if(test->http_status) {
+    if(test->state == AppStateError) {
+        snprintf(buffer, sizeof(buffer), "错误码: %u", (unsigned)test->error);
+        canvas_draw_str_aligned(canvas, 64, 46, AlignCenter, AlignBottom, buffer);
+    } else if(test->http_status) {
         snprintf(buffer, sizeof(buffer), "HTTP %lu", (unsigned long)test->http_status);
         canvas_draw_str_aligned(canvas, 64, 44, AlignCenter, AlignBottom, buffer);
     }
 
     if(test->state == AppStateDone) {
-        const char* tail = test->saved_to_file ? "saved to SD" : "received";
-        snprintf(buffer, sizeof(buffer), "%lu bytes %s", (unsigned long)test->body_size, tail);
-        canvas_draw_str_aligned(canvas, 64, 55, AlignCenter, AlignBottom, buffer);
+        const char* tail = test->saved_to_file ? "已存卡" : "已接收";
+        snprintf(buffer, sizeof(buffer), "%lu 字节 %s", (unsigned long)test->body_size, tail);
+        canvas_draw_str_aligned(canvas, 64, 59, AlignCenter, AlignBottom, buffer);
     }
 
     furi_mutex_release(test->mutex);
@@ -121,6 +130,8 @@ int32_t network_app(void* p) {
     test->http_status = 0;
     test->body_size = 0;
     test->saved_to_file = false;
+    test->request_id = furi_hal_random_get();
+    test->started_at = 0;
 
     FuriMessageQueue* event_queue = furi_message_queue_alloc(8, sizeof(InputEvent));
 
@@ -143,27 +154,47 @@ int32_t network_app(void* p) {
         .timeout_ms = NETWORK_TEST_TIMEOUT_MS,
     };
 
-    /* true only means the request was handed to a live companion session; the
-     * outcome arrives asynchronously in the callback. false = no USB/BLE RPC
-     * session with a companion app. */
-    furi_mutex_acquire(test->mutex, FuriWaitForever);
-    bool requesting = network_http_request(network, NETWORK_TEST_REQUEST_ID, &request);
-    test->state = requesting ? AppStateRequesting : AppStateNoBridge;
-    furi_mutex_release(test->mutex);
-
     InputEvent event;
     for(bool processing = true; processing;) {
         if(furi_message_queue_get(event_queue, &event, 100) == FuriStatusOk) {
             if(event.type == InputTypeShort && event.key == InputKeyBack) {
                 processing = false;
+            } else if(event.type == InputTypeShort && event.key == InputKeyOk) {
+                furi_mutex_acquire(test->mutex, FuriWaitForever);
+                bool start = test->state != AppStateRequesting;
+                if(start) {
+                    ++test->request_id;
+                    test->state = AppStateRequesting;
+                    test->http_status = test->body_size = 0;
+                    test->saved_to_file = false;
+                    test->started_at = furi_get_tick();
+                }
+                furi_mutex_release(test->mutex);
+                // The service callback takes the opposite lock order. Never
+                // call it while holding this application's display mutex.
+                if(start && !network_http_request(network, test->request_id, &request)) {
+                    furi_mutex_acquire(test->mutex, FuriWaitForever);
+                    test->state = AppStateNoBridge;
+                    furi_mutex_release(test->mutex);
+                }
             }
         }
+        furi_mutex_acquire(test->mutex, FuriWaitForever);
+        bool expired = test->state == AppStateRequesting &&
+                       furi_get_tick() - test->started_at > furi_ms_to_ticks(180000);
+        if(expired) {
+            test->state = AppStateError;
+            test->error = NetworkErrorTimeout;
+        }
+        furi_mutex_release(test->mutex);
+        if(expired) network_close(network, test->request_id);
         view_port_update(view_port);
     }
 
     /* Unsubscribe before closing the record: a late event must not reach a
      * freed context. */
     network_set_event_callback(network, NULL, NULL);
+    network_close(network, test->request_id);
     furi_record_close(RECORD_NETWORK);
 
     view_port_enabled_set(view_port, false);

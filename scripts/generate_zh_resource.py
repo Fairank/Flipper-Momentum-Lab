@@ -97,6 +97,11 @@ def generate():
     for match in TOKEN.finditer(labels):
         boot_codes.update(ord(c) for c in (match.group(1) or "") if ord(c) in codes)
     boot_codes.update(map(ord, "中文资源未加载请检查卡后重启设备确定取消返回"))
+    captions = (
+        ROOT / "applications/services/desktop/animations/views/animation_caption.c"
+    ).read_text(encoding="utf-8")
+    for match in TOKEN.finditer(captions):
+        boot_codes.update(ord(c) for c in (match.group(1) or "") if ord(c) in codes)
     boot_data = build_subset(font, boot_codes)
     boot_header = render_font_header(
         boot_data,

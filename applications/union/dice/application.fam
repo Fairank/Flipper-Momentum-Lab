@@ -1,0 +1,16 @@
+App(
+    appid="dice_app",
+    name="D&D 骰子",
+    apptype=FlipperAppType.EXTERNAL,
+    entry_point="dice_dnd_app",
+    cdefines=["APP_DICE_DND"],
+    requires=["gui"],
+    stack_size=1 * 1024,
+    fap_icon="icon.png",
+    fap_category="Games",
+    fap_icon_assets="assets",
+    fap_author="@Ka3u6y6a",
+    fap_weburl="https://github.com/Ka3u6y6a/flipper-zero-dice",
+    fap_version="1.2",
+    fap_description="掷骰子，支持：硬币、d4、d6、d8、d10、d12、d20、d100",
+)

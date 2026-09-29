@@ -3,10 +3,10 @@
   "reference_commit": "eb87c158c7dbc930d74c3ae3ccb6b59cad5fc833",
   "scope_note": "Compare literal App IDs without executing either tree's Python manifests.\n\nMissing IDs are review candidates, not missing-feature counts. Renamed apps,\nplugins, conditional/dynamic declarations and submodules need separate review.\n",
   "counts": {
-    "current_literal_ids": 477,
+    "current_literal_ids": 487,
     "reference_literal_ids": 421,
-    "shared_literal_ids": 224,
-    "reference_ids_absent_from_current": 197
+    "shared_literal_ids": 234,
+    "reference_ids_absent_from_current": 187
   },
   "reference_candidates_absent_from_current": [
     {
@@ -17,26 +17,6 @@
       "name": "[PMSx003] Airmon",
       "fap_version": "1.4",
       "fap_category": "GPIO",
-      "apptype": "EXTERNAL"
-    },
-    {
-      "path": "apps_source_code/brainfuck/application.fam",
-      "line": 1,
-      "manifest_sha256": "756df97e0bff35e140b164092a31d8b5f647a900e3d03503e78ea150fdaa0d15",
-      "appid": "brainfuck",
-      "name": "Brainfuck",
-      "fap_version": "1.5",
-      "fap_category": "Tools",
-      "apptype": "EXTERNAL"
-    },
-    {
-      "path": "apps_source_code/dice/application.fam",
-      "line": 1,
-      "manifest_sha256": "46f65e4240945e59b3a3d3bc00b77892138e2930f7bb448a0d2df0fd66cbe35a",
-      "appid": "dice_app",
-      "name": "Dice D&D",
-      "fap_version": "1.2",
-      "fap_category": "Games",
       "apptype": "EXTERNAL"
     },
     {
@@ -57,16 +37,6 @@
       "name": "EM4100 Key generator",
       "fap_version": "1.1",
       "fap_category": "RFID",
-      "apptype": "EXTERNAL"
-    },
-    {
-      "path": "apps_source_code/fz-reaction-game/application.fam",
-      "line": 1,
-      "manifest_sha256": "947b35d8534b16b25b23e979c5a0d9020ea63a8d00e4bdc21f6c97d0f854013d",
-      "appid": "reaction",
-      "name": "Reaction test",
-      "fap_version": "1.3",
-      "fap_category": "Games",
       "apptype": "EXTERNAL"
     },
     {
@@ -100,26 +70,6 @@
       "apptype": "EXTERNAL"
     },
     {
-      "path": "apps_source_code/mandelbrot/application.fam",
-      "line": 1,
-      "manifest_sha256": "df804e42fd5e90c100510554e74b0bc1a2472ca46ccecda72ee5693df6c83b17",
-      "appid": "mandelbrotset",
-      "name": "Mandelbrot Set",
-      "fap_version": "1.4",
-      "fap_category": "Games",
-      "apptype": "EXTERNAL"
-    },
-    {
-      "path": "apps_source_code/montyhall/application.fam",
-      "line": 1,
-      "manifest_sha256": "29ab832847eec41f1221e411f8dd6c9009acee31a8b4ef5e3b7ff758491d6d26",
-      "appid": "montyhall",
-      "name": "Monty Hall",
-      "fap_version": "1.3",
-      "fap_category": "Games",
-      "apptype": "EXTERNAL"
-    },
-    {
       "path": "apps_source_code/musictracker/application.fam",
       "line": 1,
       "manifest_sha256": "df17c6b9ff6e9b313e5c31c7fd51223d85a454b247f866424abc30140981dd04",
@@ -135,26 +85,6 @@
       "manifest_sha256": "aafb35c5eb3436c7d83d611e5aa7f86d462a0b1f508e27c71f74864f23e5b01d",
       "appid": "nupogodi",
       "name": "Nu pogodi",
-      "fap_version": "1.3",
-      "fap_category": "Games",
-      "apptype": "EXTERNAL"
-    },
-    {
-      "path": "apps_source_code/ocarina/application.fam",
-      "line": 1,
-      "manifest_sha256": "02069185ca8927fa38ff36d57e9e3204e85e88ccf58d1dea479e0162cc99bc5a",
-      "appid": "ocarina",
-      "name": "Ocarina",
-      "fap_version": "1.3",
-      "fap_category": "Media",
-      "apptype": "EXTERNAL"
-    },
-    {
-      "path": "apps_source_code/racegame/application.fam",
-      "line": 1,
-      "manifest_sha256": "f35b039dcd559beaeb73246d97afe278ab0c6766bad65726f4ae027225746342",
-      "appid": "racegame",
-      "name": "Race",
       "fap_version": "1.3",
       "fap_category": "Games",
       "apptype": "EXTERNAL"
@@ -453,16 +383,6 @@
       "name": "Carrier",
       "fap_version": "1.0",
       "fap_category": "Infrared",
-      "apptype": "EXTERNAL"
-    },
-    {
-      "path": "non_catalog_apps/chess_clock/application.fam",
-      "line": 1,
-      "manifest_sha256": "53191e3f5920a988bacf52475064d441c72a6014e8d7bc46c34ddb33fa51ee8f",
-      "appid": "chess_clock",
-      "name": "Chess Clock",
-      "fap_version": "1.0",
-      "fap_category": "Games",
       "apptype": "EXTERNAL"
     },
     {
@@ -980,16 +900,6 @@
       "apptype": "EXTERNAL"
     },
     {
-      "path": "non_catalog_apps/gps_rpc/application.fam",
-      "line": 1,
-      "manifest_sha256": "37bd193c963cd86039eafa4e29ccf4a6f3655261fc9dbedcfe983faf308ba877",
-      "appid": "gps_rpc",
-      "name": "[RPC] GPS",
-      "fap_version": "3.0",
-      "fap_category": "Tools",
-      "apptype": "EXTERNAL"
-    },
-    {
       "path": "non_catalog_apps/gps_track/application.fam",
       "line": 1,
       "manifest_sha256": "8a2ef1c2de78e6d14f68e66ff41b219f99c2807ab6bc89eb883a3324caa7c865",
@@ -1372,16 +1282,6 @@
       "manifest_sha256": "43ad0adc85fe9370a46ce44a739b33dccf535f831df50047bd556be61c6517be",
       "appid": "panasonic_ac_remote",
       "name": "Panasonic",
-      "fap_version": "1.0",
-      "fap_category": "Infrared",
-      "apptype": "EXTERNAL"
-    },
-    {
-      "path": "non_catalog_apps/pause_timer/application.fam",
-      "line": 1,
-      "manifest_sha256": "6d275c0f0778c71549d6f6ad67d5d8e9741f8460afd00340729327163c8e65b2",
-      "appid": "pause_timer",
-      "name": "Pause Timer",
       "fap_version": "1.0",
       "fap_category": "Infrared",
       "apptype": "EXTERNAL"
@@ -2676,7 +2576,7 @@
       {
         "path": "services/gui/application.fam",
         "line": 1,
-        "manifest_sha256": "58584b95efecf6d973e35512857e1f22ef18a7386407a83fe9626dd4a6ef30c7",
+        "manifest_sha256": "1a1637fb8ba546ba44bed23b329e1f4eed756103533c90908e1180994e961f87",
         "appid": "gui",
         "name": "GuiSrv",
         "apptype": "SERVICE"
@@ -5876,10 +5776,20 @@
       {
         "path": "union/application.fam",
         "line": 1,
-        "manifest_sha256": "244ad1a462d4ed2f7eadebd05b0bfaa5d6516f3f11085d801fb859f6a07e4b9f",
+        "manifest_sha256": "c3307548895ac13d072091e9aba9ab2f563c65753639d2759c33d2f7b7233e7b",
         "appid": "union_tools",
         "name": "Additional tools from pinned Unleashed app sources",
         "apptype": "METAPACKAGE"
+      },
+      {
+        "path": "union/brainfuck/application.fam",
+        "line": 1,
+        "manifest_sha256": "4e77fcdb3e1e2154b09e79ef0a3eff40393c4336f6835482d9d076a36e40ad3e",
+        "appid": "brainfuck",
+        "name": "Brainfuck",
+        "fap_version": "1.5",
+        "fap_category": "Tools",
+        "apptype": "EXTERNAL"
       },
       {
         "path": "union/calendar/application.fam",
@@ -5888,6 +5798,26 @@
         "appid": "calendar",
         "name": "日历",
         "fap_category": "Tools",
+        "apptype": "EXTERNAL"
+      },
+      {
+        "path": "union/chess_clock/application.fam",
+        "line": 1,
+        "manifest_sha256": "8707bda1446b5fc7ac45e3b301c6a3dc2b62ff84c04ab3ad95d0774bd5b9632d",
+        "appid": "chess_clock",
+        "name": "棋钟",
+        "fap_version": "1.0",
+        "fap_category": "Games",
+        "apptype": "EXTERNAL"
+      },
+      {
+        "path": "union/dice/application.fam",
+        "line": 1,
+        "manifest_sha256": "8fa8132b8a9fc2672e505c05b657748e29f23109ad841514873c7375185f44ef",
+        "appid": "dice_app",
+        "name": "D&D 骰子",
+        "fap_version": "1.2",
+        "fap_category": "Games",
         "apptype": "EXTERNAL"
       },
       {
@@ -5928,6 +5858,46 @@
         "apptype": "EXTERNAL"
       },
       {
+        "path": "union/fz_reaction_game/application.fam",
+        "line": 1,
+        "manifest_sha256": "2a9d9666a65f60503d9277983f65a161d0eb6259109c2e474a5d98033cc44e80",
+        "appid": "reaction",
+        "name": "反应测试",
+        "fap_version": "1.3",
+        "fap_category": "Games",
+        "apptype": "EXTERNAL"
+      },
+      {
+        "path": "union/gps_rpc/application.fam",
+        "line": 1,
+        "manifest_sha256": "b19ce491584f53c77bdd21e89bb73d63d03c1768fa0ad03a80339f2fe6eeecef",
+        "appid": "gps_rpc",
+        "name": "手机 GPS",
+        "fap_version": "3.0",
+        "fap_category": "Tools",
+        "apptype": "EXTERNAL"
+      },
+      {
+        "path": "union/mandelbrot/application.fam",
+        "line": 1,
+        "manifest_sha256": "5666ed3b580a2ae60efef49feabd611134abf0ffc01dac3729141c9394cb7965",
+        "appid": "mandelbrotset",
+        "name": "曼德勃罗集",
+        "fap_version": "1.4",
+        "fap_category": "Games",
+        "apptype": "EXTERNAL"
+      },
+      {
+        "path": "union/montyhall/application.fam",
+        "line": 1,
+        "manifest_sha256": "6b6342cd1a59147c526257cc1f57a4ddfb385fe164a24300c51a8c5b944231f3",
+        "appid": "montyhall",
+        "name": "三门问题",
+        "fap_version": "1.3",
+        "fap_category": "Games",
+        "apptype": "EXTERNAL"
+      },
+      {
         "path": "union/multi_counter/application.fam",
         "line": 1,
         "manifest_sha256": "22eaf496c6e9a6d57e71d6d7d1635039c043b7763f6688c1d99411957fb3e027",
@@ -5948,6 +5918,26 @@
         "apptype": "EXTERNAL"
       },
       {
+        "path": "union/ocarina/application.fam",
+        "line": 1,
+        "manifest_sha256": "aa2645bd065d171306081efba5953b8be7f4bf5a644f236af03d01a15bb4023b",
+        "appid": "ocarina",
+        "name": "陶笛",
+        "fap_version": "1.3",
+        "fap_category": "Media",
+        "apptype": "EXTERNAL"
+      },
+      {
+        "path": "union/pause_timer/application.fam",
+        "line": 1,
+        "manifest_sha256": "8b4ae8ea864340234f80b934de1d95620f0186cbfb41c93dc9ce74f6366461ee",
+        "appid": "pause_timer",
+        "name": "暂停定时器",
+        "fap_version": "1.0",
+        "fap_category": "Infrared",
+        "apptype": "EXTERNAL"
+      },
+      {
         "path": "union/pomodoro/application.fam",
         "line": 1,
         "manifest_sha256": "52cf06b9ba892763fd1bbe5f1a13764fe37b6a8762b492636c3835423ff20dcf",
@@ -5955,6 +5945,16 @@
         "name": "番茄钟",
         "fap_version": "1.5",
         "fap_category": "Tools",
+        "apptype": "EXTERNAL"
+      },
+      {
+        "path": "union/racegame/application.fam",
+        "line": 1,
+        "manifest_sha256": "de96ca0e930a89075146f3d70d6027a239eaccb9e0db157cb8c28e1bed76660d",
+        "appid": "racegame",
+        "name": "赛车",
+        "fap_version": "1.3",
+        "fap_category": "Games",
         "apptype": "EXTERNAL"
       },
       {

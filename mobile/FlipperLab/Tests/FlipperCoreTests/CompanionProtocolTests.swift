@@ -355,12 +355,19 @@ final class CompanionProtocolTests: XCTestCase {
     }
 
     func testReplyIDSurvivesRejectedPayloads() throws {
+        // Reduced envelopes may be inspected for diagnostics, but the BLE
+        // frame decoder rejects malformed companion requests before dispatch.
+        func envelope(_ tag: Int, _ payload: Data) throws -> RPCEnvelope {
+            try RPCEnvelope(PBMessage.bytes(tag, payload))
+        }
         var badHost = PBMessage.string(1, "bad host")
         badHost += PBMessage.uint(2, 80)
         badHost += PBMessage.uint(5, 9)
         let rejectedConnect = try envelope(76, badHost)
         XCTAssertThrowsError(try CompanionRequest(rejectedConnect))
         XCTAssertEqual(CompanionRequest.replyID(for: rejectedConnect), 9)
+        var decoder = RPCFrameDecoder()
+        XCTAssertThrowsError(try decoder.append(RPCEnvelope.encode(id: 0, tag: 76, payload: badHost)))
 
         var badURL = PBMessage.uint(1, 12)
         badURL += PBMessage.string(3, "https://example.com/#x")
@@ -373,6 +380,12 @@ final class CompanionProtocolTests: XCTestCase {
         XCTAssertEqual(try CompanionRequest.replyID(for: envelope(81, Data())), 0)
         XCTAssertNil(try CompanionRequest.replyID(for: envelope(81, PBMessage.uint(1, 1 << 32))))
         XCTAssertNil(try CompanionRequest.replyID(for: envelope(81, Data([0x08]))))
+    }
+
+    func testFrameDecoderRejectsCompanionOneofHiddenBeforeOtherContent() throws {
+        let message = PBMessage.bytes(85, Data()) + PBMessage.bytes(4, Data())
+        var decoder = RPCFrameDecoder()
+        XCTAssertThrowsError(try decoder.append(PBMessage.varint(UInt64(message.count)) + message))
     }
 
     // MARK: - Replies

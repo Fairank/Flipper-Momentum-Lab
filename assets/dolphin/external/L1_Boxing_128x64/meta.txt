@@ -16,16 +16,16 @@ Bubble slots: 2
 Slot: 0
 X: 78
 Y: 16
-Text: F*&K!!!
+Text: 可恶！
 AlignH: Left
 AlignV: Bottom
 StartFrame: 2
 EndFrame: 4
 
 Slot: 1
-X: 78
+X: 50
 Y: 16
-Text: What ya\nlookin at?!
+Text: 看什么呢？！
 AlignH: Left
 AlignV: Center
 StartFrame: 10

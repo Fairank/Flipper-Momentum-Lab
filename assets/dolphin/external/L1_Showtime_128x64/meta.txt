@@ -14,9 +14,9 @@ Active cooldown: 7
 Bubble slots: 1
 
 Slot: 0
-X: 69
-Y: 47
-Text: SHOWTIME!
+X: 62
+Y: 44
+Text: 好戏开场！
 AlignH: Left
 AlignV: Center
 StartFrame: 41

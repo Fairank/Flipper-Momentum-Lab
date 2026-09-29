@@ -108,6 +108,17 @@ public struct FlipperFunction: Identifiable, Equatable, Sendable {
         "/ext/apps/Tools/flipper_chronometer.fap": ("秒表", "在 Flipper 上记录经过的时间。", "stopwatch"),
         "/ext/apps/Tools/trackerflipx.fap": ("任务计时器", "记录任务用时并保存为 CSV 文件。", "checklist"),
         "/ext/apps/Tools/flipnote.fap": ("FlipNote 记事本", "打开、编辑和保存设备上的文本文件。", "note.text"),
+        "/ext/apps/Tools/gps_rpc.fap": ("手机 GPS", "显示手机共享的经纬度、速度、方向和精度；先开启设备页的定位共享。", "location"),
+        "/ext/apps/Tools/example_network.fap": ("手机联网测试", "开启网络共享后，在设备上按确定键请求示例网页并保存至应用目录。", "network"),
+        "/ext/apps/Tools/brainfuck.fap": ("Brainfuck 解释器", "在设备上运行 Brainfuck 程序并查看输出。", "terminal"),
+        "/ext/apps/Games/chess_clock.fap": ("棋钟", "为对弈双方分别计时。", "clock"),
+        "/ext/apps/Games/dice_app.fap": ("桌游骰子", "选择不同面数的骰子，生成投掷结果。", "dice"),
+        "/ext/apps/Games/reaction.fap": ("反应测试", "按屏幕提示测量按键反应时间。", "hand.tap"),
+        "/ext/apps/Games/mandelbrotset.fap": ("曼德勃罗分形", "浏览和缩放数学分形。", "square.grid.3x3"),
+        "/ext/apps/Games/montyhall.fap": ("三门问题", "用选门游戏体验概率问题。", "door.left.hand.open"),
+        "/ext/apps/Games/racegame.fap": ("赛车", "在 Flipper 上玩赛车游戏。", "car"),
+        "/ext/apps/Media/ocarina.fap": ("陶笛", "使用设备按键演奏音符。", "music.note"),
+        "/ext/apps/Infrared/pause_timer.fap": ("红外暂停定时器", "学习暂停按键的红外信号，并在倒计时结束时发送。", "timer"),
         "/ext/apps/Bluetooth/hid_ble.fap": ("蓝牙遥控器", "将 Flipper 用作键盘、鼠标或演示遥控器；切换连接可能断开当前 App。", "keyboard"),
         "/ext/apps/USB/hid_usb.fap": ("USB 遥控器", "通过 Flipper 的 USB 连接控制电脑键盘、鼠标或演示。", "keyboard"),
     ]
@@ -125,10 +136,12 @@ public struct FlipperFunction: Identifiable, Equatable, Sendable {
         let title = stem.replacingOccurrences(of: "_", with: " ")
             .replacingOccurrences(of: "-", with: " ")
         guard !title.trimmingCharacters(in: .whitespaces).isEmpty else { return nil }
-        let category = parts.count == 5 ? String(parts[3]) : "其他应用"
+        let folder = parts.count == 5 ? String(parts[3]) : "其他应用"
+        let category = ["Tools": "工具", "Games": "游戏", "Bluetooth": "蓝牙",
+                        "Infrared": "红外", "Media": "媒体", "Misc": "其他"][folder] ?? folder
         if let description = installedDescriptions[path] {
             return .init(id: path, title: description.title, summary: description.summary,
-                         category: category == "Tools" ? "工具" : category,
+                         category: category,
                          symbol: description.symbol, launchName: path,
                          requirement: "已发现 SD 卡应用；在 Flipper 本机执行。", isInstalledApp: true)
         }

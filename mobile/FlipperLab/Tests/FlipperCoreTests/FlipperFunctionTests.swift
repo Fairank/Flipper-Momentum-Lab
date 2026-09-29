@@ -5,7 +5,7 @@ final class FlipperFunctionTests: XCTestCase {
     func testInstalledAppPathMustStayInsideDeviceAppsDirectory() {
         let app = FlipperFunction.installed(path: "/ext/apps/Tools/my_tool.fap")
         XCTAssertEqual(app?.title, "my tool")
-        XCTAssertEqual(app?.category, "Tools")
+        XCTAssertEqual(app?.category, "工具")
         XCTAssertEqual(app?.launchName, "/ext/apps/Tools/my_tool.fap")
         XCTAssertTrue(app?.isInstalledApp == true)
 
@@ -38,5 +38,9 @@ final class FlipperFunctionTests: XCTestCase {
         // Same filename elsewhere is a different app; do not borrow its description.
         XCTAssertEqual(FlipperFunction.installed(path: "/ext/apps/Other/clock.fap")?.title, "clock")
         XCTAssertEqual(FlipperFunction.installed(path: "/ext/apps/Tools/calendar.fap")?.title, "日历")
+        XCTAssertEqual(FlipperFunction.installed(path: "/ext/apps/Tools/gps_rpc.fap")?.title, "手机 GPS")
+        XCTAssertEqual(FlipperFunction.installed(path: "/ext/apps/Tools/example_network.fap")?.launchName, "/ext/apps/Tools/example_network.fap")
+        XCTAssertEqual(FlipperFunction.installed(path: "/ext/apps/Games/chess_clock.fap")?.category, "游戏")
+        XCTAssertEqual(FlipperFunction.installed(path: "/ext/apps/Infrared/pause_timer.fap")?.title, "红外暂停定时器")
     }
 }

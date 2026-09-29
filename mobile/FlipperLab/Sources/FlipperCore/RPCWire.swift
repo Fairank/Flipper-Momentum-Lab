@@ -173,7 +173,7 @@ public struct RPCFrameDecoder: Sendable {
                 let envelope = try RPCEnvelope(message)
                 // Keep the raw message until companion validation has checked
                 // duplicate oneof/header fields; RPCEnvelope is a reduced view.
-                if CompanionRequest.tags.contains(envelope.tag) {
+            if try PBMessage(message).fields.contains(where: { CompanionRequest.tags.contains($0.number) }) {
                     _ = try CompanionRequest(message: message)
                 }
                 frames.append(envelope)

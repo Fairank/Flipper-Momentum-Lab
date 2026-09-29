@@ -14,36 +14,36 @@ Active cooldown: 5
 Bubble slots: 3
 
 Slot: 0
-X: 1
+X: 4
 Y: 17
-Text: I am happy,\nmy friend!
+Text: 我很开心，\n我的朋友！
 AlignH: Right
 AlignV: Bottom
 StartFrame: 3
 EndFrame: 9
 
 Slot: 1
-X: 1
+X: 4
 Y: 17
-Text: So long and\nthanks for\nall the fish!
+Text: 再见，\n谢谢你的鱼！
 AlignH: Right
 AlignV: Center
 StartFrame: 3
 EndFrame: 9
 
 Slot: 2
-X: 1
+X: 4
 Y: 25
-Text: I wish I could
+Text: 真想
 AlignH: Right
 AlignV: Bottom
 StartFrame: 3
 EndFrame: 5
 
 Slot: 2
-X: 1
+X: 4
 Y: 25
-Text: swim all day
+Text: 畅游一整天
 AlignH: Right
 AlignV: Bottom
 StartFrame: 6

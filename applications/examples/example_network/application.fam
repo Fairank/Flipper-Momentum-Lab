@@ -1,12 +1,12 @@
 App(
     appid="example_network",
-    name="[RPC] Network",
+    name="手机联网测试",
     apptype=FlipperAppType.EXTERNAL,
     entry_point="network_app",
     requires=["gui"],
     stack_size=4 * 1024,
     fap_icon="network_10px.png",
-    fap_category="Examples",
+    fap_category="Tools",
     fap_author="@apfxtech",
 )
 

@@ -210,11 +210,7 @@ final class PhoneCompanion {
             lastEndpoint = "\(value.host):\(value.port)"
             let ip = try await network.openSocket(id: value.connectionID, host: value.host, port: value.port,
                 udp: value.transport == .udp, timeout: Double(value.timeoutMilliseconds) / 1000)
-            try check(epoch: epoch, session: session)
-            connections.insert(value.connectionID); connectionCount = connections.count
-            reply = try CompanionResponse.connect(connectionID: value.connectionID, state: .connected, resolvedIP: ip)
-            try await device.sendCompanion(reply, session: session)
-            networkStatus = "共享中 · 连接已建立"
+            try await announceOpen(id: value.connectionID, resolvedIP: ip, epoch: epoch, session: session)
             return
         case .openWebSocket(let value):
             try admitChannel(value.connectionID)
@@ -223,11 +219,7 @@ final class PhoneCompanion {
             lastEndpoint = value.url.host
             try await network.openWebSocket(id: value.connectionID, url: value.url,
                 headers: Self.headers(value.headers), timeout: Double(value.timeoutMilliseconds) / 1000)
-            try check(epoch: epoch, session: session)
-            connections.insert(value.connectionID); connectionCount = connections.count
-            reply = try CompanionResponse.connect(connectionID: value.connectionID, state: .connected)
-            try await device.sendCompanion(reply, session: session)
-            networkStatus = "共享中 · 连接已建立"
+            try await announceOpen(id: value.connectionID, epoch: epoch, session: session)
             return
         case .send(let value):
             let count = try await network.send(id: value.connectionID, data: value.data, binary: value.isBinary)
@@ -291,11 +283,33 @@ final class PhoneCompanion {
         networkStatus = "共享中 · 请求已完成"
     }
 
+    private func announceOpen(id: UInt32, resolvedIP: String = "", epoch: UUID, session: UUID) async throws {
+        do {
+            try check(epoch: epoch, session: session)
+            // A peer may have closed as soon as the transport finished opening.
+            if stateEvents[id] == nil { connections.insert(id) }
+            connectionCount = connections.count
+            let frame = try CompanionResponse.connect(connectionID: id, state: .connected, resolvedIP: resolvedIP)
+            try await device?.sendCompanion(frame, session: session)
+            try check(epoch: epoch, session: session)
+            networkStatus = "共享中 · 连接已建立"
+        } catch {
+            // Only an open that actually succeeded owns cleanup. A rejected
+            // duplicate ID must never close the pre-existing channel. Explicit
+            // close/toggle cancellation already disposed of its own channel.
+            if !Task.isCancelled, networkEpoch == epoch, device?.companionSession == session {
+                network.close(id: id)
+                connections.remove(id); connectionCount = connections.count
+            }
+            throw error
+        }
+    }
+
     private func admitChannel(_ id: UInt32) throws {
         // Bound queued terminal events while BLE is slow. Never reuse an ID
         // until its old terminal event has been queued in the same ordered lane.
         guard stateEvents.count < 8 else { throw CompanionTransportError.limit }
-        guard stateEvents[id] == nil, stateSendingID != id else { throw CompanionTransportError.invalidConnection }
+        guard !connections.contains(id), stateEvents[id] == nil, stateSendingID != id else { throw CompanionTransportError.invalidConnection }
     }
 
     private func check(epoch: UUID, session: UUID) throws {
