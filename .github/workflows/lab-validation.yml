@@ -7,12 +7,12 @@ on:
     paths:
       - "mobile/**"
       - "scripts/tests/**"
-      - "applications/main/**"
-      - "applications/settings/**"
-      - "applications/services/gui/**"
-      - "applications/services/desktop/**"
-      - "applications/services/loader/**"
-      - "applications/services/locale/**"
+      - "applications/**"
+      - "scripts/fbt/elfmanifest.py"
+      - "scripts/fbt/appmanifest.py"
+      - "scripts/fbt_tools/fbt_apps.py"
+      - "scripts/audit_app_union.py"
+      - "scripts/audit_ui_strings.py"
       - "lib/toolbox/settings_helpers/**"
       - "scripts/generate_lab_font.py"
       - "scripts/generate_native_zh_font.py"
@@ -23,12 +23,12 @@ on:
     paths:
       - "mobile/**"
       - "scripts/tests/**"
-      - "applications/main/**"
-      - "applications/settings/**"
-      - "applications/services/gui/**"
-      - "applications/services/desktop/**"
-      - "applications/services/loader/**"
-      - "applications/services/locale/**"
+      - "applications/**"
+      - "scripts/fbt/elfmanifest.py"
+      - "scripts/fbt/appmanifest.py"
+      - "scripts/fbt_tools/fbt_apps.py"
+      - "scripts/audit_app_union.py"
+      - "scripts/audit_ui_strings.py"
       - "lib/toolbox/settings_helpers/**"
       - "scripts/generate_lab_font.py"
       - "scripts/generate_native_zh_font.py"
@@ -156,6 +156,7 @@ jobs:
         uses: actions/checkout@v4
         with:
           persist-credentials: false
+          submodules: recursive
 
       # The C regressions skip without a host compiler; fail here instead of passing with skips.
       - name: "Show toolchain"
@@ -171,11 +172,13 @@ jobs:
         run: |
           python3 scripts/generate_lab_font.py --check
           python3 scripts/generate_native_zh_font.py --check
+          python3 scripts/generate_native_zh_font.py --updater --check
 
       - name: "Render all Flipper Lab screens"
         run: |
           python3 scripts/render_lab_preview.py --all --output-dir "$RUNNER_TEMP/flipper-previews"
           python3 scripts/render_native_zh_preview.py --output-dir "$RUNNER_TEMP/flipper-previews/native"
+          python3 scripts/audit_ui_strings.py --output "$RUNNER_TEMP/flipper-previews/ui-inventory.json"
 
       - name: "Upload Flipper source layout previews"
         uses: actions/upload-artifact@v4
