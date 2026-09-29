@@ -261,6 +261,7 @@ final class FlipperLabUITests: XCTestCase {
 
         app.tabBars.buttons["任务"].tap()
         XCTAssertTrue(app.navigationBars["任务"].waitForExistence(timeout: 5))
+        XCTAssertTrue(app.tabBars.buttons["任务"].isSelected)
         capture(app, name: "16-深色大字-任务")
 
         app.tabBars.buttons["指南"].tap()

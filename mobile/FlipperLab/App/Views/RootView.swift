@@ -7,19 +7,28 @@ import FlipperCore
 /// device screen. The system owns the tab bar material on every iOS version.
 @MainActor struct RootView: View {
     @Bindable var model: AppModel
+    private enum Page: Hashable { case device, functions, library, tasks, guides }
+    @State private var selectedPage: Page = .device
 
     var body: some View {
-        TabView {
+        // Keep selection explicit while a tab's NavigationStack pushes a
+        // destination from a Menu. Tab identity must not depend on view inference.
+        TabView(selection: $selectedPage) {
             NavigationStack { DeviceView(model: model) }
                 .tabItem { Label("设备", systemImage: "antenna.radiowaves.left.and.right") }
+                .tag(Page.device)
             NavigationStack { FunctionsView(model: model) }
                 .tabItem { Label("功能", systemImage: "square.grid.2x2") }
+                .tag(Page.functions)
             NavigationStack { LibraryView(model: model) }
                 .tabItem { Label("资料库", systemImage: "square.stack.3d.up") }
+                .tag(Page.library)
             NavigationStack { TasksView(model: model) }
                 .tabItem { Label("任务", systemImage: "checklist") }
+                .tag(Page.tasks)
             NavigationStack { GuidesView(model: model) }
                 .tabItem { Label("指南", systemImage: "book.closed") }
+                .tag(Page.guides)
         }
         .environment(\.locale, Locale(identifier: "zh_CN"))
         .alert("操作提示", isPresented: Binding(get: { model.error != nil }, set: { if !$0 { model.error = nil } })) {
