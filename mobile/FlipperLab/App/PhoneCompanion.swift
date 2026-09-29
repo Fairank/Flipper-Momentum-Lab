@@ -283,7 +283,7 @@ final class PhoneCompanion {
         networkStatus = "共享中 · 请求已完成"
     }
 
-    private func announceOpen(id: UInt32, resolvedIP: String = "", epoch: UUID, session: UUID) async throws {
+    private func announceOpen(id: UInt32, resolvedIP: String? = nil, epoch: UUID, session: UUID) async throws {
         do {
             try check(epoch: epoch, session: session)
             // A peer may have closed as soon as the transport finished opening.
