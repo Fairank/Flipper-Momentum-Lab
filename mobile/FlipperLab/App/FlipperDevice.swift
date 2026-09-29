@@ -20,6 +20,8 @@ final class FlipperDevice: NSObject, CBCentralManagerDelegate, CBPeripheralDeleg
     private(set) var transferredBytes = 0
     private(set) var protocolVersion = "未检查"
     var ready: Bool { state == .ready }
+    let companion = PhoneCompanion()
+    var companionSession: UUID { generation }
 
     // serial_profile.c ORs the 0x3080 advertisement with hardware color (0...3).
     // Scan for every firmware-advertised variant, including spoofed colors.
@@ -38,10 +40,10 @@ final class FlipperDevice: NSObject, CBCentralManagerDelegate, CBPeripheralDeleg
     @ObservationIgnored private var subscriptions: Set<CBUUID> = []
     @ObservationIgnored private var decoder = RPCFrameDecoder()
     @ObservationIgnored private var credits: Int?
-    @ObservationIgnored private var outbound = Data()
-    @ObservationIgnored private var outboundOffset = 0
-    private var hasUnsentBytes: Bool { outboundOffset < outbound.count }
+    @ObservationIgnored private var outbound = RPCOutboundQueue()
+    private var hasUnsentBytes: Bool { outbound.commandBytes > 0 }
     @ObservationIgnored private var writeInFlight = false
+    @ObservationIgnored private var writeLane: RPCOutboundQueue.Lane = .command
     @ObservationIgnored private var nextID: UInt32 = 0
     @ObservationIgnored private var pendingID: UInt32?
     @ObservationIgnored private var response: [RPCEnvelope] = []
@@ -62,6 +64,7 @@ final class FlipperDevice: NSObject, CBCentralManagerDelegate, CBPeripheralDeleg
 
     override init() {
         super.init()
+        companion.attach(self)
         central = CBCentralManager(delegate: self, queue: .main)
     }
 
@@ -98,11 +101,12 @@ final class FlipperDevice: NSObject, CBCentralManagerDelegate, CBPeripheralDeleg
 
     private func close(error: Error) {
         generation = UUID(); handshake?.cancel(); handshake = nil
+        companion.endSession()
         connectionTimer?.cancel(); connectionTimer = nil
         central.stopScan()
         if let peripheral { central.cancelPeripheralConnection(peripheral) }
         peripheral = nil; characteristics = [:]; subscriptions = []; credits = nil
-        outbound = Data(); outboundOffset = 0; writeInFlight = false; decoder.reset(); appReady = false
+        outbound.reset(); writeInFlight = false; decoder.reset(); appReady = false
         installedAppPaths = []
         bridgeActive = false; bridgeReply = nil
         finish(.failure(error)); info = [:]; protocolVersion = "未检查"
@@ -132,16 +136,17 @@ final class FlipperDevice: NSObject, CBCentralManagerDelegate, CBPeripheralDeleg
     }
     private func exchange(frames: (UInt32) -> Data) async throws -> [RPCEnvelope] {
         guard peripheral != nil, state == .ready || state == .negotiating else { throw RPCError.disconnected }
-        guard continuation == nil, !hasUnsentBytes, !writeInFlight else { throw RPCError.busy }
+        guard continuation == nil, !hasUnsentBytes, !(writeInFlight && writeLane == .command) else { throw RPCError.busy }
         try Task.checkCancellation()
         nextID = nextID == UInt32.max ? 1 : nextID + 1
         let id = nextID
         let bytes = frames(id)
-        guard bytes.count <= 3 * 1024 * 1024 else { throw RPCError.tooLarge }
+        guard bytes.count <= RPCOutboundQueue.totalLimit else { throw RPCError.tooLarge }
+        try outbound.append(bytes, lane: .command)
         return try await withTaskCancellationHandler {
             try await withCheckedThrowingContinuation { continuation in
                 self.continuation = continuation; pendingID = id
-                response = []; responseBytes = 0; responseComplete = false; responseError = nil; transferredBytes = 0; outbound = bytes; outboundOffset = 0
+                response = []; responseBytes = 0; responseComplete = false; responseError = nil; transferredBytes = 0
                 refreshTimeout()
                 deadline = Task { [weak self] in
                     try? await Task.sleep(for: .seconds(600))
@@ -159,19 +164,41 @@ final class FlipperDevice: NSObject, CBCentralManagerDelegate, CBPeripheralDeleg
     }
 
     private func pump() {
-        guard !writeInFlight, hasUnsentBytes, let capacity = credits, capacity > 0,
+        guard !writeInFlight, !outbound.isEmpty, let capacity = credits, capacity > 0,
               let peripheral, let rx = characteristics[Self.rx] else { return }
-        let size = min(outbound.count - outboundOffset, capacity, 486, peripheral.maximumWriteValueLength(for: .withResponse))
+        let size = min(capacity, 486, peripheral.maximumWriteValueLength(for: .withResponse))
         guard size > 0 else { fail(RPCError.malformed); return }
-        let chunk = Data(outbound[outboundOffset..<(outboundOffset + size)])
-        outboundOffset += size
-        if !hasUnsentBytes { outbound = Data(); outboundOffset = 0 }
-        credits = capacity - size; writeInFlight = true
-        peripheral.writeValue(chunk, for: rx, type: .withResponse)
-        transferredBytes += size
+        guard let chunk = outbound.next(maximumBytes: size) else { return }
+        credits = capacity - chunk.data.count; writeInFlight = true; writeLane = chunk.lane
+        peripheral.writeValue(chunk.data, for: rx, type: .withResponse)
+        if chunk.lane == .command { transferredBytes += chunk.data.count }
+    }
+
+    /// Bounded backpressure: callers await space instead of building an unbounded
+    /// stream of location/network tasks. A stale session may never enqueue bytes.
+    func sendCompanion(_ frame: Data, session: UUID) async throws {
+        guard frame.count <= RPCOutboundQueue.companionLimit else { throw RPCError.tooLarge }
+        let until = ContinuousClock.now.advanced(by: .seconds(45))
+        while true {
+            try Task.checkCancellation()
+            guard ready, generation == session else { throw RPCError.disconnected }
+            if outbound.companionBytes + frame.count <= RPCOutboundQueue.companionLimit,
+               outbound.commandBytes + outbound.companionBytes + frame.count <= RPCOutboundQueue.totalLimit {
+                try outbound.append(frame, lane: .companion)
+                pump()
+                return
+            }
+            guard ContinuousClock.now < until else { throw RPCError.timeout }
+            try await Task.sleep(for: .milliseconds(20))
+        }
     }
 
     private func accept(_ envelope: RPCEnvelope) throws {
+        if CompanionRequest.tags.contains(envelope.tag) {
+            guard ready else { throw RPCError.malformed }
+            try companion.accept(CompanionRequest(envelope))
+            return
+        }
         if envelope.tag == 58 { appReady = try PBMessage(envelope.payload).uint(1) == 1; return }
         if envelope.tag == 65, bridgeActive {
             guard let data = try PBMessage(envelope.payload).bytes(1), data.count <= SerialBridge.maxChunk + 12 else {
@@ -200,8 +227,10 @@ final class FlipperDevice: NSObject, CBCentralManagerDelegate, CBPeripheralDeleg
         if !envelope.hasNext { responseComplete = true; completeIfDrained() }
     }
 
+    func discardCompanion(tags: Set<Int>) { outbound.discardCompanion(tags: tags) }
+
     private func completeIfDrained() {
-        if responseComplete, !hasUnsentBytes, !writeInFlight {
+        if responseComplete, !hasUnsentBytes, !(writeInFlight && writeLane == .command) {
             if let responseError { finish(.failure(responseError)) }
             else { finish(.success(response)) }
         }
@@ -230,6 +259,7 @@ final class FlipperDevice: NSObject, CBCentralManagerDelegate, CBPeripheralDeleg
                 try Task.checkCancellation()
                 guard peripheral != nil, generation == session else { return }
                 state = .ready; connectionTimer?.cancel(); connectionTimer = nil
+                companion.beginSession()
                 handshake = nil
             } catch {
                 // A cancelled old handshake must not tear down a newer connection.
@@ -335,6 +365,57 @@ final class FlipperDevice: NSObject, CBCentralManagerDelegate, CBPeripheralDeleg
         }
         guard try await readFile(path) == data else { throw RPCError.message("上传后的内容校验失败，请重新导入检查。") }
         return path
+    }
+
+    private func waitForCompanionStorage(session: UUID) async throws {
+        let until = ContinuousClock.now.advanced(by: .seconds(45))
+        while continuation != nil || hasUnsentBytes || (writeInFlight && writeLane == .command) {
+            try Task.checkCancellation()
+            guard ready, generation == session else { throw RPCError.disconnected }
+            guard ContinuousClock.now < until else { throw RPCError.busy }
+            try await Task.sleep(for: .milliseconds(25))
+        }
+        try Task.checkCancellation()
+        guard ready, generation == session else { throw RPCError.disconnected }
+    }
+
+    func readCompanionFile(_ path: String, session: UUID) async throws -> Data {
+        try CompanionStorage.validate(path)
+        try await waitForCompanionStorage(session: session)
+        let data = try await readFile(path)
+        try Task.checkCancellation()
+        guard generation == session else { throw RPCError.disconnected }
+        return data
+    }
+
+    func writeCompanionFile(_ data: Data, path: String, session: UUID) async throws {
+        try CompanionStorage.validate(path)
+        guard data.count <= CompanionStorage.maximumBytes else { throw RPCError.tooLarge }
+        let parts = path.split(separator: "/")
+        // Firmware resolves /data relative to its calling application before
+        // issuing the request. Each missing application subdirectory is created.
+        for count in 2..<parts.count {
+            let directory = "/" + parts.prefix(count).joined(separator: "/")
+            try await waitForCompanionStorage(session: session)
+            do { _ = try await request(tag: 13, payload: PBMessage.string(1, directory)) }
+            catch RPCError.remote(6) { /* Directory already exists. */ }
+        }
+        try await waitForCompanionStorage(session: session)
+        _ = try await exchange { id in
+            var frames = Data()
+            // 512 is the pinned storage protocol's maximum chunk. Include one
+            // empty final frame to create a genuine zero-byte response file.
+            for offset in stride(from: 0, to: max(data.count, 1), by: 512) {
+                let end = min(offset + 512, data.count)
+                let part = data.isEmpty ? Data() : Data(data[offset..<end])
+                frames += RPCEnvelope.encode(id: id, tag: 11,
+                    payload: PBMessage.string(1, path) + PBMessage.bytes(2, PBMessage.bytes(4, part)),
+                    hasNext: end < data.count)
+            }
+            return frames
+        }
+        let actual = try await readCompanionFile(path, session: session)
+        guard actual == data else { throw RPCError.message("网络文件写入后的校验失败。") }
     }
 
     func sendInfrared(_ record: CaptureRecord, buttonIndex: Int) async throws {

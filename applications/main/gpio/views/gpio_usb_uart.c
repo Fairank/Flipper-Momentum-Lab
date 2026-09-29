@@ -25,27 +25,27 @@ static void gpio_usb_uart_draw_callback(Canvas* canvas, void* _model) {
     GpioUsbUartModel* model = _model;
     char temp_str[18];
     elements_button_left(canvas, "配置");
-    canvas_draw_line(canvas, 2, 10, 125, 10);
+    canvas_draw_line(canvas, 2, 14, 125, 14);
     canvas_draw_line(canvas, 44, 52, 123, 52);
 
     canvas_set_font(canvas, FontPrimary);
-    canvas_draw_str(canvas, 2, 9, "USB 串口");
+    canvas_draw_str(canvas, 2, 11, "USB 串口");
     canvas_draw_str(canvas, 3, 25, "TX:");
     canvas_draw_str(canvas, 3, 42, "RX:");
 
     canvas_set_font(canvas, FontSecondary);
-    snprintf(temp_str, 18, "COM PORT:%u", model->vcp_port);
-    canvas_draw_str_aligned(canvas, 126, 8, AlignRight, AlignBottom, temp_str);
-    snprintf(temp_str, 18, "Pin %u", model->tx_pin);
+    snprintf(temp_str, 18, "端口:%u", model->vcp_port);
+    canvas_draw_str_aligned(canvas, 126, 11, AlignRight, AlignBottom, temp_str);
+    snprintf(temp_str, 18, "脚%u", model->tx_pin);
     canvas_draw_str(canvas, 22, 25, temp_str);
-    snprintf(temp_str, 18, "Pin %u", model->rx_pin);
+    snprintf(temp_str, 18, "脚%u", model->rx_pin);
     canvas_draw_str(canvas, 22, 42, temp_str);
 
     if(model->baudrate == 0)
-        snprintf(temp_str, 18, "Baud: ????");
+        snprintf(temp_str, 18, "波特:????");
     else
-        snprintf(temp_str, 18, "Baud: %lu", model->baudrate);
-    canvas_draw_str(canvas, 45, 62, temp_str);
+        snprintf(temp_str, 18, "波特:%lu", model->baudrate);
+    canvas_draw_str(canvas, 45, 63, temp_str);
 
     if(model->tx_cnt < 100000000) {
         canvas_set_font(canvas, FontSecondary);

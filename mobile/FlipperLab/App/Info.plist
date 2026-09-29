@@ -29,6 +29,10 @@
 		<key>UIApplicationSupportsMultipleScenes</key>
 		<false/>
 	</dict>
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>开启定位共享后，让已连接的 Flipper 应用在本 App 前台运行时使用你的手机位置。</string>
+	<key>NSLocalNetworkUsageDescription</key>
+	<string>开启网络共享后，让已连接的 Flipper 应用通过手机访问你选择使用的局域网设备和服务器。</string>
 	<key>UILaunchScreen</key>
 	<dict/>
 	<key>UISupportedInterfaceOrientations</key>

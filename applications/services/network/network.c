@@ -2,6 +2,7 @@
 
 #include <furi.h>
 #include <string.h>
+#include <storage/storage.h>
 
 struct Network {
     FuriMutex* mutex;
@@ -98,6 +99,17 @@ bool network_http_request(Network* network, uint32_t request_id, const NetworkHt
     if(request->body_size > NETWORK_MAX_DATA_SIZE) return false;
     if(request->body_size && !request->body) return false;
 
+    // /data belongs to the calling app, not the RPC service thread. Resolve it
+    // here before crossing to the phone, while the application ID is available.
+    FuriString* send_path = request->send_path ? furi_string_alloc_set(request->send_path) : NULL;
+    FuriString* save_path = request->save_path ? furi_string_alloc_set(request->save_path) : NULL;
+    if(send_path || save_path) {
+        Storage* storage = furi_record_open(RECORD_STORAGE);
+        if(send_path) storage_common_resolve_path_and_ensure_app_directory(storage, send_path);
+        if(save_path) storage_common_resolve_path_and_ensure_app_directory(storage, save_path);
+        furi_record_close(RECORD_STORAGE);
+    }
+
     const NetworkRpcRequest rpc = {
         .connection_id = request_id,
         .timeout_ms = request->timeout_ms,
@@ -106,11 +118,14 @@ bool network_http_request(Network* network, uint32_t request_id, const NetworkHt
         .method = request->method,
         .url = request->url,
         .headers = request->headers,
-        .send_path = request->send_path,
-        .save_path = request->save_path,
+        .send_path = send_path ? furi_string_get_cstr(send_path) : NULL,
+        .save_path = save_path ? furi_string_get_cstr(save_path) : NULL,
         .include_headers = request->include_headers,
     };
-    return network_dispatch(network, NetworkRpcCommandHttpRequest, &rpc);
+    bool result = network_dispatch(network, NetworkRpcCommandHttpRequest, &rpc);
+    if(send_path) furi_string_free(send_path);
+    if(save_path) furi_string_free(save_path);
+    return result;
 }
 
 bool network_websocket_open(

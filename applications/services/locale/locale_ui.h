@@ -41,6 +41,11 @@ static inline const char* locale_ui_label(const char* canonical) {
         {"Benchmark SD Card", "SD 卡测速"},
         {"Factory Reset", "恢复出厂设置"},
         {"Wipe Device", "清除设备数据"},
+        {"Search for files", "搜索文件"},
+        {"U2F Token", "U2F 令牌"},
+        {"FindMy Flipper", "查找设备"},
+        {"USB Remote", "USB 遥控"},
+        {"Bluetooth Remote", "蓝牙遥控"},
     };
     if(!canonical) return NULL;
     for(size_t i = 0; i < sizeof(labels) / sizeof(labels[0]); ++i) {

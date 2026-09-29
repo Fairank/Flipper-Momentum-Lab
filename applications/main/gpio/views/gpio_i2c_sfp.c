@@ -38,8 +38,8 @@ static void gpio_i2c_sfp_draw_callback(Canvas* canvas, void* _model) {
     canvas_draw_str(canvas, 2, 63, "P15 SCL");
     canvas_draw_str(canvas, 92, 63, "P16 SDA");
 
-    snprintf(temp_str, 280, "Vendor: %s", model->vendor);
-    canvas_draw_str(canvas, 2, 9, temp_str);
+    snprintf(temp_str, 280, "厂商: %s", model->vendor);
+    canvas_draw_str(canvas, 2, 11, temp_str);
 
     snprintf(temp_str, 280, "PN: %s", model->pn);
     canvas_draw_str(canvas, 2, 19, temp_str);
@@ -50,7 +50,7 @@ static void gpio_i2c_sfp_draw_callback(Canvas* canvas, void* _model) {
     snprintf(temp_str, 280, "REV: %s", model->rev);
     canvas_draw_str(canvas, 2, 39, temp_str);
 
-    snprintf(temp_str, 280, "CON: %s", model->connector);
+    snprintf(temp_str, 280, "接口: %s", model->connector);
     canvas_draw_str(canvas, 50, 39, temp_str);
 
     //Print Wavelength of Module

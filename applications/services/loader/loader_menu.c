@@ -225,7 +225,7 @@ static void loader_menu_add_app_entry(
     MenuAppList_push_back(app->apps_list, (MenuApp){name, icon, path});
     menu_add_item(
         app->primary_menu,
-        path ? name : locale_ui_label(name),
+        locale_ui_label(name),
         icon,
         MenuAppList_size(app->apps_list) - 1,
         loader_menu_apps_callback,

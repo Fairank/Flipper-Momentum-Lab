@@ -33,6 +33,31 @@ static void furi_mutex_release(FuriMutex* m) { assert(m->depth); --m->depth; }
 static void furi_record_create(const char* name, void* value) { (void)name; (void)value; }
 """
 
+NETWORK_STUBS = r"""
+typedef struct { char value[256]; } FuriString;
+typedef struct { int unused; } Storage;
+#define RECORD_STORAGE "storage"
+static Storage storage;
+static unsigned resolved_paths;
+static void* furi_record_open(const char* name) { assert(!strcmp(name, RECORD_STORAGE)); return &storage; }
+static void furi_record_close(const char* name) { assert(!strcmp(name, RECORD_STORAGE)); }
+static FuriString* furi_string_alloc_set(const char* value) {
+    FuriString* result = calloc(1, sizeof(FuriString));
+    assert(strlen(value) < sizeof(result->value)); strcpy(result->value, value); return result;
+}
+static const char* furi_string_get_cstr(FuriString* value) { return value->value; }
+static void furi_string_free(FuriString* value) { free(value); }
+static void storage_common_resolve_path_and_ensure_app_directory(Storage* value, FuriString* path) {
+    assert(value == &storage); ++resolved_paths;
+    if(!strncmp(path->value, "/data/", 6)) {
+        char result[256];
+        assert(strlen(path->value) < 200);
+        strcpy(result, "/ext/apps_data/test_app/"); strcat(result, path->value + 6);
+        strcpy(path->value, result);
+    }
+}
+"""
+
 
 def implementation(service):
     folder = ROOT / "applications/services" / service
@@ -41,7 +66,7 @@ def implementation(service):
         for name in (f"{service}.h", f"{service}_i.h", f"{service}.c")
     )
     return re.sub(
-        r'^#(?:pragma once|include "[^"\n]+"|include <furi.h>)\s*$',
+        r'^#(?:pragma once|include "[^"\n]+"|include <(?:furi.h|storage/storage.h)>)\s*$',
         "",
         text,
         flags=re.M,
@@ -52,11 +77,17 @@ class CompanionServiceTests(unittest.TestCase):
     def test_network_session_replacement_and_payload_limits(self):
         native_test(
             STUBS
+            + NETWORK_STUBS
             + implementation("network")
             + r"""
 static unsigned sent_a, sent_b, received;
 static void send_request(NetworkRpcCommand command, const NetworkRpcRequest* req, void* ctx) {
-    (void)command; (void)req; ++*(unsigned*)ctx;
+    ++*(unsigned*)ctx;
+    if(command == NetworkRpcCommandHttpRequest && req->send_path) {
+        assert(!strcmp(req->send_path, "/ext/apps_data/test_app/input.txt"));
+        assert(!strcmp(req->save_path, "/ext/apps_data/test_app/output.txt"));
+        assert(resolved_paths == 2);
+    }
 }
 static void receive_event(const NetworkEvent* event, void* ctx) {
     (void)event;
@@ -96,6 +127,11 @@ int main(void) {
     assert(!network_http_request(net, 1, &request));
     request.body = bytes;
     assert(network_http_request(net, 1, &request));
+    assert(resolved_paths == 0);
+    request.send_path = "/data/input.txt";
+    request.save_path = "/data/output.txt";
+    assert(network_http_request(net, 1, &request));
+    assert(resolved_paths == 2);
     network_set_rpc_bridge(net, NULL, &sent_b);
     assert(!network_close(net, 1));
     assert(net->mutex->depth == 0);

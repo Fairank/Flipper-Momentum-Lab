@@ -513,7 +513,7 @@ class CanvasFallbackTests(unittest.TestCase):
             CANVAS_C, "void canvas_draw_glyph(", "\nvoid canvas_set_bitmap_mode("
         )
         native_test(
-            f'#include "{HEADER}"\n'
+            f'#define FURI_RAM_EXEC\n#include "{HEADER}"\n'
             + COMMON_INCLUDES
             + canvas_enums()
             + CANVAS_STUBS
@@ -1287,14 +1287,15 @@ class TextBoxTests(unittest.TestCase):
 
 
 class NativeFontSourceTests(unittest.TestCase):
-    def test_font_header_is_included_by_canvas_only(self):
+    def test_full_font_is_not_linked_and_boot_font_is_canvas_only(self):
         including = sorted(
             path.relative_to(ROOT).as_posix()
             for path in (ROOT / GUI).rglob("*")
             if path.suffix in (".c", ".h")
-            and '#include "native_zh_font.h"' in path.read_text(encoding="utf-8")
+            and '#include "native_zh_boot_font.h"' in path.read_text(encoding="utf-8")
         )
         self.assertEqual(including, [CANVAS_C])
+        self.assertNotIn('#include "native_zh_font.h"', (ROOT / CANVAS_C).read_text())
 
     def test_gui_text_sources_stay_ascii(self):
         # The font generator collects CJK literals from these files; none belong here

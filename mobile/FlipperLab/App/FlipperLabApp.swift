@@ -4,10 +4,14 @@ import SwiftUI
 @MainActor
 struct FlipperLabApp: App {
     @State private var model = AppModel()
+    @Environment(\.scenePhase) private var scenePhase
     var body: some Scene {
         WindowGroup {
             RootView(model: model)
                 .task { await model.load() }
+                .onChange(of: scenePhase) { _, phase in
+                    if phase == .background { model.device.companion.suspendSharing() }
+                }
                 .tint(LabColor.accent)
                 #if DEBUG
                 .modifier(UITestPresentation(arguments: ProcessInfo.processInfo.arguments))

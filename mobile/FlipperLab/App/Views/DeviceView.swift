@@ -43,6 +43,16 @@ import FlipperCore
                 infoSection
             }
             Section {
+                NavigationLink {
+                    PhoneSharingView(companion: device.companion)
+                } label: {
+                    Label("手机能力共享", systemImage: "iphone.radiowaves.left.and.right")
+                }
+                .accessibilityIdentifier("device.phoneSharing")
+            } footer: {
+                Text("连接后，可分别开启手机定位与网络共享。")
+            }
+            Section {
                 Text("个人项目，不是 Flipper Devices 的官方 App。")
                     .font(.footnote)
                     .foregroundStyle(.secondary)

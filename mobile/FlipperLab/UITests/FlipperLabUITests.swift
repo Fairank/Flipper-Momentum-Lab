@@ -10,6 +10,29 @@ final class FlipperLabUITests: XCTestCase {
     private let chineseLocale = ["-AppleLanguages", "(zh-Hans)", "-AppleLocale", "zh_CN"]
 
     @MainActor
+    func testPhoneSharingRequiresARealConnection() throws {
+        continueAfterFailure = false
+        for (arguments, name) in [(["-ui-testing-light"], "23-手机能力共享"),
+                                   (["-ui-testing-dark", "-ui-testing-large-text"], "24-深色大字-手机共享")] {
+            let app = launch(arguments)
+            XCTAssertTrue(app.navigationBars["设备"].waitForExistence(timeout: 15))
+            let link = app.buttons["device.phoneSharing"]
+            XCTAssertTrue(scrollUntilHittable([link], in: app))
+            link.tap()
+            XCTAssertTrue(app.navigationBars["手机能力共享"].waitForExistence(timeout: 5))
+            let location = app.switches["sharing.location"]
+            XCTAssertTrue(scrollUntilHittable([location], in: app))
+            XCTAssertFalse(location.isEnabled)
+            capture(app, name: name)
+            let network = app.switches["sharing.network"]
+            XCTAssertTrue(scrollUntilHittable([network], in: app))
+            XCTAssertFalse(network.isEnabled)
+            XCTAssertTrue(app.staticTexts["网络共享已关闭"].exists)
+            app.terminate()
+        }
+    }
+
+    @MainActor
     func testOfflineClassicWorkbenchAndSerialEntry() throws {
         continueAfterFailure = false
         let app = launch(["-ui-testing-light"])

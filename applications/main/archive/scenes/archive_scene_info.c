@@ -4,7 +4,7 @@
 
 #define TAG "Archive"
 
-const char* units[] = {"Bytes", "KiB", "MiB", "GiB", "TiB"};
+const char* units[] = {"字节", "KiB", "MiB", "GiB", "TiB"};
 
 void archive_scene_info_widget_callback(GuiButtonType result, InputType type, void* context) {
     furi_assert(context);
@@ -28,10 +28,9 @@ static uint32_t archive_scene_info_dirwalk(void* context) {
         while(scene_manager_get_scene_state(instance->scene_manager, ArchiveAppSceneInfo)) {
             DirWalkResult result = dir_walk_read(dir_walk, NULL, &fileinfo);
             if(result == DirWalkError) {
-                widget_element_text_box_set_text(instance->size_element, "Size: \e#Error\e#");
+                widget_element_text_box_set_text(instance->size_element, "大小: \e#错误\e#");
                 if(instance->count_element) {
-                    widget_element_text_box_set_text(
-                        instance->count_element, "Items: \e#Error\e#");
+                    widget_element_text_box_set_text(instance->count_element, "项目: \e#错误\e#");
                 }
                 break;
             }
@@ -48,7 +47,7 @@ static uint32_t archive_scene_info_dirwalk(void* context) {
                 snprintf(
                     buf,
                     sizeof(buf),
-                    unit ? "Size: %s\e#%.2f\e# %s" : "Size: %s\e#%.0f\e# %s",
+                    unit ? "大小: %s\e#%.2f\e# %s" : "大小: %s\e#%.0f\e# %s",
                     is_last ? "" : "... ",
                     show,
                     units[unit]);
@@ -56,16 +55,16 @@ static uint32_t archive_scene_info_dirwalk(void* context) {
 
                 if(instance->count_element) {
                     snprintf(
-                        buf, sizeof(buf), "Items: %s\e#%lu\e#", is_last ? "" : "... ", item_count);
+                        buf, sizeof(buf), "项目: %s\e#%lu\e#", is_last ? "" : "... ", item_count);
                     widget_element_text_box_set_text(instance->count_element, buf);
                 }
             }
             if(is_last) break;
         }
     } else {
-        widget_element_text_box_set_text(instance->size_element, "Size: \e#Error\e#");
+        widget_element_text_box_set_text(instance->size_element, "大小: \e#错误\e#");
         if(instance->count_element) {
-            widget_element_text_box_set_text(instance->count_element, "Items: \e#Error\e#");
+            widget_element_text_box_set_text(instance->count_element, "项目: \e#错误\e#");
         }
     }
     dir_walk_free(dir_walk);
@@ -119,14 +118,7 @@ static uint32_t archive_scene_info_md5sum(void* context) {
     furi_record_close(RECORD_STORAGE);
 
     if(!result) {
-        char buf[64];
-        strlcpy(buf, "MD5: \e*Error", sizeof(buf));
-        uint8_t padding = 32 - strlen("Error");
-        for(uint8_t i = 0; i < padding; i++) {
-            strlcat(buf, " ", sizeof(buf));
-        }
-        strlcat(buf, "\e*", sizeof(buf));
-        widget_element_text_box_set_text(instance->size_element, buf);
+        widget_element_text_box_set_text(instance->size_element, "MD5: 错误");
     }
 
     view_dispatcher_switch_to_view(instance->view_dispatcher, ArchiveViewWidget);
@@ -137,8 +129,8 @@ void archive_scene_info_on_enter(void* context) {
     furi_assert(context);
     ArchiveApp* instance = context;
 
-    widget_add_button_element(
-        instance->widget, GuiButtonTypeLeft, "返回", archive_scene_info_widget_callback, instance);
+    // The physical Back key returns to the browser. Use the full display for
+    // filenames, Chinese labels and both lines of the complete MD5 digest.
 
     FuriString* filename = furi_string_alloc();
     FuriString* dirname = furi_string_alloc();
@@ -154,7 +146,7 @@ void archive_scene_info_on_enter(void* context) {
     // Directory path
     path_extract_dirname(furi_string_get_cstr(current->path), dirname);
     widget_add_text_box_element(
-        instance->widget, 1, 12, 126, 20, AlignLeft, AlignTop, furi_string_get_cstr(dirname), true);
+        instance->widget, 1, 14, 126, 13, AlignLeft, AlignTop, furi_string_get_cstr(dirname), true);
 
     // This one to return and cursor select this file
     path_extract_filename_no_ext(furi_string_get_cstr(current->path), filename);
@@ -169,10 +161,10 @@ void archive_scene_info_on_enter(void* context) {
     if(storage_common_stat(
            furi_record_open(RECORD_STORAGE), furi_string_get_cstr(current->path), &fileinfo) !=
        FSE_OK) {
-        snprintf(buf, sizeof(buf), "Size: \e#Error\e#");
+        snprintf(buf, sizeof(buf), "大小: \e#错误\e#");
     } else if(file_info_is_dir(&fileinfo)) {
         is_dir = true;
-        snprintf(buf, sizeof(buf), "Size: ... \e#0\e# %s", units[0]);
+        snprintf(buf, sizeof(buf), "大小: ... \e#0\e# %s", units[0]);
     } else {
         double show = fileinfo.size;
         size_t unit;
@@ -183,30 +175,25 @@ void archive_scene_info_on_enter(void* context) {
         snprintf(
             buf,
             sizeof(buf),
-            unit ? "Size: \e#%.2f\e# %s" : "Size: \e#%.0f\e# %s",
+            unit ? "大小: \e#%.2f\e# %s" : "大小: \e#%.0f\e# %s",
             show,
             units[unit]);
     }
 
     WidgetElement* size_element = widget_add_text_box_element(
-        instance->widget, 1, 31, 126, 13, AlignLeft, AlignTop, buf, true);
+        instance->widget, 1, 27, 126, 13, AlignLeft, AlignTop, buf, true);
     WidgetElement* count_element = NULL;
     if(is_dir) {
-        snprintf(buf, sizeof(buf), "Items: ... \e#0\e#");
+        snprintf(buf, sizeof(buf), "项目: ... \e#0\e#");
         count_element = widget_add_text_box_element(
-            instance->widget, 1, 42, 126, 13, AlignLeft, AlignTop, buf, true);
+            instance->widget, 1, 40, 126, 13, AlignLeft, AlignTop, buf, true);
     }
 
     // MD5 hash
     if(!is_dir) {
-        strlcpy(buf, "MD5: \e*Loading...", sizeof(buf));
-        uint8_t padding = 32 - strlen("Loading...");
-        for(uint8_t i = 0; i < padding; i++) {
-            strlcat(buf, " ", sizeof(buf));
-        }
-        strlcat(buf, "\e*", sizeof(buf));
+        strlcpy(buf, "MD5: 计算中...", sizeof(buf));
         size_element = widget_add_text_box_element(
-            instance->widget, 0, 43, 128, 24, AlignRight, AlignTop, buf, false);
+            instance->widget, 0, 40, 128, 24, AlignLeft, AlignTop, buf, false);
     }
 
     instance->size_element = size_element;

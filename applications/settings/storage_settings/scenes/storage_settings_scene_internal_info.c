@@ -41,10 +41,10 @@ void storage_settings_scene_internal_info_on_enter(void* context) {
         uint32_t free_flash =
             furi_hal_flash_get_free_end_address() - furi_hal_flash_get_free_start_address();
         if(free_flash < 1024) {
-            furi_string_cat_printf(app->text_string, "Flash: 可用 %lu B", free_flash);
+            furi_string_cat_printf(app->text_string, "闪存: 可用 %lu B", free_flash);
         } else {
             furi_string_cat_printf(
-                app->text_string, "Flash: 可用 %.2f KiB", (double)free_flash / 1024);
+                app->text_string, "闪存: 可用 %.2f KiB", (double)free_flash / 1024);
         }
 
         dialog_ex_set_text(

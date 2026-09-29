@@ -133,9 +133,12 @@ public struct RPCEnvelope: Sendable {
         self.commandID = id; self.status = status; hasNext = message.uint(3) != 0
         tag = body.number; self.payload = payload
     }
-    public static func encode(id: UInt32, tag: Int, payload: Data = Data(), hasNext: Bool = false) -> Data {
-        let body = PBMessage.uint(1, UInt64(id)) +
-            (hasNext ? PBMessage.uint(3, 1) : Data()) + PBMessage.bytes(tag, payload)
+    public static func encode(id: UInt32, tag: Int, payload: Data = Data(), hasNext: Bool = false,
+                              status: UInt32 = 0) -> Data {
+        var body = PBMessage.uint(1, UInt64(id))
+        if status != 0 { body += PBMessage.uint(2, UInt64(status)) }
+        if hasNext { body += PBMessage.uint(3, 1) }
+        body += PBMessage.bytes(tag, payload)
         return PBMessage.varint(UInt64(body.count)) + body
     }
 }
@@ -166,7 +169,14 @@ public struct RPCFrameDecoder: Sendable {
                 guard length > 0, length <= 65_536 else { throw RPCError.tooLarge }
                 guard UInt64(pending.count - offset) >= length else { break }
                 let end = offset + Int(length)
-                frames.append(try RPCEnvelope(Data(pending[offset..<end])))
+                let message = Data(pending[offset..<end])
+                let envelope = try RPCEnvelope(message)
+                // Keep the raw message until companion validation has checked
+                // duplicate oneof/header fields; RPCEnvelope is a reduced view.
+                if CompanionRequest.tags.contains(envelope.tag) {
+                    _ = try CompanionRequest(message: message)
+                }
+                frames.append(envelope)
                 start = end
             }
             if start > 0 { pending.removeFirst(start) }

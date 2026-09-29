@@ -33,10 +33,10 @@ void archive_scene_delete_on_enter(void* context) {
 
     path_extract_filename(current->path, filename, false);
 
-    char delete_str[64];
-    snprintf(delete_str, sizeof(delete_str), "\e#Delete %s?\e#", furi_string_get_cstr(filename));
     widget_add_text_box_element(
-        app->widget, 0, 0, 128, 23, AlignCenter, AlignCenter, delete_str, false);
+        app->widget, 0, 0, 128, 13, AlignCenter, AlignTop, "删除此项目？", false);
+    widget_add_text_box_element(
+        app->widget, 0, 16, 128, 28, AlignCenter, AlignTop, furi_string_get_cstr(filename), true);
 
     furi_string_free(filename);
 

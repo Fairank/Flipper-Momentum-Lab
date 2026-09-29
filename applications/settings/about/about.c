@@ -183,7 +183,7 @@ static DialogMessageButton about_screen_fw_version(DialogsApp* dialogs, DialogMe
             version_get_githash(ver),
             api_major,
             api_minor,
-            c2_ver ? c2_ver->StackTypeString : "<none>",
+            c2_ver ? c2_ver->StackTypeString : "<无>",
             version_get_target(ver));
         if(!strcmp(version_get_version(ver), "mntm-dev") &&
            strcmp(version_get_gitbranch(ver), "dev")) {
