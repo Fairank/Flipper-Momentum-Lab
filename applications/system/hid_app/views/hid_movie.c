@@ -51,7 +51,7 @@ static void hid_movie_draw_callback(Canvas* canvas, void* context) {
 #endif
 
     canvas_set_font(canvas, FontPrimary);
-    elements_multiline_text_aligned(canvas, 17, 3, AlignLeft, AlignTop, "Movie");
+    elements_multiline_text_aligned(canvas, 17, 3, AlignLeft, AlignTop, "视频");
     canvas_set_font(canvas, FontSecondary);
 
     // Keypad circles
@@ -123,7 +123,7 @@ static void hid_movie_draw_callback(Canvas* canvas, void* context) {
 
     canvas_draw_icon(canvas, 0, 54, &I_Pin_back_arrow_10x8);
     canvas_set_font(canvas, FontSecondary);
-    elements_multiline_text_aligned(canvas, 13, 62, AlignLeft, AlignBottom, "Hold to exit");
+    elements_multiline_text_aligned(canvas, 13, 62, AlignLeft, AlignBottom, "长按退出");
 }
 
 static void hid_movie_process_press(HidMovie* hid_movie, InputEvent* event) {

@@ -1,6 +1,7 @@
 #include "number_input.h"
 
 #include <gui/elements.h>
+#include <gui/utf8_internal.h>
 #include <furi.h>
 #include <assets_icons.h>
 #include <lib/toolbox/strint.h>
@@ -257,7 +258,8 @@ static void number_input_view_draw_callback(Canvas* canvas, void* _model) {
 
     if(!furi_string_empty(model->header)) {
         canvas_set_font(canvas, FontSecondary);
-        canvas_draw_str(canvas, 2, 9, furi_string_get_cstr(model->header));
+        const char* header = furi_string_get_cstr(model->header);
+        canvas_draw_str(canvas, 2, gui_utf8_has_cjk(header) ? 11 : 9, header);
     }
     canvas_set_font(canvas, FontKeyboard);
     // Draw keyboard

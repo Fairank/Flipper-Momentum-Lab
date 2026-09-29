@@ -1,0 +1,18 @@
+App(
+    appid="segment_clock",
+    name="数码管时钟",
+    apptype=FlipperAppType.EXTERNAL,
+    entry_point="clock_app",
+    requires=[
+        "gui",
+        "notification",
+    ],
+    stack_size=4 * 1024,
+    fap_icon="icon.png",
+    fap_category="Tools",
+    fap_author="sergo",
+    fap_version="1.2",
+    fap_weburl="https://github.com/Sladkisnovraper/Segment-Clock-For-Flipper-Zero",
+    fap_description="在 Flipper 屏幕上显示简洁的数码管时钟",
+    sources=["*.c"],
+)

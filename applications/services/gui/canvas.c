@@ -8,9 +8,10 @@
 #ifndef FURI_RAM_EXEC
 #include "native_zh_font.h"
 #else
-// The recovery updater is English and must stay below the legacy 128 KiB limit.
-// Do not carry the native application's CJK subset into its RAM image.
-#define native_zh_font u8g2_font_haxrcorp4089_tr
+// The RAM updater has a separate, much smaller CJK subset; its package check
+// enforces the legacy 128 KiB loading limit. ASCII still uses the stock fonts.
+#include "updater_zh_font.h"
+#define native_zh_font updater_zh_font
 #endif
 
 #include <furi.h>
@@ -233,15 +234,9 @@ void canvas_set_custom_u8g2_font(Canvas* canvas, const uint8_t* font) {
 // custom fonts that carry their own CJK glyphs and the native font itself keep
 // u8g2's behavior.
 static bool canvas_glyph_needs_fallback(Canvas* canvas, uint16_t symbol) {
-#ifdef FURI_RAM_EXEC
-    (void)canvas;
-    (void)symbol;
-    return false;
-#else
     if(!gui_utf8_is_cjk(symbol)) return false;
     if(canvas->fb.font == native_zh_font) return false;
     return !u8g2_IsGlyph(&canvas->fb, symbol);
-#endif
 }
 
 // Advance of one glyph, taken from the native Chinese font when the selected font

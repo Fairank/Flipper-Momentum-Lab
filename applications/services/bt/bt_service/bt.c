@@ -46,9 +46,11 @@ static void bt_pin_code_view_port_draw_callback(Canvas* canvas, void* context) {
     Bt* bt = context;
     char pin_code_info[24];
     canvas_draw_icon(canvas, 0, 0, &I_BLE_Pairing_128x64);
-    snprintf(pin_code_info, sizeof(pin_code_info), "Pairing code\n%06lu", bt->pin_code);
-    elements_multiline_text_aligned(canvas, 64, 4, AlignCenter, AlignTop, pin_code_info);
-    elements_button_left(canvas, "Quit");
+    canvas_set_font(canvas, FontPrimary);
+    canvas_draw_str_aligned(canvas, 64, 0, AlignCenter, AlignTop, "配对码");
+    snprintf(pin_code_info, sizeof(pin_code_info), "%06lu", bt->pin_code);
+    canvas_draw_str_aligned(canvas, 64, 16, AlignCenter, AlignTop, pin_code_info);
+    elements_button_left(canvas, "退出");
 }
 
 static void bt_pin_code_view_port_input_callback(InputEvent* event, void* context) {
@@ -116,10 +118,11 @@ static bool bt_pin_code_verify_event_handler(Bt* bt, uint32_t pin) {
         bt->dialog_message = dialog_message_alloc();
     }
     dialog_message_set_icon(bt->dialog_message, &I_BLE_Pairing_128x64, 0, 0);
-    pin_str = furi_string_alloc_printf("Verify code\n%06lu", pin);
+    dialog_message_set_header(bt->dialog_message, "确认配对码", 64, 0, AlignCenter, AlignTop);
+    pin_str = furi_string_alloc_printf("%06lu", pin);
     dialog_message_set_text(
-        bt->dialog_message, furi_string_get_cstr(pin_str), 64, 4, AlignCenter, AlignTop);
-    dialog_message_set_buttons(bt->dialog_message, "Cancel", "OK", NULL);
+        bt->dialog_message, furi_string_get_cstr(pin_str), 64, 16, AlignCenter, AlignTop);
+    dialog_message_set_buttons(bt->dialog_message, "取消", "确定", NULL);
     DialogMessageButton button = dialog_message_show(bt->dialogs, bt->dialog_message);
     furi_string_free(pin_str);
     return button == DialogMessageButtonCenter;
@@ -362,8 +365,10 @@ static void bt_show_warning(Bt* bt, const char* text) {
     if(!bt->dialog_message) {
         bt->dialog_message = dialog_message_alloc();
     }
+    dialog_message_set_header(bt->dialog_message, NULL, 0, 0, AlignLeft, AlignTop);
+    dialog_message_set_icon(bt->dialog_message, NULL, 0, 0);
     dialog_message_set_text(bt->dialog_message, text, 64, 28, AlignCenter, AlignCenter);
-    dialog_message_set_buttons(bt->dialog_message, "Quit", NULL, NULL);
+    dialog_message_set_buttons(bt->dialog_message, "退出", NULL, NULL);
     dialog_message_show(bt->dialogs, bt->dialog_message);
 }
 
@@ -433,7 +438,7 @@ static void bt_change_profile(Bt* bt, BtMessage* message) {
         }
 
     } else {
-        bt_show_warning(bt, "Radio stack doesn't support this app");
+        bt_show_warning(bt, "无线固件不支持此应用");
         if(message->result) {
             *message->result = false;
         }
@@ -458,7 +463,7 @@ static void bt_apply_settings(Bt* bt) {
 
 static void bt_load_keys(Bt* bt) {
     if(!furi_hal_bt_is_gatt_gap_supported()) {
-        bt_show_warning(bt, "Unsupported radio stack");
+        bt_show_warning(bt, "无线固件不受支持");
         bt->status = BtStatusUnavailable;
         return;
 

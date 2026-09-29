@@ -25,6 +25,12 @@ static inline const char* locale_ui_label(const char* canonical) {
         {"Input", "按键"},
         {"Expansion Modules", "扩展模块"},
         {"Clock & Alarm", "时钟与闹钟"},
+        {"Clock", "时钟"},
+        {"Apps Menu", "应用菜单"},
+        {"Device Info", "设备信息"},
+        {"Lock Menu", "锁定菜单"},
+        {"Lock Keypad", "按键锁定"},
+        {"Lock with PIN", "PIN 码锁定"},
         {"Passport", "海豚档案"},
         {"About", "关于设备"},
         {"About Internal Storage", "内部存储信息"},
@@ -41,4 +47,30 @@ static inline const char* locale_ui_label(const char* canonical) {
         if(strcmp(canonical, labels[i].canonical) == 0) return labels[i].chinese;
     }
     return canonical;
+}
+
+/* Translate only at UI call sites: storage error strings are also a CLI/API
+ * contract and must not be changed globally. */
+static inline const char* locale_ui_storage_error(const char* error) {
+    static const struct {
+        const char* source;
+        const char* label;
+    } errors[] = {
+        {"OK", "成功"},
+        {"filesystem not ready", "文件系统\n未就绪"},
+        {"file/dir already exist", "文件或目录\n已存在"},
+        {"file/dir not exist", "文件或目录\n不存在"},
+        {"invalid parameter", "参数无效"},
+        {"access denied", "拒绝访问"},
+        {"invalid name/path", "名称或路径\n无效"},
+        {"internal error", "内部错误"},
+        {"function not implemented", "功能未实现"},
+        {"file is already open", "文件已打开"},
+        {"unknown error", "未知错误"},
+    };
+    if(!error) return NULL;
+    for(size_t i = 0; i < sizeof(errors) / sizeof(errors[0]); ++i) {
+        if(strcmp(error, errors[i].source) == 0) return errors[i].label;
+    }
+    return error;
 }

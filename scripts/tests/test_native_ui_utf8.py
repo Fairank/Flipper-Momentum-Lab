@@ -1326,7 +1326,9 @@ class NativeFontSourceTests(unittest.TestCase):
                 (ROOT / HEADER).read_text(encoding="utf-8"),
             )
         }
-        self.assertEqual(set(font.ascii), set(range(0x20, 0x7F)))
+        self.assertFalse(
+            font.ascii, "ASCII uses the selected stock font; do not duplicate it"
+        )
         self.assertTrue(font.unicode, "the header holds no CJK glyph")
         self.assertIn(
             f"#define NATIVE_ZH_FONT_GLYPHS {len(font.ascii) + len(font.unicode)}", text

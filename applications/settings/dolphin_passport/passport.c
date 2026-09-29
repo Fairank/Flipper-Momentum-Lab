@@ -77,13 +77,17 @@ static void render_callback(Canvas* canvas, void* _ctx) {
     canvas_draw_icon(canvas, 11, 2, portrait);
 
     const char* my_name = furi_hal_version_get_name_ptr();
-    snprintf(level_str, sizeof(level_str), "等级: %hu", stats->level);
+    if(stats->level == DOLPHIN_LEVEL_COUNT + 1) {
+        snprintf(level_str, sizeof(level_str), "满级: %hu", stats->level);
+    } else {
+        snprintf(level_str, sizeof(level_str), "等级: %hu", stats->level);
+    }
     canvas_draw_str(canvas, 59, 10, my_name ? my_name : "未知");
     canvas_draw_str(canvas, 59, 22, mood_str);
     canvas_draw_str(canvas, 59, 34, level_str);
 
     if(stats->level == DOLPHIN_LEVEL_COUNT + 1) {
-        snprintf(xp_str, sizeof(xp_str), "Max Level!");
+        xp_str[0] = '\0';
     } else {
         snprintf(xp_str, sizeof(xp_str), "%lu/%lu", xp_have, xp_target);
     }

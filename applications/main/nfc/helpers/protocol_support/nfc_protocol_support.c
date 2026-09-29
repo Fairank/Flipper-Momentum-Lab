@@ -63,7 +63,7 @@ static void nfc_protocol_support_on_enter_load_failed(NfcApp* instance) {
     widget_reset(instance->widget);
     widget_add_icon_element(instance->widget, 83, 22, &I_WarningDolphinFlip_45x42);
     widget_add_string_element(
-        instance->widget, 3, 4, AlignLeft, AlignTop, FontPrimary, "Plugin Not Loaded");
+        instance->widget, 3, 4, AlignLeft, AlignTop, FontPrimary, "插件未加载");
     widget_add_string_multiline_element(
         instance->widget,
         4,
@@ -71,7 +71,7 @@ static void nfc_protocol_support_on_enter_load_failed(NfcApp* instance) {
         AlignLeft,
         AlignTop,
         FontSecondary,
-        "Plugin file missing\nor outdated. Update\nthe firmware\nresources.");
+        "插件缺失\n或版本过旧.\n请更新资源.");
     notification_message(instance->notifications, &sequence_error);
     view_dispatcher_switch_to_view(instance->view_dispatcher, NfcViewWidget);
 }

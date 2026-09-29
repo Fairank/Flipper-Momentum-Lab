@@ -1,6 +1,7 @@
 #include "byte_input.h"
 
 #include <gui/elements.h>
+#include <gui/utf8_internal.h>
 #include <furi.h>
 #include <assets_icons.h>
 
@@ -252,12 +253,12 @@ static void byte_input_draw_input(Canvas* canvas, ByteInputModel* model) {
         char str[20];
 
         canvas_set_font(canvas, FontSecondary);
-        snprintf(str, 20, "Selected index");
-        canvas_draw_str(canvas, text_x, text_y2, str);
+        snprintf(str, sizeof(str), "选中序号");
+        canvas_draw_str(canvas, text_x, text_y2 + 3, str);
 
         canvas_set_font(canvas, FontPrimary);
         snprintf(str, 20, "%u", (model->selected_byte + 1));
-        canvas_draw_str(canvas, text_x + 75, text_y2, str);
+        canvas_draw_str(canvas, text_x + 75, text_y2 + 3, str);
     }
 }
 
@@ -600,16 +601,20 @@ static void byte_input_view_draw_callback(Canvas* canvas, void* _model) {
     if(model->selected_row == -2) {
         canvas_set_font(canvas, FontSecondary);
         canvas_draw_icon(canvas, 3, 1, &I_Pin_back_arrow_10x8);
-        canvas_draw_str_aligned(canvas, 16, 9, AlignLeft, AlignBottom, "back to keyboard");
-        elements_button_center(canvas, "Save");
+        canvas_draw_str_aligned(canvas, 16, 11, AlignLeft, AlignBottom, "返回键盘");
+        elements_button_center(canvas, "保存");
     } else {
         // Draw the header
         canvas_set_font(canvas, FontSecondary);
         if(model->selected_row == -1) {
-            canvas_draw_str(canvas, 10, 9, "Move up for alternate input");
+            canvas_draw_str(canvas, 10, 11, "按上键切换输入方式");
             canvas_draw_icon(canvas, 3, 4, &I_SmallArrowUp_3x5);
         } else {
-            canvas_draw_str(canvas, 2, 9, model->header);
+            canvas_draw_str(
+                canvas,
+                2,
+                model->header && gui_utf8_has_cjk(model->header) ? 11 : 9,
+                model->header);
         }
         canvas_set_font(canvas, FontKeyboard);
         // Draw keyboard

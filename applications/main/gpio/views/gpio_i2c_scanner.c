@@ -34,8 +34,8 @@ static void gpio_i2c_scanner_draw_callback(Canvas* canvas, void* _model) {
     snprintf(temp_str, 25, "Slaves: %u", model->items);
     canvas_draw_str_aligned(canvas, 126, 8, AlignRight, AlignBottom, temp_str);
 
-    canvas_draw_str(canvas, 29, 25, "Pin 15");
-    canvas_draw_str(canvas, 29, 42, "Pin 16");
+    canvas_draw_str(canvas, 29, 25, "引脚 15");
+    canvas_draw_str(canvas, 29, 42, "引脚 16");
 
     canvas_set_font(canvas, FontSecondary);
 

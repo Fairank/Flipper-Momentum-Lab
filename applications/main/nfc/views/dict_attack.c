@@ -178,7 +178,7 @@ static void dict_attack_draw_callback(Canvas* canvas, void* model) {
         canvas_draw_str_aligned(canvas, 64, 4, AlignCenter, AlignTop, "卡片已移开!");
         canvas_set_font(canvas, FontSecondary);
         elements_multiline_text_aligned(
-            canvas, 64, 23, AlignCenter, AlignTop, "Make sure the tag is\npositioned correctly.");
+            canvas, 64, 23, AlignCenter, AlignTop, "请确认卡片\n放置正确.");
     } else {
         if(m->attack_type == DictAttackTypeMfClassic) {
             dict_attack_draw_mf_classic(canvas, m);

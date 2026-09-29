@@ -28,19 +28,19 @@ static void hid_scene_start_submenu_callback(void* context, uint32_t index) {
 void hid_scene_start_on_enter(void* context) {
     Hid* app = context;
     submenu_add_item(
-        app->submenu, "Keynote", HidSubmenuIndexKeynote, hid_scene_start_submenu_callback, app);
+        app->submenu, "幻灯片遥控", HidSubmenuIndexKeynote, hid_scene_start_submenu_callback, app);
     submenu_add_item(
         app->submenu,
-        "Keynote Vertical",
+        "幻灯片遥控 (竖屏)",
         HidSubmenuIndexKeynoteVertical,
         hid_scene_start_submenu_callback,
         app);
     submenu_add_item(
-        app->submenu, "Keyboard", HidSubmenuIndexKeyboard, hid_scene_start_submenu_callback, app);
+        app->submenu, "键盘", HidSubmenuIndexKeyboard, hid_scene_start_submenu_callback, app);
     submenu_add_item(
-        app->submenu, "Numpad", HidSubmenuIndexNumpad, hid_scene_start_submenu_callback, app);
+        app->submenu, "数字小键盘", HidSubmenuIndexNumpad, hid_scene_start_submenu_callback, app);
     submenu_add_item(
-        app->submenu, "Media", HidSubmenuIndexMedia, hid_scene_start_submenu_callback, app);
+        app->submenu, "媒体控制", HidSubmenuIndexMedia, hid_scene_start_submenu_callback, app);
     submenu_add_item(
         app->submenu,
         "Apple Music macOS",
@@ -48,9 +48,9 @@ void hid_scene_start_on_enter(void* context) {
         hid_scene_start_submenu_callback,
         app);
     submenu_add_item(
-        app->submenu, "Movie", HidSubmenuIndexMovie, hid_scene_start_submenu_callback, app);
+        app->submenu, "视频播放", HidSubmenuIndexMovie, hid_scene_start_submenu_callback, app);
     submenu_add_item(
-        app->submenu, "Mouse", HidSubmenuIndexMouse, hid_scene_start_submenu_callback, app);
+        app->submenu, "鼠标", HidSubmenuIndexMouse, hid_scene_start_submenu_callback, app);
     submenu_add_item(
         app->submenu,
         "TikTok / YT Shorts",
@@ -59,38 +59,38 @@ void hid_scene_start_on_enter(void* context) {
         app);
     submenu_add_item(
         app->submenu,
-        "Mouse Clicker",
+        "鼠标连点器",
         HidSubmenuIndexMouseClicker,
         hid_scene_start_submenu_callback,
         app);
     submenu_add_item(
         app->submenu,
-        "Mouse Jiggler",
+        "鼠标晃动器",
         HidSubmenuIndexMouseJiggler,
         hid_scene_start_submenu_callback,
         app);
     submenu_add_item(
         app->submenu,
-        "Mouse Jiggler Stealth",
+        "隐蔽鼠标晃动器",
         HidSubmenuIndexMouseJigglerStealth,
         hid_scene_start_submenu_callback,
         app);
     submenu_add_item(
         app->submenu,
-        "PushToTalk",
+        "按键通话 (PTT)",
         HidSubmenuIndexPushToTalk,
         hid_scene_start_submenu_callback,
         app);
 #ifdef HID_TRANSPORT_BLE
     submenu_add_item(
         app->submenu,
-        "Bluetooth Remote Name",
+        "蓝牙遥控器名称",
         HidSubmenuIndexRename,
         hid_scene_start_submenu_callback,
         app);
     submenu_add_item(
         app->submenu,
-        "Bluetooth Unpairing",
+        "解除蓝牙配对",
         HidSubmenuIndexRemovePairing,
         hid_scene_start_submenu_callback,
         app);

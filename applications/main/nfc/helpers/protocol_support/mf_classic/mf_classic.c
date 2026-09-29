@@ -27,7 +27,7 @@ static void nfc_scene_menu_add_save_keys_mf_classic(NfcApp* instance, const MfCl
 
     submenu_add_item(
         instance->submenu,
-        "Save Keys to Dictionary",
+        "保存密钥到字典",
         SubmenuIndexSaveKeys,
         nfc_protocol_support_common_submenu_callback,
         instance);
@@ -196,7 +196,7 @@ static void nfc_scene_saved_menu_on_enter_mf_classic(NfcApp* instance) {
     Submenu* submenu = instance->submenu;
     const MfClassicData* data = nfc_device_get_data(instance->nfc_device, NfcProtocolMfClassic);
 
-    submenu_change_item_label(submenu, SubmenuIndexCommonWrite, "Write to Initial Card");
+    submenu_change_item_label(submenu, SubmenuIndexCommonWrite, "写入原卡");
 
     if(!mf_classic_is_card_read(data)) {
         submenu_add_item(

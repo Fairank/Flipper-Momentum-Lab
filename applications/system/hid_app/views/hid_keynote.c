@@ -48,11 +48,11 @@ static void hid_keynote_draw_callback(Canvas* canvas, void* context) {
 #endif
 
     canvas_set_font(canvas, FontPrimary);
-    elements_multiline_text_aligned(canvas, 17, 3, AlignLeft, AlignTop, "Keynote");
+    elements_multiline_text_aligned(canvas, 17, 3, AlignLeft, AlignTop, "幻灯片");
 
     canvas_draw_icon(canvas, 68, 2, &I_Pin_back_arrow_10x8);
     canvas_set_font(canvas, FontSecondary);
-    elements_multiline_text_aligned(canvas, 127, 3, AlignRight, AlignTop, "Hold to exit");
+    elements_multiline_text_aligned(canvas, 127, 3, AlignRight, AlignTop, "长按退出");
 
     // Up
     canvas_draw_icon(canvas, 21, 24, &I_Button_18x18);
@@ -97,7 +97,7 @@ static void hid_keynote_draw_callback(Canvas* canvas, void* context) {
         canvas_set_color(canvas, ColorWhite);
     }
     canvas_draw_icon(canvas, 74, 28, &I_Ok_btn_9x9);
-    elements_multiline_text_aligned(canvas, 91, 36, AlignLeft, AlignBottom, "Space");
+    elements_multiline_text_aligned(canvas, 91, 37, AlignLeft, AlignBottom, "空格");
     canvas_set_color(canvas, ColorBlack);
 
     // Back
@@ -107,7 +107,7 @@ static void hid_keynote_draw_callback(Canvas* canvas, void* context) {
         canvas_set_color(canvas, ColorWhite);
     }
     canvas_draw_icon(canvas, 74, 49, &I_Pin_back_arrow_10x8);
-    elements_multiline_text_aligned(canvas, 91, 57, AlignLeft, AlignBottom, "Back");
+    elements_multiline_text_aligned(canvas, 91, 58, AlignLeft, AlignBottom, "返回");
 }
 
 static void hid_keynote_draw_vertical_callback(Canvas* canvas, void* context) {
@@ -122,15 +122,15 @@ static void hid_keynote_draw_vertical_callback(Canvas* canvas, void* context) {
         canvas_draw_icon(canvas, 0, 0, &I_Ble_disconnected_15x15);
     }
     canvas_set_font(canvas, FontPrimary);
-    elements_multiline_text_aligned(canvas, 20, 3, AlignLeft, AlignTop, "Keynote");
+    elements_multiline_text_aligned(canvas, 20, 3, AlignLeft, AlignTop, "幻灯片");
 #else
     canvas_set_font(canvas, FontPrimary);
-    elements_multiline_text_aligned(canvas, 12, 3, AlignLeft, AlignTop, "Keynote");
+    elements_multiline_text_aligned(canvas, 12, 3, AlignLeft, AlignTop, "幻灯片");
 #endif
 
     canvas_draw_icon(canvas, 2, 18, &I_Pin_back_arrow_10x8);
     canvas_set_font(canvas, FontSecondary);
-    elements_multiline_text_aligned(canvas, 15, 19, AlignLeft, AlignTop, "Hold to exit");
+    elements_multiline_text_aligned(canvas, 15, 19, AlignLeft, AlignTop, "长按退出");
 
     const uint8_t x_2 = 23;
     const uint8_t x_1 = 2;
@@ -182,7 +182,7 @@ static void hid_keynote_draw_vertical_callback(Canvas* canvas, void* context) {
         canvas_set_color(canvas, ColorWhite);
     }
     canvas_draw_icon(canvas, 11, 90, &I_Ok_btn_9x9);
-    elements_multiline_text_aligned(canvas, 26, 98, AlignLeft, AlignBottom, "Space");
+    elements_multiline_text_aligned(canvas, 26, 99, AlignLeft, AlignBottom, "空格");
     canvas_set_color(canvas, ColorBlack);
 
     // Back
@@ -192,7 +192,7 @@ static void hid_keynote_draw_vertical_callback(Canvas* canvas, void* context) {
         canvas_set_color(canvas, ColorWhite);
     }
     canvas_draw_icon(canvas, 11, 111, &I_Pin_back_arrow_10x8);
-    elements_multiline_text_aligned(canvas, 26, 119, AlignLeft, AlignBottom, "Back");
+    elements_multiline_text_aligned(canvas, 26, 120, AlignLeft, AlignBottom, "返回");
 }
 
 static void hid_keynote_process(HidKeynote* hid_keynote, InputEvent* event) {

@@ -77,7 +77,7 @@ bool lfrfid_scene_settings_write_targets_on_event(void* context, SceneManagerEve
     // blocking on a modal would be wrong.
     if(event.type == SceneManagerEventTypeBack && settings_plugin) {
         if(!settings_plugin->write_targets->on_save()) {
-            dialog_message_show_storage_error(app->dialogs, "Cannot save\nsettings");
+            dialog_message_show_storage_error(app->dialogs, "无法保存\n设置");
         }
     }
 

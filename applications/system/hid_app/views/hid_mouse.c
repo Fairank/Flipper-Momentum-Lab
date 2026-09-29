@@ -37,15 +37,15 @@ static void hid_mouse_draw_callback(Canvas* canvas, void* context) {
 #endif
 
     canvas_set_font(canvas, FontPrimary);
-    elements_multiline_text_aligned(canvas, 17, 3, AlignLeft, AlignTop, "Mouse");
+    elements_multiline_text_aligned(canvas, 17, 3, AlignLeft, AlignTop, "鼠标");
     canvas_set_font(canvas, FontSecondary);
 
     if(model->left_mouse_held == true) {
-        elements_multiline_text_aligned(canvas, 0, 62, AlignLeft, AlignBottom, "Selecting...");
+        elements_multiline_text_aligned(canvas, 0, 62, AlignLeft, AlignBottom, "选择中...");
     } else {
         canvas_draw_icon(canvas, 0, 54, &I_Pin_back_arrow_10x8);
         canvas_set_font(canvas, FontSecondary);
-        elements_multiline_text_aligned(canvas, 13, 62, AlignLeft, AlignBottom, "Hold to exit");
+        elements_multiline_text_aligned(canvas, 13, 62, AlignLeft, AlignBottom, "长按退出");
     }
 
     // Keypad circles

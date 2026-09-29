@@ -43,17 +43,17 @@ STYLES = [
     "MenuStyleThreeD",
 ]
 NAMES = [
-    "List",
+    "列表",
     "Wii",
     "DSi",
     "PS4",
-    "Vertical",
+    "纵向",
     "C64",
-    "Compact",
+    "紧凑",
     "MNTM",
-    "CoverFlow",
+    "封面流",
     "网格",
-    "Macintosh",
+    "经典桌面",
     "立体",
 ]
 

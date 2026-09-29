@@ -1,0 +1,15 @@
+App(
+    appid="flipnote",
+    name="FlipNote记事本",
+    apptype=FlipperAppType.EXTERNAL,
+    entry_point="flipnote_app",
+    requires=["gui", "storage"],
+    stack_size=8 * 1024,
+    fap_version=(1, 0),
+    fap_category="Tools",
+    fap_icon_assets="icons",
+    fap_icon="icon.png",
+    fap_description="Flipper Zero 上真正的文本编辑器，可直接在设备上打开、编辑和保存文件。",
+    fap_author="morty517",
+    fap_weburl="https://github.com/morty517/flipnote",
+)

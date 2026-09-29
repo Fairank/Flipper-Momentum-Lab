@@ -554,6 +554,7 @@ class NumberInputValueTests(unittest.TestCase):
         native_test(
             INCLUDES
             + f'#include "{STRINT_C}"\n'
+            + f'#include "{GUI}/utf8_internal.h"\n'
             + "\n".join(source_between(*part) for part in DECLARATIONS)
             + STUBS
             + source_between(NUMBER_INPUT_C, "struct NumberInput {")

@@ -11,7 +11,7 @@ void nfc_scene_key_dict_list_on_enter(void* context) {
 
     KeysDict* user_dict = keys_dict_alloc(dict->user_path, KeysDictModeOpenAlways, dict->key_size);
 
-    submenu_set_header(instance->submenu, "Select key to delete:");
+    submenu_set_header(instance->submenu, "选择要删除的密钥:");
     FuriString* temp_str = furi_string_alloc();
 
     const size_t keys_num =

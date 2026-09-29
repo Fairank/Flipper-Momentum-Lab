@@ -26,4 +26,17 @@ final class FlipperFunctionTests: XCTestCase {
         XCTAssertTrue(functions.contains { $0.launchName == "Infrared" })
         XCTAssertTrue(functions.contains { $0.launchName == "Apps" })
     }
+
+    func testChineseInstalledToolsKeepTheirVerifiedLaunchPaths() {
+        let path = "/ext/apps/Tools/clock.fap"
+        let app = FlipperFunction.installed(path: path)
+        XCTAssertEqual(app?.title, "床头时钟")
+        XCTAssertEqual(app?.category, "工具")
+        XCTAssertEqual(app?.launchName, path)
+        XCTAssertEqual(app?.id, path)
+        XCTAssertTrue(app?.isInstalledApp == true)
+        // Same filename elsewhere is a different app; do not borrow its description.
+        XCTAssertEqual(FlipperFunction.installed(path: "/ext/apps/Other/clock.fap")?.title, "clock")
+        XCTAssertEqual(FlipperFunction.installed(path: "/ext/apps/Tools/calendar.fap")?.title, "日历")
+    }
 }

@@ -1,0 +1,16 @@
+# For details & more options, see documentation/AppManifests.md in firmware repo
+
+App(
+    appid="trackerflipx",  # Must be unique
+    name="任务计时器",  # Displayed in menus
+    apptype=FlipperAppType.EXTERNAL,
+    entry_point="app",
+    stack_size=2 * 1024,
+    fap_category="Tools",
+    fap_version=(0, 1),
+    fap_icon="flipper_time_tracker.png",  # 10x10 1-bit PNG
+    fap_description="在 Flipper Zero 上同时追踪多个任务的用时。任务数据保存在 CSV 文件中，可轻松导出到 Excel 等软件做进一步分析；即使在后台或设备关机时也能继续计时！",
+    fap_author="MassivDash (hhtps://spaceout.pl)",
+    fap_weburl="https://github.com/MassivDash/flipper-tracker",
+    fap_icon_assets="images",  # Image assets to compile for this application
+)

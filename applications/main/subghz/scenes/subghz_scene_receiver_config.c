@@ -288,13 +288,13 @@ static void subghz_scene_receiver_config_set_hopping(VariableItem* item) {
         variable_item_set_current_value_index(
             frequency_item, subghz_setting_get_frequency_default_index(setting));
 
-        variable_item_set_item_label(item, "Hopping");
+        variable_item_set_item_label(item, "跳频");
     } else {
         variable_item_set_current_value_text(frequency_item, " -----");
         variable_item_set_current_value_index(
             frequency_item, subghz_setting_get_frequency_default_index(setting));
 
-        variable_item_set_item_label(item, "Hopping RSSI");
+        variable_item_set_item_label(item, "跳频信号门限");
     }
     subghz->last_settings->enable_hopping = index != 0;
     subghz->last_settings->hopping_threshold = hopping_mode_value[index];
@@ -569,7 +569,7 @@ void subghz_scene_receiver_config_on_enter(void* context) {
         variable_item_set_current_value_index(item, value_index);
         variable_item_set_current_value_text(item, combobox_text[value_index]);
         variable_item_set_locked(
-            item, subghz->repeater != SubGhzRepeaterStateOff, "Turn off\nRepeater\nto do that!");
+            item, subghz->repeater != SubGhzRepeaterStateOff, "请先关闭\n信号转发");
 
         item = variable_item_list_add(
             subghz->variable_item_list,

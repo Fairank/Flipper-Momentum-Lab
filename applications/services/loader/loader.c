@@ -67,22 +67,21 @@ typedef struct {
 } LoaderError;
 
 static const LoaderError err_app_not_found =
-    {"App Not Found", "Update firmware or app", "err_01", &I_err_01};
-static const LoaderError err_invalid_flie = {"Invalid File", "Update the app", "err_02", &I_err_02};
+    {"未找到应用", "请更新固件或应用", "err_01", &I_err_01};
+static const LoaderError err_invalid_flie = {"文件无效", "请更新该应用", "err_02", &I_err_02};
 static const LoaderError err_invalid_manifest =
-    {"Invalid Manifest", "Update firmware or app", "err_03", &I_err_03};
+    {"清单无效", "请更新固件或应用", "err_03", &I_err_03};
 static const LoaderError err_missing_imports =
-    {"Missing Imports", "Update app or firmware", "err_04", &I_err_04};
+    {"缺少依赖", "请更新应用或固件", "err_04", &I_err_04};
 static const LoaderError err_hw_target_mismatch =
-    {"HW Target\nMismatch", "App not supported", "err_05", &I_err_05};
-static const LoaderError err_outdated_app = {"Outdated App", "Update the app", "err_06", &I_err_06};
-static const LoaderError err_outdated_firmware =
-    {"Outdated\nFirmware", "Update firmware", "err_07", &I_err_07};
+    {"硬件目标\n不匹配", "不支持此应用", "err_05", &I_err_05};
+static const LoaderError err_outdated_app = {"应用过旧", "请更新该应用", "err_06", &I_err_06};
+static const LoaderError err_outdated_firmware = {"固件\n过旧", "请更新固件", "err_07", &I_err_07};
 
 static void loader_dialog_prepare_and_show(DialogsApp* dialogs, const LoaderError* err) {
-    FuriString* header = furi_string_alloc_printf("Error: %s", err->error);
+    FuriString* header = furi_string_alloc_printf("错误: %s", err->error);
     FuriString* text =
-        furi_string_alloc_printf("%s\nLearn more:\nr.flipper.net/%s", err->description, err->url);
+        furi_string_alloc_printf("%s\n了解更多:\nr.flipper.net/%s", err->description, err->url);
     DialogMessage* message = dialog_message_alloc();
 
     dialog_message_set_header(message, furi_string_get_cstr(header), 64, 0, AlignCenter, AlignTop);
@@ -110,11 +109,11 @@ static void loader_show_gui_error(
         const char* text = NULL;
         Storage* storage = furi_record_open(RECORD_STORAGE);
         if(storage_sd_status(storage) == FSE_OK) {
-            header = "Update needed";
-            text = "Reinstall firmware\nto run this app";
+            header = "需要更新";
+            text = "请重装固件\n以运行此应用";
         } else {
-            header = "SD card needed";
-            text = "Install SD card\nto run this app";
+            header = "需要 SD 卡";
+            text = "请插入 SD 卡\n以运行此应用";
         }
         furi_record_close(RECORD_STORAGE);
         dialog_message_set_header(message, header, 64, 3, AlignCenter, AlignTop);
@@ -599,12 +598,12 @@ static LoaderMessageLoaderStatusResult loader_start_external_app(
                 flipper_application_get_manifest(loader->app.fap);
 
             bool app_newer = preload_res == FlipperApplicationPreloadStatusApiTooNew;
-            const char* header = app_newer ? "App Too New" : "App Too Old";
+            const char* header = app_newer ? "应用版本过新" : "应用版本过旧";
             char text[63];
             snprintf(
                 text,
                 sizeof(text),
-                "APP:%i %c FW:%i\nThis app might not work\nContinue anyways?",
+                "APP:%i %c FW:%i\n此应用可能无法运行\n仍要继续?",
                 manifest->base.api_version.major,
                 app_newer ? '>' : '<',
                 firmware_api_interface->api_version_major);

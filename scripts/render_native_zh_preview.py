@@ -90,13 +90,27 @@ def main():
     args.output_dir.mkdir(parents=True, exist_ok=True)
     latin, cjk = fonts()
     entries = []
-    for app, title in (
-        ("nfc", "NFC"),
-        ("infrared", "红外遥控"),
-        ("subghz", "Sub-GHz"),
-        ("lfrfid", "低频 RFID"),
+    for app, title, relative_path in (
+        ("nfc", "NFC", "applications/main/nfc/scenes/nfc_scene_start.c"),
+        (
+            "infrared",
+            "红外遥控",
+            "applications/main/infrared/scenes/infrared_scene_start.c",
+        ),
+        ("subghz", "Sub-GHz", "applications/main/subghz/scenes/subghz_scene_start.c"),
+        ("lfrfid", "低频 RFID", "applications/main/lfrfid/scenes/lfrfid_scene_start.c"),
+        (
+            "ibutton",
+            "iButton",
+            "applications/main/ibutton/scenes/ibutton_scene_start.c",
+        ),
+        (
+            "hid",
+            "蓝牙 / USB 遥控",
+            "applications/system/hid_app/scenes/hid_scene_start.c",
+        ),
     ):
-        path = ROOT / f"applications/main/{app}/scenes/{app}_scene_start.c"
+        path = ROOT / relative_path
         labels = menu_labels(path)
         if not labels:
             raise ValueError(f"No literal submenu labels in {path}")
@@ -110,6 +124,16 @@ def main():
                 "labels": labels,
             }
         )
+    # A contact sheet uses the same rendered pixels; it is not a device capture.
+    sheet = Frame(128 * 3 + 8 * 2, 64 * 2 + 8)
+    for i, entry in enumerate(entries):
+        frame = render(entry["labels"], latin, cjk)
+        x, y = (i % 3) * 136, (i // 3) * 72
+        for row in range(64):
+            for col in range(128):
+                sheet.color = frame.bits[row * 128 + col]
+                sheet.dot(x + col, y + row)
+    (args.output_dir / "native-contact-sheet.png").write_bytes(png_document(sheet, 3))
     (args.output_dir / "manifest.json").write_text(
         json.dumps(entries, ensure_ascii=False, indent=2) + "\n", encoding="utf-8"
     )

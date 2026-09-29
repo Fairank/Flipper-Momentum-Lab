@@ -165,7 +165,8 @@ void elements_frame(Canvas* canvas, int32_t x, int32_t y, size_t width, size_t h
 void elements_button_left(Canvas* canvas, const char* str) {
     furi_check(canvas);
 
-    const size_t button_height = 12;
+    // CJK reaches 11 px above the baseline; leave one pixel of padding.
+    const size_t button_height = gui_utf8_has_cjk(str) ? GUI_CJK_GLYPH_ASCENT + 4 : 12;
     const size_t vertical_offset = 3;
     const size_t horizontal_offset = 3;
     const size_t string_width = canvas_string_width(canvas, str);
@@ -193,7 +194,8 @@ void elements_button_left(Canvas* canvas, const char* str) {
 void elements_button_right(Canvas* canvas, const char* str) {
     furi_check(canvas);
 
-    const size_t button_height = 12;
+    // CJK reaches 11 px above the baseline; leave one pixel of padding.
+    const size_t button_height = gui_utf8_has_cjk(str) ? GUI_CJK_GLYPH_ASCENT + 4 : 12;
     const size_t vertical_offset = 3;
     const size_t horizontal_offset = 3;
     const size_t string_width = canvas_string_width(canvas, str);
@@ -223,7 +225,8 @@ void elements_button_up(Canvas* canvas, const char* str) {
 
     const Icon* icon = &I_ButtonUp_7x4;
 
-    const size_t button_height = 12;
+    // CJK reaches 11 px above the baseline; leave one pixel of padding.
+    const size_t button_height = gui_utf8_has_cjk(str) ? GUI_CJK_GLYPH_ASCENT + 4 : 12;
     const size_t vertical_offset = 3;
     const size_t horizontal_offset = 3;
     const size_t string_width = canvas_string_width(canvas, str);
@@ -255,7 +258,8 @@ void elements_button_down(Canvas* canvas, const char* str) {
 
     const Icon* icon = &I_ButtonDown_7x4;
 
-    const size_t button_height = 12;
+    // CJK reaches 11 px above the baseline; leave one pixel of padding.
+    const size_t button_height = gui_utf8_has_cjk(str) ? GUI_CJK_GLYPH_ASCENT + 4 : 12;
     const size_t vertical_offset = 3;
     const size_t horizontal_offset = 3;
     const size_t string_width = canvas_string_width(canvas, str);
@@ -285,7 +289,8 @@ void elements_button_down(Canvas* canvas, const char* str) {
 void elements_button_center(Canvas* canvas, const char* str) {
     furi_check(canvas);
 
-    const size_t button_height = 12;
+    // CJK reaches 11 px above the baseline; leave one pixel of padding.
+    const size_t button_height = gui_utf8_has_cjk(str) ? GUI_CJK_GLYPH_ASCENT + 4 : 12;
     const size_t vertical_offset = 3;
     const size_t horizontal_offset = 1;
     const size_t string_width = canvas_string_width(canvas, str);

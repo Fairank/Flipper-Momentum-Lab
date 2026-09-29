@@ -18,12 +18,12 @@ void findmy_scene_config_import_result_on_enter(void* context) {
         app->scene_manager, FindMySceneConfigImportResult);
     if(error) {
         popup_set_icon(popup, 83, 22, &I_WarningDolphinFlip_45x42);
-        popup_set_header(popup, "Error!", 13, 22, AlignLeft, AlignBottom);
+        popup_set_header(popup, "错误!", 13, 22, AlignLeft, AlignBottom);
         popup_set_text(popup, error, 6, 26, AlignLeft, AlignTop);
         popup_disable_timeout(popup);
     } else {
         popup_set_icon(popup, 36, 5, &I_DolphinDone_80x58);
-        popup_set_header(popup, "Imported!", 7, 14, AlignLeft, AlignBottom);
+        popup_set_header(popup, "已导入!", 7, 14, AlignLeft, AlignBottom);
         popup_enable_timeout(popup);
     }
     popup_set_timeout(popup, 1500);

@@ -1,3 +1,4 @@
+#include <locale/locale_ui.h>
 #include "loader_menu_storage_i.h"
 
 #include <core/thread.h>
@@ -65,7 +66,7 @@ int32_t loader_menu_storage_settings(void* context) {
             dialog_ex_set_left_button_text(dialog_ex, "取消");
             dialog_ex_set_right_button_text(dialog_ex, "格式化");
             for(uint8_t counter = 5; counter > 0; counter--) {
-                snprintf(text, sizeof(text), "All data will be lost!\n%d presses left", counter);
+                snprintf(text, sizeof(text), "数据将被清空!\n还需按 %d 次", counter);
                 dialog_ex_set_text(dialog_ex, text, 64, 12, AlignCenter, AlignTop);
                 flag = furi_thread_flags_wait(FormatFlagAll, FuriFlagWaitAny, FuriWaitForever);
                 if(flag != FormatFlagContinue) break;
@@ -85,7 +86,7 @@ int32_t loader_menu_storage_settings(void* context) {
                         dialog_ex_set_icon(dialog_ex, 0, 0, NULL);
                         dialog_ex_set_text(
                             dialog_ex,
-                            storage_error_get_desc(error),
+                            locale_ui_storage_error(storage_error_get_desc(error)),
                             64,
                             32,
                             AlignCenter,

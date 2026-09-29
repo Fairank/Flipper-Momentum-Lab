@@ -91,7 +91,7 @@ void infrared_scene_universal_tv_on_enter(void* context) {
         context);
     infrared_brute_force_add_record(brute_force, i++, "Ch_prev");
 
-    button_panel_add_label(button_panel, 22, 10, FontPrimary, "TVs");
+    button_panel_add_label(button_panel, 22, 12, FontPrimary, "电视");
 
     infrared_scene_universal_common_on_enter(context);
 }

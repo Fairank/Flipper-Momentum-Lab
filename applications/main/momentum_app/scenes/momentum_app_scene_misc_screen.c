@@ -210,7 +210,7 @@ void momentum_app_scene_misc_screen_on_enter(void* context) {
             snprintf(str, sizeof(str), "%02X%02X%02X", color.r, color.g, color.b);
             variable_item_set_current_value_text(item, str);
         }
-        variable_item_set_locked(item, !momentum_settings.rgb_backlight, "Needs RGB\nBacklight!");
+        variable_item_set_locked(item, !momentum_settings.rgb_backlight, "需要 RGB\n背光模块!");
     }
 
     item = variable_item_list_add(
@@ -222,7 +222,7 @@ void momentum_app_scene_misc_screen_on_enter(void* context) {
     value_index = rgb_backlight_get_rainbow_mode();
     variable_item_set_current_value_index(item, value_index);
     variable_item_set_current_value_text(item, rainbow_lcd_names[value_index]);
-    variable_item_set_locked(item, !momentum_settings.rgb_backlight, "Needs RGB\nBacklight!");
+    variable_item_set_locked(item, !momentum_settings.rgb_backlight, "需要 RGB\n背光模块!");
 
     item = variable_item_list_add(
         var_item_list, "彩虹速度", 25, momentum_app_scene_misc_screen_rainbow_speed_changed, app);
@@ -231,7 +231,7 @@ void momentum_app_scene_misc_screen_on_enter(void* context) {
     char speed_str[4];
     snprintf(speed_str, sizeof(speed_str), "%d", value_index);
     variable_item_set_current_value_text(item, speed_str);
-    variable_item_set_locked(item, !momentum_settings.rgb_backlight, "Needs RGB\nBacklight!");
+    variable_item_set_locked(item, !momentum_settings.rgb_backlight, "需要 RGB\n背光模块!");
 
     item = variable_item_list_add(
         var_item_list,
@@ -245,7 +245,7 @@ void momentum_app_scene_misc_screen_on_enter(void* context) {
         COUNT_OF(rainbow_interval_values));
     variable_item_set_current_value_index(item, value_index);
     variable_item_set_current_value_text(item, rainbow_interval_names[value_index]);
-    variable_item_set_locked(item, !momentum_settings.rgb_backlight, "Needs RGB\nBacklight!");
+    variable_item_set_locked(item, !momentum_settings.rgb_backlight, "需要 RGB\n背光模块!");
 
     item = variable_item_list_add(
         var_item_list,
@@ -258,7 +258,7 @@ void momentum_app_scene_misc_screen_on_enter(void* context) {
     char saturation_str[4];
     snprintf(saturation_str, sizeof(saturation_str), "%d", value_index);
     variable_item_set_current_value_text(item, saturation_str);
-    variable_item_set_locked(item, !momentum_settings.rgb_backlight, "Needs RGB\nBacklight!");
+    variable_item_set_locked(item, !momentum_settings.rgb_backlight, "需要 RGB\n背光模块!");
 
     variable_item_list_set_enter_callback(
         var_item_list, momentum_app_scene_misc_screen_var_item_list_callback, app);
@@ -306,24 +306,24 @@ bool momentum_app_scene_misc_screen_on_event(void* context, SceneManagerEvent ev
                     variable_item_set_locked(
                         variable_item_list_get(app->var_item_list, VarItemListIndexLcdColor0 + i),
                         !value,
-                        "Needs RGB\nBacklight!");
+                        "需要 RGB\n背光模块!");
                 }
                 variable_item_set_locked(
                     variable_item_list_get(app->var_item_list, VarItemListIndexRainbowLcd),
                     !value,
-                    "Needs RGB\nBacklight!");
+                    "需要 RGB\n背光模块!");
                 variable_item_set_locked(
                     variable_item_list_get(app->var_item_list, VarItemListIndexRainbowSpeed),
                     !value,
-                    "Needs RGB\nBacklight!");
+                    "需要 RGB\n背光模块!");
                 variable_item_set_locked(
                     variable_item_list_get(app->var_item_list, VarItemListIndexRainbowInterval),
                     !value,
-                    "Needs RGB\nBacklight!");
+                    "需要 RGB\n背光模块!");
                 variable_item_set_locked(
                     variable_item_list_get(app->var_item_list, VarItemListIndexRainbowSaturation),
                     !value,
-                    "Needs RGB\nBacklight!");
+                    "需要 RGB\n背光模块!");
             } else {
                 value = !value;
             }

@@ -21,7 +21,7 @@ static void infrared_debug_view_draw_callback(Canvas* canvas, void* model) {
 
     canvas_clear(canvas);
     canvas_set_font(canvas, FontPrimary);
-    elements_multiline_text_aligned(canvas, 64, 0, AlignCenter, AlignTop, "INFRARED monitor\n");
+    elements_multiline_text_aligned(canvas, 64, 0, AlignCenter, AlignTop, "红外监视\n");
     canvas_set_font(canvas, FontKeyboard);
 
     if(strlen(debug_view_model->text)) {

@@ -56,7 +56,7 @@ void momentum_app_scene_protocols_on_enter(void* context) {
         app);
     variable_item_set_current_value_index(item, app->subghz_extend);
     variable_item_set_current_value_text(item, app->subghz_extend ? "开" : "关");
-    variable_item_set_locked(item, !app->subghz_bypass, "Must bypass\nregion lock\nfirst!");
+    variable_item_set_locked(item, !app->subghz_bypass, "请先设置\n地区限制");
 
     item = variable_item_list_add(var_item_list, "GPIO 引脚", 0, NULL, app);
     variable_item_set_current_value_text(item, ">");

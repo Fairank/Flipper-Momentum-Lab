@@ -326,7 +326,7 @@ static void nfc_scene_read_and_saved_menu_on_enter_mf_ultralight(NfcApp* instanc
        data->iso14443_3a_data->uid[0] == 0x08) {
         submenu_add_item(
             submenu,
-            "Reveal Real UID",
+            "显示真实 UID",
             SubmenuIndexRevealUid,
             nfc_protocol_support_common_submenu_callback,
             instance);

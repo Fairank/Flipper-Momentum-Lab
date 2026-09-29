@@ -103,6 +103,7 @@ static inline bool gui_utf8_is_cjk(uint32_t codepoint) {
 
 /** True when a NUL terminated string holds a codepoint gui_utf8_is_cjk() accepts */
 static inline bool gui_utf8_has_cjk(const char* text) {
+    if(!text) return false;
     uint32_t codepoint;
     size_t size;
     while((size = gui_utf8_decode(text, &codepoint)) > 0) {

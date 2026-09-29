@@ -139,18 +139,17 @@ static void hid_numpad_draw_callback(Canvas* canvas, void* context) {
         canvas_draw_icon(canvas, 0, 0, &I_Ble_connected_15x15);
     } else {
         canvas_draw_icon(canvas, 0, 0, &I_Ble_disconnected_15x15);
-        elements_multiline_text_aligned(
-            canvas, 7, 60, AlignLeft, AlignBottom, "Waiting for\nConnection...");
+        elements_multiline_text_aligned(canvas, 7, 60, AlignLeft, AlignBottom, "等待连接...");
     }
-    elements_multiline_text_aligned(canvas, 20, 3, AlignLeft, AlignTop, "Numpad");
+    elements_multiline_text_aligned(canvas, 20, 3, AlignLeft, AlignTop, "小键盘");
 
 #else
-    elements_multiline_text_aligned(canvas, 12, 3, AlignLeft, AlignTop, "Numpad");
+    elements_multiline_text_aligned(canvas, 12, 3, AlignLeft, AlignTop, "小键盘");
 #endif
 
     canvas_draw_icon(canvas, 3, 18, &I_Pin_back_arrow_10x8);
     canvas_set_font(canvas, FontSecondary);
-    elements_multiline_text_aligned(canvas, 15, 19, AlignLeft, AlignTop, "Hold to exit");
+    elements_multiline_text_aligned(canvas, 15, 19, AlignLeft, AlignTop, "长按退出");
 
 #ifdef HID_TRANSPORT_BLE
     if(!model->connected) {

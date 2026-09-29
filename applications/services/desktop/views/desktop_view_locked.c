@@ -118,13 +118,10 @@ void desktop_view_locked_draw_lockscreen(Canvas* canvas, void* m) {
        momentum_settings.lockscreen_prompt) {
         canvas_set_font(canvas, FontSecondary);
         if(model->pin_locked) {
-            elements_bubble_str(
-                canvas, 12, 14 + y, "  Press   \nto unlock!", AlignRight, AlignBottom);
-            canvas_draw_icon(canvas, 45, 16 + y, &I_Pin_arrow_up_7x9);
+            elements_bubble_str(canvas, 12, 14 + y, "按上键\n解锁", AlignRight, AlignBottom);
         } else {
             elements_bubble_str(
-                canvas, 2, 14 + y, "Press 3x      \n  to unlock!", AlignRight, AlignBottom);
-            canvas_draw_icon(canvas, 43, 17 + y, &I_Pin_back_arrow_10x8);
+                canvas, 2, 14 + y, "连按返回键\n三次解锁", AlignRight, AlignBottom);
         }
     }
 }

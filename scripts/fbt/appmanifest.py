@@ -209,7 +209,7 @@ class AppManager:
             return FlipperApplication.Library(*args, **kw)
 
         try:
-            with open(app_manifest_path, "rt") as manifest_file:
+            with open(app_manifest_path, "rt", encoding="utf-8") as manifest_file:
                 exec(manifest_file.read())
         except Exception as e:
             raise FlipperManifestException(

@@ -14,7 +14,7 @@ void findmy_scene_config_mac_on_enter(void* context) {
     FindMy* app = context;
     ByteInput* byte_input = app->byte_input;
 
-    byte_input_set_header_text(byte_input, "Enter Bluetooth MAC:");
+    byte_input_set_header_text(byte_input, "输入蓝牙 MAC:");
 
     memcpy(app->mac_buf, app->state.mac, sizeof(app->mac_buf));
     reverse_mac_addr(app->mac_buf);

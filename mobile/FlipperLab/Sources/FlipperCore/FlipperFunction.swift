@@ -94,6 +94,24 @@ public struct FlipperFunction: Identifiable, Equatable, Sendable {
               requirement: "信息以 Flipper 实际安装固件为准。"),
     ]
 
+    /// Display metadata only. An entry appears after SD discovery confirms its path;
+    /// its Chinese title never replaces the path sent to App.Start.
+    private static let installedDescriptions: [String: (title: String, summary: String, symbol: String)] = [
+        "/ext/apps/Tools/clock.fap": ("床头时钟", "显示时间、设置闹钟并使用秒表。", "clock"),
+        "/ext/apps/Tools/analog_clock.fap": ("指针时钟", "在 Flipper 屏幕上显示指针时钟。", "clock"),
+        "/ext/apps/Tools/segment_clock.fap": ("数码管时钟", "显示数字时间，设置闹钟与屏幕亮度。", "clock"),
+        "/ext/apps/Tools/pomodoro_timer.fap": ("番茄钟", "用专注与休息计时安排学习或工作。", "timer"),
+        "/ext/apps/Tools/calendar.fap": ("日历", "选择年份与月份，查看完整月历。", "calendar"),
+        "/ext/apps/Tools/net_calculator.fap": ("子网计算器", "离线计算 IPv4 网段及不同主机数量的子网划分。", "network"),
+        "/ext/apps/Tools/multi_counter.fap": ("多人计数器", "使用四个独立计数器记录分数或次数。", "number"),
+        "/ext/apps/Tools/sd_info.fap": ("SD 卡信息", "查看存储卡信息并在设备上进行读写测试。", "sdcard"),
+        "/ext/apps/Tools/flipper_chronometer.fap": ("秒表", "在 Flipper 上记录经过的时间。", "stopwatch"),
+        "/ext/apps/Tools/trackerflipx.fap": ("任务计时器", "记录任务用时并保存为 CSV 文件。", "checklist"),
+        "/ext/apps/Tools/flipnote.fap": ("FlipNote 记事本", "打开、编辑和保存设备上的文本文件。", "note.text"),
+        "/ext/apps/Bluetooth/hid_ble.fap": ("蓝牙遥控器", "将 Flipper 用作键盘、鼠标或演示遥控器；切换连接可能断开当前 App。", "keyboard"),
+        "/ext/apps/USB/hid_usb.fap": ("USB 遥控器", "通过 Flipper 的 USB 连接控制电脑键盘、鼠标或演示。", "keyboard"),
+    ]
+
     public static func installed(path: String) -> FlipperFunction? {
         guard path.hasPrefix("/ext/apps/"), path.utf8.count <= 240,
               !path.contains("\\"), !path.contains("\0") else { return nil }
@@ -108,6 +126,12 @@ public struct FlipperFunction: Identifiable, Equatable, Sendable {
             .replacingOccurrences(of: "-", with: " ")
         guard !title.trimmingCharacters(in: .whitespaces).isEmpty else { return nil }
         let category = parts.count == 5 ? String(parts[3]) : "其他应用"
+        if let description = installedDescriptions[path] {
+            return .init(id: path, title: description.title, summary: description.summary,
+                         category: category == "Tools" ? "工具" : category,
+                         symbol: description.symbol, launchName: path,
+                         requirement: "已发现 SD 卡应用；在 Flipper 本机执行。", isInstalledApp: true)
+        }
         return .init(id: path, title: title, summary: "已安装在 Flipper 的应用。",
                      category: category, symbol: "app", launchName: path,
                      requirement: "从设备 SD 卡上的应用文件启动。", isInstalledApp: true)

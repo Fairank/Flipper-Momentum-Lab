@@ -1,0 +1,1514 @@
+{
+  "date": "2026-09-29",
+  "base_commit": "b8e1f9f4013a97152e52855a2c0871565e04fcdf",
+  "status": "implemented batch, full union and full Chinese coverage incomplete",
+  "local_build_note": "Built from the changed working tree; filenames carry the base HEAD, not a clean-base artifact or later CI commit.",
+  "claude_tasks": [
+    {
+      "name": "opus-clock-union-20260929",
+      "requested_model": "claude-opus-5-5",
+      "requested_effort": "max",
+      "returned_models": [
+        "claude-opus-5-5"
+      ],
+      "exit_code": 0,
+      "seconds": 1474.3
+    },
+    {
+      "name": "opus-system-zh-20260929",
+      "requested_model": "claude-opus-5-5",
+      "requested_effort": "max",
+      "returned_models": [
+        "claude-opus-5-5"
+      ],
+      "exit_code": 0,
+      "seconds": 1616.9
+    },
+    {
+      "name": "opus-ui-audit-20260929",
+      "requested_model": "claude-opus-5-5",
+      "requested_effort": "max",
+      "returned_models": [
+        "claude-opus-5-5"
+      ],
+      "exit_code": 0,
+      "seconds": 3025.0
+    },
+    {
+      "name": "opus-union-tools-zh-20260929",
+      "requested_model": "claude-opus-5-5",
+      "requested_effort": "max",
+      "returned_models": [
+        "claude-opus-5-5"
+      ],
+      "exit_code": 0,
+      "seconds": 1581.2
+    },
+    {
+      "name": "opus-system-apps-zh-20260929",
+      "requested_model": "claude-opus-5-5",
+      "requested_effort": "max",
+      "returned_models": [
+        "claude-opus-5-5"
+      ],
+      "exit_code": 0,
+      "seconds": 1796.8
+    },
+    {
+      "name": "opus-calendar-polish-20260929",
+      "requested_model": "claude-opus-5-5",
+      "requested_effort": "max",
+      "returned_models": [
+        "claude-opus-5-5"
+      ],
+      "exit_code": 0,
+      "seconds": 849.1
+    }
+  ],
+  "local_tests": {
+    "python_and_c": 93,
+    "skip_count": 0,
+    "calendar_month_vectors": 7296,
+    "ios": "Pending exact-commit CI; no local Xcode or hardware"
+  },
+  "local_distribution": {
+    "fap_count": 333,
+    "standalone_fal_count": 124,
+    "artifacts": [
+      {
+        "name": "flipper-z-f7-full-mntm-codex-iphone-zh-architecture-b8e1f9f4.bin",
+        "bytes": 879632,
+        "sha256": "7378a04bce07414111ff596b6093268ac3c22984bbe69eb5d86e6f5aee31cb64"
+      },
+      {
+        "name": "flipper-z-f7-updater-mntm-codex-iphone-zh-architecture-b8e1f9f4.bin",
+        "bytes": 123857,
+        "sha256": "4a098f4ea09e90b9b7da16b4d0b901861193c6dfa56e1af84b50f48a2bebe38f"
+      },
+      {
+        "name": "flipper-z-f7-update-mntm-codex-iphone-zh-architecture-b8e1f9f4.tgz",
+        "bytes": 12820985,
+        "sha256": "cbf20634369b8e8447456d499c332d11765edd73930e0e80ff4781ea506e0dde"
+      }
+    ]
+  },
+  "app_inventory_counts": {
+    "current_literal_ids": 477,
+    "reference_literal_ids": 421,
+    "shared_literal_ids": 224,
+    "reference_ids_absent_from_current": 197
+  },
+  "ui_audit": {
+    "coverage_note": "Counts cover only the text parameters of the functions listed in apis. Custom drawing, macro wrappers, string tables, formatted FuriStrings and other indirect text are not followed, so these counts are not a translation coverage percentage.",
+    "totals": {
+      "overall": {
+        "files_scanned": 7602,
+        "skipped": 11,
+        "files_with_entries": 1457,
+        "calls": 9665,
+        "entries": 9782,
+        "needing-review": 4479,
+        "chinese": 1072,
+        "neutral": 501,
+        "dynamic": 3730,
+        "chinese_with_latin_words": 179
+      },
+      "by_scope": {
+        "applications/main": {
+          "files_scanned": 667,
+          "skipped": 1,
+          "files_with_entries": 240,
+          "calls": 1268,
+          "entries": 1281,
+          "needing-review": 32,
+          "chinese": 703,
+          "neutral": 67,
+          "dynamic": 479,
+          "chinese_with_latin_words": 122
+        },
+        "applications/settings": {
+          "files_scanned": 93,
+          "skipped": 0,
+          "files_with_entries": 37,
+          "calls": 261,
+          "entries": 269,
+          "needing-review": 0,
+          "chinese": 160,
+          "neutral": 9,
+          "dynamic": 100,
+          "chinese_with_latin_words": 37
+        },
+        "applications/services": {
+          "files_scanned": 276,
+          "skipped": 2,
+          "files_with_entries": 40,
+          "calls": 173,
+          "entries": 186,
+          "needing-review": 2,
+          "chinese": 53,
+          "neutral": 24,
+          "dynamic": 107,
+          "chinese_with_latin_words": 8
+        },
+        "applications/system": {
+          "files_scanned": 142,
+          "skipped": 1,
+          "files_with_entries": 40,
+          "calls": 171,
+          "entries": 173,
+          "needing-review": 12,
+          "chinese": 96,
+          "neutral": 6,
+          "dynamic": 59,
+          "chinese_with_latin_words": 5
+        },
+        "applications/external": {
+          "files_scanned": 6352,
+          "skipped": 7,
+          "files_with_entries": 1078,
+          "calls": 7664,
+          "entries": 7745,
+          "needing-review": 4433,
+          "chinese": 1,
+          "neutral": 385,
+          "dynamic": 2926,
+          "chinese_with_latin_words": 0
+        },
+        "applications/union": {
+          "files_scanned": 72,
+          "skipped": 0,
+          "files_with_entries": 22,
+          "calls": 128,
+          "entries": 128,
+          "needing-review": 0,
+          "chinese": 59,
+          "neutral": 10,
+          "dynamic": 59,
+          "chinese_with_latin_words": 7
+        },
+        "applications_user": {
+          "files_scanned": 0,
+          "skipped": 0,
+          "files_with_entries": 0,
+          "calls": 0,
+          "entries": 0,
+          "needing-review": 0,
+          "chinese": 0,
+          "neutral": 0,
+          "dynamic": 0,
+          "chinese_with_latin_words": 0
+        }
+      }
+    }
+  },
+  "files": [
+    {
+      "path": ".github/workflows/lab-firmware.yml",
+      "sha256": "03e56010eb2c0e1186f7ecd2e9ab8660bf6ba03765404dc601e8975e018a5e13"
+    },
+    {
+      "path": ".github/workflows/lab-validation.yml",
+      "sha256": "64d181a8eaed0dfb5eea6fd05ee46ed699686e494116f48bd8cccbafc0ea0a67"
+    },
+    {
+      "path": "SConstruct",
+      "sha256": "e229ca27e7b71ed5d89f3a5fe39d39dd5cf7123c8c94528ada29dcdb4a26474e"
+    },
+    {
+      "path": "applications/main/application.fam",
+      "sha256": "5a877ce463b40f57171abc4fa37107332083803bc555c031769c74ae3671d2af"
+    },
+    {
+      "path": "applications/main/archive/scenes/archive_scene_browser.c",
+      "sha256": "dfcdbc986c4da6b4bfe42e2a0b94aea019cb45bfadaca5dc17256fcbdd83854b"
+    },
+    {
+      "path": "applications/main/archive/scenes/archive_scene_new_dir.c",
+      "sha256": "faa98c8e242f96d9a2f7f0085d71330b621e219631ec9ed3580a225f7cfa6e1b"
+    },
+    {
+      "path": "applications/main/archive/scenes/archive_scene_rename.c",
+      "sha256": "36ac3e3d017dfa21afeabbc33d21eaa0e958911119af2c8059f4529d3488f4a4"
+    },
+    {
+      "path": "applications/main/bad_usb/scenes/bad_usb_scene_config.c",
+      "sha256": "edf516c3c9c2f063cc39a0c7d89b2ce57195a64a62d4cd3261c911c8fe3d97e4"
+    },
+    {
+      "path": "applications/main/bad_usb/scenes/bad_usb_scene_config_ble_mac.c",
+      "sha256": "a61d173b38ea83823899d367029b629d1b230c321d46984f394db3ce206c586b"
+    },
+    {
+      "path": "applications/main/bad_usb/scenes/bad_usb_scene_config_ble_name.c",
+      "sha256": "bb876b5ecdb19fe0fa71190f3c33efeddd0d22e39afbba768b0aa22850c6b324"
+    },
+    {
+      "path": "applications/main/bad_usb/scenes/bad_usb_scene_config_usb_name.c",
+      "sha256": "2fe8d6c35536fc6f8bfa70bf1eb3e8654c015564826eb480eef4e069b9c45572"
+    },
+    {
+      "path": "applications/main/bad_usb/scenes/bad_usb_scene_config_usb_vidpid.c",
+      "sha256": "1f742b1f5e955dfd76d01fc9239387f6a10f9a193de36e078b57bd5880090579"
+    },
+    {
+      "path": "applications/main/bad_usb/scenes/bad_usb_scene_confirm_unpair.c",
+      "sha256": "5135277cef65270389ee36a1f7c82ab1e0757ee5900d581110118a9e3c05e1ce"
+    },
+    {
+      "path": "applications/main/bad_usb/scenes/bad_usb_scene_done.c",
+      "sha256": "8f3bb3cd75b4993aa90bf16fc266c348332e085806157343edef42e1cb694a9e"
+    },
+    {
+      "path": "applications/main/bad_usb/scenes/bad_usb_scene_error.c",
+      "sha256": "83fd01153a4f05b506e36a3a8ae23cb20728a52158f87a877d59ad5c89590999"
+    },
+    {
+      "path": "applications/main/bad_usb/scenes/bad_usb_scene_file_select.c",
+      "sha256": "cc88e716e1cc450a0f7baa580c7cdb0d2a4ad4fef6b10d94a7d66bea33d8259b"
+    },
+    {
+      "path": "applications/main/bad_usb/views/bad_usb_view.c",
+      "sha256": "215e9dac826769071c05b8c813bde205f2e0e356a4ee6544e621d4561aa32f77"
+    },
+    {
+      "path": "applications/main/clock_app/CHANGELOG.md",
+      "sha256": "83ab9be42284eedadbd48e4250252d717ce900269b86ca326b0cea4ed0a7343d"
+    },
+    {
+      "path": "applications/main/clock_app/application.fam",
+      "sha256": "d1fac34331debec66cd2b3cca2db06943595fa8f4910c156fe0ad9d3c05a88ae"
+    },
+    {
+      "path": "applications/main/clock_app/clock_app.c",
+      "sha256": "8708a799f85a3464305eb9f03fd69982832dd9ea3dd96496fd92d6a4dbc483d8"
+    },
+    {
+      "path": "applications/main/clock_app/clock_app.h",
+      "sha256": "4d94323d86dc0a2b4cee12791744eadab9618cfaf11b4f7a28bbf82b8ff2887c"
+    },
+    {
+      "path": "applications/main/clock_app/icon.png",
+      "sha256": "c48f0160a2673127c015f64caf0f55d37a2c25be4df1e94664df7cd7f58cd713"
+    },
+    {
+      "path": "applications/main/gpio/views/gpio_i2c_scanner.c",
+      "sha256": "f0b656f7da21b9ae91b786b0076509ed08c4b0e7ec08d481eb50699fa99324b7"
+    },
+    {
+      "path": "applications/main/gpio/views/gpio_test.c",
+      "sha256": "8906acf0a2f55336b17ed288426460edea11832bc981c048436f843cd350d25c"
+    },
+    {
+      "path": "applications/main/ibutton/scenes/ibutton_scene_settings_write_targets.c",
+      "sha256": "7ae6fb136f7024754a588d3b5d8a6bd74eccc247f3e448b4f4e6f3d5afac3005"
+    },
+    {
+      "path": "applications/main/infrared/scenes/infrared_scene_universal_ac.c",
+      "sha256": "c2527ca87e2c72ed41d40795ddd7936f1c5592d4955f339651b280ccdfe444bc"
+    },
+    {
+      "path": "applications/main/infrared/scenes/infrared_scene_universal_audio.c",
+      "sha256": "71d2c393d8a49c556c2d3db884ab2309951a414607883dac771027c7dddab513"
+    },
+    {
+      "path": "applications/main/infrared/scenes/infrared_scene_universal_bluray.c",
+      "sha256": "8dc75c453ad6fb6121c2a7840210e1590abf57b586b4bc3faed19857357f2ee3"
+    },
+    {
+      "path": "applications/main/infrared/scenes/infrared_scene_universal_digital_sign.c",
+      "sha256": "6229367276c51b9f4fe478c67855674c80a535c877bbdfc6cd1c98dd7d3bafd6"
+    },
+    {
+      "path": "applications/main/infrared/scenes/infrared_scene_universal_fan.c",
+      "sha256": "e939865eb180a72d5933d3affbe03579e6dda4329574e4fcdf839b578861a956"
+    },
+    {
+      "path": "applications/main/infrared/scenes/infrared_scene_universal_leds.c",
+      "sha256": "cccf67ac85459b1b252e7e6bbfdca7955d4c6b2a93054bc1c6437c0e32bfdc38"
+    },
+    {
+      "path": "applications/main/infrared/scenes/infrared_scene_universal_monitor.c",
+      "sha256": "6f8d4fd9c93574166b4631cdcf4fe1bc6c0207373e7972f054e81f13eff6beab"
+    },
+    {
+      "path": "applications/main/infrared/scenes/infrared_scene_universal_projector.c",
+      "sha256": "d80072b40983619dc428168022d8328e845667e6255059453927b1026a3ae627"
+    },
+    {
+      "path": "applications/main/infrared/scenes/infrared_scene_universal_tv.c",
+      "sha256": "bad1164da5796ef56651f53561d20e16aa2e7df7779a13d037be951f2dcc3376"
+    },
+    {
+      "path": "applications/main/infrared/views/infrared_debug_view.c",
+      "sha256": "ccb6b798137d7cc137994527e2cc93bebcc1985dd64c61909cc6f01b3362ca9f"
+    },
+    {
+      "path": "applications/main/infrared/views/infrared_move_view.c",
+      "sha256": "19bb1b96fa4231925173e9d1caebedfb8977bd10f3316e53e2aaf6068f7ef212"
+    },
+    {
+      "path": "applications/main/lfrfid/scenes/lfrfid_scene_settings_write_targets.c",
+      "sha256": "b53fea64a0f5f474b2b7d57e37a331bfc81a9246688ca1c9a96cea9d6ac4db8f"
+    },
+    {
+      "path": "applications/main/momentum_app/scenes/momentum_app_scene_interface_graphics_pack.c",
+      "sha256": "577c5c21f4581a11487a8ca7cccfd4b53cac07d749d909818643a1f0a075c7a9"
+    },
+    {
+      "path": "applications/main/momentum_app/scenes/momentum_app_scene_interface_mainmenu.c",
+      "sha256": "40c363d4547b55068b52b3dbbe48d9528315c42634a698f907a23837afe568b7"
+    },
+    {
+      "path": "applications/main/momentum_app/scenes/momentum_app_scene_interface_mainmenu_add.c",
+      "sha256": "9037d288b48455767caecf5d88365d8063856a34a739de9e19ee0727a41beeba"
+    },
+    {
+      "path": "applications/main/momentum_app/scenes/momentum_app_scene_interface_mainmenu_style.c",
+      "sha256": "08d632ec64fe07c4a7323f10b5253c626f6e0e794c7846647b2b42c99afabb63"
+    },
+    {
+      "path": "applications/main/momentum_app/scenes/momentum_app_scene_misc_dolphin.c",
+      "sha256": "fb00a74df0cc8c639bba504145b85aa18b1bc4062170f33e18a14d41cc96e2b0"
+    },
+    {
+      "path": "applications/main/momentum_app/scenes/momentum_app_scene_misc_dolphin_xp.c",
+      "sha256": "178117713c4b8d0824ff2f530fddd09e00e75059a2756ae58d482ce97630b572"
+    },
+    {
+      "path": "applications/main/momentum_app/scenes/momentum_app_scene_misc_screen.c",
+      "sha256": "94c4b889b998aafff0a3ea6b656957a6e260e8861e36c71536fed2f25f5b9430"
+    },
+    {
+      "path": "applications/main/momentum_app/scenes/momentum_app_scene_protocols.c",
+      "sha256": "2cb3363a8f12d663ab7c8ff9abafac987cb75b103faaf6366e7848fbc5971554"
+    },
+    {
+      "path": "applications/main/momentum_app/scenes/momentum_app_scene_protocols_freqs_add.c",
+      "sha256": "f0f32bf36b0cef1ff225d6076ef77370cea700558864730a320cc11f8df4fb7d"
+    },
+    {
+      "path": "applications/main/nfc/helpers/protocol_support/mf_classic/mf_classic.c",
+      "sha256": "79afb2960be07286b76d1b1a8da20e153983ca5618d38abb591c76aaa8af70db"
+    },
+    {
+      "path": "applications/main/nfc/helpers/protocol_support/mf_plus/mf_plus.c",
+      "sha256": "bf6e76137237db7c63a18b979040139b66300d0337942175e45907ca0f4e79c2"
+    },
+    {
+      "path": "applications/main/nfc/helpers/protocol_support/mf_ultralight/mf_ultralight.c",
+      "sha256": "90abcbacb42e207e9c50b9f17afdb779802c3c9f48989af95918f779ff4e11bc"
+    },
+    {
+      "path": "applications/main/nfc/helpers/protocol_support/nfc_protocol_support.c",
+      "sha256": "9effc9420726b8c05af37e94be0c6bbf5133cda4d91727c680eaa8558d533c4b"
+    },
+    {
+      "path": "applications/main/nfc/scenes/nfc_scene_key_dict_list.c",
+      "sha256": "3ca0e1a87390db06c0fb44becc8ae67e6ff78be6e216b0c2ab670930b3dfeb8a"
+    },
+    {
+      "path": "applications/main/nfc/scenes/nfc_scene_select_protocol.c",
+      "sha256": "8ad493d65e0afc823eb02f4d8efb563611e10dff9f072553b5cc9f89083ffd56"
+    },
+    {
+      "path": "applications/main/nfc/views/dict_attack.c",
+      "sha256": "b418d973a30bc49840682dfc63a708883467b9cee98b75ac0f93bfadc061c310"
+    },
+    {
+      "path": "applications/main/subghz/scenes/subghz_scene_radio_settings.c",
+      "sha256": "b6d838edf9b8313364b7c168659dba84a20e1eaf6ff51539e311246ede85d36c"
+    },
+    {
+      "path": "applications/main/subghz/scenes/subghz_scene_receiver_config.c",
+      "sha256": "abe2b2b6e102b60f38cec19698dd67f8e7720e24326f022d80621a9b2c272a2c"
+    },
+    {
+      "path": "applications/main/subghz/scenes/subghz_scene_show_error.c",
+      "sha256": "196b6ef4fea43d82ed638259a6e67f18682cd17cb73295da4948e6bdf87c3b20"
+    },
+    {
+      "path": "applications/main/subghz/scenes/subghz_scene_signal_settings.c",
+      "sha256": "2f111f2ac2489382e6ca86615335e3c8202bd810a883aae22af23781c10a1ed1"
+    },
+    {
+      "path": "applications/main/subghz/views/receiver.c",
+      "sha256": "e7e70733e57e054b2a0cbee58b501eed90da033dcbf237255585367e4386173f"
+    },
+    {
+      "path": "applications/main/u2f/views/u2f_view.c",
+      "sha256": "e41ba0a8ec4e2e3b29cb9bbeeafb3424edfdc0836e01e75427ab9b1851918af1"
+    },
+    {
+      "path": "applications/services/bt/bt_service/bt.c",
+      "sha256": "477e6c63ccec62b75d89b8cab7059e51d0af7f7abbd693e8e9737407b5b38ac3"
+    },
+    {
+      "path": "applications/services/desktop/desktop.c",
+      "sha256": "2a8776b3f1e5ade708f2b7c86e6bc10a517bda75f4ec338a8cca48477ef07644"
+    },
+    {
+      "path": "applications/services/desktop/desktop_i.h",
+      "sha256": "b672e5cee061b1e3fafb83493507799a959ffd79b973a47c2b64d6b4a24f552f"
+    },
+    {
+      "path": "applications/services/desktop/scenes/desktop_scene_config.h",
+      "sha256": "29b06d4cdee9c21e50a21713c604c35b22ac77bfbece6f456e2e1f37c38f9f7f"
+    },
+    {
+      "path": "applications/services/desktop/scenes/desktop_scene_hw_mismatch.c",
+      "sha256": "5f481812143d76866ae3146de3d42d86d92cfaf317537cfd49cb12e6499ad488"
+    },
+    {
+      "path": "applications/services/desktop/scenes/desktop_scene_lock_menu.c",
+      "sha256": "63e162a0d867acf03b3ba5d85e2ff9e0895f50538f243cf7ae4a73fbcf5e5fcb"
+    },
+    {
+      "path": "applications/services/desktop/scenes/desktop_scene_pin_input.c",
+      "sha256": "0682afca2dcc54944bb42f45c89806ac772eccaf5fe0a5152711215875e8d03f"
+    },
+    {
+      "path": "applications/services/desktop/scenes/desktop_scene_quick_settings.c",
+      "sha256": "69549f5dbbc0b12da220da3fb55452ac044501981ea0970a86efcb186bc2ff44"
+    },
+    {
+      "path": "applications/services/desktop/views/desktop_events.h",
+      "sha256": "442af2e40fba8db6d6a9f81ab01d6850b8529528c750fb5ae882d691496cbe5f"
+    },
+    {
+      "path": "applications/services/desktop/views/desktop_view_lock_menu.c",
+      "sha256": "fb0cf87684207e5909dce86b6b8a245338e39b690a991106c55cffbb7369ac5f"
+    },
+    {
+      "path": "applications/services/desktop/views/desktop_view_locked.c",
+      "sha256": "4bd18019a5d9367cb8d96938f8dc5ba4936bb04cef01d429934727dea365f7e6"
+    },
+    {
+      "path": "applications/services/desktop/views/desktop_view_pin_timeout.c",
+      "sha256": "cadfb98df68ad8fdd11b1449b0305582aca5b7dd6fc4e1d9780d29dfb7dfc407"
+    },
+    {
+      "path": "applications/services/desktop/views/desktop_view_quick_settings.c",
+      "sha256": "cca3347078ea26506bcfb57627177290e9a2c24d6608e497a065d2188652d23a"
+    },
+    {
+      "path": "applications/services/desktop/views/desktop_view_quick_settings.h",
+      "sha256": "8faef73009c4f6bc7a0d006fe8919b19ec49b2b5718ad3054a59c8e392cb9e9e"
+    },
+    {
+      "path": "applications/services/dialogs/dialogs_api.c",
+      "sha256": "1d35c353c0528b096c05bc1fce3faf930d479c0299e89e7f71af9d8b3c882aa0"
+    },
+    {
+      "path": "applications/services/gui/canvas.c",
+      "sha256": "1cb9b94263f2ee9ab67467ef0bbe05b657b538060b085977970d3256af5556d5"
+    },
+    {
+      "path": "applications/services/gui/elements.c",
+      "sha256": "96b67cca059973104b93f98eb41e79258ea0dc8f9115218fb0c645e158bd5a39"
+    },
+    {
+      "path": "applications/services/gui/modules/byte_input.c",
+      "sha256": "9e5507560c2b95865d141307c2669c3c7c300dab05fe653d3ae3a0e0cc9721ab"
+    },
+    {
+      "path": "applications/services/gui/modules/file_browser.c",
+      "sha256": "e38afea286b00fddae38065ab4306a4cdb22c709744ea335a2ce46c730dca7a5"
+    },
+    {
+      "path": "applications/services/gui/modules/menu.c",
+      "sha256": "1725c556d8664625d03b00bf5f749732125833ef74709ae329f371f01955281a"
+    },
+    {
+      "path": "applications/services/gui/modules/menu_animations.h",
+      "sha256": "4f0683de69ef2fcccf22e186c119565a4d5aa1cb2bbce59e89e86cf85fe90c6b"
+    },
+    {
+      "path": "applications/services/gui/modules/number_input.c",
+      "sha256": "1648472dc97e0cc0d7a3b190f89cb469bfd194c0e35b11213a354e83a50ff1bf"
+    },
+    {
+      "path": "applications/services/gui/modules/text_input.c",
+      "sha256": "244e37e3bf162c853be0114154d1d20a6d03d4c4c35949dbaaa4bedfb512a115"
+    },
+    {
+      "path": "applications/services/gui/modules/validators.c",
+      "sha256": "9d59a63cd0096b9897854118a7ba1b29554d498a8754f1ae95508d03728dd595"
+    },
+    {
+      "path": "applications/services/gui/modules/variable_item_list.c",
+      "sha256": "5d0221a3c74200a62528e6c65ffee2179d74777b837ea5681a4dad037e14a6cf"
+    },
+    {
+      "path": "applications/services/gui/modules/widget_elements/widget_element_text_scroll.c",
+      "sha256": "e786080e7d7fd4d11c8c2dc9c7fa44efafe4cd9d4ff3227dd6984c3d0439debe"
+    },
+    {
+      "path": "applications/services/gui/native_zh_font.h",
+      "sha256": "c09d0dc3ee9961dc9e8fa464bc47d85889c87d2f55e14f2bfc17235d9c7ff124"
+    },
+    {
+      "path": "applications/services/gui/updater_zh_font.h",
+      "sha256": "221cac394c51a3243c4016f3216c58a659dc630053090bf34c3c943c1066b8c1"
+    },
+    {
+      "path": "applications/services/gui/utf8_internal.h",
+      "sha256": "8000fe9e0ad28725de27d15c5bb210933743518399b7b5cb95f0f46a024d24c8"
+    },
+    {
+      "path": "applications/services/loader/loader.c",
+      "sha256": "86ac49bff8e746ec9c8a21ad60b66a858e4df623f0762d0ed9d13c0022c450ea"
+    },
+    {
+      "path": "applications/services/loader/loader_menu_storage.c",
+      "sha256": "26c180805f5c3498cc6e52003dc349e66139af036430f7195d7146a81217d52c"
+    },
+    {
+      "path": "applications/services/locale/locale_ui.h",
+      "sha256": "6adaea01a3a8fd3d7bd055efc578dd1bdc82a1a5381bc02ff87e6cf0ecef6817"
+    },
+    {
+      "path": "applications/services/notification/notification_app.c",
+      "sha256": "263bec50568838c245b361552fa840537dc7354b89ef1dc7b38498161f348b37"
+    },
+    {
+      "path": "applications/services/power/power_service/views/power_off.c",
+      "sha256": "2aa9eeb75d443a31c48b7d5349744a36cae25e6b3d5da145b64ec2364f70f20a"
+    },
+    {
+      "path": "applications/services/power/power_service/views/power_unplug_usb.c",
+      "sha256": "91dfe3472dd747b9665c7a04dabe7e8abe5510db5af8abda708979d9c1eed45e"
+    },
+    {
+      "path": "applications/services/rpc/rpc_gui.c",
+      "sha256": "b495d1157ee235cd037f917ae1a879ab16a5810ac96b7e8abe03b7f12917ec43"
+    },
+    {
+      "path": "applications/settings/desktop_settings/scenes/desktop_settings_scene_keybinds_action.c",
+      "sha256": "23566e9f9d8aa46a5036d7435d043e6533a5ed1dec9a78fbf71e382dcb48e4f2"
+    },
+    {
+      "path": "applications/settings/dolphin_passport/passport.c",
+      "sha256": "91a99fac8b707d278d2c8be8905d8ffdfde68ef85f4c722631f30d61bf66017e"
+    },
+    {
+      "path": "applications/settings/storage_settings/scenes/storage_settings_scene_formatting.c",
+      "sha256": "d22fffc7b03f6c87cfec06045174f99e0ae46d21e5fdc143db8a3c7aa33dbd09"
+    },
+    {
+      "path": "applications/settings/storage_settings/scenes/storage_settings_scene_internal_info.c",
+      "sha256": "34e6c9f427b5852115e85cc773f5af70d4c5a8cdab795c7193edd32bb304176a"
+    },
+    {
+      "path": "applications/settings/storage_settings/scenes/storage_settings_scene_unmounted.c",
+      "sha256": "7567f8156da529855ca0a35949a1c632c93919a5dbb496e3b3ab86ea154b2844"
+    },
+    {
+      "path": "applications/system/findmy/scenes/findmy_scene_config.c",
+      "sha256": "cc27aa28ccdd0759338b01a8c1d1efd25c212c2072dd6a518a8a07b74f7ce037"
+    },
+    {
+      "path": "applications/system/findmy/scenes/findmy_scene_config_import.c",
+      "sha256": "a2f9d6a7b84ffea7806c51d260aa3c87c2892067378b504bc051ae56643354dd"
+    },
+    {
+      "path": "applications/system/findmy/scenes/findmy_scene_config_import_result.c",
+      "sha256": "2faebcc181d6b404c7a2657e5a17a0cb5b521451899cba6a81df16dd4e9d6598"
+    },
+    {
+      "path": "applications/system/findmy/scenes/findmy_scene_config_mac.c",
+      "sha256": "b6cb292d462e35632b6d3cf8a5284c45b082bb272ef45900ed45633a9d7295ee"
+    },
+    {
+      "path": "applications/system/findmy/scenes/findmy_scene_config_packet.c",
+      "sha256": "947781d02246ae2373518f2d2ea9437a5125fa5b905ecf9244e0bef56aa1cae5"
+    },
+    {
+      "path": "applications/system/findmy/scenes/findmy_scene_config_tagtype.c",
+      "sha256": "5147e025bb3399549cb2ab79e45405a3e38646eee37cc8624ccb5aa0ebc93fa1"
+    },
+    {
+      "path": "applications/system/findmy/views/findmy_main.c",
+      "sha256": "cc1176ccb972e2ada6a964dc2ce306a529be7c8bb76ebeba960135a81787e4fc"
+    },
+    {
+      "path": "applications/system/hid_app/application.fam",
+      "sha256": "03afa35d640b407b497ce18b781a9529d41336f481bd5d7f5fd6f994970c2a83"
+    },
+    {
+      "path": "applications/system/hid_app/scenes/hid_scene_rename.c",
+      "sha256": "80da45d95734c6b60aaaca92392b2b81690d1e4f85491892c8dfbad3e084c93a"
+    },
+    {
+      "path": "applications/system/hid_app/scenes/hid_scene_start.c",
+      "sha256": "9fd6bc96931695299a7b49c0a069d5b6083d2d53e23aa0376a62658ec742b180"
+    },
+    {
+      "path": "applications/system/hid_app/scenes/hid_scene_unpair.c",
+      "sha256": "99d85e499fd2f9c8cf3cf0b00efae075c2a807654c98e612b5a9b5d82b6abc18"
+    },
+    {
+      "path": "applications/system/hid_app/views/hid_keyboard.c",
+      "sha256": "202b6af06508b4f3a94d7858a6d9027768bf648de82355e2ffa5bd4492553069"
+    },
+    {
+      "path": "applications/system/hid_app/views/hid_keynote.c",
+      "sha256": "b6fc5980e03764ffc31f1f2e3d0564483f459872260aa560f09e85a34254aeb1"
+    },
+    {
+      "path": "applications/system/hid_app/views/hid_media.c",
+      "sha256": "d9a18d7b054ad16ae2563e9aae397a90ee301733f80cc1621873f82e74bdf865"
+    },
+    {
+      "path": "applications/system/hid_app/views/hid_mouse.c",
+      "sha256": "9907d3c6d459fed8c16cbd839c832c6a67860a520e71667af3ab687317326e76"
+    },
+    {
+      "path": "applications/system/hid_app/views/hid_mouse_clicker.c",
+      "sha256": "e662d2187de08a1abad5a0928ba8b7f425332b2255fac115aab18ee31fceae4a"
+    },
+    {
+      "path": "applications/system/hid_app/views/hid_mouse_jiggler.c",
+      "sha256": "5b29304c895f3238779664d76c43b33d36578b36efe66e9e0106e587afc6d20d"
+    },
+    {
+      "path": "applications/system/hid_app/views/hid_mouse_jiggler_stealth.c",
+      "sha256": "cf710ece15dcab39c4d49f37bf736b3e5be6b12c80e21eab933fa15dfede076a"
+    },
+    {
+      "path": "applications/system/hid_app/views/hid_movie.c",
+      "sha256": "e668054b0d05f964366243ec84dcd83614906c3d2b3ffda48c9ee0a1197285c8"
+    },
+    {
+      "path": "applications/system/hid_app/views/hid_music_macos.c",
+      "sha256": "57bc2b6f8f73e4975e7a15136af1c80a2e1b1cabc2b4bcfe9d20a6b44ed4cdf9"
+    },
+    {
+      "path": "applications/system/hid_app/views/hid_numpad.c",
+      "sha256": "8bcef6408e672e6b29411a82207d31a5b78272c3fd2790caf8419fc35ec590c5"
+    },
+    {
+      "path": "applications/system/hid_app/views/hid_ptt.c",
+      "sha256": "b3e04c494f6c4399451f8507855bcd9721c9ec05940b303c7bcc30c5c115b255"
+    },
+    {
+      "path": "applications/system/hid_app/views/hid_ptt_menu.c",
+      "sha256": "f5304c867fb8cf45b8f81b9b9cbf99005fc33bfac7c2a98a97bc1cf38e83d5de"
+    },
+    {
+      "path": "applications/system/hid_app/views/hid_tiktok.c",
+      "sha256": "5de329fafc440590958cc837072010d43efcb24687e5dfda7904ea1a5fcc87dd"
+    },
+    {
+      "path": "applications/system/js_app/js_modules.c",
+      "sha256": "d7719473e75a4ba9251f615f2bfa64c5c6dcb1bc5cedaeb964279f09af7126f3"
+    },
+    {
+      "path": "applications/system/updater/scenes/updater_scene_error.c",
+      "sha256": "a0dce8fe703588c13a1a45d734cf6a92e9b1fc416e146b457b37d07a80519b31"
+    },
+    {
+      "path": "applications/system/updater/scenes/updater_scene_loadcfg.c",
+      "sha256": "d339f2e08c014d2b6a2d4f6d82a76779ca6bff58f22ac0f38ba86953a6d817dd"
+    },
+    {
+      "path": "applications/system/updater/util/update_task.c",
+      "sha256": "a7f3c60365dc90da6bd63ab9f5d73917ce7bd5045854575ca8441954930850e6"
+    },
+    {
+      "path": "applications/system/updater/views/updater_main.c",
+      "sha256": "0e91fb52cdb041128d2c1d38a5c1c1688cc1a27cac1d2c4a87dc271f047dd379"
+    },
+    {
+      "path": "applications/union/LICENSE",
+      "sha256": "3972dc9744f6499f0f9b2dbf76696f2ae7ad8af9b23dde66d6af86c9dfb36986"
+    },
+    {
+      "path": "applications/union/UPSTREAM.json",
+      "sha256": "e823fce52423bbe17a8ba90953bc18c4dcf71d1aecf015293763a048ffd46375"
+    },
+    {
+      "path": "applications/union/application.fam",
+      "sha256": "244ad1a462d4ed2f7eadebd05b0bfaa5d6516f3f11085d801fb859f6a07e4b9f"
+    },
+    {
+      "path": "applications/union/calendar/application.fam",
+      "sha256": "83568d41f2e55e111af57748edb25798de58cf74389053f9b23ec678516d5d3c"
+    },
+    {
+      "path": "applications/union/calendar/calendar.c",
+      "sha256": "53e9324b22d9d8446f26975241486a14a2949cf9152ac0981dd16fa84d973430"
+    },
+    {
+      "path": "applications/union/calendar/calendar.h",
+      "sha256": "7d60582f87f8e21b4929d234f24b854e74a29c628614fe58b6f5ceb773d3aab1"
+    },
+    {
+      "path": "applications/union/calendar/helpers/calendar_event.h",
+      "sha256": "e519d1b1f85d55b43edac163ca271e5840c61e8a46181249e48957025bcab618"
+    },
+    {
+      "path": "applications/union/calendar/helpers/variable_shared_context.h",
+      "sha256": "ce75f76a16a286281d9b5ac01cfca22842083cf25f61c214cf781a431394b053"
+    },
+    {
+      "path": "applications/union/calendar/icon.png",
+      "sha256": "bdfbffc6bc26becdb421651c9d91ffaebdb3b927cd321cfc781f2bb972d49235"
+    },
+    {
+      "path": "applications/union/calendar/scenes/calendar_scene.c",
+      "sha256": "502373981ec15305babb1a561336b749a1a79d3a2ac6c5b811cd60a4f5ffec6b"
+    },
+    {
+      "path": "applications/union/calendar/scenes/calendar_scene.h",
+      "sha256": "d0e39f7e85867932c3d40f71b74d1bf19720d40bd42b947068810c6596aa3629"
+    },
+    {
+      "path": "applications/union/calendar/scenes/calendar_scene_config.h",
+      "sha256": "8815db61ed3ebf3d439cdcc1f01c39b10f7a5ceab2c25bdff69a06663afe3f58"
+    },
+    {
+      "path": "applications/union/calendar/scenes/calendar_scene_month_browser.c",
+      "sha256": "79da3c574708f44ffe417933fc2b9817fc63fc8c0df202377a5483d9bbc1b747"
+    },
+    {
+      "path": "applications/union/calendar/scenes/calendar_scene_month_picker.c",
+      "sha256": "1d428febb768fd40fc2fa9ff1939d50369d19b60e4f7c3d45ee2d4b447963e3f"
+    },
+    {
+      "path": "applications/union/calendar/scenes/calendar_scene_year_picker.c",
+      "sha256": "0d20016349e8553b71e08d4b99d22d075ce112d10214d26f80453c49440d8286"
+    },
+    {
+      "path": "applications/union/calendar/views/calendar_month_browser.c",
+      "sha256": "6cacb9cd981236a9d3450deaae3f3fb6d986449015c5d51ec4d3ed3a2bc41983"
+    },
+    {
+      "path": "applications/union/calendar/views/calendar_month_browser.h",
+      "sha256": "bbfe8f97cc59b6ba2d7e6f98e4098981add6922d354d14d2bf098535cb0249e5"
+    },
+    {
+      "path": "applications/union/calendar/views/calendar_month_picker.c",
+      "sha256": "f084ba6b4f7db3e3ff47920181733e8cbf33768fde7a79e1f7b3b327a49dbee4"
+    },
+    {
+      "path": "applications/union/calendar/views/calendar_month_picker.h",
+      "sha256": "83966458b8bad02d224c766243cf68c2c20d5a4306a2bda90170955db2ecafa8"
+    },
+    {
+      "path": "applications/union/calendar/views/calendar_year_picker.c",
+      "sha256": "ce864d6241f75495f5d791c435ac7e0bc01d6faf54f95a93d6966fef16da3ca8"
+    },
+    {
+      "path": "applications/union/calendar/views/calendar_year_picker.h",
+      "sha256": "2deb0fd4bcd59450340237bebe2cf0af20b966dcfcd4bddee7839be2afe6c183"
+    },
+    {
+      "path": "applications/union/flipnote/LICENSE",
+      "sha256": "1eb4d65479a94c5bebb1dc7cc9973fe4058cfd3c29abce73a37ee6a553aadcdc"
+    },
+    {
+      "path": "applications/union/flipnote/README.md",
+      "sha256": "06fbf88733cb11974d9c6b5f97d0502ffae4a11738e44304cc1d5f9b49f04355"
+    },
+    {
+      "path": "applications/union/flipnote/application.fam",
+      "sha256": "e7353c5a98ff469a0d899a638e873a41a49ea105a82c294aa58e9be9f1ba5b2c"
+    },
+    {
+      "path": "applications/union/flipnote/changelog.md",
+      "sha256": "32465e8d0fba60e69997a326dc23f262e9fc0af4b66efc5cd0bc186c0f47633f"
+    },
+    {
+      "path": "applications/union/flipnote/flipnote.c",
+      "sha256": "a9a1c50d00976a83990675bb5cc40d0658a5ad24fed50f0d71d0dc07c4dbfdc6"
+    },
+    {
+      "path": "applications/union/flipnote/fznote_text_input.c",
+      "sha256": "bc9899a43e5c18fd6d20b0b0409c50e930acab1409f45e3a6ee647a61e80e81d"
+    },
+    {
+      "path": "applications/union/flipnote/fznote_text_input.h",
+      "sha256": "3b2e3a5680c84a177a4c06fcd167b2dde12b298613518d133b830e5615754639"
+    },
+    {
+      "path": "applications/union/flipnote/fznote_validators.c",
+      "sha256": "7ecc53709be3c1df140ea58411b78646946d4dfa1719721a1fcce878c0e49d93"
+    },
+    {
+      "path": "applications/union/flipnote/fznote_validators.h",
+      "sha256": "7d087ca44114b959f40c203be7f6319695b1435d4fd9c25d23d4f35221f90701"
+    },
+    {
+      "path": "applications/union/flipnote/icon.png",
+      "sha256": "8b580f1f66dd46ec5d18709c88a51f69c85d3e0fc243a101bfe06143b3feda38"
+    },
+    {
+      "path": "applications/union/flipnote/icons/KeyBackspaceSelected_16x9.png",
+      "sha256": "4557cdde87045d0fc2097b944dea6e8d3f3c1eef43cc0f0894438412ed6c74a8"
+    },
+    {
+      "path": "applications/union/flipnote/icons/KeyBackspace_16x9.png",
+      "sha256": "57e4fba3a0f9c42c857124da21070889539aee773aec896abc1b124930124560"
+    },
+    {
+      "path": "applications/union/flipnote/icons/KeyKeyboardSelected_10x11.png",
+      "sha256": "9f5352e404dde192edf546988a0cef140b80897616f74462729f3214159ed1a9"
+    },
+    {
+      "path": "applications/union/flipnote/icons/KeyKeyboard_10x11.png",
+      "sha256": "dd8a13caceeade5d5076ff1bfdf84d02d95444de760ef7e3b5eae86ead462193"
+    },
+    {
+      "path": "applications/union/flipnote/icons/KeySaveSelected_24x11.png",
+      "sha256": "561359041d065499c1e53db5fb51e8005a1500311d92bd4103a5f93d2472e71d"
+    },
+    {
+      "path": "applications/union/flipnote/icons/KeySave_24x11.png",
+      "sha256": "214d56e7c29e9c4c722b9f258167b35071328681214d3cc0a0222e76fb6b9af3"
+    },
+    {
+      "path": "applications/union/flipnote/icons/Text_10x10.png",
+      "sha256": "76bcfa5dcede6840e4ab1029634dbc550c21a38dc58ae1064d5b6f2739bb2bb6"
+    },
+    {
+      "path": "applications/union/flipnote/icons/WarningDolphin_45x42.png",
+      "sha256": "184aef6a2b237065d45515c79025b84fe2be9228bb152cf54e0b3e40a2e4431a"
+    },
+    {
+      "path": "applications/union/flipnote/screenshots/0.png",
+      "sha256": "0d2356db7d2f19b2588241f2ab87b1b8afba0af4d3516f888bae3fd5199431bb"
+    },
+    {
+      "path": "applications/union/flipnote/screenshots/1.png",
+      "sha256": "9aa08facb4913c6bcf44eba9936ddfed7c114210d42d7271e01f16a4f647cb18"
+    },
+    {
+      "path": "applications/union/flipnote/screenshots/2.png",
+      "sha256": "39663cb983c9974528c0e4b72b11c8bc5df32c5b1f38e5aead08beed7539d0e0"
+    },
+    {
+      "path": "applications/union/flipper_analog_clock/README.md",
+      "sha256": "799343df180e580b4f3f1fd5895595f6badeae620ed3277eb55442997b4c3bd3"
+    },
+    {
+      "path": "applications/union/flipper_analog_clock/analog_clock.c",
+      "sha256": "b1e81babd45d3cb282d3981d781fa930db5266c03965d6d61e4a738112e38e66"
+    },
+    {
+      "path": "applications/union/flipper_analog_clock/analog_clock.png",
+      "sha256": "c48f0160a2673127c015f64caf0f55d37a2c25be4df1e94664df7cd7f58cd713"
+    },
+    {
+      "path": "applications/union/flipper_analog_clock/application.fam",
+      "sha256": "1d363aedf1711a8dcf83c8f9fb96d5c5135b2032b5027ef5f19dfd68047a9e37"
+    },
+    {
+      "path": "applications/union/flipper_analog_clock/img/1.png",
+      "sha256": "67396be50bfd7bee66aabdc99b93c66db449fbdcb61dada9383a1452be3beca4"
+    },
+    {
+      "path": "applications/union/flipper_chronometer/application.fam",
+      "sha256": "ca3af463698037430d5ed0c5bf16f109f3c58d6d7f3698154bfe23a65e1044f4"
+    },
+    {
+      "path": "applications/union/flipper_chronometer/chronometer.png",
+      "sha256": "95d4d5cf01c40d05d7b4b5e256e8c569d257372d827ff8984b6fc77a4b35c813"
+    },
+    {
+      "path": "applications/union/flipper_chronometer/flipper_chronometer.c",
+      "sha256": "a478a47ffbf99645ba11eef2fff6e787f2412e520da58aaf244ab3f067b2e7d7"
+    },
+    {
+      "path": "applications/union/flipper_task_tracker/LICENSE.txt",
+      "sha256": "b615e12d2e39e686a61d705fe26730400f6c4473ae939b66ae68bbf8c0b30527"
+    },
+    {
+      "path": "applications/union/flipper_task_tracker/app/app.h",
+      "sha256": "189546321f7446a48fdd9811a12c4d1690e206eaf6b21125e550877d3aaaef73"
+    },
+    {
+      "path": "applications/union/flipper_task_tracker/app/csv/csv.c",
+      "sha256": "f745c8906f647dbff3e0fe2aabf92c0cda322f2696d9ea022f85e4ced9235161"
+    },
+    {
+      "path": "applications/union/flipper_task_tracker/app/csv/csv.h",
+      "sha256": "12f3ca392c2832d7ff431b765002f2e259b67cc93e85eb815632ed6aea7343f5"
+    },
+    {
+      "path": "applications/union/flipper_task_tracker/app/datetime/datetime.c",
+      "sha256": "ae3e72cc14b86f2c5d2f44e11a14970ff6544932c5fc62876fcb499b83685aff"
+    },
+    {
+      "path": "applications/union/flipper_task_tracker/app/datetime/datetime.h",
+      "sha256": "058ed1cadfcb08568fd5a97778a03e2894196ba7f95b66df8fd755d838488747"
+    },
+    {
+      "path": "applications/union/flipper_task_tracker/app/free/free.c",
+      "sha256": "9bbf17a95de36deea36cb6da7e0115c14aa0f7f5fe6ce04ac6ab81a5f9df0ab9"
+    },
+    {
+      "path": "applications/union/flipper_task_tracker/app/free/free.h",
+      "sha256": "13208c18977ff4dcea4ee14d8aa6e117303fd770d725032eb144d4a79b4e7021"
+    },
+    {
+      "path": "applications/union/flipper_task_tracker/app/init/init.c",
+      "sha256": "328a74b6764ecc74fce695978a6fd65e1270c49ac487a376f64c050cfb920c3d"
+    },
+    {
+      "path": "applications/union/flipper_task_tracker/app/init/init.h",
+      "sha256": "4915b51ce5e919f4c8f64b7b2e01cf3370de1041400c4572be8af6190aba2417"
+    },
+    {
+      "path": "applications/union/flipper_task_tracker/app/scene/edit_description/edit_description.c",
+      "sha256": "cd324dbee1c77236dfcc428c81d6c5ab003168de1ed3cfd5efb768f84bc9dba5"
+    },
+    {
+      "path": "applications/union/flipper_task_tracker/app/scene/edit_description/edit_description.h",
+      "sha256": "27e7f216c7133fb8a5950fb83b3b4a16272c4b629d2e8f5579db47fb2413b602"
+    },
+    {
+      "path": "applications/union/flipper_task_tracker/app/scene/edit_name/edit_name.c",
+      "sha256": "4a6cb462f558b68906678918cbdc70c702a542de4a7cc373b85dd6913e51a2b0"
+    },
+    {
+      "path": "applications/union/flipper_task_tracker/app/scene/edit_name/edit_name.h",
+      "sha256": "e4fb642c288a5168ae8f8fb5dad1221c093047748f1c2a1ff4f49815875a9969"
+    },
+    {
+      "path": "applications/union/flipper_task_tracker/app/scene/edit_price/edit_price.c",
+      "sha256": "93dc5d5a8bc53862ed91fd47ca122a3d26d92c10b2173095f1311a972dcaec89"
+    },
+    {
+      "path": "applications/union/flipper_task_tracker/app/scene/edit_price/edit_price.h",
+      "sha256": "eb5b6c8f44add8776c2883e04c9ed963a55238e80260c5754205cf5ba50cc6e5"
+    },
+    {
+      "path": "applications/union/flipper_task_tracker/app/scene/edit_task/edit_task.c",
+      "sha256": "5fbde957583abebe5a9e999bea97cc241bdd90ea7c4ea74d843837aebc33b37c"
+    },
+    {
+      "path": "applications/union/flipper_task_tracker/app/scene/edit_task/edit_task.h",
+      "sha256": "0ecdca44929065cf382034f9551159bc767dee6cbcd1c8cd365325f75b9984da"
+    },
+    {
+      "path": "applications/union/flipper_task_tracker/app/scene/main_menu/main_menu.c",
+      "sha256": "ba81226f8a8417fce64a7ed945bc41ac26b6218e27f851cd7bc4bcf2ec5d2028"
+    },
+    {
+      "path": "applications/union/flipper_task_tracker/app/scene/main_menu/main_menu.h",
+      "sha256": "f684a63855531fae327aa3b01e077241e52d5ff2f1ccfd591b9854b529df270a"
+    },
+    {
+      "path": "applications/union/flipper_task_tracker/app/scene/scene.c",
+      "sha256": "407ea3980de37f12be08ba466cd7bb3710270594129800d12ca909ed54f8cafe"
+    },
+    {
+      "path": "applications/union/flipper_task_tracker/app/scene/scene.h",
+      "sha256": "4325d5fb9ca50da02e225461b77a594b79cd3862f7775f8f13c7c1a8c6af39a8"
+    },
+    {
+      "path": "applications/union/flipper_task_tracker/app/scene/task_continue/task_continue.c",
+      "sha256": "6ef4b14b0e952464579b4865a7854994798bda7a56f5f824362043ccc1c37344"
+    },
+    {
+      "path": "applications/union/flipper_task_tracker/app/scene/task_continue/task_continue.h",
+      "sha256": "e91ed8cd6c65a61b9060a5ff0ad62b1cdf9e4a9d9ec01d320e5ede8bb9ab9b48"
+    },
+    {
+      "path": "applications/union/flipper_task_tracker/app/scene/view_stats/view_stats.c",
+      "sha256": "951fd7ffab27f273f610c3ae6b707563cf62e400a9c1c288f2ef320d9541e277"
+    },
+    {
+      "path": "applications/union/flipper_task_tracker/app/scene/view_stats/view_stats.h",
+      "sha256": "0e451e3f8fdd71aec79385f46759d8a63386ed8fc70e1f7e63cf1cc01c5b8683"
+    },
+    {
+      "path": "applications/union/flipper_task_tracker/app/scene/view_task/view_task.c",
+      "sha256": "33861c8560e2524c71dd9bf8e4d31ad4c8bf803ea54bba3fcf197292701017eb"
+    },
+    {
+      "path": "applications/union/flipper_task_tracker/app/scene/view_task/view_task.h",
+      "sha256": "406eb7393bf16b56415b916545163babb4211d4d78d17ed4915670cdc79f2b8b"
+    },
+    {
+      "path": "applications/union/flipper_task_tracker/app/scene/view_tasks/view_tasks.c",
+      "sha256": "e8fff64cbf5becc94f351b19741288e7c5d0d77ce13966211367af91f5c2a1a8"
+    },
+    {
+      "path": "applications/union/flipper_task_tracker/app/scene/view_tasks/view_tasks.h",
+      "sha256": "055f5a08f9982d76c4f34ea0eea387597e0fa1ec936f93ce6b876c20c861cf65"
+    },
+    {
+      "path": "applications/union/flipper_task_tracker/app/storage/init.c",
+      "sha256": "191bef0ec3bbd394a0a7cb48c11c7ade6bc12abf1d750ec8c3f8332c77ce3d5c"
+    },
+    {
+      "path": "applications/union/flipper_task_tracker/app/storage/init.h",
+      "sha256": "067143a176a930cff70a2aa36726fb4085112c352a1005f713da47e3ce478cdf"
+    },
+    {
+      "path": "applications/union/flipper_task_tracker/app/structs.h",
+      "sha256": "7d8680662c5f9d0e4f26c222db6de8c6a67e31f41c8738135e63cbdfc26053f8"
+    },
+    {
+      "path": "applications/union/flipper_task_tracker/app/tasks/task.c",
+      "sha256": "ba5296aa3a389b395cc7075289ded6dbb6409f05a70b925e887fed5bbcd5d147"
+    },
+    {
+      "path": "applications/union/flipper_task_tracker/app/tasks/task.h",
+      "sha256": "e5ab44ae4eb871966fa3e03fcf3dbeae1597ae2e728547c1713b5119db1d4d3a"
+    },
+    {
+      "path": "applications/union/flipper_task_tracker/application.fam",
+      "sha256": "d7734ec012352eaeb7bd7d2cafe1f73abf0d7620e57a3e8bc16e6638bd4137e5"
+    },
+    {
+      "path": "applications/union/flipper_task_tracker/flipper_time_tracker.png",
+      "sha256": "6a32415c97fb58651c8f4411b16c6783c9e876cec98ed0b7af9127edf9219dd7"
+    },
+    {
+      "path": "applications/union/flipper_task_tracker/images/.gitkeep",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "applications/union/flipper_task_tracker/images/DolphinDone_80x58.png",
+      "sha256": "88a681726de90775220774f29f01d31f078548df7e567765da82f70e8f733dfc"
+    },
+    {
+      "path": "applications/union/flipper_task_tracker/images/DolphinReadingSuccess_59x63.png",
+      "sha256": "ae7952b854b0ff6dae2cbf589244b67cfbd7f67286b188cdedbf6d57515eeab4"
+    },
+    {
+      "path": "applications/union/flipper_task_tracker/images/TrackerClock_14/frame_01.png",
+      "sha256": "ecb59393b846a05b966562d9a42357222b36ff726dc7dbd729b22e3b887e77d0"
+    },
+    {
+      "path": "applications/union/flipper_task_tracker/images/TrackerClock_14/frame_02.png",
+      "sha256": "ab3da61e42e3ac62cc06e1e2c94ca1399fc105ba6e783d0488be8f03508da37c"
+    },
+    {
+      "path": "applications/union/flipper_task_tracker/images/TrackerClock_14/frame_03.png",
+      "sha256": "570c961805b59edab1952b990896709dfc0b632ed280b8f8f2dbb08d0c5c2a6f"
+    },
+    {
+      "path": "applications/union/flipper_task_tracker/images/TrackerClock_14/frame_04.png",
+      "sha256": "d46f3f2ae9a923677cddd086e0d7fe1f80e12535190cb4c835bf227c61bce690"
+    },
+    {
+      "path": "applications/union/flipper_task_tracker/images/TrackerClock_14/frame_05.png",
+      "sha256": "8b56b035b879e77027a9606e74bd7ef4d4ac8908dfd6c0b1d16227d647e2196c"
+    },
+    {
+      "path": "applications/union/flipper_task_tracker/images/TrackerClock_14/frame_06.png",
+      "sha256": "2533eb80241900000d64d52ddefc9e14c9b4defb3fb093de9c743225fe6a8310"
+    },
+    {
+      "path": "applications/union/flipper_task_tracker/images/TrackerClock_14/frame_07.png",
+      "sha256": "13297c96850a299ba2c163e1e2c77cb5fc331d83b8fb48ed84a75fdeaf95944b"
+    },
+    {
+      "path": "applications/union/flipper_task_tracker/images/TrackerClock_14/frame_08.png",
+      "sha256": "5c78b4ad95158ebfea4707bbc70ebccfbfa8c7cac66e5bec00ebcff22f5ec396"
+    },
+    {
+      "path": "applications/union/flipper_task_tracker/images/TrackerClock_14/frame_rate",
+      "sha256": "4e07408562bedb8b60ce05c1decfe3ad16b72230967de01f640b7e4729b49fce"
+    },
+    {
+      "path": "applications/union/flipper_task_tracker/images/ViewTasks_14/frame_01.png",
+      "sha256": "3ded9034f7cd4c3014504869deee38ca2db9a958ca6a6871f2d20b2874d0c047"
+    },
+    {
+      "path": "applications/union/flipper_task_tracker/images/ViewTasks_14/frame_02.png",
+      "sha256": "983c488f731a9f3896ec0dc7ef94b9cd5a352363ce27202351fb8aea6bdd8b96"
+    },
+    {
+      "path": "applications/union/flipper_task_tracker/images/ViewTasks_14/frame_03.png",
+      "sha256": "5df5226a0b554227ee47c85afee8774873cdef5a8ff361ac639c88f8068f9756"
+    },
+    {
+      "path": "applications/union/flipper_task_tracker/images/ViewTasks_14/frame_04.png",
+      "sha256": "db817715798f06dc5407068a03f90a1d10ab7d427267780dbc4e52c91b31e7c0"
+    },
+    {
+      "path": "applications/union/flipper_task_tracker/images/ViewTasks_14/frame_05.png",
+      "sha256": "e4f9b04212d290dabe3a30adc8cd63d31daabdc90574337bb66759fe172f8b63"
+    },
+    {
+      "path": "applications/union/flipper_task_tracker/images/ViewTasks_14/frame_06.png",
+      "sha256": "dad9a82d4f6830fc8cfa1c9eea90918ddf65bdf3bef7ac0625df42410463374a"
+    },
+    {
+      "path": "applications/union/flipper_task_tracker/images/ViewTasks_14/frame_07.png",
+      "sha256": "e4f9b04212d290dabe3a30adc8cd63d31daabdc90574337bb66759fe172f8b63"
+    },
+    {
+      "path": "applications/union/flipper_task_tracker/images/ViewTasks_14/frame_08.png",
+      "sha256": "db817715798f06dc5407068a03f90a1d10ab7d427267780dbc4e52c91b31e7c0"
+    },
+    {
+      "path": "applications/union/flipper_task_tracker/images/ViewTasks_14/frame_09.png",
+      "sha256": "5df5226a0b554227ee47c85afee8774873cdef5a8ff361ac639c88f8068f9756"
+    },
+    {
+      "path": "applications/union/flipper_task_tracker/images/ViewTasks_14/frame_10.png",
+      "sha256": "983c488f731a9f3896ec0dc7ef94b9cd5a352363ce27202351fb8aea6bdd8b96"
+    },
+    {
+      "path": "applications/union/flipper_task_tracker/images/ViewTasks_14/frame_rate",
+      "sha256": "4e07408562bedb8b60ce05c1decfe3ad16b72230967de01f640b7e4729b49fce"
+    },
+    {
+      "path": "applications/union/flipper_task_tracker/images/dolphinMafia_119x62.png",
+      "sha256": "fe86a7971071b5acdb2af316e7e4724159fabfc43035bcf664711ccb5a995caa"
+    },
+    {
+      "path": "applications/union/flipper_task_tracker/images/dolphinWait_59x54.png",
+      "sha256": "4b2edb66c8a3d602b20f25bc227a6eae156aaace74c0cfdffbf0352f49b53b8d"
+    },
+    {
+      "path": "applications/union/flipper_task_tracker/main.c",
+      "sha256": "c737d42984a03d67186a98fbe145cc2ad3fee1b1a73390732f9d98ad454cf772"
+    },
+    {
+      "path": "applications/union/multi_counter/LICENSE",
+      "sha256": "07733808ae41fa441ed7b75bb1b493ef94257bfec33b1b031718e9c4acbdd545"
+    },
+    {
+      "path": "applications/union/multi_counter/application.fam",
+      "sha256": "22eaf496c6e9a6d57e71d6d7d1635039c043b7763f6688c1d99411957fb3e027"
+    },
+    {
+      "path": "applications/union/multi_counter/counter.c",
+      "sha256": "76735beadd11324e4fb73580cc9b477db6b9765684c3aecccdb83af37c84c2e4"
+    },
+    {
+      "path": "applications/union/multi_counter/icons/DOWN.png",
+      "sha256": "43c13b19c83b2051aaf579600df03dea5235a1bb0147df482dbb951a243d1b0e"
+    },
+    {
+      "path": "applications/union/multi_counter/icons/S_OFF.png",
+      "sha256": "29ebf1254ffd7154f5c5c23c503b54e5439e1abb70df6bc93d6008f344cfa2a6"
+    },
+    {
+      "path": "applications/union/multi_counter/icons/S_ON.png",
+      "sha256": "a30c5086d2726e4737fa1b35dbb7fbeb2c66dd5fa3755bfad29ee41374b96da6"
+    },
+    {
+      "path": "applications/union/multi_counter/icons/UP.png",
+      "sha256": "923757da2cf466e8cbbe2c4bbec17d3eadf4206364feec622cd0d4c5cdb96188"
+    },
+    {
+      "path": "applications/union/multi_counter/icons/counter_icon.png",
+      "sha256": "1509458a093b3d324a513c77accbeb17669e27be6e1e38c234f1cbef979faf6b"
+    },
+    {
+      "path": "applications/union/net_calculator/LICENSE",
+      "sha256": "3972dc9744f6499f0f9b2dbf76696f2ae7ad8af9b23dde66d6af86c9dfb36986"
+    },
+    {
+      "path": "applications/union/net_calculator/application.fam",
+      "sha256": "b6992ee58ed657d923f7b0584c9dc3a115a0339a88b24a341c22eff77b3aa764"
+    },
+    {
+      "path": "applications/union/net_calculator/icon.png",
+      "sha256": "8cf8bf9e5f64d54548fc5372176a50f15d93b93c62db7d00659a22918ed4de55"
+    },
+    {
+      "path": "applications/union/net_calculator/net_calculator.c",
+      "sha256": "7893e1b0154bd7e650363d12934b436999ad5f0aa653f3aea8ee55332e426e4b"
+    },
+    {
+      "path": "applications/union/pomodoro/LICENSE",
+      "sha256": "a2010f343487d3f7618affe54f789f5487602331c0a8d03f49e9a7c547cf0499"
+    },
+    {
+      "path": "applications/union/pomodoro/README-catalog.md",
+      "sha256": "40fb2550294d0a2f44120a11180db19d999801661244f8f8ead1b5a666235db2"
+    },
+    {
+      "path": "applications/union/pomodoro/README.md",
+      "sha256": "bce228c449426831e199e47a9b4cf4b9fc021167875cef1cede8a7708308d869"
+    },
+    {
+      "path": "applications/union/pomodoro/application.fam",
+      "sha256": "52cf06b9ba892763fd1bbe5f1a13764fe37b6a8762b492636c3835423ff20dcf"
+    },
+    {
+      "path": "applications/union/pomodoro/icons/ButtonLeft_4x7.png",
+      "sha256": "7e0a7af2e4caa440236f463354d31d01c550dbb13c0d7513f0d68190c3505f48"
+    },
+    {
+      "path": "applications/union/pomodoro/icons/Ok_btn_9x9.png",
+      "sha256": "006be695728400c6ae614405b4851a3165ea0c2c23f39055d44281a747de7fc9"
+    },
+    {
+      "path": "applications/union/pomodoro/icons/Pin_back_arrow_10x8.png",
+      "sha256": "41657a21976f671cf4038f5384cc43d0dbeed74b77f4e139f6b8919802c73590"
+    },
+    {
+      "path": "applications/union/pomodoro/icons/Space_65x18.png",
+      "sha256": "2826ba12b2309dbd0ff863b22911a9610800f0a9920b42907e496042f060d4f0"
+    },
+    {
+      "path": "applications/union/pomodoro/img/2.png",
+      "sha256": "f2dd2cf1a8888d8c2c08613785b37a2c94b5b24f414c9a5c972c6065e90891f8"
+    },
+    {
+      "path": "applications/union/pomodoro/img/LICENSE.png",
+      "sha256": "0ad04fe5cb1d0bb3f544c39666928f53840a75119cc715d4d6ee070ecae7f071"
+    },
+    {
+      "path": "applications/union/pomodoro/misc/1.png",
+      "sha256": "483c831a375a275cac02ff2196968e9114a957ac95d5867f4cb9ce50768d362f"
+    },
+    {
+      "path": "applications/union/pomodoro/misc/2.png",
+      "sha256": "7360b2d277a1104a96a6e8bf52aeff424be443e99e365ba68a537cd55d806010"
+    },
+    {
+      "path": "applications/union/pomodoro/misc/3.png",
+      "sha256": "395c15eee4e985680ddc8ffc77d494bd12bb0b25b0bb355afc59ba6eda83e5c0"
+    },
+    {
+      "path": "applications/union/pomodoro/misc/4.png",
+      "sha256": "c4b6a4de06987a381299431ba00ff0c93b4ed47e5908c74e79a5289086e6cde9"
+    },
+    {
+      "path": "applications/union/pomodoro/misc/5.png",
+      "sha256": "24f73b2a8bb3b31d3fdf39d15318e41c62805652ccee1f521ef35cceff61c22f"
+    },
+    {
+      "path": "applications/union/pomodoro/pomodoro.c",
+      "sha256": "32f1f93f19d51eca9ee51a302526813ae57f054283ff5a703215794a6575c2c8"
+    },
+    {
+      "path": "applications/union/pomodoro/pomodoro.h",
+      "sha256": "9062381b8f49a80ebbbf7947427a8ef335a297c72f0d2eb34b14a769bef9bed9"
+    },
+    {
+      "path": "applications/union/pomodoro/pomodoro_timer.c",
+      "sha256": "da1166866b1c687509a890023872849d44f196ec7be277c81c46c6b2c0bf78b6"
+    },
+    {
+      "path": "applications/union/pomodoro/pomodoro_timer.h",
+      "sha256": "471985b4140176990ba0a542c86fe6077c1e022cf233ed0e900534b10a373196"
+    },
+    {
+      "path": "applications/union/pomodoro/pomodoro_timer.png",
+      "sha256": "a97083ce429581f07751c841304a73978846a7beedff57e1bb695079725cefcf"
+    },
+    {
+      "path": "applications/union/pomodoro/views/pomodoro_10.c",
+      "sha256": "a6d664f52c4cba0007670802ccead318be60938a57ea9f70224112323e06f888"
+    },
+    {
+      "path": "applications/union/pomodoro/views/pomodoro_10.h",
+      "sha256": "315c6dff8d8790e4aafa4b86d3e524f736e19752e662b21e2d954fc1fcded85d"
+    },
+    {
+      "path": "applications/union/pomodoro/views/pomodoro_25.c",
+      "sha256": "4672618784344b683ec394a6af4d71cbbd2761c99e636da6c972b12beb2a7812"
+    },
+    {
+      "path": "applications/union/pomodoro/views/pomodoro_25.h",
+      "sha256": "a597cf1396a9c012c86aad507dd8fe2af07d5750da3a17a2c6e7d1f64d02783b"
+    },
+    {
+      "path": "applications/union/pomodoro/views/pomodoro_50.c",
+      "sha256": "5cc8c827f65951588f553f75587c3609c74412610ee5156df5f87e46e03b9016"
+    },
+    {
+      "path": "applications/union/pomodoro/views/pomodoro_50.h",
+      "sha256": "2c68725a1c14ae8d9368d99527626ead1ed65a6ce09952dd21caf2e9c52e3847"
+    },
+    {
+      "path": "applications/union/sd_info/LICENSE",
+      "sha256": "3972dc9744f6499f0f9b2dbf76696f2ae7ad8af9b23dde66d6af86c9dfb36986"
+    },
+    {
+      "path": "applications/union/sd_info/application.fam",
+      "sha256": "8e86ef6c9374e8475fec9df5f3f3a33681ae61c97ded2fd5177f99a9d3dd9fd3"
+    },
+    {
+      "path": "applications/union/sd_info/icon.png",
+      "sha256": "c96a4cab1e21613c3d43e1dd1ad32078af9a64dbf075ee8757e9d3c1d53657ff"
+    },
+    {
+      "path": "applications/union/sd_info/main.c",
+      "sha256": "65897673a7683665dac416acbc81f021e45cdb63438fe43aadcfa9bcf5d21314"
+    },
+    {
+      "path": "applications/union/segment_clock/CHANGELOG.md",
+      "sha256": "cfe47eb8fcb8681ebc7492164a130e6bdac475b91e9c88e32d8ae473879f182c"
+    },
+    {
+      "path": "applications/union/segment_clock/README.md",
+      "sha256": "607fdb507043ab01674f94d70e589d4b8d6ee8826317506256ba9ade4eb12ecc"
+    },
+    {
+      "path": "applications/union/segment_clock/application.fam",
+      "sha256": "2651973c3d4a6354496d72359717c2df7739cac7230de9b855bdcedaaeacae3d"
+    },
+    {
+      "path": "applications/union/segment_clock/catalog/docs/Changelog.md",
+      "sha256": "0fed4c7b8060d60f9a7370920eebc3f279b5440dc960d17c900863da5eed0b0f"
+    },
+    {
+      "path": "applications/union/segment_clock/catalog/docs/Readme.md",
+      "sha256": "c82f2a6ebecff7b2f861ed9c3f8b64d898da36ab199642328b755a0fb79edad5"
+    },
+    {
+      "path": "applications/union/segment_clock/catalog/screenshots/1.png",
+      "sha256": "c94e83b9ad14b52622a27c2acd37c381140f8897698857d4ce3d469e7523cb62"
+    },
+    {
+      "path": "applications/union/segment_clock/icon.png",
+      "sha256": "4d4920fa0ec7e3c5843e16068d8c11d24c9bbdeae65b4399d4dc6448e178a604"
+    },
+    {
+      "path": "applications/union/segment_clock/main.c",
+      "sha256": "a5363797c14abc70df5bf8010ff918fda9496145c33ccb0ceea11e8f17fa0018"
+    },
+    {
+      "path": "assets/icons/Interface/DoorLeft_70x55.png",
+      "sha256": "4a186816f7f52e60d0b623b8a41d166bcf1ebc961ddb4df9da34b73031b2b01e"
+    },
+    {
+      "path": "assets/icons/Interface/DoorRight_70x55.png",
+      "sha256": "c6abdaac91a52855ab25cf9f415188f2e34dbeeb3a1fdaa5f4eaa0da356f299b"
+    },
+    {
+      "path": "assets/icons/MainMenu/Clock_14/frame_01.png",
+      "sha256": "ecb59393b846a05b966562d9a42357222b36ff726dc7dbd729b22e3b887e77d0"
+    },
+    {
+      "path": "assets/icons/MainMenu/Clock_14/frame_02.png",
+      "sha256": "ab3da61e42e3ac62cc06e1e2c94ca1399fc105ba6e783d0488be8f03508da37c"
+    },
+    {
+      "path": "assets/icons/MainMenu/Clock_14/frame_03.png",
+      "sha256": "570c961805b59edab1952b990896709dfc0b632ed280b8f8f2dbb08d0c5c2a6f"
+    },
+    {
+      "path": "assets/icons/MainMenu/Clock_14/frame_04.png",
+      "sha256": "d46f3f2ae9a923677cddd086e0d7fe1f80e12535190cb4c835bf227c61bce690"
+    },
+    {
+      "path": "assets/icons/MainMenu/Clock_14/frame_05.png",
+      "sha256": "8b56b035b879e77027a9606e74bd7ef4d4ac8908dfd6c0b1d16227d647e2196c"
+    },
+    {
+      "path": "assets/icons/MainMenu/Clock_14/frame_06.png",
+      "sha256": "2533eb80241900000d64d52ddefc9e14c9b4defb3fb093de9c743225fe6a8310"
+    },
+    {
+      "path": "assets/icons/MainMenu/Clock_14/frame_07.png",
+      "sha256": "13297c96850a299ba2c163e1e2c77cb5fc331d83b8fb48ed84a75fdeaf95944b"
+    },
+    {
+      "path": "assets/icons/MainMenu/Clock_14/frame_08.png",
+      "sha256": "5c78b4ad95158ebfea4707bbc70ebccfbfa8c7cac66e5bec00ebcff22f5ec396"
+    },
+    {
+      "path": "assets/icons/MainMenu/Clock_14/frame_rate",
+      "sha256": "4e07408562bedb8b60ce05c1decfe3ad16b72230967de01f640b7e4729b49fce"
+    },
+    {
+      "path": "mobile/FlipperLab/Sources/FlipperCore/FlipperFunction.swift",
+      "sha256": "32835536e876ea3cfdc929280fa1ad2f2e5bda18569000f174caec291bee3112"
+    },
+    {
+      "path": "mobile/FlipperLab/Tests/FlipperCoreTests/FlipperFunctionTests.swift",
+      "sha256": "b1d748712d15124a204ce6d2d94984150cab3564a7d0c1fbb0ae3deda250d4ac"
+    },
+    {
+      "path": "scripts/audit_app_union.py",
+      "sha256": "7a176755b44049b754156b681031d36f805cdb564f675c851666d0f922fa0764"
+    },
+    {
+      "path": "scripts/audit_ui_strings.py",
+      "sha256": "8ed423d6574d2bcf05f89b5d1ea26e7efc11806473cba24eab73430d6d899335"
+    },
+    {
+      "path": "scripts/fbt/appmanifest.py",
+      "sha256": "563cfa1f23e8f2a4ca479f7aca836f590715cf7bd455321cd68be8749fc538c5"
+    },
+    {
+      "path": "scripts/fbt/elfmanifest.py",
+      "sha256": "ed7164ba45a4177c7a998049e5c6ca01e984a246da5d0a6b50556e28f3bc01c7"
+    },
+    {
+      "path": "scripts/fbt_tools/fbt_apps.py",
+      "sha256": "cfc9d01675072b6028df9a71f6776b3afbf294fb3da1c1d36ef2e43d26431eda"
+    },
+    {
+      "path": "scripts/generate_native_zh_font.py",
+      "sha256": "ef718b6295bb99c765516e01599e8b67351a7bf8a1d99700bc4b1686602d7d90"
+    },
+    {
+      "path": "scripts/render_native_zh_preview.py",
+      "sha256": "4b7f979c0da79f12e404e6e7f380f223fb51650233373c79ec0eb9f22b1a8ef8"
+    },
+    {
+      "path": "scripts/tests/test_app_union_audit.py",
+      "sha256": "70c0d4557ddc7d6483e9dc3104197f7dceb064a71845c6ad86930122f87323c2"
+    },
+    {
+      "path": "scripts/tests/test_calendar_union.py",
+      "sha256": "288b16b9a510857966aabde906cce8ad6ee087a9991b5cab5b0c64ab677178a2"
+    },
+    {
+      "path": "scripts/tests/test_clock_port.py",
+      "sha256": "4e43054c43e25d06f649ea60a5b5de6a52225b36c298936283995acca62ff7ad"
+    },
+    {
+      "path": "scripts/tests/test_fap_display_name.py",
+      "sha256": "d48978096f9077dd19f71e571559f14218e3b2759d2c2e65144e1725873ffb4c"
+    },
+    {
+      "path": "scripts/tests/test_font_source_coverage.py",
+      "sha256": "549f2cddb28099b2861280a2602b55df40ad3d5fb995d51aac41c4d69083acfe"
+    },
+    {
+      "path": "scripts/tests/test_menu_animations.py",
+      "sha256": "eb80090d23754e95efd9f2c608869fbd3a453e76e295d85fc7e2f31f59cfbe8f"
+    },
+    {
+      "path": "scripts/tests/test_menu_styles.py",
+      "sha256": "94707b5533c8965e90f559fe1a0048d3d022527a9a51d014900cca6930a902db"
+    },
+    {
+      "path": "scripts/tests/test_native_ui_utf8.py",
+      "sha256": "f6c43f88fed48fc2a6764ec0a37604da30039ca22ef7874a630e395cd0b59d97"
+    },
+    {
+      "path": "scripts/tests/test_number_input.py",
+      "sha256": "daf7bf877c19ae7288f13aab7043b9ff726e2d83a364f14a70c43d0295dad234"
+    },
+    {
+      "path": "scripts/tests/test_quick_settings.py",
+      "sha256": "b89fb11b8ddb63a787b0b990b5ffab388dbac3c3f64b16884ad809403008a752"
+    },
+    {
+      "path": "scripts/tests/test_ui_string_audit.py",
+      "sha256": "a7b5c5ef2767c9e432baceff5e2bff992c1641f4aa6dfaf4ea1342174652ddaf"
+    },
+    {
+      "path": "scripts/tests/test_union_ui_regressions.py",
+      "sha256": "ce3bb818f0dcbca6943ece3045f974bb7b688ed81cfeacbf3310afd2b449095b"
+    },
+    {
+      "path": "scripts/tests/test_widget_scroll_utf8.py",
+      "sha256": "f56ee1439e97286b86c32f06f525bacd3c5fdeb74207a54733ed95146ee74a79"
+    },
+    {
+      "path": "site_scons/commandline.scons",
+      "sha256": "a50699b34c6156c1976a31a581e62bd0050b1cca35f0a298bee85be9f1976971"
+    },
+    {
+      "path": "targets/f7/api_symbols.csv",
+      "sha256": "59dd8ba60a3a78cb559c4704de4312832f71d35084d34c1395bc4830e6e39fdc"
+    }
+  ]
+}

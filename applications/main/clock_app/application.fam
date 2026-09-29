@@ -1,0 +1,18 @@
+# Ported from Unleashed 15bca58e (applications/main/clock_app, version 1.3).
+# Built with the firmware's main-menu applications, using the imported clock icon.
+App(
+    appid="clock",
+    # "Clock" is an existing desktop shortcut to nightstand.fap; keep it intact.
+    name="床头时钟",
+    apptype=FlipperAppType.MENUEXTERNAL,
+    entry_point="clock_app",
+    stack_size=2 * 1024,
+    icon="A_Clock_14",
+    order=81,
+    fap_icon="icon.png",
+    fap_category="Tools",
+    fap_author="@nymda & @Willy-JL & @mishamyte & @xMasterX",
+    fap_weburl="https://github.com/nymda/FlipperNightStand",
+    fap_version="1.3",
+    fap_description="时钟、闹钟、秒表与屏幕亮度控制",
+)

@@ -82,7 +82,7 @@ bool ibutton_scene_settings_write_targets_on_event(void* context, SceneManagerEv
     // blocking on a modal would be wrong.
     if(event.type == SceneManagerEventTypeBack && settings_plugin) {
         if(!settings_plugin->write_targets->on_save()) {
-            dialog_message_show_storage_error(ibutton->dialogs, "Cannot save\nsettings");
+            dialog_message_show_storage_error(ibutton->dialogs, "无法保存\n设置");
         }
         settings_plugin = NULL;
     }

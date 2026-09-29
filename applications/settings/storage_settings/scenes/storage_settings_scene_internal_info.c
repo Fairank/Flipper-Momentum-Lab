@@ -1,3 +1,4 @@
+#include <locale/locale_ui.h>
 #include "../storage_settings.h"
 #include <furi_hal_version.h>
 #include <furi_hal_flash.h>
@@ -23,7 +24,12 @@ void storage_settings_scene_internal_info_on_enter(void* context) {
     if(error != FSE_OK) {
         dialog_ex_set_header(dialog_ex, "内部存储错误", 64, 10, AlignCenter, AlignCenter);
         dialog_ex_set_text(
-            dialog_ex, storage_error_get_desc(error), 64, 32, AlignCenter, AlignCenter);
+            dialog_ex,
+            locale_ui_storage_error(storage_error_get_desc(error)),
+            64,
+            32,
+            AlignCenter,
+            AlignCenter);
     } else {
         furi_string_printf(
             app->text_string,

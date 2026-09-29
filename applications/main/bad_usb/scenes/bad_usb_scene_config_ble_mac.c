@@ -25,7 +25,7 @@ void bad_usb_scene_config_ble_mac_on_enter(void* context) {
 
     memcpy(bad_usb->ble_mac_buf, bad_usb->script_hid_cfg.ble.mac, sizeof(bad_usb->ble_mac_buf));
     reverse_mac_addr(bad_usb->ble_mac_buf);
-    byte_input_set_header_text(byte_input, "Set BLE MAC address");
+    byte_input_set_header_text(byte_input, "设置蓝牙 MAC");
 
     byte_input_set_result_callback(
         byte_input,

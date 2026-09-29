@@ -239,10 +239,9 @@ static bool js_internal_compat_ask_user(const char* message) {
     DialogsApp* dialogs = furi_record_open(RECORD_DIALOGS);
     DialogMessage* dialog = dialog_message_alloc();
     dialog_message_set_header(dialog, message, 64, 0, AlignCenter, AlignTop);
-    dialog_message_set_text(
-        dialog, "This script may not\nwork as expected", 79, 32, AlignCenter, AlignCenter);
+    dialog_message_set_text(dialog, "此脚本可能\n无法正常运行", 79, 32, AlignCenter, AlignCenter);
     dialog_message_set_icon(dialog, &I_Warning_30x23, 0, 18);
-    dialog_message_set_buttons(dialog, "Go back", NULL, "Run anyway");
+    dialog_message_set_buttons(dialog, "返回", NULL, "仍然运行");
     DialogMessageButton choice = dialog_message_show(dialogs, dialog);
     dialog_message_free(dialog);
     furi_record_close(RECORD_DIALOGS);
@@ -262,8 +261,8 @@ void js_check_sdk_compatibility(struct mjs* mjs) {
             JS_SDK_MAJOR,
             JS_SDK_MINOR);
 
-        const char* message = (status == JsSdkCompatStatusFirmwareTooOld) ? "Outdated Firmware" :
-                                                                            "Outdated Script";
+        const char* message = (status == JsSdkCompatStatusFirmwareTooOld) ? "固件版本过旧" :
+                                                                            "脚本版本过旧";
         if(!js_internal_compat_ask_user(message)) {
             JS_ERROR_AND_RETURN(mjs, MJS_NOT_IMPLEMENTED_ERROR, "Incompatible script");
         }
@@ -332,7 +331,7 @@ void js_check_sdk_features(struct mjs* mjs) {
     if(!js_internal_supports_all_of(mjs, features)) {
         FURI_LOG_E(TAG, "Script requests unsupported features");
 
-        if(!js_internal_compat_ask_user("Unsupported Feature")) {
+        if(!js_internal_compat_ask_user("功能不受支持")) {
             JS_ERROR_AND_RETURN(mjs, MJS_NOT_IMPLEMENTED_ERROR, "Incompatible script");
         }
     }

@@ -1,4 +1,5 @@
 #include "menu.h"
+#include "menu_animations.h"
 
 #include "locale/locale.h"
 #include <gui/elements.h>
@@ -19,6 +20,7 @@ struct Menu {
     View* view;
 
     FuriTimer* scroll_timer;
+    FuriTimer* animation_timer;
 };
 
 typedef struct {
@@ -39,6 +41,10 @@ typedef struct {
 
     size_t scroll_counter;
     size_t vertical_offset;
+    uint32_t animation_started;
+    uint32_t animation_duration;
+    int32_t animation_direction;
+    bool animation_active;
 } MenuModel;
 
 static void menu_process_up(Menu* menu);
@@ -46,6 +52,10 @@ static void menu_process_down(Menu* menu);
 static void menu_process_left(Menu* menu);
 static void menu_process_right(Menu* menu);
 static void menu_process_ok(Menu* menu);
+
+static uint32_t menu_elapsed_ms(uint32_t ticks) {
+    return (uint64_t)ticks * 1000 / furi_kernel_get_tick_frequency();
+}
 
 static void menu_get_name(MenuItem* item, FuriString* name, bool shorter) {
     furi_string_set(name, item->label);
@@ -113,8 +123,8 @@ static size_t menu_scroll_counter(MenuModel* model, bool selected) {
 // The Grid, Macintosh and 3D styles are ported from Unleashed's menu style plugins
 // (applications/system/menu_styles/{grid,macintosh,three_d}.c by @apfxtech): same
 // layouts and navigation, drawn with the canvas instead of the framebuffer, labels
-// through the shared scrolling helpers, and no extra timers: the Macintosh window
-// opens and the 3D ring turns without their upstream transitions.
+// through the shared scrolling helpers. A view-owned one-shot timer advances the
+// window opening and ring rotation, and is stopped when the menu exits.
 
 // Macintosh window: title bar height, icon cell, grid origin and pitch, label width.
 // Upstream places the grid at (16, 13) with a 36 x 24 pitch under 4 x 6 glyphs; the
@@ -410,9 +420,10 @@ static void menu_draw_callback(Canvas* canvas, void* _model) {
             canvas_set_font(canvas, FontSecondary);
             canvas_draw_str_aligned(
                 canvas, 1, 1, AlignLeft, AlignTop, furi_hal_version_get_name_ptr());
-            char str[10];
+            char str[16];
             Dolphin* dolphin = furi_record_open(RECORD_DOLPHIN);
-            snprintf(str, 10, "Level %i", dolphin_get_level(dolphin->state->data.icounter));
+            snprintf(
+                str, sizeof(str), "等级 %i", dolphin_get_level(dolphin->state->data.icounter));
             furi_record_close(RECORD_DOLPHIN);
             canvas_draw_str_aligned(canvas, 127, 1, AlignRight, AlignTop, str);
             for(int8_t i = -1; i <= 4; i++) {
@@ -427,11 +438,11 @@ static void menu_draw_callback(Canvas* canvas, void* _model) {
                     width += 10;
                     height += 10;
                     pos_y += 2;
-                    canvas_draw_box(canvas, pos_x - width / 2, pos_y + height / 2, width, 9);
+                    canvas_draw_box(canvas, pos_x - width / 2, pos_y + height / 2, width, 14);
                     canvas_set_color(canvas, ColorWhite);
                     canvas_set_font(canvas, FontBatteryPercent);
                     canvas_draw_str_aligned(
-                        canvas, pos_x, pos_y + height / 2 + 1, AlignCenter, AlignTop, "Start");
+                        canvas, pos_x, pos_y + height / 2 + 1, AlignCenter, AlignTop, "开始");
 
                     canvas_set_color(canvas, ColorBlack);
                     canvas_set_font(canvas, FontSecondary);
@@ -616,7 +627,7 @@ static void menu_draw_callback(Canvas* canvas, void* _model) {
 
             // Display OTG state
             char ext5v_display[20];
-            snprintf(ext5v_display, sizeof(ext5v_display), "5v: %s", ext5v ? "On" : "Off");
+            snprintf(ext5v_display, sizeof(ext5v_display), "5v: %s", ext5v ? "开" : "关");
             canvas_draw_str(canvas, 5, 56, ext5v_display);
 
             MenuItem* item = MenuItemArray_get(model->items, position);
@@ -781,6 +792,14 @@ static void menu_draw_callback(Canvas* canvas, void* _model) {
             break;
         }
         case MenuStyleMacintosh: {
+            uint32_t elapsed = furi_get_tick() - model->animation_started;
+            uint32_t frame = menu_window_frame(menu_elapsed_ms(elapsed));
+            if(model->animation_active && frame < 8) {
+                int32_t width = 128 * (frame + 1) / 8;
+                int32_t height = 64 * (frame + 1) / 8;
+                canvas_draw_frame(canvas, (128 - width) / 2, (64 - height) / 2, width, height);
+                break;
+            }
             // Classic Mac window: striped title bar with the device name and a close
             // box, a 3 x 2 icon grid scrolled by rows, a scrollbar on the right
             canvas_draw_frame(canvas, 0, 0, 128, 64);
@@ -852,23 +871,19 @@ static void menu_draw_callback(Canvas* canvas, void* _model) {
             break;
         }
         case MenuStyleThreeD: {
-            // Resting frame of upstream's carousel: the selected icon in front at
-            // 200%, up to four neighbours behind it on the ring (upstream's path
-            // points for slots -2..2 at phase 0) and the selected name along the
-            // bottom. Fewer items than slots show each item once
-            static const uint8_t ring[MENU_THREE_D_SLOTS][3] = {
-                {46, 10, 100},
-                {28, 25, 100},
-                {64, 37, 200},
-                {100, 25, 100},
-                {82, 10, 100},
-            };
+            // The upstream ring path and timing, drawn through the normal canvas.
+            // Keep whole UTF-8 labels instead of upstream's byte-based reveal.
+            uint32_t elapsed = furi_get_tick() - model->animation_started;
+            int32_t phase =
+                model->animation_active ?
+                    menu_ring_phase(model->animation_direction, menu_elapsed_ms(elapsed)) :
+                    0;
             int32_t slots = MIN((int32_t)items_count, MENU_THREE_D_SLOTS);
             for(int32_t d = -(slots / 2); d < slots - slots / 2; d++) {
                 shift_position = (position + items_count + d) % items_count;
                 item = MenuItemArray_get(model->items, shift_position);
-                const uint8_t* slot = ring[d + MENU_THREE_D_SLOTS / 2];
-                menu_three_d_icon(canvas, item, slot[0], slot[1], slot[2]);
+                MenuRingPoint point = menu_ring_point(d, phase);
+                menu_three_d_icon(canvas, item, point.x, point.y, point.scale);
             }
             item = MenuItemArray_get(model->items, position);
             canvas_set_font(canvas, FontSecondary);
@@ -883,7 +898,7 @@ static void menu_draw_callback(Canvas* canvas, void* _model) {
 
         furi_string_free(name);
     } else {
-        canvas_draw_str(canvas, 2, 32, "Empty");
+        canvas_draw_str(canvas, 2, 32, "暂无项目");
         elements_scrollbar(canvas, 0, 0);
     }
 }
@@ -901,6 +916,18 @@ static bool menu_input_callback(InputEvent* event, void* context) {
     }
 
     if(event->type == InputTypeShort || event->type == InputTypeRepeat) {
+        if(momentum_settings.menu_style == MenuStyleThreeD &&
+           (event->key == InputKeyUp || event->key == InputKeyDown || event->key == InputKeyLeft ||
+            event->key == InputKeyRight)) {
+            with_view_model(
+                menu->view,
+                MenuModel * model,
+                {
+                    model->animation_direction =
+                        (event->key == InputKeyUp || event->key == InputKeyLeft) ? -1 : 1;
+                },
+                false);
+        }
         switch(event->key) {
         case InputKeyUp:
             menu_process_up(menu);
@@ -935,6 +962,22 @@ static void menu_scroll_timer_callback(void* context) {
     with_view_model(menu->view, MenuModel * model, { model->scroll_counter++; }, true);
 }
 
+static void menu_animation_timer_callback(void* context) {
+    Menu* menu = context;
+    with_view_model(
+        menu->view,
+        MenuModel * model,
+        {
+            model->animation_active = model->animation_active &&
+                                      furi_get_tick() - model->animation_started <
+                                          model->animation_duration;
+            if(model->animation_active) {
+                furi_timer_start(menu->animation_timer, furi_ms_to_ticks(32));
+            }
+        },
+        true);
+}
+
 static void menu_enter(void* context) {
     Menu* menu = context;
     with_view_model(
@@ -946,9 +989,15 @@ static void menu_enter(void* context) {
                 icon_animation_start(item->icon);
             }
             model->scroll_counter = 0;
+            model->animation_started = furi_get_tick();
+            model->animation_duration = furi_ms_to_ticks(MENU_WINDOW_OPEN_MS);
+            model->animation_active = momentum_settings.menu_style == MenuStyleMacintosh;
         },
         true);
     furi_timer_start(menu->scroll_timer, 333);
+    if(momentum_settings.menu_style == MenuStyleMacintosh) {
+        furi_timer_start(menu->animation_timer, furi_ms_to_ticks(32));
+    }
 }
 
 static void menu_exit(void* context) {
@@ -957,6 +1006,7 @@ static void menu_exit(void* context) {
         menu->view,
         MenuModel * model,
         {
+            model->animation_active = false;
             if(MenuItemArray_size(model->items)) {
                 MenuItem* item = MenuItemArray_get(model->items, model->position);
                 icon_animation_stop(item->icon);
@@ -964,6 +1014,7 @@ static void menu_exit(void* context) {
         },
         false);
     furi_timer_stop(menu->scroll_timer);
+    furi_timer_stop(menu->animation_timer);
 }
 
 Menu* menu_alloc(void) {
@@ -977,6 +1028,8 @@ Menu* menu_alloc(void) {
     view_set_exit_callback(menu->view, menu_exit);
 
     menu->scroll_timer = furi_timer_alloc(menu_scroll_timer_callback, FuriTimerTypePeriodic, menu);
+    menu->animation_timer =
+        furi_timer_alloc(menu_animation_timer_callback, FuriTimerTypeOnce, menu);
 
     with_view_model(
         menu->view,
@@ -993,10 +1046,14 @@ Menu* menu_alloc(void) {
 void menu_free(Menu* menu) {
     furi_check(menu);
 
+    with_view_model(menu->view, MenuModel * model, { model->animation_active = false; }, false);
+    // Free waits for pending callbacks; they must finish before the view is freed.
+    furi_timer_free(menu->animation_timer);
+    furi_timer_free(menu->scroll_timer);
+
     menu_reset(menu);
     with_view_model(menu->view, MenuModel * model, { MenuItemArray_clear(model->items); }, false);
     view_free(menu->view);
-    furi_timer_free(menu->scroll_timer);
 
     free(menu);
 }
@@ -1052,6 +1109,7 @@ void menu_reset(Menu* menu) {
 
 static void menu_set_position(Menu* menu, uint32_t position) {
     furi_check(menu);
+    bool animate = false;
 
     with_view_model(
         menu->view,
@@ -1059,6 +1117,12 @@ static void menu_set_position(Menu* menu, uint32_t position) {
         {
             if(position < MenuItemArray_size(model->items) && position != model->position) {
                 model->scroll_counter = 0;
+                if(momentum_settings.menu_style == MenuStyleThreeD) {
+                    model->animation_started = furi_get_tick();
+                    model->animation_duration = furi_ms_to_ticks(MENU_RING_STEP_MS);
+                    model->animation_active = true;
+                    animate = true;
+                }
 
                 MenuItem* item = MenuItemArray_get(model->items, model->position);
                 icon_animation_stop(item->icon);
@@ -1070,6 +1134,7 @@ static void menu_set_position(Menu* menu, uint32_t position) {
             }
         },
         true);
+    if(animate) furi_timer_start(menu->animation_timer, furi_ms_to_ticks(32));
 }
 
 uint32_t menu_get_selected_item(Menu* menu) {

@@ -1,3 +1,4 @@
+#include <locale/locale_ui.h>
 #include "../storage_settings.h"
 
 static void
@@ -21,7 +22,12 @@ void storage_settings_scene_unmounted_on_enter(void* context) {
         } else {
             dialog_ex_set_header(dialog_ex, "无法挂载 SD 卡", 64, 3, AlignCenter, AlignTop);
             dialog_ex_set_text(
-                dialog_ex, storage_error_get_desc(error), 3, 22, AlignLeft, AlignTop);
+                dialog_ex,
+                locale_ui_storage_error(storage_error_get_desc(error)),
+                3,
+                22,
+                AlignLeft,
+                AlignTop);
             notification_message(app->notification, &sequence_blink_red_100);
         }
     } else {
@@ -33,7 +39,12 @@ void storage_settings_scene_unmounted_on_enter(void* context) {
         } else {
             dialog_ex_set_header(dialog_ex, "无法卸载 SD 卡", 64, 3, AlignCenter, AlignTop);
             dialog_ex_set_text(
-                dialog_ex, storage_error_get_desc(error), 3, 22, AlignLeft, AlignTop);
+                dialog_ex,
+                locale_ui_storage_error(storage_error_get_desc(error)),
+                3,
+                22,
+                AlignLeft,
+                AlignTop);
             notification_message(app->notification, &sequence_blink_red_100);
         }
     }
