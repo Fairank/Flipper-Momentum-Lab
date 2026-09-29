@@ -21,6 +21,8 @@
 
 ## 当前状态
 
+2026-09-29 第三轮新增“设备 → 手机能力共享”：显式开启手机定位或网络后，固件应用可请求 GPS、HTTP(S)、TCP、UDP 与 WebSocket。需要 BLE 就绪、App 保持前台；关闭、断连或进入后台时停止共享。代码 `41fd31347` 的 [最新 CI](https://github.com/Fairank/Flipper-Momentum-Lab/actions/runs/36553662778) 已通过 148 项 Swift、6 项 iPhone 界面测试和模拟器构建，导出 24 张原始截图；同次主机任务通过 112 项 Python/C 回归。见 [使用说明与真机验收清单](../../documentation/custom/PHONE_COMPANION_GUIDE.zh-CN.md) 和 [最新验证记录](../../documentation/custom/VALIDATION.md)。下方原有测试表为 `0d741468` 的历史记录，不代表最新提交已经完成实机验证。
+
 手机使用设备、功能、资料库、任务、指南五个主页面，采用原生大标题、分组列表、表单和菜单，保留橙色及像素小屏。比较入口在资料库和记录详情的“更多”菜单中。既有四页的设计决定、实际模型和运行证据见 [苹果界面优化验收](../../documentation/custom/UI_APPLE_REVIEW.md)。
 
 本轮新增独立的“功能”页作为第五个主页面。手机以中文介绍功能，点击条目通过蓝牙在 Flipper 打开现有应用；不显示设备屏幕镜像。启动范围、设备忙碌时的限制和真机验收边界见 [手机功能中心说明](FUNCTION_LAUNCH.zh-CN.md)。下表的 CI 结果已包含该页的离线界面测试和 2 项功能条目包测试，但不包含通过蓝牙实际启动 Flipper 应用的验证。本轮还修正了设备颜色对应的蓝牙广播服务号，修正后的构建结果以 PR 检查为准。

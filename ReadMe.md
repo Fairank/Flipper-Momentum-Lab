@@ -1,6 +1,6 @@
 # Flipper Momentum 个人定制与换机交接
 
-**2026-09-29 第二轮中文与功能并集更新：**在前轮协议融合基础上，补入快捷设置、床头时钟、菜单过渡动画及十个中文工具，修复中文按钮、标题和滚动排版，iPhone 增加 13 项已安装应用的中文说明。代码 `6017530b` 的云端固件构建、93 项 Python/C、89 项 Swift 和 5 项 iPhone UI 测试均通过。详见 [第二轮实现及界面预览](documentation/custom/UNION_CHINESE_CONTINUATION.md)、[前轮协议融合](documentation/custom/UPSTREAM_FUSION.md) 和 [验证记录与固件附件](documentation/custom/VALIDATION.md)。**仍不是全部功能的完整并集或全界面中文覆盖，尚未刷机和真机联调。**
+**2026-09-29 第三轮更新：**补上 iPhone GPS/网络共享处理端，中文改用含 7,097 字形的 SD 资源和有界缓存，主固件到无线栈前余量从 944 增至 9,136 字节；增加 68 条中文动画对白、九类默认动画文字层、第二批十个应用及手机入口。累计导入二十个工具/应用，并建立逐项源码差异表。代码 `41fd31347` 的 112 项 Python/C、148 项 Swift、6 项 iPhone 界面测试、完整固件与外置应用构建及 Lint 全部通过。详见 [本轮实现及页面预览](documentation/custom/COMPANION_AND_CHINESE_20260929.md)、[手机共享使用说明](documentation/custom/PHONE_COMPANION_GUIDE.zh-CN.md) 和 [云端验证与固件附件](documentation/custom/VALIDATION.md)。**仍不是全部功能的完整并集或全界面中文覆盖，尚未刷机和真机联调。**
 
 以 Momentum 保留 Xtreme 风格，逐项适配 Unleashed，并新增 iPhone 中文 App（`mobile/FlipperLab`）与设备端中文入口 Flipper Lab（`applications/main/lab`）。当前分支 `codex/iphone-zh-architecture` 已推送，草稿 PR [#1](https://github.com/Fairank/Flipper-Momentum-Lab/pull/1) 指向 `codex/momentum-unleashed`。已完成：资源加载进度、插件扫描容错、构建源文件顺序修复、UTF-8 换行修复；Windows 上完整更新包（含外部应用与 Flipper Lab）构建成功；桌面回归与字库生成器测试通过；iPhone App 的 Swift 包测试、不签名模拟器构建和离线 UI 测试在 GitHub macOS CI 通过。**尚未刷写真机，蓝牙真机未测，现有原生应用的全面中文化仍是待办需求。**
 

@@ -1,5 +1,29 @@
 # 验证记录
 
+## 手机共享、中文资源与第三方并集第三轮（2026-09-29）
+
+实现范围见 [第三轮说明与页面预览](COMPANION_AND_CHINESE_20260929.md)，逐文件摘要、实际 Claude 模型与完成状态、测试和包内检查见 [JSON 记录](COMPANION_AND_CHINESE_20260929.json)。本节对应代码 **`41fd31347eaff40663d9760cd9f5062e67fa418d`**，PR 合并检出为 `0f6dff61e1cdd614d8ea2e0e18e3f450fcae7733`；后续文档与截图更新不等于重新执行硬件验收。
+
+- [Lab validation 36553662778](https://github.com/Fairank/Flipper-Momentum-Lab/actions/runs/36553662778) 全部通过：**112 项 Python / 实际 C 回归、148 项 Swift 核心测试、6 项 iPhone UI 测试**、不签名模拟器构建、字库同步及源码预览。环境为 Xcode 26.6 / iPhone 17 Pro Max / iOS 26.5。新增网络测试的 HTTP 使用测试替身，TCP/UDP 使用本机回环；没有真实服务器 WebSocket 握手或 BLE 端到端验收。
+- [Lab firmware 36553662871](https://github.com/Fairank/Flipper-Momentum-Lab/actions/runs/36553662871) 和 [Lint 36553662867](https://github.com/Fairank/Flipper-Momentum-Lab/actions/runs/36553662867) 全部通过；完整固件与外置应用构建后跟踪源码未改变。通用 Build 工作流跳过，实际固件验证由 Lab firmware 执行。
+- 本地 112 项回归无跳过通过，`updater_package`、独立执行的 `fap_dist` 和 `lint_all` 通过。7,097 个 SD 字形与生产 C 解码逐个比对，12 项缓存测试覆盖无卡、损坏记录、队列饱和、淘汰及插卡重试；采用确定性调度替身，不等于真机并发、时延或 RAM/栈验收。
+- [最新固件附件 11026840499](https://github.com/Fairank/Flipper-Momentum-Lab/actions/runs/36553662871/artifacts/11026840499) 已下载，ZIP 大小 13,010,280 字节，SHA-256 为 `067eecee277c886472ce18e3f8524ba1b69fa3287724c32c048f24a6b78d8c52`。内部 `SHA256SUMS`、DFU CRC、目标地址与无线栈边界均通过核验。
+- 包内 TGZ 为 `flipper-z-f7-update-mntm-HEAD-0f6dff61.tgz`，12,986,459 字节，SHA-256 为 `1b9fad699ed6da74901974055e45ee4d9464c3d1d8f16e6fbfb23efa8407db39`。主固件 **871,504 字节**，到无线栈 `0x080D7000` 前余 **9,136 字节**，比前轮云端的 944 字节增加 **8,192 字节**；恢复升级器 **123,829 字节**，低于 131,072 字节限制。没有扩大或绕过保留区。
+- 常规包含 **291 个 FAP、121 个 FAL**。24 项指定应用（含手机 GPS、手机联网测试、两批二十个应用及两个伴侣应用）各出现一次，ELF、API 89 和 UTF-8 显示名称有效；两个单独附带的伴侣 FAP 与包内内容一致。`fap_dist` 另含开发示例，完整分发为 343 / 124，不能混称为常规包数量。
+- 包内 `locale/zh_cn.glyphs` 为 **925,216 字节**，SHA-256 为 `ef3423813e6843dffd6f4bcee0c329f93802104db12325fe0f802ca9f6498eaa`，与源码资源逐字节一致。它需随资源安装到 SD 卡；缓存增加 RAM 使用，资源损坏与实际插拔表现仍需真机确认。
+- [24 张 iPhone 原始模拟器截图](https://github.com/Fairank/Flipper-Momentum-Lab/actions/runs/36553662778/artifacts/11027180933) 已下载并核验 SHA-256 `e85b1852e268d163f7f39f4302522a3e3c49a5751acf32f8d911d5fa4ed17c1c`；已查看浅色共享、深色大字共享和深色任务页面，仓库展示的两张共享图从该包原样复制。它们都是未连接设备的离线截图。
+- 同次运行生成 [Flipper 源码布局预览](https://github.com/Fairank/Flipper-Momentum-Lab/actions/runs/36553662778/artifacts/11025776691) 与 [完整模拟器测试证据](https://github.com/Fairank/Flipper-Momentum-Lab/actions/runs/36553662778/artifacts/11027190970)。这两个附件本次只核对 GitHub 元数据，未重新下载；仓库九类动画拼图来自已检查的本地生产绘制代码。固件、截图和预览附件于 2026-10-13 到期，完整模拟器测试附件于 2026-10-06 到期；源码保留。
+
+### 中途失败与修复
+
+`344bf0381` 的一个 Swift 测试错误地使用严格解码器构造无效报文，已修正测试输入构造，未放宽生产解码规则。`92c1d7d91` 的 148 项 Swift 测试通过，但 App 编译发现可选 IP 类型不匹配，已在 `bcc0deaf7` 修复。
+
+`bcc0deaf7` 的 6 项界面测试有 1 项失败：深色大字下，从比较记录页点击“任务”后仍停留在资料库；截图、元素层级和点击坐标证明点击位于任务标签内。`41fd31347` 为原生 TabView 增加显式选中状态与固定标识，保留单次点击及导航断言，另加选中状态断言；本次 6 项全部通过，没有用重试或删除断言掩盖失败。这一结果不替代真机长期稳定性验证。
+
+一次 Windows 回归子进程退出码为 0，却未输出预期文本；未放宽断言，随后 12 项缓存专项、完整 112 项测试及 Linux 回归均通过。孤立空输出原因未重现，保留记录。
+
+**用户本次只恢复了 GitHub 授权，没有连接 Flipper、iPhone 或 AIO。未刷机，未执行 BLE、AIO、实卡或射频验收；228 个匹配源码差异项、157 个未匹配项以及第三方/动态/图片中文仍待处理，不能宣称完整并集或中文全覆盖。**
+
 ## 中文与功能并集第二轮：本地验收（2026-09-29）
 
 接续代码基线 `b8e1f9f4`，范围见 [第二轮实现](UNION_CHINESE_CONTINUATION.md)，逐文件哈希及七项 Opus 实际执行状态（六项实现、一项文档核对）见 [JSON 记录](UNION_CHINESE_CONTINUATION.json)。这批改动不等于完整并集或全界面中文验收。
