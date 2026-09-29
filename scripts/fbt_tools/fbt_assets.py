@@ -250,6 +250,8 @@ def generate(env):
                             "${PYTHON3}",
                             "${NANOPB_COMPILER}",
                             "-q",
+                            "-I${ASSETS_SRC_DIR}/protobuf_overrides",
+                            "-I${ASSETS_SRC_DIR}/protobuf",
                             "-I${SOURCE.dir.posix}",
                             "-D${TARGET.dir.posix}",
                             "${SOURCES.posix}",

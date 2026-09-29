@@ -143,15 +143,23 @@ uint16_t subghz_history_get_last_index(SubGhzHistory* instance);
 
 /** Add protocol to history
  * 
+ * Repeats of the same signal are dropped while they keep arriving within a short
+ * window of each other. The window is measured with air_time so that it covers
+ * the air between the two frames, not the wall time between the moments the app
+ * was told about them - decoding can be suspended (a scene is pushed on top of
+ * it, RX is restarted, ...) and a frame can be reported long after it was sent.
+ *
  * @param instance  - SubGhzHistory instance
  * @param context    - SubGhzProtocolCommon context
  * @param preset    - SubGhzRadioPreset preset
+ * @param air_time  - air decoded so far, ms, see subghz_txrx_get_air_time_ms()
  * @return bool;
  */
 bool subghz_history_add_to_history(
     SubGhzHistory* instance,
     void* context,
-    SubGhzRadioPreset* preset);
+    SubGhzRadioPreset* preset,
+    uint32_t air_time);
 
 /** Get SubGhzProtocolCommonLoad to load into the protocol decoder bin data
  * 

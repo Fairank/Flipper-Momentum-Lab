@@ -19,18 +19,6 @@ extern const SubGhzProtocol subghz_protocol_ido;
 void* subghz_protocol_decoder_ido_alloc(SubGhzEnvironment* environment);
 
 /**
- * Free SubGhzProtocolDecoderIDo.
- * @param context Pointer to a SubGhzProtocolDecoderIDo instance
- */
-void subghz_protocol_decoder_ido_free(void* context);
-
-/**
- * Reset decoder SubGhzProtocolDecoderIDo.
- * @param context Pointer to a SubGhzProtocolDecoderIDo instance
- */
-void subghz_protocol_decoder_ido_reset(void* context);
-
-/**
  * Parse a raw sequence of levels and durations received from the air.
  * @param context Pointer to a SubGhzProtocolDecoderIDo instance
  * @param level Signal level true-high false-low

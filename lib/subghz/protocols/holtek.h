@@ -19,12 +19,6 @@ extern const SubGhzProtocol subghz_protocol_holtek;
 void* subghz_protocol_encoder_holtek_alloc(SubGhzEnvironment* environment);
 
 /**
- * Free SubGhzProtocolEncoderHoltek.
- * @param context Pointer to a SubGhzProtocolEncoderHoltek instance
- */
-void subghz_protocol_encoder_holtek_free(void* context);
-
-/**
  * Deserialize and generating an upload to send.
  * @param context Pointer to a SubGhzProtocolEncoderHoltek instance
  * @param flipper_format Pointer to a FlipperFormat instance
@@ -34,36 +28,11 @@ SubGhzProtocolStatus
     subghz_protocol_encoder_holtek_deserialize(void* context, FlipperFormat* flipper_format);
 
 /**
- * Forced transmission stop.
- * @param context Pointer to a SubGhzProtocolEncoderHoltek instance
- */
-void subghz_protocol_encoder_holtek_stop(void* context);
-
-/**
- * Getting the level and duration of the upload to be loaded into DMA.
- * @param context Pointer to a SubGhzProtocolEncoderHoltek instance
- * @return LevelDuration 
- */
-LevelDuration subghz_protocol_encoder_holtek_yield(void* context);
-
-/**
  * Allocate SubGhzProtocolDecoderHoltek.
  * @param environment Pointer to a SubGhzEnvironment instance
  * @return SubGhzProtocolDecoderHoltek* pointer to a SubGhzProtocolDecoderHoltek instance
  */
 void* subghz_protocol_decoder_holtek_alloc(SubGhzEnvironment* environment);
-
-/**
- * Free SubGhzProtocolDecoderHoltek.
- * @param context Pointer to a SubGhzProtocolDecoderHoltek instance
- */
-void subghz_protocol_decoder_holtek_free(void* context);
-
-/**
- * Reset decoder SubGhzProtocolDecoderHoltek.
- * @param context Pointer to a SubGhzProtocolDecoderHoltek instance
- */
-void subghz_protocol_decoder_holtek_reset(void* context);
 
 /**
  * Parse a raw sequence of levels and durations received from the air.

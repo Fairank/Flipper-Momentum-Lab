@@ -41,13 +41,6 @@ SubGhzProtocolStatus
 void subghz_protocol_encoder_keeloq_stop(void* context);
 
 /**
- * Getting the level and duration of the upload to be loaded into DMA.
- * @param context Pointer to a SubGhzProtocolEncoderKeeloq instance
- * @return LevelDuration 
- */
-LevelDuration subghz_protocol_encoder_keeloq_yield(void* context);
-
-/**
  * Allocate SubGhzProtocolDecoderKeeloq.
  * @param environment Pointer to a SubGhzEnvironment instance
  * @return SubGhzProtocolDecoderKeeloq* pointer to a SubGhzProtocolDecoderKeeloq instance

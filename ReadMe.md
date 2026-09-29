@@ -1,5 +1,7 @@
 # Flipper Momentum 个人定制与换机交接
 
+**2026-09-29 固件融合更新：**已适配两边固定上游版本的 NFC、RFID、iButton、Sub-GHz、红外、加载器及公共库更新，新增三种菜单样式。API 89.0 和手机协议兼容处理、已合入内容及未完成项见 [本轮融合记录](documentation/custom/UPSTREAM_FUSION.md)。仍不是两个上游全部功能的完整并集，构建和真机状态请以 [验证记录](documentation/custom/VALIDATION.md) 为准。
+
 以 Momentum 保留 Xtreme 风格，逐项适配 Unleashed，并新增 iPhone 中文 App（`mobile/FlipperLab`）与设备端中文入口 Flipper Lab（`applications/main/lab`）。当前分支 `codex/iphone-zh-architecture` 已推送，草稿 PR [#1](https://github.com/Fairank/Flipper-Momentum-Lab/pull/1) 指向 `codex/momentum-unleashed`。已完成：资源加载进度、插件扫描容错、构建源文件顺序修复、UTF-8 换行修复；Windows 上完整更新包（含外部应用与 Flipper Lab）构建成功；桌面回归与字库生成器测试通过；iPhone App 的 Swift 包测试、不签名模拟器构建和离线 UI 测试在 GitHub macOS CI 通过。**尚未刷写真机，蓝牙真机未测，现有原生应用的全面中文化仍是待办需求。**
 
 **换电脑继续请先读 [HANDOFF.md](HANDOFF.md)**。其他入口：[已完成改动](LOCAL_CHANGES.md) · [全部需求与待办](documentation/custom/REQUIREMENTS.md) · [验证记录](documentation/custom/VALIDATION.md) · [iPhone App 说明](mobile/FlipperLab/README.zh-CN.md) · [初步评估](documentation/custom/INITIAL_ASSESSMENT.md) · [固定源码版本](documentation/custom/SOURCE_LOCK.json)。

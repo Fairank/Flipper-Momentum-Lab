@@ -6,6 +6,7 @@
 #pragma once
 #include <toolbox/protocols/protocol_dict.h>
 #include "protocols/lfrfid_protocols.h"
+#include "lfrfid_write_targets.h"
 
 #ifdef __cplusplus
 extern "C" {
@@ -16,6 +17,8 @@ typedef enum {
     LFRFIDWorkerWriteProtocolCannotBeWritten,
     LFRFIDWorkerWriteFobCannotBeWritten,
     LFRFIDWorkerWriteTooLongToWrite,
+    LFRFIDWorkerWriteStartTarget, // a new write target/variant attempt started (progress UI)
+    LFRFIDWorkerWriteNoEnabledTarget, // the chips that could write it are disabled in settings
 } LFRFIDWorkerWriteResult;
 
 typedef enum {
@@ -89,6 +92,17 @@ void lfrfid_worker_read_start(
     LFRFIDWorkerReadCallback callback,
     void* context);
 
+/** Restrict which chips write mode is allowed to try
+ *
+ * Applies to lfrfid_worker_write_start() only - lfrfid_worker_write_and_set_pass_start()
+ * addresses a T5577 by definition. A worker starts at lfrfid_write_targets_default(), so a
+ * caller that never calls this tries every target the protocol supports except the opt-in ones.
+ *
+ * @param      worker  The worker
+ * @param      mask    Mask of LFRFIDWriteTarget bits, see lfrfid_write_targets_default()
+ */
+void lfrfid_worker_set_write_targets(LFRFIDWorker* worker, LFRFIDWriteTargetMask mask);
+
 /** Start write mode
  *
  * @param      worker    The worker
@@ -156,6 +170,17 @@ void lfrfid_worker_emulate_raw_start(
  * @param      worker  The worker
  */
 void lfrfid_worker_stop(LFRFIDWorker* worker);
+
+/** Name of the chip the last successful write landed on
+ *
+ * Set by the write modes when a write is verified (e.g. "T5577", "EM4305" or a
+ * Hitag micro model code like "8210"). Returns an empty string when nothing has
+ * been written yet or the chip could not be identified.
+ *
+ * @param      worker  The worker
+ * @return     pointer to a NUL-terminated, worker-owned string (single line, no newline)
+ */
+const char* lfrfid_worker_get_write_chip_name(LFRFIDWorker* worker);
 
 #ifdef __cplusplus
 }

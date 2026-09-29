@@ -58,7 +58,9 @@ class ImageLint(App):
         images = []
         for folder in folders:
             exclude = folder.startswith("!")
-            for dirpath, _, filenames in os.walk(folder.removeprefix("!")):
+            # Include and exclude roots may use different separators on Windows.
+            root = os.path.normpath(folder.removeprefix("!"))
+            for dirpath, _, filenames in os.walk(root):
                 for filename in filenames:
                     if self.is_file_an_icon(filename):
                         filepath = os.path.join(dirpath, filename)

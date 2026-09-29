@@ -4,6 +4,7 @@
 #include "../blocks/encoder.h"
 #include "../blocks/generic.h"
 #include "../blocks/math.h"
+#include "common.h"
 
 #include "../blocks/custom_btn_i.h"
 
@@ -22,6 +23,7 @@ struct SubGhzProtocolDecoderHollarm {
     SubGhzBlockDecoder decoder;
     SubGhzBlockGeneric generic;
 };
+SUBGHZ_ASSERT_DECODER_COMMON_LAYOUT(SubGhzProtocolDecoderHollarm);
 
 struct SubGhzProtocolEncoderHollarm {
     SubGhzProtocolEncoderBase base;
@@ -29,6 +31,7 @@ struct SubGhzProtocolEncoderHollarm {
     SubGhzProtocolBlockEncoder encoder;
     SubGhzBlockGeneric generic;
 };
+SUBGHZ_ASSERT_ENCODER_GENERIC_LAYOUT(SubGhzProtocolEncoderHollarm);
 
 typedef enum {
     HollarmDecoderStepReset = 0,
@@ -38,10 +41,10 @@ typedef enum {
 
 const SubGhzProtocolDecoder subghz_protocol_hollarm_decoder = {
     .alloc = subghz_protocol_decoder_hollarm_alloc,
-    .free = subghz_protocol_decoder_hollarm_free,
+    .free = subghz_protocol_decoder_common_free,
 
     .feed = subghz_protocol_decoder_hollarm_feed,
-    .reset = subghz_protocol_decoder_hollarm_reset,
+    .reset = subghz_protocol_decoder_common_reset,
 
     .get_hash_data = NULL,
     .get_hash_data_long = subghz_protocol_decoder_hollarm_get_hash_data,
@@ -53,11 +56,11 @@ const SubGhzProtocolDecoder subghz_protocol_hollarm_decoder = {
 
 const SubGhzProtocolEncoder subghz_protocol_hollarm_encoder = {
     .alloc = subghz_protocol_encoder_hollarm_alloc,
-    .free = subghz_protocol_encoder_hollarm_free,
+    .free = subghz_protocol_encoder_common_free,
 
     .deserialize = subghz_protocol_encoder_hollarm_deserialize,
-    .stop = subghz_protocol_encoder_hollarm_stop,
-    .yield = subghz_protocol_encoder_hollarm_yield,
+    .stop = subghz_protocol_encoder_common_stop,
+    .yield = subghz_protocol_encoder_common_yield,
 };
 
 const SubGhzProtocol subghz_protocol_hollarm = {
@@ -74,23 +77,8 @@ const SubGhzProtocol subghz_protocol_hollarm = {
 
 void* subghz_protocol_encoder_hollarm_alloc(SubGhzEnvironment* environment) {
     UNUSED(environment);
-    SubGhzProtocolEncoderHollarm* instance = malloc(sizeof(SubGhzProtocolEncoderHollarm));
-
-    instance->base.protocol = &subghz_protocol_hollarm;
-    instance->generic.protocol_name = instance->base.protocol->name;
-
-    instance->encoder.repeat = 3;
-    instance->encoder.size_upload = 128;
-    instance->encoder.upload = malloc(instance->encoder.size_upload * sizeof(LevelDuration));
-    instance->encoder.is_running = false;
-    return instance;
-}
-
-void subghz_protocol_encoder_hollarm_free(void* context) {
-    furi_assert(context);
-    SubGhzProtocolEncoderHollarm* instance = context;
-    free(instance->encoder.upload);
-    free(instance);
+    return subghz_protocol_encoder_common_alloc(
+        sizeof(SubGhzProtocolEncoderHollarm), &subghz_protocol_hollarm, 3, 128);
 }
 
 // Get custom button code
@@ -172,8 +160,9 @@ static void subghz_protocol_encoder_hollarm_get_upload(SubGhzProtocolEncoderHoll
     instance->generic.btn = subghz_protocol_hollarm_get_btn_code();
 
     // override button if we change it with signal settings button editor
-    if(subghz_block_generic_global_button_override_get(&instance->generic.btn))
+    if(subghz_block_generic_global_button_override_get(&instance->generic.btn)) {
         FURI_LOG_D(TAG, "Button sucessfully changed to 0x%X", instance->generic.btn);
+    }
 
     uint64_t new_key = (instance->generic.data >> 12) << 12 | (instance->generic.btn << 8);
 
@@ -287,47 +276,10 @@ SubGhzProtocolStatus
     return ret;
 }
 
-void subghz_protocol_encoder_hollarm_stop(void* context) {
-    SubGhzProtocolEncoderHollarm* instance = context;
-    instance->encoder.is_running = false;
-}
-
-LevelDuration subghz_protocol_encoder_hollarm_yield(void* context) {
-    SubGhzProtocolEncoderHollarm* instance = context;
-
-    if(instance->encoder.repeat == 0 || !instance->encoder.is_running) {
-        instance->encoder.is_running = false;
-        return level_duration_reset();
-    }
-
-    LevelDuration ret = instance->encoder.upload[instance->encoder.front];
-
-    if(++instance->encoder.front == instance->encoder.size_upload) {
-        if(!subghz_block_generic_global.endless_tx) instance->encoder.repeat--;
-        instance->encoder.front = 0;
-    }
-
-    return ret;
-}
-
 void* subghz_protocol_decoder_hollarm_alloc(SubGhzEnvironment* environment) {
     UNUSED(environment);
-    SubGhzProtocolDecoderHollarm* instance = malloc(sizeof(SubGhzProtocolDecoderHollarm));
-    instance->base.protocol = &subghz_protocol_hollarm;
-    instance->generic.protocol_name = instance->base.protocol->name;
-    return instance;
-}
-
-void subghz_protocol_decoder_hollarm_free(void* context) {
-    furi_assert(context);
-    SubGhzProtocolDecoderHollarm* instance = context;
-    free(instance);
-}
-
-void subghz_protocol_decoder_hollarm_reset(void* context) {
-    furi_assert(context);
-    SubGhzProtocolDecoderHollarm* instance = context;
-    instance->decoder.parser_step = HollarmDecoderStepReset;
+    return subghz_protocol_decoder_common_alloc(
+        sizeof(SubGhzProtocolDecoderHollarm), &subghz_protocol_hollarm);
 }
 
 void subghz_protocol_decoder_hollarm_feed(void* context, bool level, volatile uint32_t duration) {

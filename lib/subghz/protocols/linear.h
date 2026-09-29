@@ -19,12 +19,6 @@ extern const SubGhzProtocol subghz_protocol_linear;
 void* subghz_protocol_encoder_linear_alloc(SubGhzEnvironment* environment);
 
 /**
- * Free SubGhzProtocolEncoderLinear.
- * @param context Pointer to a SubGhzProtocolEncoderLinear instance
- */
-void subghz_protocol_encoder_linear_free(void* context);
-
-/**
  * Deserialize and generating an upload to send.
  * @param context Pointer to a SubGhzProtocolEncoderLinear instance
  * @param flipper_format Pointer to a FlipperFormat instance
@@ -34,36 +28,11 @@ SubGhzProtocolStatus
     subghz_protocol_encoder_linear_deserialize(void* context, FlipperFormat* flipper_format);
 
 /**
- * Forced transmission stop.
- * @param context Pointer to a SubGhzProtocolEncoderLinear instance
- */
-void subghz_protocol_encoder_linear_stop(void* context);
-
-/**
- * Getting the level and duration of the upload to be loaded into DMA.
- * @param context Pointer to a SubGhzProtocolEncoderLinear instance
- * @return LevelDuration 
- */
-LevelDuration subghz_protocol_encoder_linear_yield(void* context);
-
-/**
  * Allocate SubGhzProtocolDecoderLinear.
  * @param environment Pointer to a SubGhzEnvironment instance
  * @return SubGhzProtocolDecoderLinear* pointer to a SubGhzProtocolDecoderLinear instance
  */
 void* subghz_protocol_decoder_linear_alloc(SubGhzEnvironment* environment);
-
-/**
- * Free SubGhzProtocolDecoderLinear.
- * @param context Pointer to a SubGhzProtocolDecoderLinear instance
- */
-void subghz_protocol_decoder_linear_free(void* context);
-
-/**
- * Reset decoder SubGhzProtocolDecoderLinear.
- * @param context Pointer to a SubGhzProtocolDecoderLinear instance
- */
-void subghz_protocol_decoder_linear_reset(void* context);
 
 /**
  * Parse a raw sequence of levels and durations received from the air.

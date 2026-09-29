@@ -6,6 +6,7 @@
 #include "../blocks/encoder.h"
 #include "../blocks/generic.h"
 #include "../blocks/math.h"
+#include "common.h"
 
 #include "../blocks/custom_btn_i.h"
 
@@ -27,6 +28,7 @@ struct SubGhzProtocolDecoderSomfyKeytis {
     uint16_t header_count;
     ManchesterState manchester_saved_state;
 };
+SUBGHZ_ASSERT_DECODER_COMMON_LAYOUT(SubGhzProtocolDecoderSomfyKeytis);
 
 struct SubGhzProtocolEncoderSomfyKeytis {
     SubGhzProtocolEncoderBase base;
@@ -34,6 +36,7 @@ struct SubGhzProtocolEncoderSomfyKeytis {
     SubGhzProtocolBlockEncoder encoder;
     SubGhzBlockGeneric generic;
 };
+SUBGHZ_ASSERT_ENCODER_GENERIC_LAYOUT(SubGhzProtocolEncoderSomfyKeytis);
 
 typedef enum {
     SomfyKeytisDecoderStepReset = 0,
@@ -45,7 +48,7 @@ typedef enum {
 
 const SubGhzProtocolDecoder subghz_protocol_somfy_keytis_decoder = {
     .alloc = subghz_protocol_decoder_somfy_keytis_alloc,
-    .free = subghz_protocol_decoder_somfy_keytis_free,
+    .free = subghz_protocol_decoder_common_free,
 
     .feed = subghz_protocol_decoder_somfy_keytis_feed,
     .reset = subghz_protocol_decoder_somfy_keytis_reset,
@@ -70,48 +73,23 @@ const SubGhzProtocol subghz_protocol_somfy_keytis = {
 
 const SubGhzProtocolEncoder subghz_protocol_somfy_keytis_encoder = {
     .alloc = subghz_protocol_encoder_somfy_keytis_alloc,
-    .free = subghz_protocol_encoder_somfy_keytis_free,
+    .free = subghz_protocol_encoder_common_free,
 
     .deserialize = subghz_protocol_encoder_somfy_keytis_deserialize,
-    .stop = subghz_protocol_encoder_somfy_keytis_stop,
-    .yield = subghz_protocol_encoder_somfy_keytis_yield,
+    .stop = subghz_protocol_encoder_common_stop,
+    .yield = subghz_protocol_encoder_common_yield,
 };
 
 void* subghz_protocol_encoder_somfy_keytis_alloc(SubGhzEnvironment* environment) {
     UNUSED(environment);
-    SubGhzProtocolEncoderSomfyKeytis* instance = malloc(sizeof(SubGhzProtocolEncoderSomfyKeytis));
-
-    instance->base.protocol = &subghz_protocol_somfy_keytis;
-    instance->generic.protocol_name = instance->base.protocol->name;
-
-    instance->encoder.repeat = 3;
-    instance->encoder.size_upload = 512;
-    instance->encoder.upload = malloc(instance->encoder.size_upload * sizeof(LevelDuration));
-    instance->encoder.is_running = false;
-
-    return instance;
+    return subghz_protocol_encoder_common_alloc(
+        sizeof(SubGhzProtocolEncoderSomfyKeytis), &subghz_protocol_somfy_keytis, 3, 512);
 }
 
 void* subghz_protocol_decoder_somfy_keytis_alloc(SubGhzEnvironment* environment) {
     UNUSED(environment);
-    SubGhzProtocolDecoderSomfyKeytis* instance = malloc(sizeof(SubGhzProtocolDecoderSomfyKeytis));
-    instance->base.protocol = &subghz_protocol_somfy_keytis;
-    instance->generic.protocol_name = instance->base.protocol->name;
-
-    return instance;
-}
-
-void subghz_protocol_encoder_somfy_keytis_free(void* context) {
-    furi_assert(context);
-    SubGhzProtocolEncoderSomfyKeytis* instance = context;
-    free(instance->encoder.upload);
-    free(instance);
-}
-
-void subghz_protocol_decoder_somfy_keytis_free(void* context) {
-    furi_assert(context);
-    SubGhzProtocolDecoderSomfyKeytis* instance = context;
-    free(instance);
+    return subghz_protocol_decoder_common_alloc(
+        sizeof(SubGhzProtocolDecoderSomfyKeytis), &subghz_protocol_somfy_keytis);
 }
 
 void subghz_protocol_decoder_somfy_keytis_reset(void* context) {
@@ -166,8 +144,9 @@ static bool
     btn = subghz_protocol_somfy_keytis_get_btn_code();
 
     // override button if we change it with signal settings button editor
-    if(subghz_block_generic_global_button_override_get(&btn))
+    if(subghz_block_generic_global_button_override_get(&btn)) {
         FURI_LOG_D(TAG, "Button sucessfully changed to 0x%X", btn);
+    }
 
     // Check for OFEX (overflow experimental) mode
     if(furi_hal_subghz_get_rolling_counter_mult() != -0x7FFFFFFF) {
@@ -264,7 +243,7 @@ bool subghz_protocol_somfy_keytis_create_data(
 /**
  * Generating an upload from data.
  * @param instance Pointer to a SubGhzProtocolEncoderSomfyKeytis instance
- * @return true On success
+ * @return true Always; this encoder has no failure path
  */
 static bool subghz_protocol_encoder_somfy_keytis_get_upload(
     SubGhzProtocolEncoderSomfyKeytis* instance,
@@ -491,29 +470,6 @@ SubGhzProtocolStatus
     } while(false);
 
     return res;
-}
-
-void subghz_protocol_encoder_somfy_keytis_stop(void* context) {
-    SubGhzProtocolEncoderSomfyKeytis* instance = context;
-    instance->encoder.is_running = false;
-}
-
-LevelDuration subghz_protocol_encoder_somfy_keytis_yield(void* context) {
-    SubGhzProtocolEncoderSomfyKeytis* instance = context;
-
-    if(instance->encoder.repeat == 0 || !instance->encoder.is_running) {
-        instance->encoder.is_running = false;
-        return level_duration_reset();
-    }
-
-    LevelDuration ret = instance->encoder.upload[instance->encoder.front];
-
-    if(++instance->encoder.front == instance->encoder.size_upload) {
-        if(!subghz_block_generic_global.endless_tx) instance->encoder.repeat--;
-        instance->encoder.front = 0;
-    }
-
-    return ret;
 }
 
 /** 

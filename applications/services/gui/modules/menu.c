@@ -6,6 +6,7 @@
 #include <gui/icon_i.h>
 #include <gui/icon_animation_i.h>
 #include <gui/canvas_i.h>
+#include <gui/utf8_internal.h>
 #include <dolphin/dolphin_i.h>
 #include <dolphin/helpers/dolphin_state.h>
 #include <furi.h>
@@ -107,6 +108,185 @@ static size_t menu_scroll_counter(MenuModel* model, bool selected) {
         scroll_counter--;
     }
     return scroll_counter;
+}
+
+// The Grid, Macintosh and 3D styles are ported from Unleashed's menu style plugins
+// (applications/system/menu_styles/{grid,macintosh,three_d}.c by @apfxtech): same
+// layouts and navigation, drawn with the canvas instead of the framebuffer, labels
+// through the shared scrolling helpers, and no extra timers: the Macintosh window
+// opens and the 3D ring turns without their upstream transitions.
+
+// Macintosh window: title bar height, icon cell, grid origin and pitch, label width.
+// Upstream places the grid at (16, 13) with a 36 x 24 pitch under 4 x 6 glyphs; the
+// pitch here fits a 12 px native Chinese label under each 14 px icon and 3 ideographs
+// or 7 ASCII glyphs across, rows 9..62 inside the window frame
+#define MENU_MACINTOSH_BAR_H   8
+#define MENU_MACINTOSH_ICON    14
+#define MENU_MACINTOSH_X       14
+#define MENU_MACINTOSH_Y       9
+#define MENU_MACINTOSH_DX      38
+#define MENU_MACINTOSH_DY      27
+#define MENU_MACINTOSH_LABEL_W 36
+
+// One 9 x 11 scrollbar button of the Macintosh style, upstream's arrow sprites drawn
+// as the lines they are made of: an outlined head, a stem and the rule that separates
+// the button from the track
+static void menu_macintosh_arrow(Canvas* canvas, int32_t x, int32_t y, bool up) {
+    canvas_set_color(canvas, ColorWhite);
+    canvas_draw_box(canvas, x, y, 9, 11);
+    canvas_set_color(canvas, ColorBlack);
+    if(up) {
+        canvas_draw_line(canvas, x + 4, y, x, y + 4);
+        canvas_draw_line(canvas, x + 4, y, x + 8, y + 4);
+        canvas_draw_line(canvas, x, y + 5, x + 2, y + 5);
+        canvas_draw_line(canvas, x + 6, y + 5, x + 8, y + 5);
+        canvas_draw_line(canvas, x + 2, y + 5, x + 2, y + 8);
+        canvas_draw_line(canvas, x + 6, y + 5, x + 6, y + 8);
+        canvas_draw_line(canvas, x + 2, y + 8, x + 6, y + 8);
+        canvas_draw_line(canvas, x, y + 10, x + 8, y + 10);
+    } else {
+        canvas_draw_line(canvas, x, y, x + 8, y);
+        canvas_draw_line(canvas, x + 2, y + 2, x + 6, y + 2);
+        canvas_draw_line(canvas, x + 2, y + 2, x + 2, y + 5);
+        canvas_draw_line(canvas, x + 6, y + 2, x + 6, y + 5);
+        canvas_draw_line(canvas, x, y + 5, x + 2, y + 5);
+        canvas_draw_line(canvas, x + 6, y + 5, x + 8, y + 5);
+        canvas_draw_line(canvas, x, y + 6, x + 4, y + 10);
+        canvas_draw_line(canvas, x + 8, y + 6, x + 4, y + 10);
+    }
+}
+
+// Classic Mac scrollbar on the right of the window: dithered track, arrow buttons and,
+// once the grid scrolls, a thumb at row `offset` of `max_offset`
+static void menu_macintosh_scrollbar(Canvas* canvas, size_t offset, size_t max_offset) {
+    const int32_t x = 118;
+    const int32_t top = MENU_MACINTOSH_BAR_H + 1;
+    const int32_t length = 64 - top - 1;
+    for(int32_t j = 0; j < length; j += 2) {
+        for(int32_t i = 0; i < 10; i += 2) {
+            canvas_draw_dot(canvas, x + i, top + j + (i / 2) % 2);
+        }
+    }
+    canvas_draw_line(canvas, x - 1, top, x - 1, top + length - 1);
+    menu_macintosh_arrow(canvas, x, top, true);
+    menu_macintosh_arrow(canvas, x, 64 - 1 - 11, false);
+    if(max_offset) {
+        int32_t thumb = top + 11 + (int32_t)(offset * (length - 22 - 9) / max_offset);
+        canvas_set_color(canvas, ColorWhite);
+        canvas_draw_box(canvas, x, thumb, 9, 9);
+        canvas_set_color(canvas, ColorBlack);
+        canvas_draw_frame(canvas, x, thumb, 9, 9);
+    }
+}
+
+// Draws the current frame of an item's icon centered on (cx, cy) and scaled by
+// `percent`, resampling the decoded frame by nearest neighbour: canvas scaling stops
+// at 100%. Upstream's three_d.c draw_icon() resamples the framebuffer instead and,
+// like here, leaves frames larger than 16 px unscaled
+static void
+    menu_three_d_icon(Canvas* canvas, MenuItem* item, int32_t cx, int32_t cy, int32_t percent) {
+    int32_t width = icon_animation_get_width(item->icon);
+    int32_t height = icon_animation_get_height(item->icon);
+    if(percent <= 100 || width > 16 || height > 16) {
+        canvas_draw_icon_animation(canvas, cx - width / 2, cy - height / 2, item->icon);
+        return;
+    }
+    uint8_t* frame = NULL;
+    compress_icon_decode(canvas->compress_icon, icon_animation_get_data(item->icon), &frame);
+    int32_t stride = (width + 7) / 8;
+    int32_t scaled_width = width * percent / 100;
+    int32_t scaled_height = height * percent / 100;
+    int32_t x = cx - scaled_width / 2;
+    int32_t y = cy - scaled_height / 2;
+    for(int32_t row = 0; row < scaled_height; row++) {
+        const uint8_t* line = &frame[row * height / scaled_height * stride];
+        for(int32_t col = 0; col < scaled_width; col++) {
+            int32_t source = col * width / scaled_width;
+            if(line[source / 8] & (1 << (source % 8))) {
+                canvas_draw_dot(canvas, x + col, y + row);
+            }
+        }
+    }
+}
+
+// Pages and columns of the ported styles: a Grid page, the Macintosh grid, the icons
+// of the 3D ring
+#define MENU_GRID_COLS      5
+#define MENU_GRID_ROWS      3
+#define MENU_GRID_PAGE      (MENU_GRID_COLS * MENU_GRID_ROWS)
+#define MENU_MACINTOSH_COLS 3
+#define MENU_MACINTOSH_ROWS 2
+#define MENU_THREE_D_SLOTS  5
+
+// Left and Right of the ported styles step through all items and wrap around
+static size_t menu_navigate_wrap(size_t position, size_t count, InputKey key) {
+    if(count == 0) return position;
+    if(key == InputKeyLeft) return position ? position - 1 : count - 1;
+    if(key == InputKeyRight) return (position + 1) % count;
+    return position;
+}
+
+// Grid: Up and Down stay on the page and in the column, wrapping over its last row,
+// which on a partial page can end above the other columns
+static size_t menu_grid_navigate(size_t position, size_t count, InputKey key) {
+    size_t page_start = position - position % MENU_GRID_PAGE;
+    size_t page_end = MIN(page_start + MENU_GRID_PAGE, count);
+    size_t column = (position - page_start) % MENU_GRID_COLS;
+    switch(key) {
+    case InputKeyDown: {
+        size_t next = position + MENU_GRID_COLS;
+        return next < page_end ? next : page_start + column;
+    }
+    case InputKeyUp: {
+        if(position - page_start >= MENU_GRID_COLS) return position - MENU_GRID_COLS;
+        size_t bottom = position;
+        while(bottom + MENU_GRID_COLS < page_end) {
+            bottom += MENU_GRID_COLS;
+        }
+        return bottom;
+    }
+    default:
+        return menu_navigate_wrap(position, count, key);
+    }
+}
+
+// Macintosh: Up and Down move by rows in the column, wrapping over its last row
+static size_t menu_macintosh_navigate(size_t position, size_t count, InputKey key) {
+    switch(key) {
+    case InputKeyDown:
+        if(position + MENU_MACINTOSH_COLS < count) return position + MENU_MACINTOSH_COLS;
+        return position % MENU_MACINTOSH_COLS;
+    case InputKeyUp:
+        if(position >= MENU_MACINTOSH_COLS) return position - MENU_MACINTOSH_COLS;
+        while(position + MENU_MACINTOSH_COLS < count) {
+            position += MENU_MACINTOSH_COLS;
+        }
+        return position;
+    default:
+        return menu_navigate_wrap(position, count, key);
+    }
+}
+
+// 3D: Up and Left turn the ring back, Down and Right turn it forward, around the end
+static size_t menu_three_d_navigate(size_t position, size_t count, InputKey key) {
+    if(count == 0) return position;
+    if(key == InputKeyUp || key == InputKeyLeft) return position ? position - 1 : count - 1;
+    return (position + 1) % count;
+}
+
+// Position after `key` in one of the ported styles; other styles keep theirs
+static size_t
+    menu_ported_style_navigate(MenuStyle style, size_t position, size_t count, InputKey key) {
+    switch(style) {
+    case MenuStyleGrid:
+        return menu_grid_navigate(position, count, key);
+    case MenuStyleMacintosh:
+        return menu_macintosh_navigate(position, count, key);
+    case MenuStyleThreeD:
+        return menu_three_d_navigate(position, count, key);
+    default:
+        return position;
+    }
 }
 
 static void menu_draw_callback(Canvas* canvas, void* _model) {
@@ -569,6 +749,134 @@ static void menu_draw_callback(Canvas* canvas, void* _model) {
 
             break;
         }
+        case MenuStyleGrid: {
+            // Pages of 5 x 3 icons under a header: the selected name, its number of
+            // the total, and a rule. The name sits two rows below upstream's baseline
+            // so 12 px native Chinese glyphs stay on screen
+            size_t page_start = position - position % MENU_GRID_PAGE;
+            item = MenuItemArray_get(model->items, position);
+            canvas_set_font(canvas, FontPrimary);
+            menu_get_name(item, name, false);
+            elements_scrollable_text_line(
+                canvas, 2, 11, 92, name, menu_scroll_counter(model, true), false);
+            canvas_set_font(canvas, FontSecondary);
+            char counter[24];
+            snprintf(counter, sizeof(counter), "%zu/%zu", position + 1, items_count);
+            canvas_draw_str_aligned(canvas, 126, 2, AlignRight, AlignTop, counter);
+            canvas_draw_line(canvas, 0, 12, 127, 12);
+            for(size_t i = 0; i < MENU_GRID_PAGE; i++) {
+                size_t item_i = page_start + i;
+                if(item_i >= items_count) break;
+                int32_t x = 2 + (i % MENU_GRID_COLS) * 25;
+                int32_t y = 14 + (i / MENU_GRID_COLS) * 17;
+                bool selected = item_i == position;
+                if(selected) {
+                    canvas_draw_rbox(canvas, x, y, 24, 16, 2);
+                    canvas_set_color(canvas, ColorWhite);
+                }
+                item = MenuItemArray_get(model->items, item_i);
+                menu_centered_icon(canvas, item, x, y, 24, 16);
+                if(selected) canvas_set_color(canvas, ColorBlack);
+            }
+            break;
+        }
+        case MenuStyleMacintosh: {
+            // Classic Mac window: striped title bar with the device name and a close
+            // box, a 3 x 2 icon grid scrolled by rows, a scrollbar on the right
+            canvas_draw_frame(canvas, 0, 0, 128, 64);
+            canvas_draw_line(canvas, 0, MENU_MACINTOSH_BAR_H, 127, MENU_MACINTOSH_BAR_H);
+            for(int32_t j = 2; j < MENU_MACINTOSH_BAR_H - 1; j += 2) {
+                canvas_draw_line(canvas, 2, j, 125, j);
+            }
+            canvas_set_font(canvas, FontBatteryPercent);
+            const char* title = furi_hal_version_get_device_name_ptr();
+            int32_t title_width = canvas_string_width(canvas, title);
+            canvas_set_color(canvas, ColorWhite);
+            canvas_draw_box(
+                canvas, 64 - title_width / 2 - 2, 1, title_width + 4, MENU_MACINTOSH_BAR_H - 2);
+            canvas_draw_box(canvas, 4, 1, 7, MENU_MACINTOSH_BAR_H - 1);
+            canvas_set_color(canvas, ColorBlack);
+            canvas_draw_str(canvas, 64 - title_width / 2, MENU_MACINTOSH_BAR_H - 1, title);
+            canvas_draw_frame(canvas, 5, 2, 5, 5);
+
+            // First visible row: the stored one when it still shows the selection,
+            // otherwise the nearest that does. Shares vertical_offset with the other
+            // scrolling styles, whose values are clamped away here just the same
+            size_t rows = (items_count + MENU_MACINTOSH_COLS - 1) / MENU_MACINTOSH_COLS;
+            size_t max_scroll = rows > MENU_MACINTOSH_ROWS ? rows - MENU_MACINTOSH_ROWS : 0;
+            size_t row = position / MENU_MACINTOSH_COLS;
+            size_t offset = MIN(model->vertical_offset, max_scroll);
+            if(offset > row) {
+                offset = row;
+            } else if(offset + MENU_MACINTOSH_ROWS <= row) {
+                offset = row - MENU_MACINTOSH_ROWS + 1;
+            }
+            model->vertical_offset = offset;
+
+            for(size_t i = 0; i < MENU_MACINTOSH_COLS * MENU_MACINTOSH_ROWS; i++) {
+                size_t item_i = offset * MENU_MACINTOSH_COLS + i;
+                if(item_i >= items_count) break;
+                int32_t x = MENU_MACINTOSH_X + (i % MENU_MACINTOSH_COLS) * MENU_MACINTOSH_DX;
+                int32_t y = MENU_MACINTOSH_Y + (i / MENU_MACINTOSH_COLS) * MENU_MACINTOSH_DY;
+                bool selected = item_i == position;
+                item = MenuItemArray_get(model->items, item_i);
+                menu_centered_icon(canvas, item, x, y, MENU_MACINTOSH_ICON, MENU_MACINTOSH_ICON);
+
+                // Label under the icon, the selected one white in a box the glyphs
+                // fill: 9 rows for the ASCII font, 12 for native Chinese glyphs
+                menu_get_name(item, name, true);
+                const char* label = furi_string_get_cstr(name);
+                bool cjk = gui_utf8_has_cjk(label);
+                size_t label_width = canvas_string_width(canvas, label);
+                if(label_width > MENU_MACINTOSH_LABEL_W) label_width = MENU_MACINTOSH_LABEL_W;
+                int32_t center_x = x + MENU_MACINTOSH_ICON / 2;
+                int32_t box_x = center_x - (int32_t)(label_width + 2) / 2;
+                int32_t box_y = y + MENU_MACINTOSH_ICON + 1;
+                if(selected) {
+                    canvas_draw_box(
+                        canvas, box_x, box_y, label_width + 2, cjk ? GUI_CJK_LINE_HEIGHT : 9);
+                    canvas_set_color(canvas, ColorWhite);
+                }
+                elements_scrollable_text_line_centered(
+                    canvas,
+                    center_x,
+                    box_y + (cjk ? GUI_CJK_GLYPH_ASCENT : 7),
+                    MENU_MACINTOSH_LABEL_W,
+                    name,
+                    menu_scroll_counter(model, selected),
+                    false,
+                    true);
+                if(selected) canvas_set_color(canvas, ColorBlack);
+            }
+            menu_macintosh_scrollbar(canvas, offset, max_scroll);
+            break;
+        }
+        case MenuStyleThreeD: {
+            // Resting frame of upstream's carousel: the selected icon in front at
+            // 200%, up to four neighbours behind it on the ring (upstream's path
+            // points for slots -2..2 at phase 0) and the selected name along the
+            // bottom. Fewer items than slots show each item once
+            static const uint8_t ring[MENU_THREE_D_SLOTS][3] = {
+                {46, 10, 100},
+                {28, 25, 100},
+                {64, 37, 200},
+                {100, 25, 100},
+                {82, 10, 100},
+            };
+            int32_t slots = MIN((int32_t)items_count, MENU_THREE_D_SLOTS);
+            for(int32_t d = -(slots / 2); d < slots - slots / 2; d++) {
+                shift_position = (position + items_count + d) % items_count;
+                item = MenuItemArray_get(model->items, shift_position);
+                const uint8_t* slot = ring[d + MENU_THREE_D_SLOTS / 2];
+                menu_three_d_icon(canvas, item, slot[0], slot[1], slot[2]);
+            }
+            item = MenuItemArray_get(model->items, position);
+            canvas_set_font(canvas, FontSecondary);
+            menu_get_name(item, name, false);
+            elements_scrollable_text_line_centered(
+                canvas, 64, 63, 124, name, menu_scroll_counter(model, true), false, true);
+            break;
+        }
         default:
             break;
         }
@@ -844,6 +1152,12 @@ static void menu_process_up(Menu* menu) {
                     position = count - 1;
                 }
                 break;
+            case MenuStyleGrid:
+            case MenuStyleMacintosh:
+            case MenuStyleThreeD:
+                position = menu_ported_style_navigate(
+                    momentum_settings.menu_style, position, count, InputKeyUp);
+                break;
 
             default:
                 break;
@@ -885,6 +1199,12 @@ static void menu_process_down(Menu* menu) {
                 } else {
                     position = 0;
                 }
+                break;
+            case MenuStyleGrid:
+            case MenuStyleMacintosh:
+            case MenuStyleThreeD:
+                position = menu_ported_style_navigate(
+                    momentum_settings.menu_style, position, count, InputKeyDown);
                 break;
 
             default:
@@ -945,6 +1265,12 @@ static void menu_process_left(Menu* menu) {
                 } else {
                     position = position - 8;
                 }
+                break;
+            case MenuStyleGrid:
+            case MenuStyleMacintosh:
+            case MenuStyleThreeD:
+                position = menu_ported_style_navigate(
+                    momentum_settings.menu_style, position, count, InputKeyLeft);
                 break;
 
             default:
@@ -1010,6 +1336,12 @@ static void menu_process_right(Menu* menu) {
                 } else {
                     position = position - 8;
                 }
+                break;
+            case MenuStyleGrid:
+            case MenuStyleMacintosh:
+            case MenuStyleThreeD:
+                position = menu_ported_style_navigate(
+                    momentum_settings.menu_style, position, count, InputKeyRight);
                 break;
 
             default:

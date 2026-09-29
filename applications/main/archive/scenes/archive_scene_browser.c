@@ -55,6 +55,8 @@ const char* archive_get_flipper_app_name(ArchiveFileTypeEnum file_type) {
 #else
         return "JS Runner";
 #endif
+    case ArchiveFileTypeFolder:
+        return "Archive";
     default:
         return NULL;
     }

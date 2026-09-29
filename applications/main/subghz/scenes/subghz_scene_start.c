@@ -12,9 +12,14 @@ void subghz_scene_start_submenu_callback(void* context, uint32_t index) {
 
 void subghz_scene_start_on_enter(void* context) {
     SubGhz* subghz = context;
+
     if(subghz->state_notifications == SubGhzNotificationStateStarting) {
         subghz->state_notifications = SubGhzNotificationStateIDLE;
     }
+
+    //radio is always stopped here and nothing is being received, so this is the one
+    //place that can afford to go looking for a module plugged back in
+    subghz_txrx_radio_device_poll_reacquire(subghz->txrx);
 
     submenu_add_item(
         subghz->submenu, "读取", SubmenuIndexRead, subghz_scene_start_submenu_callback, subghz);

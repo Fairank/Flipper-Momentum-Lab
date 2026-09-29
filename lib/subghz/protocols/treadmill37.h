@@ -19,12 +19,6 @@ extern const SubGhzProtocol subghz_protocol_treadmill37;
 void* subghz_protocol_encoder_treadmill37_alloc(SubGhzEnvironment* environment);
 
 /**
- * Free SubGhzProtocolEncoderTreadmill37.
- * @param context Pointer to a SubGhzProtocolEncoderTreadmill37 instance
- */
-void subghz_protocol_encoder_treadmill37_free(void* context);
-
-/**
  * Deserialize and generating an upload to send.
  * @param context Pointer to a SubGhzProtocolEncoderTreadmill37 instance
  * @param flipper_format Pointer to a FlipperFormat instance
@@ -34,36 +28,11 @@ SubGhzProtocolStatus
     subghz_protocol_encoder_treadmill37_deserialize(void* context, FlipperFormat* flipper_format);
 
 /**
- * Forced transmission stop.
- * @param context Pointer to a SubGhzProtocolEncoderTreadmill37 instance
- */
-void subghz_protocol_encoder_treadmill37_stop(void* context);
-
-/**
- * Getting the level and duration of the upload to be loaded into DMA.
- * @param context Pointer to a SubGhzProtocolEncoderTreadmill37 instance
- * @return LevelDuration 
- */
-LevelDuration subghz_protocol_encoder_treadmill37_yield(void* context);
-
-/**
  * Allocate SubGhzProtocolDecoderTreadmill37.
  * @param environment Pointer to a SubGhzEnvironment instance
  * @return SubGhzProtocolDecoderTreadmill37* pointer to a SubGhzProtocolDecoderTreadmill37 instance
  */
 void* subghz_protocol_decoder_treadmill37_alloc(SubGhzEnvironment* environment);
-
-/**
- * Free SubGhzProtocolDecoderTreadmill37.
- * @param context Pointer to a SubGhzProtocolDecoderTreadmill37 instance
- */
-void subghz_protocol_decoder_treadmill37_free(void* context);
-
-/**
- * Reset decoder SubGhzProtocolDecoderTreadmill37.
- * @param context Pointer to a SubGhzProtocolDecoderTreadmill37 instance
- */
-void subghz_protocol_decoder_treadmill37_reset(void* context);
 
 /**
  * Parse a raw sequence of levels and durations received from the air.

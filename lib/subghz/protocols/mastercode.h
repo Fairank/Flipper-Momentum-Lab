@@ -19,12 +19,6 @@ extern const SubGhzProtocol subghz_protocol_mastercode;
 void* subghz_protocol_encoder_mastercode_alloc(SubGhzEnvironment* environment);
 
 /**
- * Free SubGhzProtocolEncoderMastercode.
- * @param context Pointer to a SubGhzProtocolEncoderMastercode instance
- */
-void subghz_protocol_encoder_mastercode_free(void* context);
-
-/**
  * Deserialize and generating an upload to send.
  * @param context Pointer to a SubGhzProtocolEncoderMastercode instance
  * @param flipper_format Pointer to a FlipperFormat instance
@@ -34,36 +28,11 @@ SubGhzProtocolStatus
     subghz_protocol_encoder_mastercode_deserialize(void* context, FlipperFormat* flipper_format);
 
 /**
- * Forced transmission stop.
- * @param context Pointer to a SubGhzProtocolEncoderMastercode instance
- */
-void subghz_protocol_encoder_mastercode_stop(void* context);
-
-/**
- * Getting the level and duration of the upload to be loaded into DMA.
- * @param context Pointer to a SubGhzProtocolEncoderMastercode instance
- * @return LevelDuration 
- */
-LevelDuration subghz_protocol_encoder_mastercode_yield(void* context);
-
-/**
  * Allocate SubGhzProtocolDecoderMastercode.
  * @param environment Pointer to a SubGhzEnvironment instance
  * @return SubGhzProtocolDecoderMastercode* pointer to a SubGhzProtocolDecoderMastercode instance
  */
 void* subghz_protocol_decoder_mastercode_alloc(SubGhzEnvironment* environment);
-
-/**
- * Free SubGhzProtocolDecoderMastercode.
- * @param context Pointer to a SubGhzProtocolDecoderMastercode instance
- */
-void subghz_protocol_decoder_mastercode_free(void* context);
-
-/**
- * Reset decoder SubGhzProtocolDecoderMastercode.
- * @param context Pointer to a SubGhzProtocolDecoderMastercode instance
- */
-void subghz_protocol_decoder_mastercode_reset(void* context);
 
 /**
  * Parse a raw sequence of levels and durations received from the air.
