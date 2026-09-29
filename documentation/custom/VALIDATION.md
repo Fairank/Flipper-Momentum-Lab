@@ -2,7 +2,7 @@
 
 ## 中文与功能并集第二轮：本地验收（2026-09-29）
 
-接续代码基线 `b8e1f9f4`，范围见 [第二轮实现](UNION_CHINESE_CONTINUATION.md)，逐文件哈希及六项 Opus 实际执行状态见 [JSON 记录](UNION_CHINESE_CONTINUATION.json)。这批改动不等于完整并集或全界面中文验收。
+接续代码基线 `b8e1f9f4`，范围见 [第二轮实现](UNION_CHINESE_CONTINUATION.md)，逐文件哈希及七项 Opus 实际执行状态（六项实现、一项文档核对）见 [JSON 记录](UNION_CHINESE_CONTINUATION.json)。这批改动不等于完整并集或全界面中文验收。
 
 - 93 项 Python / 实际 C 回归通过，无跳过；包含 7,296 个月份与日历真实绘制、UTF-8 滚动、五类中文按钮、快捷设置、时钟和 FAP 名称兼容。
 - `updater_package` 与随后独立的 `fap_dist` 通过，分发含 333 个 FAP、124 个独立 FAL；新增床头时钟、十个工具及原有两个伴侣应用均存在。
@@ -10,9 +10,21 @@
 - 首次最终打包因主固件越界 56 字节被拒绝；未绕过保护。删除未被使用的重复 ASCII 字形后通过布局检查。CJK 字库为 696 字形 / 18,973 字节，升级器子集为 135 字形 / 3,707 字节。
 - `lint_all`、字库同步检查与 `git diff --check` 通过。42 个导入设备图标规范化后，逐个比较实际编译的像素数据完全一致；README 截图未改变，并从设备图标规则中单独排除。
 - 本地升级包名称含构建前 HEAD `b8e1f9f4`，是改动工作树产物，不是干净基线包。其大小与 SHA-256 在上述 JSON 中，云端产物须另核对对应提交。
-- 本机无 Xcode、无连接硬件；手机新增 13 项已安装工具的中文显示映射，需要当前提交的 Mac CI 验证。未执行刷机、BLE、AIO、实卡或射频验收。
+- 本机无 Xcode、无连接硬件；手机新增 13 项已安装应用（床头时钟、十个工具、两个 HID 遥控）的中文显示映射，已由下方当前代码的 Mac CI 验证。未执行刷机、BLE、AIO、实卡或射频验收。
 
-本节的本地结果不引用上一轮的绿色 CI 作为当前代码验证。当前提交的云端结果完成后另行补录。
+### 本轮代码的 GitHub 验收
+
+以下全部对应分支代码 `6017530b20b128c75450f5f77c593ae66d04e885`，PR 构建使用合并提交 `158ae9952c9b86290b2ad62e006112dd5a68abc9`。后续文档提交只补录证据，不声称重新执行代码或硬件验收。
+
+- [Lab validation 36525103876](https://github.com/Fairank/Flipper-Momentum-Lab/actions/runs/36525103876) 全部通过：93 项 Python / 实际 C 测试、89 项 Swift 核心测试、5 项 iPhone UI 测试、无签名模拟器构建及三套字库同步检查。环境为 Xcode 26.6、iPhone 17 Pro Max / iOS 26.5。
+- [Lab firmware 36525103757](https://github.com/Fairank/Flipper-Momentum-Lab/actions/runs/36525103757) 与 [Lint 36525103890](https://github.com/Fairank/Flipper-Momentum-Lab/actions/runs/36525103890) 全部通过；构建后跟踪源码没有变化，13 项指定应用的存在性和升级器尺寸检查通过。
+- [升级包附件 11014658624](https://github.com/Fairank/Flipper-Momentum-Lab/actions/runs/36525103757/artifacts/11014658624) 已下载并核对 ZIP 摘要、内部 SHA256SUMS、DFU CRC 与地址边界。包内含 **280 个正式 FAP 与 121 个 FAL**；完整 `fap_dist` 另外构建 53 个 Debug / Examples 应用和 3 个示例插件，合计 333 / 124，不混算为常规升级包内容。
+- 云端恢复升级器为 123,829 字节，主固件为 879,696 字节，距当前无线栈起点余 **944 字节**。云端版本字符串等构建差异会使大小与本地不同；这里记录实际下载产物，未绕过边界检查。
+- 云端 TGZ 为 12,820,416 字节，SHA-256 为 `5fa8973f42e7a1561be416a5438b7a9ff18c342aac9d7c6db45a88d1ec980f3f`；ZIP SHA-256 为 `bc4dbdffee691ccaf4d5b3c2582f285ff5efbb4b9f9c0a80abea7d49c72e9bcf`。新增床头时钟和十个工具以及两个伴侣应用均在包内，两个单独附带的伴侣 FAP 与包内文件逐字节一致。
+- [Flipper 源码预览附件](https://github.com/Fairank/Flipper-Momentum-Lab/actions/runs/36525103876/artifacts/11014567879) 包含 66 张帮助页、6 个原生菜单及 UI 文案审计清单；已下载核对摘要，六菜单拼图与已查看的本地预览字节一致。它们不是真机照片。
+- [iPhone 原始模拟器截图附件](https://github.com/Fairank/Flipper-Momentum-Lab/actions/runs/36525103876/artifacts/11014940556) 已生成；摘要记录在本轮 JSON。固件和截图附件按当前保留期于 2026-10-13 到期，源码与构建入口保留。
+
+未执行刷机、蓝牙、AIO、实卡或射频验收，以上绿色结果不改变这个边界。
 
 ## 上游融合提交 `22904e309`（2026-09-29）
 

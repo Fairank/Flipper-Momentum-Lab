@@ -63,13 +63,24 @@
       ],
       "exit_code": 0,
       "seconds": 849.1
+    },
+    {
+      "name": "opus-union-doc-check-20260929",
+      "requested_model": "claude-opus-5-5",
+      "requested_effort": "max",
+      "returned_models": [
+        "claude-opus-5-5"
+      ],
+      "exit_code": 0,
+      "seconds": 620.0,
+      "scope": "Read-only documentation fact check; primary reviewed and applied wording corrections."
     }
   ],
   "local_tests": {
     "python_and_c": 93,
     "skip_count": 0,
     "calendar_month_vectors": 7296,
-    "ios": "Pending exact-commit CI; no local Xcode or hardware"
+    "ios": "No local Xcode; exact-commit GitHub macOS CI passed, see ci_validation."
   },
   "local_distribution": {
     "fap_count": 333,
@@ -204,11 +215,13 @@
   "files": [
     {
       "path": ".github/workflows/lab-firmware.yml",
-      "sha256": "03e56010eb2c0e1186f7ecd2e9ab8660bf6ba03765404dc601e8975e018a5e13"
+      "sha256": "78dc20e0b8bea2b2c4b0a87bcbef263ba4e98a6215e5cd86642ada7b417c3563",
+      "local_working_tree_sha256": "03e56010eb2c0e1186f7ecd2e9ab8660bf6ba03765404dc601e8975e018a5e13"
     },
     {
       "path": ".github/workflows/lab-validation.yml",
-      "sha256": "64d181a8eaed0dfb5eea6fd05ee46ed699686e494116f48bd8cccbafc0ea0a67"
+      "sha256": "0ac32a328a2aa7d8ac6c9519ca80915ba2033d2ab1fcdca4471c95688d33cfaf",
+      "local_working_tree_sha256": "64d181a8eaed0dfb5eea6fd05ee46ed699686e494116f48bd8cccbafc0ea0a67"
     },
     {
       "path": "SConstruct",
@@ -220,55 +233,68 @@
     },
     {
       "path": "applications/main/archive/scenes/archive_scene_browser.c",
-      "sha256": "dfcdbc986c4da6b4bfe42e2a0b94aea019cb45bfadaca5dc17256fcbdd83854b"
+      "sha256": "2cf35ba676ed7d4b8cf029a133f0c7d7a8e63647e0b9d200cdfecd9d858c0aea",
+      "local_working_tree_sha256": "dfcdbc986c4da6b4bfe42e2a0b94aea019cb45bfadaca5dc17256fcbdd83854b"
     },
     {
       "path": "applications/main/archive/scenes/archive_scene_new_dir.c",
-      "sha256": "faa98c8e242f96d9a2f7f0085d71330b621e219631ec9ed3580a225f7cfa6e1b"
+      "sha256": "23846cd671398654c51ca41bde66b3010d2037698c681c8bab4f611d8ec4e8e8",
+      "local_working_tree_sha256": "faa98c8e242f96d9a2f7f0085d71330b621e219631ec9ed3580a225f7cfa6e1b"
     },
     {
       "path": "applications/main/archive/scenes/archive_scene_rename.c",
-      "sha256": "36ac3e3d017dfa21afeabbc33d21eaa0e958911119af2c8059f4529d3488f4a4"
+      "sha256": "34b3003e3723034b031274f735e69acbdd006708fda527088f64f227f32a688a",
+      "local_working_tree_sha256": "36ac3e3d017dfa21afeabbc33d21eaa0e958911119af2c8059f4529d3488f4a4"
     },
     {
       "path": "applications/main/bad_usb/scenes/bad_usb_scene_config.c",
-      "sha256": "edf516c3c9c2f063cc39a0c7d89b2ce57195a64a62d4cd3261c911c8fe3d97e4"
+      "sha256": "fde3123a6ee7a43dafbc5f8ab967316c22fc4e0aa3b470624f721c5ddadbe3ca",
+      "local_working_tree_sha256": "edf516c3c9c2f063cc39a0c7d89b2ce57195a64a62d4cd3261c911c8fe3d97e4"
     },
     {
       "path": "applications/main/bad_usb/scenes/bad_usb_scene_config_ble_mac.c",
-      "sha256": "a61d173b38ea83823899d367029b629d1b230c321d46984f394db3ce206c586b"
+      "sha256": "f58e7869ffd7505ef2eff58b8aff028ed9f5e874512e6d218c59d5ae78ebc5c1",
+      "local_working_tree_sha256": "a61d173b38ea83823899d367029b629d1b230c321d46984f394db3ce206c586b"
     },
     {
       "path": "applications/main/bad_usb/scenes/bad_usb_scene_config_ble_name.c",
-      "sha256": "bb876b5ecdb19fe0fa71190f3c33efeddd0d22e39afbba768b0aa22850c6b324"
+      "sha256": "fc09615eeacb0bf69e6562b58a257b4f6b9ea9a24b6ade41d7e223fb0c20298d",
+      "local_working_tree_sha256": "bb876b5ecdb19fe0fa71190f3c33efeddd0d22e39afbba768b0aa22850c6b324"
     },
     {
       "path": "applications/main/bad_usb/scenes/bad_usb_scene_config_usb_name.c",
-      "sha256": "2fe8d6c35536fc6f8bfa70bf1eb3e8654c015564826eb480eef4e069b9c45572"
+      "sha256": "152fe1368b2e3e00a539de74130521d4ebee4dc80d6b171594bb0f8456e12921",
+      "local_working_tree_sha256": "2fe8d6c35536fc6f8bfa70bf1eb3e8654c015564826eb480eef4e069b9c45572"
     },
     {
       "path": "applications/main/bad_usb/scenes/bad_usb_scene_config_usb_vidpid.c",
-      "sha256": "1f742b1f5e955dfd76d01fc9239387f6a10f9a193de36e078b57bd5880090579"
+      "sha256": "c74956b82d44973a07a9aba431f15abb15feb61a85066fb38a194247bb4a09de",
+      "local_working_tree_sha256": "1f742b1f5e955dfd76d01fc9239387f6a10f9a193de36e078b57bd5880090579"
     },
     {
       "path": "applications/main/bad_usb/scenes/bad_usb_scene_confirm_unpair.c",
-      "sha256": "5135277cef65270389ee36a1f7c82ab1e0757ee5900d581110118a9e3c05e1ce"
+      "sha256": "9c38ee74a4819e0163f4d58b9838c617a41d886cd039a99ea8804e5167a0669a",
+      "local_working_tree_sha256": "5135277cef65270389ee36a1f7c82ab1e0757ee5900d581110118a9e3c05e1ce"
     },
     {
       "path": "applications/main/bad_usb/scenes/bad_usb_scene_done.c",
-      "sha256": "8f3bb3cd75b4993aa90bf16fc266c348332e085806157343edef42e1cb694a9e"
+      "sha256": "e71e0b71f8fad9d2da162a0e07e38147fc61dfe88919dff783172839557daefb",
+      "local_working_tree_sha256": "8f3bb3cd75b4993aa90bf16fc266c348332e085806157343edef42e1cb694a9e"
     },
     {
       "path": "applications/main/bad_usb/scenes/bad_usb_scene_error.c",
-      "sha256": "83fd01153a4f05b506e36a3a8ae23cb20728a52158f87a877d59ad5c89590999"
+      "sha256": "467d37396ccf99a3aa33e17fff968c050381c1fd4bf58fab017cc5d2a5f74a86",
+      "local_working_tree_sha256": "83fd01153a4f05b506e36a3a8ae23cb20728a52158f87a877d59ad5c89590999"
     },
     {
       "path": "applications/main/bad_usb/scenes/bad_usb_scene_file_select.c",
-      "sha256": "cc88e716e1cc450a0f7baa580c7cdb0d2a4ad4fef6b10d94a7d66bea33d8259b"
+      "sha256": "908a10b78d979ae5aa6ba22f65bed04be7bbe22de968fde58e2eddbf46bdcde5",
+      "local_working_tree_sha256": "cc88e716e1cc450a0f7baa580c7cdb0d2a4ad4fef6b10d94a7d66bea33d8259b"
     },
     {
       "path": "applications/main/bad_usb/views/bad_usb_view.c",
-      "sha256": "215e9dac826769071c05b8c813bde205f2e0e356a4ee6544e621d4561aa32f77"
+      "sha256": "e0d6b0a86dc1101bd06fc3deae1ce74b06266765fd118dbeea77500ff4b8ebb1",
+      "local_working_tree_sha256": "215e9dac826769071c05b8c813bde205f2e0e356a4ee6544e621d4561aa32f77"
     },
     {
       "path": "applications/main/clock_app/CHANGELOG.md",
@@ -280,7 +306,8 @@
     },
     {
       "path": "applications/main/clock_app/clock_app.c",
-      "sha256": "8708a799f85a3464305eb9f03fd69982832dd9ea3dd96496fd92d6a4dbc483d8"
+      "sha256": "4b98b87bc3b975f664102e5d29824f88b13fc6aa4ad86220837b6513e374a0af",
+      "local_working_tree_sha256": "8708a799f85a3464305eb9f03fd69982832dd9ea3dd96496fd92d6a4dbc483d8"
     },
     {
       "path": "applications/main/clock_app/clock_app.h",
@@ -292,23 +319,28 @@
     },
     {
       "path": "applications/main/gpio/views/gpio_i2c_scanner.c",
-      "sha256": "f0b656f7da21b9ae91b786b0076509ed08c4b0e7ec08d481eb50699fa99324b7"
+      "sha256": "e7bafc21136d8ef0f9c9d9fc76c564783c9ae7295f1223baabad86e75c45bcc7",
+      "local_working_tree_sha256": "f0b656f7da21b9ae91b786b0076509ed08c4b0e7ec08d481eb50699fa99324b7"
     },
     {
       "path": "applications/main/gpio/views/gpio_test.c",
-      "sha256": "8906acf0a2f55336b17ed288426460edea11832bc981c048436f843cd350d25c"
+      "sha256": "9f8f2bf674df468c3517a653c1ccc93e7d34e38afc8100afdcdbf98efd7bf8d0",
+      "local_working_tree_sha256": "8906acf0a2f55336b17ed288426460edea11832bc981c048436f843cd350d25c"
     },
     {
       "path": "applications/main/ibutton/scenes/ibutton_scene_settings_write_targets.c",
-      "sha256": "7ae6fb136f7024754a588d3b5d8a6bd74eccc247f3e448b4f4e6f3d5afac3005"
+      "sha256": "cb764f1fb43a7f3f4470b16c9b41639603d818b46eb5e8bc1ffacb8a5ac801b1",
+      "local_working_tree_sha256": "7ae6fb136f7024754a588d3b5d8a6bd74eccc247f3e448b4f4e6f3d5afac3005"
     },
     {
       "path": "applications/main/infrared/scenes/infrared_scene_universal_ac.c",
-      "sha256": "c2527ca87e2c72ed41d40795ddd7936f1c5592d4955f339651b280ccdfe444bc"
+      "sha256": "d19e5d93c9a596d936f7f0b72a5187b4cb73a4c07352db311161c8dbe946f432",
+      "local_working_tree_sha256": "c2527ca87e2c72ed41d40795ddd7936f1c5592d4955f339651b280ccdfe444bc"
     },
     {
       "path": "applications/main/infrared/scenes/infrared_scene_universal_audio.c",
-      "sha256": "71d2c393d8a49c556c2d3db884ab2309951a414607883dac771027c7dddab513"
+      "sha256": "c39625a3920185b1668ae5348357c7fa014056633b0f959e46cd635fbbdf31aa",
+      "local_working_tree_sha256": "71d2c393d8a49c556c2d3db884ab2309951a414607883dac771027c7dddab513"
     },
     {
       "path": "applications/main/infrared/scenes/infrared_scene_universal_bluray.c",
@@ -316,39 +348,48 @@
     },
     {
       "path": "applications/main/infrared/scenes/infrared_scene_universal_digital_sign.c",
-      "sha256": "6229367276c51b9f4fe478c67855674c80a535c877bbdfc6cd1c98dd7d3bafd6"
+      "sha256": "0938647fffb62108c4bfcb6aa9cb19a0f8301ccb74b831b174b77f9fe46e3480",
+      "local_working_tree_sha256": "6229367276c51b9f4fe478c67855674c80a535c877bbdfc6cd1c98dd7d3bafd6"
     },
     {
       "path": "applications/main/infrared/scenes/infrared_scene_universal_fan.c",
-      "sha256": "e939865eb180a72d5933d3affbe03579e6dda4329574e4fcdf839b578861a956"
+      "sha256": "15bf76b637e7764e2789de9c35f0e2a5386ddc402e5b565833d2ba0ded303862",
+      "local_working_tree_sha256": "e939865eb180a72d5933d3affbe03579e6dda4329574e4fcdf839b578861a956"
     },
     {
       "path": "applications/main/infrared/scenes/infrared_scene_universal_leds.c",
-      "sha256": "cccf67ac85459b1b252e7e6bbfdca7955d4c6b2a93054bc1c6437c0e32bfdc38"
+      "sha256": "4483a27287ee721ee841ef0540dd16569ae137675adb22b133d6c8d8bf706fa0",
+      "local_working_tree_sha256": "cccf67ac85459b1b252e7e6bbfdca7955d4c6b2a93054bc1c6437c0e32bfdc38"
     },
     {
       "path": "applications/main/infrared/scenes/infrared_scene_universal_monitor.c",
-      "sha256": "6f8d4fd9c93574166b4631cdcf4fe1bc6c0207373e7972f054e81f13eff6beab"
+      "sha256": "1d6aa1e40fe05685e8abc2038a450c8a9541f01af56af54d6719f5198f9dddd6",
+      "local_working_tree_sha256": "6f8d4fd9c93574166b4631cdcf4fe1bc6c0207373e7972f054e81f13eff6beab"
     },
     {
       "path": "applications/main/infrared/scenes/infrared_scene_universal_projector.c",
-      "sha256": "d80072b40983619dc428168022d8328e845667e6255059453927b1026a3ae627"
+      "sha256": "03946d664187e4ae305f57437248c8b4f3c564c823eb6357b4297e1f767c432b",
+      "local_working_tree_sha256": "d80072b40983619dc428168022d8328e845667e6255059453927b1026a3ae627"
     },
     {
       "path": "applications/main/infrared/scenes/infrared_scene_universal_tv.c",
-      "sha256": "bad1164da5796ef56651f53561d20e16aa2e7df7779a13d037be951f2dcc3376"
+      "sha256": "de83c288199f05874e92cde41b83d66cd9a821973f06d4d816890bf03fafb64b",
+      "local_working_tree_sha256": "bad1164da5796ef56651f53561d20e16aa2e7df7779a13d037be951f2dcc3376"
     },
     {
       "path": "applications/main/infrared/views/infrared_debug_view.c",
-      "sha256": "ccb6b798137d7cc137994527e2cc93bebcc1985dd64c61909cc6f01b3362ca9f"
+      "sha256": "bd08109719e60abce86bb6a2ded188e7ccd0c17524a725735cd4175da7d3b87a",
+      "local_working_tree_sha256": "ccb6b798137d7cc137994527e2cc93bebcc1985dd64c61909cc6f01b3362ca9f"
     },
     {
       "path": "applications/main/infrared/views/infrared_move_view.c",
-      "sha256": "19bb1b96fa4231925173e9d1caebedfb8977bd10f3316e53e2aaf6068f7ef212"
+      "sha256": "ee0bfb24cb83ab0d019959fdb179afad0ed32ccb923ce9b3a04719cc2a4ac1f6",
+      "local_working_tree_sha256": "19bb1b96fa4231925173e9d1caebedfb8977bd10f3316e53e2aaf6068f7ef212"
     },
     {
       "path": "applications/main/lfrfid/scenes/lfrfid_scene_settings_write_targets.c",
-      "sha256": "b53fea64a0f5f474b2b7d57e37a331bfc81a9246688ca1c9a96cea9d6ac4db8f"
+      "sha256": "ca293aca7df9c8659f9b3f8cf10fc1dc998d61be1edee16c4119ab1a847479e7",
+      "local_working_tree_sha256": "b53fea64a0f5f474b2b7d57e37a331bfc81a9246688ca1c9a96cea9d6ac4db8f"
     },
     {
       "path": "applications/main/momentum_app/scenes/momentum_app_scene_interface_graphics_pack.c",
@@ -356,7 +397,8 @@
     },
     {
       "path": "applications/main/momentum_app/scenes/momentum_app_scene_interface_mainmenu.c",
-      "sha256": "40c363d4547b55068b52b3dbbe48d9528315c42634a698f907a23837afe568b7"
+      "sha256": "e92bd115e99babd93f06a42d9add45a3a6e5199253f38f8f29dff1a7e54de916",
+      "local_working_tree_sha256": "40c363d4547b55068b52b3dbbe48d9528315c42634a698f907a23837afe568b7"
     },
     {
       "path": "applications/main/momentum_app/scenes/momentum_app_scene_interface_mainmenu_add.c",
@@ -368,79 +410,98 @@
     },
     {
       "path": "applications/main/momentum_app/scenes/momentum_app_scene_misc_dolphin.c",
-      "sha256": "fb00a74df0cc8c639bba504145b85aa18b1bc4062170f33e18a14d41cc96e2b0"
+      "sha256": "57409926d122338c7464a223cfe60452b760c7b45171a29db7e5bfa4fe870544",
+      "local_working_tree_sha256": "fb00a74df0cc8c639bba504145b85aa18b1bc4062170f33e18a14d41cc96e2b0"
     },
     {
       "path": "applications/main/momentum_app/scenes/momentum_app_scene_misc_dolphin_xp.c",
-      "sha256": "178117713c4b8d0824ff2f530fddd09e00e75059a2756ae58d482ce97630b572"
+      "sha256": "73432f569a2c65e8d843d0294f63343ca62743d19537c005f53b76c7a2120153",
+      "local_working_tree_sha256": "178117713c4b8d0824ff2f530fddd09e00e75059a2756ae58d482ce97630b572"
     },
     {
       "path": "applications/main/momentum_app/scenes/momentum_app_scene_misc_screen.c",
-      "sha256": "94c4b889b998aafff0a3ea6b656957a6e260e8861e36c71536fed2f25f5b9430"
+      "sha256": "5da525e8636b04965dab905a90126f355b69c11790d64d79f5922fd569892f84",
+      "local_working_tree_sha256": "94c4b889b998aafff0a3ea6b656957a6e260e8861e36c71536fed2f25f5b9430"
     },
     {
       "path": "applications/main/momentum_app/scenes/momentum_app_scene_protocols.c",
-      "sha256": "2cb3363a8f12d663ab7c8ff9abafac987cb75b103faaf6366e7848fbc5971554"
+      "sha256": "d84258252ed5f45df91b2ce4dc97004b5316acb36be7f5abd8ed1806293d2725",
+      "local_working_tree_sha256": "2cb3363a8f12d663ab7c8ff9abafac987cb75b103faaf6366e7848fbc5971554"
     },
     {
       "path": "applications/main/momentum_app/scenes/momentum_app_scene_protocols_freqs_add.c",
-      "sha256": "f0f32bf36b0cef1ff225d6076ef77370cea700558864730a320cc11f8df4fb7d"
+      "sha256": "0a0babbba954b1bb6d1d3e4eceb6d2aa57a9a570ce0eaef6ab44302c79eedbaf",
+      "local_working_tree_sha256": "f0f32bf36b0cef1ff225d6076ef77370cea700558864730a320cc11f8df4fb7d"
     },
     {
       "path": "applications/main/nfc/helpers/protocol_support/mf_classic/mf_classic.c",
-      "sha256": "79afb2960be07286b76d1b1a8da20e153983ca5618d38abb591c76aaa8af70db"
+      "sha256": "c3e862baaee171879424af503f7faacc649cbb045517a33224c7e32db5a0e092",
+      "local_working_tree_sha256": "79afb2960be07286b76d1b1a8da20e153983ca5618d38abb591c76aaa8af70db"
     },
     {
       "path": "applications/main/nfc/helpers/protocol_support/mf_plus/mf_plus.c",
-      "sha256": "bf6e76137237db7c63a18b979040139b66300d0337942175e45907ca0f4e79c2"
+      "sha256": "020d59739fc33fa0b117adc88bf4e416f07bae8019632a417993b2dba5208e53",
+      "local_working_tree_sha256": "bf6e76137237db7c63a18b979040139b66300d0337942175e45907ca0f4e79c2"
     },
     {
       "path": "applications/main/nfc/helpers/protocol_support/mf_ultralight/mf_ultralight.c",
-      "sha256": "90abcbacb42e207e9c50b9f17afdb779802c3c9f48989af95918f779ff4e11bc"
+      "sha256": "92d67fc19f9ae6cfb92303f102ad3216e87cdec4d8d1ce0557871450f6ea4869",
+      "local_working_tree_sha256": "90abcbacb42e207e9c50b9f17afdb779802c3c9f48989af95918f779ff4e11bc"
     },
     {
       "path": "applications/main/nfc/helpers/protocol_support/nfc_protocol_support.c",
-      "sha256": "9effc9420726b8c05af37e94be0c6bbf5133cda4d91727c680eaa8558d533c4b"
+      "sha256": "49e605e2ebd51e14d6c25a3f79865d8de77430499e68122d2b82dfc044414e91",
+      "local_working_tree_sha256": "9effc9420726b8c05af37e94be0c6bbf5133cda4d91727c680eaa8558d533c4b"
     },
     {
       "path": "applications/main/nfc/scenes/nfc_scene_key_dict_list.c",
-      "sha256": "3ca0e1a87390db06c0fb44becc8ae67e6ff78be6e216b0c2ab670930b3dfeb8a"
+      "sha256": "65444358f00886ddcc99e6b7f69c3a01d9e17727da8a460918dd4a43e5892c2f",
+      "local_working_tree_sha256": "3ca0e1a87390db06c0fb44becc8ae67e6ff78be6e216b0c2ab670930b3dfeb8a"
     },
     {
       "path": "applications/main/nfc/scenes/nfc_scene_select_protocol.c",
-      "sha256": "8ad493d65e0afc823eb02f4d8efb563611e10dff9f072553b5cc9f89083ffd56"
+      "sha256": "4e3f453101402e7fdb98429396de6e186b7ae9e9afead47e43a58315abbeab69",
+      "local_working_tree_sha256": "8ad493d65e0afc823eb02f4d8efb563611e10dff9f072553b5cc9f89083ffd56"
     },
     {
       "path": "applications/main/nfc/views/dict_attack.c",
-      "sha256": "b418d973a30bc49840682dfc63a708883467b9cee98b75ac0f93bfadc061c310"
+      "sha256": "54f35b98e927bd84f949cc2b3508b4ce894febd5a7f010ea956b6682e3f9b609",
+      "local_working_tree_sha256": "b418d973a30bc49840682dfc63a708883467b9cee98b75ac0f93bfadc061c310"
     },
     {
       "path": "applications/main/subghz/scenes/subghz_scene_radio_settings.c",
-      "sha256": "b6d838edf9b8313364b7c168659dba84a20e1eaf6ff51539e311246ede85d36c"
+      "sha256": "1d4436fd07e469467943c3cf81e3d507b0f43544743df00b75f3b56fceb629a2",
+      "local_working_tree_sha256": "b6d838edf9b8313364b7c168659dba84a20e1eaf6ff51539e311246ede85d36c"
     },
     {
       "path": "applications/main/subghz/scenes/subghz_scene_receiver_config.c",
-      "sha256": "abe2b2b6e102b60f38cec19698dd67f8e7720e24326f022d80621a9b2c272a2c"
+      "sha256": "54d1b12717778fd65923cbfbd7bcb28c46e3dcfa4401acabce8bf556d9e25915",
+      "local_working_tree_sha256": "abe2b2b6e102b60f38cec19698dd67f8e7720e24326f022d80621a9b2c272a2c"
     },
     {
       "path": "applications/main/subghz/scenes/subghz_scene_show_error.c",
-      "sha256": "196b6ef4fea43d82ed638259a6e67f18682cd17cb73295da4948e6bdf87c3b20"
+      "sha256": "44c60304a415031eedee8e339b5b5547506f09457202c7471e70d9c943af674b",
+      "local_working_tree_sha256": "196b6ef4fea43d82ed638259a6e67f18682cd17cb73295da4948e6bdf87c3b20"
     },
     {
       "path": "applications/main/subghz/scenes/subghz_scene_signal_settings.c",
-      "sha256": "2f111f2ac2489382e6ca86615335e3c8202bd810a883aae22af23781c10a1ed1"
+      "sha256": "2fbff5770fe3b73ea4ab65738fa0b7dd285dc1b3f8eb3ffb567daa7506494835",
+      "local_working_tree_sha256": "2f111f2ac2489382e6ca86615335e3c8202bd810a883aae22af23781c10a1ed1"
     },
     {
       "path": "applications/main/subghz/views/receiver.c",
-      "sha256": "e7e70733e57e054b2a0cbee58b501eed90da033dcbf237255585367e4386173f"
+      "sha256": "58ac23b0f8df5c15e34cfb11de5e9fbd6f69c131945bb3f4c15d9f086cba02c5",
+      "local_working_tree_sha256": "e7e70733e57e054b2a0cbee58b501eed90da033dcbf237255585367e4386173f"
     },
     {
       "path": "applications/main/u2f/views/u2f_view.c",
-      "sha256": "e41ba0a8ec4e2e3b29cb9bbeeafb3424edfdc0836e01e75427ab9b1851918af1"
+      "sha256": "a7ed28c792ed36c44077cfbe60d982b5e91d689e22d8c192ba5d3826f232b327",
+      "local_working_tree_sha256": "e41ba0a8ec4e2e3b29cb9bbeeafb3424edfdc0836e01e75427ab9b1851918af1"
     },
     {
       "path": "applications/services/bt/bt_service/bt.c",
-      "sha256": "477e6c63ccec62b75d89b8cab7059e51d0af7f7abbd693e8e9737407b5b38ac3"
+      "sha256": "98ccce89829845ca625c53fab3629303cd04a5470028c8e82a4eafcd9f992c5a",
+      "local_working_tree_sha256": "477e6c63ccec62b75d89b8cab7059e51d0af7f7abbd693e8e9737407b5b38ac3"
     },
     {
       "path": "applications/services/desktop/desktop.c",
@@ -456,7 +517,8 @@
     },
     {
       "path": "applications/services/desktop/scenes/desktop_scene_hw_mismatch.c",
-      "sha256": "5f481812143d76866ae3146de3d42d86d92cfaf317537cfd49cb12e6499ad488"
+      "sha256": "230f29f20a5a57d9ff845cf72f3674e9c2260126e85a88306247c45e9be954f0",
+      "local_working_tree_sha256": "5f481812143d76866ae3146de3d42d86d92cfaf317537cfd49cb12e6499ad488"
     },
     {
       "path": "applications/services/desktop/scenes/desktop_scene_lock_menu.c",
@@ -464,7 +526,8 @@
     },
     {
       "path": "applications/services/desktop/scenes/desktop_scene_pin_input.c",
-      "sha256": "0682afca2dcc54944bb42f45c89806ac772eccaf5fe0a5152711215875e8d03f"
+      "sha256": "f362c98a7679a96d91c809e25c3029981f0b1f41ca6cb29fa3c8a60981e06f49",
+      "local_working_tree_sha256": "0682afca2dcc54944bb42f45c89806ac772eccaf5fe0a5152711215875e8d03f"
     },
     {
       "path": "applications/services/desktop/scenes/desktop_scene_quick_settings.c",
@@ -484,7 +547,8 @@
     },
     {
       "path": "applications/services/desktop/views/desktop_view_pin_timeout.c",
-      "sha256": "cadfb98df68ad8fdd11b1449b0305582aca5b7dd6fc4e1d9780d29dfb7dfc407"
+      "sha256": "77ac0af0431d56ddcecf0b79b0044f00bd624c08dcf6fcbfce0b3b9425806873",
+      "local_working_tree_sha256": "cadfb98df68ad8fdd11b1449b0305582aca5b7dd6fc4e1d9780d29dfb7dfc407"
     },
     {
       "path": "applications/services/desktop/views/desktop_view_quick_settings.c",
@@ -496,7 +560,8 @@
     },
     {
       "path": "applications/services/dialogs/dialogs_api.c",
-      "sha256": "1d35c353c0528b096c05bc1fce3faf930d479c0299e89e7f71af9d8b3c882aa0"
+      "sha256": "25d6788ec73162ec68cd10502315a890b24a95ac88fe1a4050f5e68a0258b81c",
+      "local_working_tree_sha256": "1d35c353c0528b096c05bc1fce3faf930d479c0299e89e7f71af9d8b3c882aa0"
     },
     {
       "path": "applications/services/gui/canvas.c",
@@ -504,19 +569,23 @@
     },
     {
       "path": "applications/services/gui/elements.c",
-      "sha256": "96b67cca059973104b93f98eb41e79258ea0dc8f9115218fb0c645e158bd5a39"
+      "sha256": "2bc64117fc6552152f70908c61417749e6578da3ec08aa4d79809cfa01fa00a2",
+      "local_working_tree_sha256": "96b67cca059973104b93f98eb41e79258ea0dc8f9115218fb0c645e158bd5a39"
     },
     {
       "path": "applications/services/gui/modules/byte_input.c",
-      "sha256": "9e5507560c2b95865d141307c2669c3c7c300dab05fe653d3ae3a0e0cc9721ab"
+      "sha256": "768dc7a2fe0ba8e8055d812c3f401f86e658cdd1290d00beb10c15c15d15fccf",
+      "local_working_tree_sha256": "9e5507560c2b95865d141307c2669c3c7c300dab05fe653d3ae3a0e0cc9721ab"
     },
     {
       "path": "applications/services/gui/modules/file_browser.c",
-      "sha256": "e38afea286b00fddae38065ab4306a4cdb22c709744ea335a2ce46c730dca7a5"
+      "sha256": "4923e0db36545365d9dc346e5d0c56c3b2910c4628a0a2bcb962a19907de0000",
+      "local_working_tree_sha256": "e38afea286b00fddae38065ab4306a4cdb22c709744ea335a2ce46c730dca7a5"
     },
     {
       "path": "applications/services/gui/modules/menu.c",
-      "sha256": "1725c556d8664625d03b00bf5f749732125833ef74709ae329f371f01955281a"
+      "sha256": "189f974bc0b307380291fac51ee800984a0cd93d023f7a2f7c3e9ba6d52aa1ef",
+      "local_working_tree_sha256": "1725c556d8664625d03b00bf5f749732125833ef74709ae329f371f01955281a"
     },
     {
       "path": "applications/services/gui/modules/menu_animations.h",
@@ -532,11 +601,13 @@
     },
     {
       "path": "applications/services/gui/modules/validators.c",
-      "sha256": "9d59a63cd0096b9897854118a7ba1b29554d498a8754f1ae95508d03728dd595"
+      "sha256": "6e7a05050f211c48e631be0a74ff7a72339e48a446c761a68c73c8ed66453ba6",
+      "local_working_tree_sha256": "9d59a63cd0096b9897854118a7ba1b29554d498a8754f1ae95508d03728dd595"
     },
     {
       "path": "applications/services/gui/modules/variable_item_list.c",
-      "sha256": "5d0221a3c74200a62528e6c65ffee2179d74777b837ea5681a4dad037e14a6cf"
+      "sha256": "48e5834b01188977d331d3e8e0fc96ffea8d90e0ee7cb093fe63044c9949ea74",
+      "local_working_tree_sha256": "5d0221a3c74200a62528e6c65ffee2179d74777b837ea5681a4dad037e14a6cf"
     },
     {
       "path": "applications/services/gui/modules/widget_elements/widget_element_text_scroll.c",
@@ -556,11 +627,13 @@
     },
     {
       "path": "applications/services/loader/loader.c",
-      "sha256": "86ac49bff8e746ec9c8a21ad60b66a858e4df623f0762d0ed9d13c0022c450ea"
+      "sha256": "f54cea6b14500a864e9d151289264b58c239a933a97edc72e89d7e22673af02f",
+      "local_working_tree_sha256": "86ac49bff8e746ec9c8a21ad60b66a858e4df623f0762d0ed9d13c0022c450ea"
     },
     {
       "path": "applications/services/loader/loader_menu_storage.c",
-      "sha256": "26c180805f5c3498cc6e52003dc349e66139af036430f7195d7146a81217d52c"
+      "sha256": "1250c0d60ab131c10505e14fea7a66a148a6d2d3718c18ba2ded7dfdfcac3513",
+      "local_working_tree_sha256": "26c180805f5c3498cc6e52003dc349e66139af036430f7195d7146a81217d52c"
     },
     {
       "path": "applications/services/locale/locale_ui.h",
@@ -572,15 +645,18 @@
     },
     {
       "path": "applications/services/power/power_service/views/power_off.c",
-      "sha256": "2aa9eeb75d443a31c48b7d5349744a36cae25e6b3d5da145b64ec2364f70f20a"
+      "sha256": "9d4663dafd6035a2ee6edd6bdfd76147f721ae80b5e224ade0d395a366a8e7f2",
+      "local_working_tree_sha256": "2aa9eeb75d443a31c48b7d5349744a36cae25e6b3d5da145b64ec2364f70f20a"
     },
     {
       "path": "applications/services/power/power_service/views/power_unplug_usb.c",
-      "sha256": "91dfe3472dd747b9665c7a04dabe7e8abe5510db5af8abda708979d9c1eed45e"
+      "sha256": "69e9565c6f9eb1bcbe4b7b3599a2e6277fd90e00a32a792ea6385041cd0d0b00",
+      "local_working_tree_sha256": "91dfe3472dd747b9665c7a04dabe7e8abe5510db5af8abda708979d9c1eed45e"
     },
     {
       "path": "applications/services/rpc/rpc_gui.c",
-      "sha256": "b495d1157ee235cd037f917ae1a879ab16a5810ac96b7e8abe03b7f12917ec43"
+      "sha256": "0380ada707f96efd75280319679fe5f1b928a18932a926c2a51fc34697961d0b",
+      "local_working_tree_sha256": "b495d1157ee235cd037f917ae1a879ab16a5810ac96b7e8abe03b7f12917ec43"
     },
     {
       "path": "applications/settings/desktop_settings/scenes/desktop_settings_scene_keybinds_action.c",
@@ -592,43 +668,53 @@
     },
     {
       "path": "applications/settings/storage_settings/scenes/storage_settings_scene_formatting.c",
-      "sha256": "d22fffc7b03f6c87cfec06045174f99e0ae46d21e5fdc143db8a3c7aa33dbd09"
+      "sha256": "deb9544682e03352e67ef80bbfc9718916ccdf55420a30d3167600d547695527",
+      "local_working_tree_sha256": "d22fffc7b03f6c87cfec06045174f99e0ae46d21e5fdc143db8a3c7aa33dbd09"
     },
     {
       "path": "applications/settings/storage_settings/scenes/storage_settings_scene_internal_info.c",
-      "sha256": "34e6c9f427b5852115e85cc773f5af70d4c5a8cdab795c7193edd32bb304176a"
+      "sha256": "ccb2f426c2c02c3ca0647b79f2b61d0dc3b1da4d089ec8fe5cc9d9f8f410b015",
+      "local_working_tree_sha256": "34e6c9f427b5852115e85cc773f5af70d4c5a8cdab795c7193edd32bb304176a"
     },
     {
       "path": "applications/settings/storage_settings/scenes/storage_settings_scene_unmounted.c",
-      "sha256": "7567f8156da529855ca0a35949a1c632c93919a5dbb496e3b3ab86ea154b2844"
+      "sha256": "60e16727bf07fd722685de288d4271fbdb4029ee2409b47d310f9c559129badf",
+      "local_working_tree_sha256": "7567f8156da529855ca0a35949a1c632c93919a5dbb496e3b3ab86ea154b2844"
     },
     {
       "path": "applications/system/findmy/scenes/findmy_scene_config.c",
-      "sha256": "cc27aa28ccdd0759338b01a8c1d1efd25c212c2072dd6a518a8a07b74f7ce037"
+      "sha256": "236f50a7c2022563007dc68763c113dd202fc8c334096170b379f14610f5f26d",
+      "local_working_tree_sha256": "cc27aa28ccdd0759338b01a8c1d1efd25c212c2072dd6a518a8a07b74f7ce037"
     },
     {
       "path": "applications/system/findmy/scenes/findmy_scene_config_import.c",
-      "sha256": "a2f9d6a7b84ffea7806c51d260aa3c87c2892067378b504bc051ae56643354dd"
+      "sha256": "627838e086e9dfe162f4140b7b33b7b462737372f053ae7e23f6222c9bb664a5",
+      "local_working_tree_sha256": "a2f9d6a7b84ffea7806c51d260aa3c87c2892067378b504bc051ae56643354dd"
     },
     {
       "path": "applications/system/findmy/scenes/findmy_scene_config_import_result.c",
-      "sha256": "2faebcc181d6b404c7a2657e5a17a0cb5b521451899cba6a81df16dd4e9d6598"
+      "sha256": "0530bb0a8ef90f488891d139808934604dc28e40b2092938dbaddb64a1d62a53",
+      "local_working_tree_sha256": "2faebcc181d6b404c7a2657e5a17a0cb5b521451899cba6a81df16dd4e9d6598"
     },
     {
       "path": "applications/system/findmy/scenes/findmy_scene_config_mac.c",
-      "sha256": "b6cb292d462e35632b6d3cf8a5284c45b082bb272ef45900ed45633a9d7295ee"
+      "sha256": "dcc1d339bfcad0f71e3d3aaf917e1546f80f78c5ba63226b603675a8861e691b",
+      "local_working_tree_sha256": "b6cb292d462e35632b6d3cf8a5284c45b082bb272ef45900ed45633a9d7295ee"
     },
     {
       "path": "applications/system/findmy/scenes/findmy_scene_config_packet.c",
-      "sha256": "947781d02246ae2373518f2d2ea9437a5125fa5b905ecf9244e0bef56aa1cae5"
+      "sha256": "9850e7a760270fae1879a2cb0979be1c8c10b43880b99cb7914f0d5f30386650",
+      "local_working_tree_sha256": "947781d02246ae2373518f2d2ea9437a5125fa5b905ecf9244e0bef56aa1cae5"
     },
     {
       "path": "applications/system/findmy/scenes/findmy_scene_config_tagtype.c",
-      "sha256": "5147e025bb3399549cb2ab79e45405a3e38646eee37cc8624ccb5aa0ebc93fa1"
+      "sha256": "cc464807b59276f9d8b322f4fdd08cf294feb42a76bda838d861a7451a6e3cc9",
+      "local_working_tree_sha256": "5147e025bb3399549cb2ab79e45405a3e38646eee37cc8624ccb5aa0ebc93fa1"
     },
     {
       "path": "applications/system/findmy/views/findmy_main.c",
-      "sha256": "cc1176ccb972e2ada6a964dc2ce306a529be7c8bb76ebeba960135a81787e4fc"
+      "sha256": "9627318c2ba6cd00180c73549bae46cccf49c69c7e2ec91822381e9ac9b9a343",
+      "local_working_tree_sha256": "cc1176ccb972e2ada6a964dc2ce306a529be7c8bb76ebeba960135a81787e4fc"
     },
     {
       "path": "applications/system/hid_app/application.fam",
@@ -704,19 +790,23 @@
     },
     {
       "path": "applications/system/updater/scenes/updater_scene_error.c",
-      "sha256": "a0dce8fe703588c13a1a45d734cf6a92e9b1fc416e146b457b37d07a80519b31"
+      "sha256": "273ea390b0d565ae148dab4031bde28720eb97267c6a129ef4dcbbde8d3a0337",
+      "local_working_tree_sha256": "a0dce8fe703588c13a1a45d734cf6a92e9b1fc416e146b457b37d07a80519b31"
     },
     {
       "path": "applications/system/updater/scenes/updater_scene_loadcfg.c",
-      "sha256": "d339f2e08c014d2b6a2d4f6d82a76779ca6bff58f22ac0f38ba86953a6d817dd"
+      "sha256": "733a13281b3c29f0459903672ff0e1f9217cbc7c5bab65e098fbbc9a6a1c8bc5",
+      "local_working_tree_sha256": "d339f2e08c014d2b6a2d4f6d82a76779ca6bff58f22ac0f38ba86953a6d817dd"
     },
     {
       "path": "applications/system/updater/util/update_task.c",
-      "sha256": "a7f3c60365dc90da6bd63ab9f5d73917ce7bd5045854575ca8441954930850e6"
+      "sha256": "875dc819c971fd65d2001d4403a7dc90ca92848f5fe796ebba8db48dd014d091",
+      "local_working_tree_sha256": "a7f3c60365dc90da6bd63ab9f5d73917ce7bd5045854575ca8441954930850e6"
     },
     {
       "path": "applications/system/updater/views/updater_main.c",
-      "sha256": "0e91fb52cdb041128d2c1d38a5c1c1688cc1a27cac1d2c4a87dc271f047dd379"
+      "sha256": "f6073927c6ead192923c827214ab0df5c4151924163bf45d1627df96269b23cb",
+      "local_working_tree_sha256": "0e91fb52cdb041128d2c1d38a5c1c1688cc1a27cac1d2c4a87dc271f047dd379"
     },
     {
       "path": "applications/union/LICENSE",
@@ -724,7 +814,8 @@
     },
     {
       "path": "applications/union/UPSTREAM.json",
-      "sha256": "e823fce52423bbe17a8ba90953bc18c4dcf71d1aecf015293763a048ffd46375"
+      "sha256": "ce7e27f66577adc121857a935b842fcedb75d0ae991d8e2569280e6823696dad",
+      "local_working_tree_sha256": "e823fce52423bbe17a8ba90953bc18c4dcf71d1aecf015293763a048ffd46375"
     },
     {
       "path": "applications/union/application.fam",
@@ -992,7 +1083,8 @@
     },
     {
       "path": "applications/union/flipper_task_tracker/app/scene/main_menu/main_menu.c",
-      "sha256": "ba81226f8a8417fce64a7ed945bc41ac26b6218e27f851cd7bc4bcf2ec5d2028"
+      "sha256": "ae447d949b3aad4e8dd399ab41e42d366112f0514ad2f5ca3d35452ddc96e087",
+      "local_working_tree_sha256": "ba81226f8a8417fce64a7ed945bc41ac26b6218e27f851cd7bc4bcf2ec5d2028"
     },
     {
       "path": "applications/union/flipper_task_tracker/app/scene/main_menu/main_menu.h",
@@ -1336,7 +1428,8 @@
     },
     {
       "path": "applications/union/sd_info/main.c",
-      "sha256": "65897673a7683665dac416acbc81f021e45cdb63438fe43aadcfa9bcf5d21314"
+      "sha256": "d14e8a0543b5391ee2eeb2319894874ae4d724698f1b0be1d8564775fb152213",
+      "local_working_tree_sha256": "65897673a7683665dac416acbc81f021e45cdb63438fe43aadcfa9bcf5d21314"
     },
     {
       "path": "applications/union/segment_clock/CHANGELOG.md",
@@ -1368,7 +1461,8 @@
     },
     {
       "path": "applications/union/segment_clock/main.c",
-      "sha256": "a5363797c14abc70df5bf8010ff918fda9496145c33ccb0ceea11e8f17fa0018"
+      "sha256": "9353a80f02b23e0a289dad1f19a3003a25226a5bf4e833a2d78c10f98e4bb66d",
+      "local_working_tree_sha256": "a5363797c14abc70df5bf8010ff918fda9496145c33ccb0ceea11e8f17fa0018"
     },
     {
       "path": "assets/icons/Interface/DoorLeft_70x55.png",
@@ -1508,7 +1602,135 @@
     },
     {
       "path": "targets/f7/api_symbols.csv",
-      "sha256": "59dd8ba60a3a78cb559c4704de4312832f71d35084d34c1395bc4830e6e39fdc"
+      "sha256": "e9d71618259e70d92a309e54ef5ecaa317755b815eda7b383ed45b6307415ecd",
+      "local_working_tree_sha256": "59dd8ba60a3a78cb559c4704de4312832f71d35084d34c1395bc4830e6e39fdc"
     }
-  ]
+  ],
+  "code_commit": "6017530b20b128c75450f5f77c593ae66d04e885",
+  "hash_representation": "sha256 is the committed Git blob (LF-normalized text); local_working_tree_sha256 preserves original Windows working-tree bytes when different.",
+  "ci_preview": {
+    "run": 36525103876,
+    "artifact": 11014567879,
+    "sha256": "3eb3c116d812f945ccaab41d869c8617961ffded75e6c88112149fcecc35feee",
+    "six_menu_pixels_match_local": true
+  },
+  "ci_validation": {
+    "code_commit": "6017530b20b128c75450f5f77c593ae66d04e885",
+    "merge_commit": "158ae9952c9b86290b2ad62e006112dd5a68abc9",
+    "lab_validation_run": 36525103876,
+    "lab_validation_conclusion": "success",
+    "python_and_c_tests": 93,
+    "swift_core_tests": 89,
+    "iphone_ui_tests": 5,
+    "test_skips": 0,
+    "xcode": "26.6",
+    "simulator": "iPhone 17 Pro Max / iOS 26.5",
+    "unsigned_ios_build": "success",
+    "lab_firmware_run": 36525103757,
+    "lab_firmware_conclusion": "success",
+    "lint_run": 36525103890,
+    "lint_conclusion": "success",
+    "hardware_validation": false,
+    "note": "Results apply to the code commit and its PR merge commit. Subsequent documentation-only commits are not claimed as separate code or device validation."
+  },
+  "ci_firmware_artifact": {
+    "code_commit": "6017530b20b128c75450f5f77c593ae66d04e885",
+    "merge_commit": "158ae9952c9b86290b2ad62e006112dd5a68abc9",
+    "workflow_run": 36525103757,
+    "artifact_id": 11014658624,
+    "zip_sha256": "bc4dbdffee691ccaf4d5b3c2582f285ff5efbb4b9f9c0a80abea7d49c72e9bcf",
+    "package_name": "flipper-z-f7-update-mntm-HEAD-158ae995.tgz",
+    "package_bytes": 12820416,
+    "package_sha256": "5fa8973f42e7a1561be416a5438b7a9ff18c342aac9d7c6db45a88d1ec980f3f",
+    "updater_bytes": 123829,
+    "firmware_bytes": 879696,
+    "radio_address": "0x80d7000",
+    "flash_gap_before_radio_bytes": 944,
+    "dfu_crc_verified": true,
+    "packaged_fap_count": 280,
+    "packaged_fal_count": 121,
+    "required_apps": [
+      {
+        "path": "apps/Tools/lab.fap",
+        "bytes": 22880,
+        "sha256": "36613318ba5890f1677f12ddd3d287bf976eb52c3c25c2c3a3a7771444cf463a"
+      },
+      {
+        "path": "apps/Tools/lab_bridge.fap",
+        "bytes": 7176,
+        "sha256": "3242e2fc4f49a439fd82872496e696d35a85c581aaeaeca2e3f035545f7022d7"
+      },
+      {
+        "path": "apps/Tools/clock.fap",
+        "bytes": 12860,
+        "sha256": "eaad504695b18943d9eacc9d5fe7584e5b3d09b26e8ccd88dd8594569f967db2"
+      },
+      {
+        "path": "apps/Tools/pomodoro_timer.fap",
+        "bytes": 10888,
+        "sha256": "20a7f7accb58158282b702673d0f8f62b4438eb3ccc0a2b1e3383f4291cf32f9"
+      },
+      {
+        "path": "apps/Tools/analog_clock.fap",
+        "bytes": 15460,
+        "sha256": "204595d6c7044cda2c854396105c1a72cf60acc67067c5ccae835c2912d5feb1"
+      },
+      {
+        "path": "apps/Tools/segment_clock.fap",
+        "bytes": 9372,
+        "sha256": "13cee2dd0736ea207bc61a7bc86e4ebb6edb35da56f8b0eb6d4b99dc47099269"
+      },
+      {
+        "path": "apps/Tools/calendar.fap",
+        "bytes": 10692,
+        "sha256": "6267a8065ddf9cb786829686d3a3c97176d5395ed02bb07f7375f176450d0602"
+      },
+      {
+        "path": "apps/Tools/net_calculator.fap",
+        "bytes": 6936,
+        "sha256": "9fe3258558c9871595de6ee039e8110c69ad6a68be657c7f0aa92f43c86af0ee"
+      },
+      {
+        "path": "apps/Tools/multi_counter.fap",
+        "bytes": 6596,
+        "sha256": "9b2e09d0145764b65f37a024dde90c6497235efc41beeb83c38e9d094af50b34"
+      },
+      {
+        "path": "apps/Tools/sd_info.fap",
+        "bytes": 11408,
+        "sha256": "b444337e38550b908a668858122f71239390c7d83124250ab66bd58f8296e8df"
+      },
+      {
+        "path": "apps/Tools/flipper_chronometer.fap",
+        "bytes": 3384,
+        "sha256": "df14ed860ceee9475cbf801201989af8e15659fd2a22fcff317b6017dcba0914"
+      },
+      {
+        "path": "apps/Tools/trackerflipx.fap",
+        "bytes": 39060,
+        "sha256": "a8c45b4566e21db5714e3a0fbfbe10f9a8a544caa53cc9971fd67ed847c9379b"
+      },
+      {
+        "path": "apps/Tools/flipnote.fap",
+        "bytes": 24348,
+        "sha256": "96b22ae6a92a3423a2c9f4c86f7c8cd0d6656255f8fa9c7807db8aa45fa27f9d"
+      }
+    ],
+    "distribution_note": "The regular updater packages 280 FAP and 121 FAL. Full fap_dist also builds 53 Debug/Examples FAP and 3 example FAL, totaling 333 FAP and 124 FAL."
+  },
+  "ci_phone_screenshots": {
+    "run": 36525103876,
+    "artifact": 11014940556,
+    "sha256": "067703417f4bd46dcd62ff2e87ff3c34a2f38ef40fc4a79d382207b8e0d32851",
+    "source": "Xcode simulator test attachments, not physical hardware",
+    "expires_at": "2026-10-13T05:27:22Z",
+    "download_digest_verified": true,
+    "count": 22,
+    "retained_preview": {
+      "path": "documentation/custom/iphone-functions-20260929.png",
+      "attachment": "678BED4D-90D7-4B68-AAF5-CA0E388215D3.png",
+      "sha256": "02fb3bda602114eb230505da23d39eb850965d55f065ed17af6d24d9fb2c285f",
+      "pixel_editing": false
+    }
+  }
 }

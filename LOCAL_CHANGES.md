@@ -2,7 +2,7 @@
 
 以 Momentum 的界面、主题包和应用体系为基础，逐项适配 Unleashed 中有价值的改进。
 
-**2026-09-29 的新一轮融合见 [上游融合记录](documentation/custom/UPSTREAM_FUSION.md)**，包含固定提交、协议/应用更新、API 89.0 兼容边界和明确未完成项。下面的“第一批改进”及 87.2 / macOS 构建描述保留为历史记录，不能用作本轮状态。
+**2026-09-29 最新变化见 [第二轮中文与功能并集](documentation/custom/UNION_CHINESE_CONTINUATION.md)**：快捷设置、床头时钟、菜单过渡、十个工具、中文排版和 iPhone 应用说明；此前的固定提交、协议更新与 API 89.0 兼容边界见 [上游融合记录](documentation/custom/UPSTREAM_FUSION.md)。代码 `6017530b` 的本地和云端结果见 [验证记录](documentation/custom/VALIDATION.md)。下面的“第一批改进”及 87.2 / macOS 构建描述保留为历史记录，不能用作本轮状态。
 
 ## 来源
 

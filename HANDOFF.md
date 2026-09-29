@@ -2,7 +2,7 @@
 
 更新：2026-09-29。工作分支 `codex/iphone-zh-architecture`，草稿 PR [#1](https://github.com/Fairank/Flipper-Momentum-Lab/pull/1)，目标分支 `codex/momentum-unleashed`。尚未合并，也没有上架或已签名 IPA。
 
-本轮固件融合详见 [UPSTREAM_FUSION.md](documentation/custom/UPSTREAM_FUSION.md)。API 已更新为 89.0，protobuf 更新为 0.29 并保留 ASCII 输入扩展；原生字库现为 690 字形。以下手机功能保持原有范围；新增 GPS/网络代理只有固件端接口，iPhone 处理端未实现。旧编译包与 API 89.0 的应用不能混用。
+最新实现详见 [第二轮中文与功能并集](documentation/custom/UNION_CHINESE_CONTINUATION.md)，前轮协议适配见 [UPSTREAM_FUSION.md](documentation/custom/UPSTREAM_FUSION.md)。API 为 89.0，protobuf 为 0.29 并保留 ASCII 输入扩展；原生字库现为 696 个 CJK 字形，升级器使用独立的 135 字形子集。代码 `6017530b` 已通过云端固件构建、93 项主机测试、89 项 Swift 测试和 5 项 iPhone UI 测试。新增 GPS/网络代理只有固件端接口，iPhone 处理端未实现。旧编译包与 API 89.0 的应用不能混用。
 
 ## 当前实现
 
@@ -11,8 +11,9 @@
 | iPhone 中文 App | 设备、功能、资料库、任务、指南五页；蓝牙 RPC、应用启动、文件传输、离线分析、红外单次发送代码已实现。实际蓝牙流程未真机验收 |
 | MIFARE Classic | “功能 → NFC 离线工作台”：两组认证样本恢复密钥、字典验证、合并去重和导出。公开答案、生成样本、取消和模拟器界面已自动验证；普通 .nfc 转储不能代替认证样本 |
 | AIO 数据链路 | “功能 → 扩展板实时数据”：Lab Bridge 把 UART 输出经 BLE 转到手机，显示真实字节、丢失/截断并导出。代码和构建通过，实物链路未测；未实现未知板卡固件的专用无线驱动 |
-| 原生中文界面 | 前轮完成 227 个应用/设置 C 文件、1,039 处文案，本轮补充新菜单、协议场景和红外保存流程；另有菜单中文显示名、字体回退、UTF-8 滚动/换行/对齐。当前 690 字形、17,336 字节。不是全部原生/第三方界面均完成翻译，更没有重写全部驱动 |
-| 固件功能说明 | Flipper Lab 中文帮助及启动入口保留；有 66 张帮助页源码预览，另新增 4 张原生菜单代表预览，均不是真机截图 |
+| 原生中文界面 | 补充原生场景、系统、服务、遥控器、升级器文案；修复中文按钮、输入标题、UTF-8 滚动及清单名称编码。当前 CJK 子集 696 字形、18,973 字节；动态/第三方及位图文字仍有遗漏，没有重写全部驱动 |
+| 本机新功能 | 锁定菜单长按确定进入亮度/音量/振动快捷设置；床头时钟；Macintosh 和立体菜单过渡；十个普通工具及手机端已安装应用的中文说明。真实路径、原作者和许可证保留 |
+| 固件功能说明 | Flipper Lab 中文帮助及启动入口保留；有 66 张帮助页和 6 个原生菜单的源码预览，均不是真机截图 |
 | Wi-Fi | 已保存扫描日志的离线多网络分析可用；没有新增定向断链控制。通用串口接收不能等同于 Wi-Fi 控制或实物板卡已适配 |
 
 用户的手机为 iPhone 17 Pro Max，普通 Apple ID，可借用或使用 Mac。当前 Windows 工作环境没有 Xcode，用户暂时不连接 Flipper/AIO，要求先完成代码与自动测试。AIO Board 1.4 的厂商、芯片丝印、现装固件、端口和供电仍未知。
@@ -28,13 +29,13 @@
 
 - 使用固定子模块：`git submodule update --init --recursive`，不要升级 gitlink。
 - 使用仓库工具链 39。完整打包先执行 `./fbt updater_package`，成功后**另一次**执行 `./fbt fap_dist`；同一 SCons 图同时请求两者可能因分发目录清理失败。Windows 用 `fbt.cmd`，必要时将工作区映射为 ASCII 路径再构建。
-- 运行 `python scripts/generate_lab_font.py --check` 和 `python scripts/generate_native_zh_font.py --check`；修改中文文案后重新生成字库。
+- 运行 `python scripts/generate_lab_font.py --check`、`python scripts/generate_native_zh_font.py --check` 和 `python scripts/generate_native_zh_font.py --updater --check`；修改中文文案后重新生成对应字库。
 - 桌面检查：`python -m unittest discover -s scripts/tests -p "test*.py" -v`。必须有 C 编译器，跳过 C 测试不能算通过。Linux 的恢复与原生 GUI 回归启用 ASan/UBSan。
-- CI 检查恢复升级器不超过 131,072 字节，且资源包含 `lab.fap`、`lab_bridge.fap`。中文字体仅进入正常固件，恢复升级器维持原有英文。
+- CI 检查恢复升级器不超过 131,072 字节，且 13 项指定应用均已构建。升级器现有独立的小型中文字库；当前云端包含 280 个正式 FAP、121 个 FAL，完整开发分发含 333 / 124。主固件距当前无线栈仅余 944 字节，新增内容必须重新通过打包边界检查，不能按链接器的全部 `.free_flash` 估算。
 - UI 预览脚本分别为 `scripts/render_lab_preview.py` 和 `scripts/render_native_zh_preview.py`；后者需 `--output-dir`。从源码绘制的图片不能替代刷机验收。
 
 ## 记录与分工
 
 [需求与未完成项](documentation/custom/REQUIREMENTS.md)、[实际验证](documentation/custom/VALIDATION.md)、[中文覆盖范围](documentation/custom/NATIVE_ZH_PROGRESS.md)、[Classic 格式与限制](mobile/FlipperLab/CLASSIC_OFFLINE.zh-CN.md)、[串口桥条件](mobile/FlipperLab/SERIAL_BRIDGE.zh-CN.md)是接续依据。两份 FeatureCatalog JSON 必须逐字节相同。
 
-用户已明确授权 AI 修改本个人仓库、测试并推送现有草稿 PR，覆盖继承的上游反 AI 贡献限制；未授权向上游投稿。最新模型偏好是仅通过 CLI 使用 `claude-fable-5-1 --effort max` 处理边界清楚的基础工作，主助手负责关键逻辑、审核和真实验收，记录实际模型及退出状态，不静默切换。App 不调用 Claude 或其他云端 AI。
+用户已明确授权 AI 修改本个人仓库、测试并推送现有草稿 PR，覆盖继承的上游反 AI 贡献限制；未授权向上游投稿。长期默认是仅通过 CLI 使用 `claude-fable-5-1 --effort max` 处理边界清楚的基础工作；本轮用户明确指定 Opus，实际使用 `claude-opus-5-5 --effort max`，完成状态见本轮记录。主助手负责关键逻辑、审核和真实验收，记录实际模型及退出状态，不静默切换。App 不调用 Claude 或其他云端 AI。
