@@ -42,8 +42,9 @@ final class FunctionCatalogUITests: XCTestCase {
         XCTAssertTrue(scrollUntilHittable(app.buttons["functions.builtin.infrared"], in: app))
         capture(app, name: "29b-结束搜索后恢复设备功能")
         replaceSearch(with: "zz_no_function_987654", in: app)
-        let noResults = app.descendants(matching: .any)
-            .matching(identifier: "functions.noResults").firstMatch
+        // ContentUnavailableView propagates its identifier to the decorative
+        // image too. Check the visible Chinese message, not that image's hit area.
+        let noResults = app.staticTexts["没有匹配的功能"]
         XCTAssertTrue(scrollUntilHittable(noResults, in: app))
         XCTAssertTrue(app.staticTexts["没有匹配的功能"].exists)
         XCTAssertFalse(app.buttons["functions.builtin.nfc"].exists)
