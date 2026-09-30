@@ -626,7 +626,7 @@ def load_content(raw) -> Content:
 
 
 def known_launch_names(apps_root: Path) -> Set[str]:
-    """Names the loader resolves: MENUEXTERNAL apps and SETTINGS apps."""
+    """Names the loader resolves: menu/settings apps and its Apps browser."""
     names = set()
     for group in ("main", "settings"):
         for manifest in sorted((apps_root / group).glob("*/application.fam")):
@@ -645,6 +645,15 @@ def known_launch_names(apps_root: Path) -> Set[str]:
                     and isinstance(name.value, str)
                 ):
                     names.add(name.value)
+    loader_header = apps_root / "services" / "loader" / "loader.h"
+    if loader_header.is_file():
+        browser_name = re.search(
+            r'^#define\s+LOADER_APPLICATIONS_NAME\s+"([^"\n]+)"\s*$',
+            loader_header.read_text(encoding="utf-8"),
+            re.M,
+        )
+        if browser_name:
+            names.add(browser_name.group(1))
     return names
 
 
@@ -653,7 +662,7 @@ def check_launch_targets(content: Content, names: Set[str]):
         if topic.launch is not None and topic.launch not in names:
             raise ContentError(
                 f"topic {topic.id!r} launches {topic.launch!r}, which is not the name of "
-                "a MENUEXTERNAL or SETTINGS app in applications/main or applications/settings"
+                "a menu/settings app or the loader's declared Apps browser"
             )
 
 

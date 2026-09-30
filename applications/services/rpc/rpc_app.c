@@ -3,6 +3,7 @@
 #include "rpc_i.h"
 #include <furi.h>
 #include <loader/loader.h>
+#include <loader/loader_rpc.h>
 #include "rpc_app.h"
 
 #define TAG "RpcSystemApp"
@@ -94,7 +95,7 @@ static void rpc_system_app_start_process(const PB_Main* request, void* context) 
 
         result = PB_CommandStatus_ERROR_APP_CANT_START;
 
-        switch(loader_start(loader, app_name, app_args, NULL)) {
+        switch(loader_start_from_rpc(loader, app_name, app_args, NULL)) {
         case LoaderStatusOk:
             result = PB_CommandStatus_OK;
             break;

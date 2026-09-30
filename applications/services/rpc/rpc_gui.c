@@ -51,7 +51,8 @@ typedef enum {
 
 #define RpcGuiWorkerFlagAny (RpcGuiWorkerFlagTransmit | RpcGuiWorkerFlagExit)
 
-#define RPC_GUI_INPUT_RESET (0u)
+#define RPC_GUI_INPUT_RESET        (0u)
+#define RPC_GUI_INPUT_COUNTER_MASK ((1u << 30) - 1u)
 
 typedef struct {
     RpcSession* session;
@@ -235,8 +236,11 @@ static void
     RpcSession* session = rpc_gui->session;
     furi_assert(session);
 
-    bool is_valid = (request->content.gui_send_input_event_request.key < (int32_t)InputKeyMAX) &&
-                    (request->content.gui_send_input_event_request.type < (int32_t)InputTypeMAX);
+    // Casting to unsigned rejects negative protobuf enum values as well as upper bounds.
+    // Never index input_key_counter until both fields have passed this check.
+    bool is_valid =
+        ((uint32_t)request->content.gui_send_input_event_request.key < (uint32_t)InputKeyMAX) &&
+        ((uint32_t)request->content.gui_send_input_event_request.type < (uint32_t)InputTypeMAX);
 
     if(!is_valid) {
         rpc_send_and_release_empty(
@@ -252,7 +256,8 @@ static void
     // Event sequence shenanigans
     event.sequence_source = INPUT_SEQUENCE_SOURCE_SOFTWARE;
     if(event.type == InputTypePress) {
-        rpc_gui->input_counter++;
+        // InputEvent reserves two bits for the source and thirty for the counter.
+        rpc_gui->input_counter = (rpc_gui->input_counter + 1u) & RPC_GUI_INPUT_COUNTER_MASK;
         if(rpc_gui->input_counter == RPC_GUI_INPUT_RESET) rpc_gui->input_counter++;
         rpc_gui->input_key_counter[event.key] = rpc_gui->input_counter;
     }

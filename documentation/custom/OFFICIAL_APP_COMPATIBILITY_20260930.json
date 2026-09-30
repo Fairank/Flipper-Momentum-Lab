@@ -1,0 +1,299 @@
+{
+  "schema_version": 1,
+  "date": "2026-09-30",
+  "priority": "Pause custom phone UI; improve official Flipper mobile app compatibility",
+  "official_ios_source": "46074e4c92895ab566a3ef5c599f066b1d507063",
+  "firmware_api": "89.0",
+  "protobuf_rpc": "0.29",
+  "local_source_base": "c755bfa5d37aad9ba5b9708e859a5d5d346f2ac5",
+  "local_source_files_sha256": {
+    "applications/services/loader/loader.c": "6e45616bc1b590fbb7977c94653cf4c5790c59846c894e3b79312cf154cc6111",
+    "applications/services/loader/loader_i.h": "deace17ed6cabfe7211b93aefd02590cbe19f781acf719553af6728b4bfe689e",
+    "applications/services/loader/loader_rpc.h": "847d982448894c913786f461535ac8a64062d3a973350a64710cb06005797128",
+    "applications/services/rpc/rpc_app.c": "3d6b2c8ac741e59ed8cef86ea6124075ea0fd813999d7a75b906733ea099ab0c",
+    "applications/services/rpc/rpc_gui.c": "a5d1e04a0bc57d1b4e72ad5a4ffa561ffdb8e1e13276d9a73dc9748c5de33871",
+    "applications/main/lab/application.fam": "ea68a3d9814c69ba13b745d74f39d8a5988a15c3211b40a9973a0d5f7adcd5af",
+    "applications/main/lab/lab_app.c": "709ff2959b20f2d5edf9e987977792bb4fcefeadaa759bc37baa7575a487f999",
+    "applications/main/lab/lab_content.json": "93012504193686443be828c05eaa2141eb474284b1ab9aba2b691a4cf1e99d62",
+    "applications/main/lab/lab_content.h": "83bf85b38ec41b7516781233906d19850bb6d6007ab118476e19a7bb1be91f22",
+    "scripts/generate_lab_font.py": "20d3c691af53bd89ea313cf9cb4fd678971a9aa254d406683bff4187dcb72c0c",
+    "scripts/tests/test_lab_font.py": "f33da5c47ed473885678235108549dc5c5b1b3f590ed2da1753e691b5a7b67e9",
+    "scripts/tests/test_rpc_gui_input.py": "ad22356911b31bebc98584af1244d8540abb29b9e545eba88a55875cad317814",
+    "scripts/tests/test_loader_rpc.py": "226b5bbec5671163b253305592a36ff36c8fc7d6bf1fcd38277f8255a587b393",
+    "scripts/tests/test_loader_rpc_entry.py": "5f369870442d0696273addb88c85d6e057d8ae15383d2d42da0024280e4b171c",
+    "scripts/tests/test_loader_deferred_browser.py": "c17ee3d28f22ce882e33e040f93638a4cd4c6985a92cb3c5bd3b7bf359efbe6b"
+  },
+  "local_host_tests": {
+    "status": "passed",
+    "count": 152,
+    "seconds": 92.131,
+    "skipped": 0,
+    "log_sha256": "61f10fad04a75db39914798571752de412ad58a7b7fa57caf1e78fd223ddc005"
+  },
+  "new_tests": {
+    "rpc_gui": 7,
+    "external_loader": 6,
+    "loader_entry_queue": 3,
+    "deferred_browser": 6,
+    "guide_launch_name": 1
+  },
+  "local_build": {
+    "updater_package": "passed",
+    "fap_dist": "passed",
+    "lint_all": "passed",
+    "private_rpc_header_in_sdk": false
+  },
+  "local_package": {
+    "source_commit": "c755bfa5d37aad9ba5b9708e859a5d5d346f2ac5",
+    "workflow_run": null,
+    "artifact_id": null,
+    "input_sha256": "d08e87d50782e81520d251e8d134ba3d0057d496ddd124a3eab9d1e488f81caf",
+    "package_name": "flipper-z-f7-update-mntm-codex-iphone-zh-architecture-c755bfa5.tgz",
+    "package_bytes": 13008016,
+    "package_sha256": "d08e87d50782e81520d251e8d134ba3d0057d496ddd124a3eab9d1e488f81caf",
+    "updater_bytes": 120245,
+    "firmware_bytes": 869000,
+    "radio_address": "0x80d7000",
+    "flash_gap_before_radio_bytes": 11640,
+    "dfu_crc_verified": true,
+    "packaged_fap_count": 295,
+    "packaged_fal_count": 121,
+    "required_apps": [
+      {
+        "path": "apps/Tools/lab.fap",
+        "display_name": "Flipper Lab",
+        "api_version": 5832704,
+        "bytes": 14072,
+        "sha256": "e5f737512c6f7d1cd31188a0b2d3a058fbc23c39dd09cab53e9cba0724ad25e3"
+      },
+      {
+        "path": "apps/Tools/lab_bridge.fap",
+        "display_name": "Lab Bridge",
+        "api_version": 5832704,
+        "bytes": 7164,
+        "sha256": "6e98d67fe7869fb528d9ee9df44e3f9d3316ed79f484f3647b983635e96732a0"
+      },
+      {
+        "path": "apps/Tools/clock.fap",
+        "display_name": "Clock",
+        "api_version": 5832704,
+        "bytes": 12844,
+        "sha256": "2be9d958a972731528bcded4f1eaacb2de1db743285f4cd902664bc681a85b7f"
+      },
+      {
+        "path": "apps/Tools/pomodoro_timer.fap",
+        "display_name": "Pomodoro Timer",
+        "api_version": 5832704,
+        "bytes": 10872,
+        "sha256": "af8108a73b892169ca94e526de2b71980158397f071bc6a3a9da7ec9ff79cab3"
+      },
+      {
+        "path": "apps/Tools/analog_clock.fap",
+        "display_name": "Analog Clock",
+        "api_version": 5832704,
+        "bytes": 15460,
+        "sha256": "f3c29497bc33f61611f772a613f943cfef9df4eb41ae634cee62c210ee1e50fd"
+      },
+      {
+        "path": "apps/Tools/segment_clock.fap",
+        "display_name": "Segment Clock",
+        "api_version": 5832704,
+        "bytes": 9364,
+        "sha256": "f90dcc85955ada716fffb0e86bef6d417bec50cfeb18abf2b27dd1c44324d94f"
+      },
+      {
+        "path": "apps/Tools/calendar.fap",
+        "display_name": "Calendar",
+        "api_version": 5832704,
+        "bytes": 10672,
+        "sha256": "5e809d07b3276d097ceccd09dac3e0523ca7c8ddb27a9127d02de0df9a71fe90"
+      },
+      {
+        "path": "apps/Tools/net_calculator.fap",
+        "display_name": "Net Calculator",
+        "api_version": 5832704,
+        "bytes": 6880,
+        "sha256": "035537e0941448cdb05dbb2944fcce26093c1b607ae18b973656371c94ebbfb5"
+      },
+      {
+        "path": "apps/Tools/multi_counter.fap",
+        "display_name": "Multi Counter",
+        "api_version": 5832704,
+        "bytes": 6596,
+        "sha256": "bf2d5af759e700b846a8b97792325a9a8f1af6491573fe5ebddb149608f5f0bc"
+      },
+      {
+        "path": "apps/Tools/sd_info.fap",
+        "display_name": "SD Info",
+        "api_version": 5832704,
+        "bytes": 11384,
+        "sha256": "c5d3ea28d80aacf8cdb03ec93de089323e46b15d220665409c5fd73feccb6d1f"
+      },
+      {
+        "path": "apps/Tools/flipper_chronometer.fap",
+        "display_name": "Chronometer",
+        "api_version": 5832704,
+        "bytes": 3384,
+        "sha256": "a1ac4d5ba4a574d786330c84eafcecf1aec6dad2db20fe7312d7e39bf0501f04"
+      },
+      {
+        "path": "apps/Tools/trackerflipx.fap",
+        "display_name": "Flipper Time Tracker",
+        "api_version": 5832704,
+        "bytes": 39008,
+        "sha256": "e26d4f587777e42361e21766c8cecf6bb2889ea53e6423e06e34ea7ce75dc065"
+      },
+      {
+        "path": "apps/Tools/flipnote.fap",
+        "display_name": "FlipNote",
+        "api_version": 5832704,
+        "bytes": 27848,
+        "sha256": "007ae4d8eea8e36e63541fb19b311937b4105292491a71303b2d93554ad8393c"
+      },
+      {
+        "path": "apps/Tools/gps_rpc.fap",
+        "display_name": "[RPC] GPS",
+        "api_version": 5832704,
+        "bytes": 5436,
+        "sha256": "eca77bdf085e322735ef1ddc2096116f8a650365816b30ffd680cbec3fba8575"
+      },
+      {
+        "path": "apps/Tools/example_network.fap",
+        "display_name": "[RPC] Network",
+        "api_version": 5832704,
+        "bytes": 4272,
+        "sha256": "98e89f960418403cecba79c24df1ecdfeeeae624f604bbace301810f0a5c8b6e"
+      },
+      {
+        "path": "apps/Tools/brainfuck.fap",
+        "display_name": "Brainfuck",
+        "api_version": 5832704,
+        "bytes": 20828,
+        "sha256": "91ae2b3ec35462fc5b8b03f07aac10d276485ee17dc1b43ede82cd17537e4248"
+      },
+      {
+        "path": "apps/Games/chess_clock.fap",
+        "display_name": "Chess Clock",
+        "api_version": 5832704,
+        "bytes": 3324,
+        "sha256": "1346c3d79eccc0b3fcc10f268e229c40f8be60a2331f85928c21f3d328b33fd4"
+      },
+      {
+        "path": "apps/Infrared/pause_timer.fap",
+        "display_name": "Pause Timer",
+        "api_version": 5832704,
+        "bytes": 16392,
+        "sha256": "dbc44ee0ace81ca497921e183f6a5bb120472ea671acf21c87b268ce0aef3043"
+      },
+      {
+        "path": "apps/Games/mandelbrotset.fap",
+        "display_name": "Mandelbrot Set",
+        "api_version": 5832704,
+        "bytes": 5576,
+        "sha256": "ca7b7c29b055e86d0c951b3d479744e1f04d57f717348518f72eb3c9bfe52d94"
+      },
+      {
+        "path": "apps/Games/reaction.fap",
+        "display_name": "Reaction test",
+        "api_version": 5832704,
+        "bytes": 3892,
+        "sha256": "1358e376942952f16088672a54affe64e3bc23f590c54ae5591466c1968974cc"
+      },
+      {
+        "path": "apps/Games/dice_app.fap",
+        "display_name": "Dice D&D",
+        "api_version": 5832704,
+        "bytes": 21928,
+        "sha256": "9a49bb369379db5c5d8a476141e64ca573f316f23694e88be5936cabd5b8fe2c"
+      },
+      {
+        "path": "apps/Games/montyhall.fap",
+        "display_name": "Monty Hall",
+        "api_version": 5832704,
+        "bytes": 5908,
+        "sha256": "09e0267087d9664b4434cfc0f01d6daff3fba326f5a28dd70e2ad2aa12484f67"
+      },
+      {
+        "path": "apps/Media/ocarina.fap",
+        "display_name": "Ocarina",
+        "api_version": 5832704,
+        "bytes": 7944,
+        "sha256": "d20320b35b02c63f0e862b24e6375853a3cb2676b46bd0c1b471c7ab67bc9b1f"
+      },
+      {
+        "path": "apps/Games/racegame.fap",
+        "display_name": "Race",
+        "api_version": 5832704,
+        "bytes": 5036,
+        "sha256": "b79de16f638053bb9e3e5c4d1a168acb738c215d71945579484cccbb6f112c5b"
+      },
+      {
+        "path": "apps/Games/bounce.fap",
+        "display_name": "Bounce",
+        "api_version": 5832704,
+        "bytes": 29596,
+        "sha256": "97f096ece44951006385c5764085ed926b067f5547e06e54f1860019e676f7a0"
+      },
+      {
+        "path": "apps/Games/stack_attack.fap",
+        "display_name": "Stack Attack",
+        "api_version": 5832704,
+        "bytes": 22700,
+        "sha256": "4a9e5d7b8128bdb2a45248324312b4c4da866f606b0ab838ac0326b79c1d7f9c"
+      },
+      {
+        "path": "apps/Games/sudoku.fap",
+        "display_name": "Sudoku",
+        "api_version": 5832704,
+        "bytes": 9268,
+        "sha256": "a2be5115d03aec33c25f44c3e6729dbda5c517657e5fe39439f9fc38f5c3801a"
+      },
+      {
+        "path": "apps/Tools/nickname_generator.fap",
+        "display_name": "NickName Generator",
+        "api_version": 5832704,
+        "bytes": 13364,
+        "sha256": "736dcdd5d8ae0cc0a5a8ffa599833ca886d3b9cceb67f3f29bff366408b136e0"
+      }
+    ],
+    "chinese_glyph_resource": {
+      "path": "locale/zh_cn.glyphs",
+      "bytes": 925216,
+      "sha256": "ef3423813e6843dffd6f4bcee0c329f93802104db12325fe0f802ca9f6498eaa",
+      "matches_source": true
+    },
+    "source_state": "uncommitted final compatibility worktree based on c755bfa5, not a clean build of c755",
+    "fim_count": 0,
+    "fap_single_category": 232,
+    "fap_nested_categories": 63
+  },
+  "guide": {
+    "topics": 11,
+    "pages": 62,
+    "source_layout_previews": 73,
+    "preview_warnings": 0,
+    "is_hardware_capture": false
+  },
+  "reviewed_reproductions": [
+    "30-bit input counter wrap fails before mask fix",
+    "c755bfa5 deferred Apps success fails to wake existing browser in the same compiled harness"
+  ],
+  "claude_invoked_this_delivery": false,
+  "ci": {
+    "status": "pending push and verification"
+  },
+  "not_verified": [
+    "actual App Store app version",
+    "real BLE pairing/control/recovery",
+    "complete RPC decoding and real loader/GUI thread chain",
+    "individual hardware apps",
+    "AIO Board 1.4 hardware/firmware compatibility",
+    "full Momentum/Unleashed functionality union"
+  ],
+  "official_client_limits": [
+    "FIM discovery and four-component paths",
+    "online catalog UID validation",
+    "custom phone GPS/network/NFC-workbench handlers are not implemented by the official app",
+    "profile-changing apps may interrupt serial BLE"
+  ]
+}

@@ -68,6 +68,7 @@ typedef struct {
     const char* name;
     const char* args;
     FuriString* error_message;
+    bool require_api_match;
 } LoaderMessageStartByName;
 
 typedef struct {

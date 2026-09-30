@@ -399,6 +399,22 @@ class ContentTests(unittest.TestCase):
         with self.assertRaises(gen.ContentError):
             gen.check_launch_targets(content, {"Other"})
 
+    def test_apps_browser_launch_name_comes_from_loader_header(self):
+        with tempfile.TemporaryDirectory() as directory:
+            apps_root = Path(directory)
+            loader = apps_root / "services" / "loader"
+            loader.mkdir(parents=True)
+            self.assertEqual(gen.known_launch_names(apps_root), set())
+            header = loader / "loader.h"
+            header.write_text(
+                '#define LOADER_APPLICATIONS_NAME "Apps"\n', encoding="utf-8"
+            )
+            self.assertEqual(gen.known_launch_names(apps_root), {"Apps"})
+            header.write_text(
+                '#define LOADER_APPLICATIONS_NAME "Programs"\n', encoding="utf-8"
+            )
+            self.assertEqual(gen.known_launch_names(apps_root), {"Programs"})
+
 
 class CliTests(unittest.TestCase):
     def setUp(self):
@@ -626,6 +642,7 @@ class AppSourceTests(unittest.TestCase):
     def test_launch_targets_are_existing_apps(self):
         names = gen.known_launch_names(gen.DEFAULT_APPS_ROOT)
         wanted = {
+            "Apps",
             "Bluetooth",
             "Infrared",
             "Sub-GHz",

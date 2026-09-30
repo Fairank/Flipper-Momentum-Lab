@@ -20,8 +20,8 @@
 #define LAB_ROWS            3
 #define LAB_RULE_BOTTOM     50
 #define LAB_FOOTER_Y        62
-#define LAB_TEXT_MAX_BYTES  19
-#define LAB_TOPIC_COUNT     10
+#define LAB_TEXT_MAX_BYTES  20
+#define LAB_TOPIC_COUNT     11
 
 typedef struct {
     const char* indicator;
@@ -56,6 +56,15 @@ static const LabPage lab_pages_bluetooth[] = {
     {"5/7", {"4. Open the app", "Open companion app", "Choose this Flipper"}},
     {"6/7", {"No link\? Pair again", "Flipper: unpair all", "iPhone: forget it"}},
     {"7/7", {"Just a data channel", "What works depends", "on app and firmware"}},
+};
+
+static const LabPage lab_pages_remote_apps[] = {
+    {"1/6", {"Official phone app:", "open Remote Control", "to view this screen"}},
+    {"2/6", {"Phone arrows and OK", "work like the keys", "Back: return, exit"}},
+    {"3/6", {"OK here opens Apps", "Browse SD folders", "Pick an app to open"}},
+    {"4/6", {"Private apps may not", "appear in the phone", "app catalog"}},
+    {"5/6", {"Wrong API: remote", "start is refused", "Use a matching FAP"}},
+    {"6/6", {"Apps that change BT", "may stop the link", "Board tests pending"}},
 };
 
 static const LabPage lab_pages_infrared[] = {
@@ -130,7 +139,7 @@ static const LabPage lab_pages_phone[] = {
 static const LabTopic lab_topics[LAB_TOPIC_COUNT] = {
     {
         .label = "How to Use",
-        .indicator = "1/10",
+        .indicator = "1/11",
         .title = "How to Use",
         .footer = "L/R page, Back list",
         .launch = NULL,
@@ -139,7 +148,7 @@ static const LabTopic lab_topics[LAB_TOPIC_COUNT] = {
     },
     {
         .label = "Bluetooth Link",
-        .indicator = "2/10",
+        .indicator = "2/11",
         .title = "Bluetooth Link",
         .footer = "L/R page, OK app",
         .launch = "Bluetooth",
@@ -147,8 +156,17 @@ static const LabTopic lab_topics[LAB_TOPIC_COUNT] = {
         .page_count = 7,
     },
     {
+        .label = "Phone Remote",
+        .indicator = "3/11",
+        .title = "Phone Remote",
+        .footer = "L/R page, OK app",
+        .launch = "Apps",
+        .pages = lab_pages_remote_apps,
+        .page_count = 6,
+    },
+    {
         .label = "Infrared Remote",
-        .indicator = "3/10",
+        .indicator = "4/11",
         .title = "Infrared Remote",
         .footer = "L/R page, OK app",
         .launch = "Infrared",
@@ -157,7 +175,7 @@ static const LabTopic lab_topics[LAB_TOPIC_COUNT] = {
     },
     {
         .label = "Sub-GHz Radio",
-        .indicator = "4/10",
+        .indicator = "5/11",
         .title = "Sub-GHz Radio",
         .footer = "L/R page, OK app",
         .launch = "Sub-GHz",
@@ -166,7 +184,7 @@ static const LabTopic lab_topics[LAB_TOPIC_COUNT] = {
     },
     {
         .label = "NFC Cards",
-        .indicator = "5/10",
+        .indicator = "6/11",
         .title = "NFC Cards",
         .footer = "L/R page, OK app",
         .launch = "NFC",
@@ -175,7 +193,7 @@ static const LabTopic lab_topics[LAB_TOPIC_COUNT] = {
     },
     {
         .label = "125kHz RFID",
-        .indicator = "6/10",
+        .indicator = "7/11",
         .title = "125kHz RFID",
         .footer = "L/R page, OK app",
         .launch = "125 kHz RFID",
@@ -184,7 +202,7 @@ static const LabTopic lab_topics[LAB_TOPIC_COUNT] = {
     },
     {
         .label = "iButton Keys",
-        .indicator = "7/10",
+        .indicator = "8/11",
         .title = "iButton Keys",
         .footer = "L/R page, OK app",
         .launch = "iButton",
@@ -193,7 +211,7 @@ static const LabTopic lab_topics[LAB_TOPIC_COUNT] = {
     },
     {
         .label = "GPIO Serial",
-        .indicator = "8/10",
+        .indicator = "9/11",
         .title = "GPIO Serial",
         .footer = "L/R page, OK app",
         .launch = "GPIO",
@@ -202,7 +220,7 @@ static const LabTopic lab_topics[LAB_TOPIC_COUNT] = {
     },
     {
         .label = "File Management",
-        .indicator = "9/10",
+        .indicator = "10/11",
         .title = "File Management",
         .footer = "L/R page, Back list",
         .launch = NULL,
@@ -211,7 +229,7 @@ static const LabTopic lab_topics[LAB_TOPIC_COUNT] = {
     },
     {
         .label = "Phone Companion",
-        .indicator = "10/10",
+        .indicator = "11/11",
         .title = "Phone Companion",
         .footer = "L/R page, Back list",
         .launch = NULL,

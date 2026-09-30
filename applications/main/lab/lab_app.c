@@ -1,6 +1,6 @@
 /**
  * @file lab_app.c
- * Flipper Lab: Chinese help pages for the built-in apps.
+ * Flipper Lab: English help pages and links to the built-in apps and Apps browser.
  *
  * Only draws text. OK on a detail page may queue the matching existing app
  * with the loader after this app exits; nothing here touches radio, IR, NFC,

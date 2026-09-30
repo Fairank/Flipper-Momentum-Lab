@@ -8,5 +8,5 @@ App(
     icon="A_Infrared_14",
     order=5,
     fap_category="Tools",
-    fap_description="Chinese help for the built-in apps",
+    fap_description="English guides and application launcher",
 )

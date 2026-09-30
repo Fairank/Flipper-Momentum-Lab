@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "notes": "Short on-device help text in English (ASCII only). After editing, run python scripts/generate_lab_font.py to regenerate lab_content.h and lab_font.h. Keep every menu label, title, footer and page line within 19 characters and every page within 3 lines; do not use a slash in menu labels or page lines. The generator checks pixel width and vertical bounds against the actual glyphs, and layout.max_wide_chars still caps non-ASCII characters per line. launch must be the name of a MENUEXTERNAL/SETTINGS app in applications/main or applications/settings.",
+  "notes": "Short on-device help text in English (ASCII only). After editing, run python scripts/generate_lab_font.py to regenerate lab_content.h and lab_font.h. Keep every menu label, title, footer and page line within 19 characters and every page within 3 lines; do not use a slash in menu labels or page lines. The generator checks pixel width and vertical bounds against the actual glyphs, and layout.max_wide_chars still caps non-ASCII characters per line. launch must name a MENUEXTERNAL/SETTINGS app in applications/main or applications/settings, or the Apps browser declared in loader.h.",
   "layout": {
     "text_x": 2,
     "text_max_width": 120,
@@ -48,6 +48,20 @@
         ["4. Open the app", "Open companion app", "Choose this Flipper"],
         ["No link? Pair again", "Flipper: unpair all", "iPhone: forget it"],
         ["Just a data channel", "What works depends", "on app and firmware"]
+      ]
+    },
+    {
+      "id": "remote_apps",
+      "menu": "Phone Remote",
+      "title": "Phone Remote",
+      "launch": "Apps",
+      "pages": [
+        ["Official phone app:", "open Remote Control", "to view this screen"],
+        ["Phone arrows and OK", "work like the keys", "Back: return, exit"],
+        ["OK here opens Apps", "Browse SD folders", "Pick an app to open"],
+        ["Private apps may not", "appear in the phone", "app catalog"],
+        ["Wrong API: remote", "start is refused", "Use a matching FAP"],
+        ["Apps that change BT", "may stop the link", "Board tests pending"]
       ]
     },
     {
