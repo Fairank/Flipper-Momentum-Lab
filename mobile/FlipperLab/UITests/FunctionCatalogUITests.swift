@@ -40,6 +40,7 @@ final class FunctionCatalogUITests: XCTestCase {
 
         replaceSearch(with: "", in: app)
         XCTAssertTrue(scrollUntilHittable(app.buttons["functions.builtin.infrared"], in: app))
+        capture(app, name: "29b-结束搜索后恢复设备功能")
         replaceSearch(with: "zz_no_function_987654", in: app)
         let noResults = app.descendants(matching: .any)
             .matching(identifier: "functions.noResults").firstMatch
@@ -172,12 +173,20 @@ final class FunctionCatalogUITests: XCTestCase {
             clear.tap()
         }
         if query.isEmpty {
-            // Empty native search disables Return. Use the real Chinese keyboard
+            // Empty native search disables Return. Use the actual Chinese page
             // action instead of assuming a system "Cancel" accessibility label.
             let endSearch = app.buttons["functions.endSearch"]
             XCTAssertTrue(endSearch.waitForExistence(timeout: 3))
+            XCTAssertTrue(endSearch.isHittable)
             endSearch.tap()
+            // The tap completes before UIKit's keyboard dismissal animation.
+            // Wait for that state change once; do not repeat the action.
+            let keyboardDismissed = XCTNSPredicateExpectation(
+                predicate: NSPredicate(format: "exists == false"),
+                object: app.keyboards.firstMatch)
+            XCTAssertEqual(XCTWaiter.wait(for: [keyboardDismissed], timeout: 5), .completed)
             XCTAssertFalse(app.keyboards.firstMatch.exists)
+            XCTAssertFalse(endSearch.exists)
         } else {
             field.typeText(query + "\n")
         }
