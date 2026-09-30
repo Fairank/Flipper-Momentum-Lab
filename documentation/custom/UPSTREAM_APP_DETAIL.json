@@ -4,8 +4,8 @@
   "scope": "Resolve app-ID gaps against entry points, labels and actual source contents.\n\nIdentical app-local source is evidence of an alias, not proof of runtime parity:\nfirmware APIs, linked libraries, resources and hardware still need verification.\nManifests are parsed as AST data, never executed.\n",
   "counts": {
     "app_local_source_identical": 36,
-    "unmatched_application": 138,
-    "matched_source_differs_review_required": 228,
+    "unmatched_application": 134,
+    "matched_source_differs_review_required": 232,
     "unmatched_plugin": 19
   },
   "findings": [
@@ -142,7 +142,7 @@
           "fap_category": "Tools",
           "apptype": "EXTERNAL",
           "entry_point": "brainfuck_app",
-          "source_signature": "f2d0b18d511d1472eb35fcb3006d9ee7a3a2e9a481308d1c74813a4ea2f7d5c8"
+          "source_signature": "1f99bc02cea0b9083f4be96655b8be133c258c8cef2034823c1e459f45bcfd3a"
         }
       ]
     },
@@ -292,7 +292,7 @@
           "fap_category": "Games",
           "apptype": "EXTERNAL",
           "entry_point": "dice_dnd_app",
-          "source_signature": "43f9aa8153ed4554c115cb5096ccfc712b03cca5a0f06614c1830e08d41172ec"
+          "source_signature": "f3eec3fea52faaa193eb4caf585bef0e8cbde76bc9f78a4e195a3d82d8016492"
         }
       ]
     },
@@ -1453,7 +1453,7 @@
           "fap_category": "Tools",
           "apptype": "EXTERNAL",
           "entry_point": "clock_app",
-          "source_signature": "bfadbc6468e7cf374eb784803a8805a8865534259da6b0f41c4069d2d8a2b5a9"
+          "source_signature": "c2d5ae93d23548fb943a874a752f30baaa84862a11f7d6b3b7bb84ad543dd731"
         }
       ]
     },
@@ -2266,7 +2266,7 @@
           "fap_category": "Tools",
           "apptype": "EXTERNAL",
           "entry_point": "flipnote_app",
-          "source_signature": "f6cd25b8e4ef606073856cfc1da811684eb05ac05af22c400c1b6bb735c7a0a1"
+          "source_signature": "091334a4e3a2dcfeec666772e57c51a58ef4378910c6348bf10eb261985aa484"
         }
       ]
     },
@@ -4719,9 +4719,22 @@
         "entry_point": "bounce_app",
         "source_signature": "4839979596db7fcb66efc2982c1d63286c594489dee5f75344a91df589827ac9"
       },
-      "status": "unmatched_application",
-      "matched_by": "none",
-      "candidates": []
+      "status": "matched_source_differs_review_required",
+      "matched_by": "same_id",
+      "candidates": [
+        {
+          "path": "applications/union/bounce/application.fam",
+          "line": 1,
+          "manifest_sha256": "a0b05dd4835a26a6bde3be4d734bf12aab1362fd271a2b24e083c54d8436a53b",
+          "appid": "bounce",
+          "name": "弹跳球",
+          "fap_version": "1.0",
+          "fap_category": "Games",
+          "apptype": "EXTERNAL",
+          "entry_point": "bounce_app",
+          "source_signature": "3eda92ebf1be0bcf8b09e29658330c2ad7d1a447b5e0efc98c00389e031b4a73"
+        }
+      ]
     },
     {
       "reference": {
@@ -5827,7 +5840,7 @@
           "fap_category": "Tools",
           "apptype": "EXTERNAL",
           "entry_point": "app",
-          "source_signature": "9edc0f092708969e73b6d8277f2a846744b9edb3f3c571f5644e335a4646b559"
+          "source_signature": "f4ec5196de33f6c8edddc5fa0e743ca61d966dfe2db650c94c7942bf2c99b33b"
         }
       ]
     },
@@ -8099,9 +8112,21 @@
         "entry_point": "nickname_generator_app",
         "source_signature": "cd6580e84aee18a804218256206c8747b8f790e9d97aada1dcd56efc174b5f77"
       },
-      "status": "unmatched_application",
-      "matched_by": "none",
-      "candidates": []
+      "status": "matched_source_differs_review_required",
+      "matched_by": "same_id",
+      "candidates": [
+        {
+          "path": "applications/union/nickname_generator/application.fam",
+          "line": 1,
+          "manifest_sha256": "16918f7f64af5011fc30d5688acdd4e31e7a3f0677a2a614c8c25170641027a7",
+          "appid": "nickname_generator",
+          "name": "昵称生成器",
+          "fap_category": "Tools",
+          "apptype": "EXTERNAL",
+          "entry_point": "nickname_generator_app",
+          "source_signature": "33b93fb55809f90622f4e6de43b7fceb5dc459738be1998b290b6c23336bd877"
+        }
+      ]
     },
     {
       "reference": {
@@ -9179,9 +9204,22 @@
         "entry_point": "stack_attack_app",
         "source_signature": "6b89f2a1aa3b2225a40de51ec01dbf8faf7b079096edcc10be968877de51edc5"
       },
-      "status": "unmatched_application",
-      "matched_by": "none",
-      "candidates": []
+      "status": "matched_source_differs_review_required",
+      "matched_by": "same_id",
+      "candidates": [
+        {
+          "path": "applications/union/stack_attack/application.fam",
+          "line": 1,
+          "manifest_sha256": "6cb5497ec3071cc86d3a1ff2e5adfba8e5d06ff652fdae5ab39f7b7392ba5057",
+          "appid": "stack_attack",
+          "name": "方块搬运",
+          "fap_version": "1.0",
+          "fap_category": "Games",
+          "apptype": "EXTERNAL",
+          "entry_point": "stack_attack_app",
+          "source_signature": "ee3a93edf9bee7aa12a0802f91eecc9f6f73e2743cada3a33529e824ad4f8698"
+        }
+      ]
     },
     {
       "reference": {
@@ -9274,9 +9312,22 @@
         "entry_point": "sudoku_main",
         "source_signature": "44f9d8a636a0fae13af2d5d1b3e366dd79cdeb0a8e1a443dc5920959dd69d1fb"
       },
-      "status": "unmatched_application",
-      "matched_by": "none",
-      "candidates": []
+      "status": "matched_source_differs_review_required",
+      "matched_by": "same_id",
+      "candidates": [
+        {
+          "path": "applications/union/sudoku/application.fam",
+          "line": 3,
+          "manifest_sha256": "eabc3c14da91d61108bdc9a1d7fb6d5821012abd77abae3b7f198f5588e3b3c4",
+          "appid": "sudoku",
+          "name": "数独",
+          "fap_version": "1.1",
+          "fap_category": "Games",
+          "apptype": "EXTERNAL",
+          "entry_point": "sudoku_main",
+          "source_signature": "06f38867b02a0599d54381b42d0cda12f5580e404ee3f0e11513012ecb82fb31"
+        }
+      ]
     },
     {
       "reference": {

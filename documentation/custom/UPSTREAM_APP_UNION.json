@@ -3,10 +3,10 @@
   "reference_commit": "eb87c158c7dbc930d74c3ae3ccb6b59cad5fc833",
   "scope_note": "Compare literal App IDs without executing either tree's Python manifests.\n\nMissing IDs are review candidates, not missing-feature counts. Renamed apps,\nplugins, conditional/dynamic declarations and submodules need separate review.\n",
   "counts": {
-    "current_literal_ids": 487,
+    "current_literal_ids": 491,
     "reference_literal_ids": 421,
-    "shared_literal_ids": 234,
-    "reference_ids_absent_from_current": 187
+    "shared_literal_ids": 238,
+    "reference_ids_absent_from_current": 183
   },
   "reference_candidates_absent_from_current": [
     {
@@ -354,16 +354,6 @@
       "name": "Better Mouse",
       "fap_version": "1.2",
       "fap_category": "USB",
-      "apptype": "EXTERNAL"
-    },
-    {
-      "path": "non_catalog_apps/bounce/application.fam",
-      "line": 1,
-      "manifest_sha256": "587d2f48d66b74c9a306649ec0b68775249bbabb99709a6c3a4edfe352ef0711",
-      "appid": "bounce",
-      "name": "Bounce",
-      "fap_version": "1.0",
-      "fap_category": "Games",
       "apptype": "EXTERNAL"
     },
     {
@@ -1173,15 +1163,6 @@
       "apptype": "EXTERNAL"
     },
     {
-      "path": "non_catalog_apps/name-gen/application.fam",
-      "line": 1,
-      "manifest_sha256": "5fbf38c7cd1c7188a5588415643e7dc70d3321580e91eb364781fd1205a1301a",
-      "appid": "nickname_generator",
-      "name": "NickName Generator",
-      "fap_category": "Tools",
-      "apptype": "EXTERNAL"
-    },
-    {
       "path": "non_catalog_apps/neoclima_ac_remote/application.fam",
       "line": 3,
       "manifest_sha256": "72427578c9f68780a805d010c599493a4d5c3c88112a3194deb7bdd9e9f54ba1",
@@ -1410,16 +1391,6 @@
       "apptype": "EXTERNAL"
     },
     {
-      "path": "non_catalog_apps/stack_attack/application.fam",
-      "line": 1,
-      "manifest_sha256": "89c5ca570dee595730f49c28910f8c0f41a53f6134f44ac965c9e8d25ab04d53",
-      "appid": "stack_attack",
-      "name": "Stack Attack",
-      "fap_version": "1.0",
-      "fap_category": "Games",
-      "apptype": "EXTERNAL"
-    },
-    {
       "path": "non_catalog_apps/step_counter/application.fam",
       "line": 1,
       "manifest_sha256": "194ef091d022bd9a3a046286260ac08dd3d755b97d4b8db97a69e1db50028424",
@@ -1446,16 +1417,6 @@
       "name": "SubGHz Signal Generator",
       "fap_version": "0.1",
       "fap_category": "Sub-GHz",
-      "apptype": "EXTERNAL"
-    },
-    {
-      "path": "non_catalog_apps/sudoku/application.fam",
-      "line": 3,
-      "manifest_sha256": "f02f962c3d9a20e2151481807ef5dc6a4cc126cb28e55019fcfb0aecfffe92f7",
-      "appid": "sudoku",
-      "name": "Sudoku",
-      "fap_version": "1.1",
-      "fap_category": "Games",
       "apptype": "EXTERNAL"
     },
     {
@@ -5776,10 +5737,20 @@
       {
         "path": "union/application.fam",
         "line": 1,
-        "manifest_sha256": "c3307548895ac13d072091e9aba9ab2f563c65753639d2759c33d2f7b7233e7b",
+        "manifest_sha256": "9dca7d8c2eeb708d0dc640683b0ae2a4b6e969f51c4851f4ba96b54978c00572",
         "appid": "union_tools",
         "name": "Additional tools from pinned Unleashed app sources",
         "apptype": "METAPACKAGE"
+      },
+      {
+        "path": "union/bounce/application.fam",
+        "line": 1,
+        "manifest_sha256": "a0b05dd4835a26a6bde3be4d734bf12aab1362fd271a2b24e083c54d8436a53b",
+        "appid": "bounce",
+        "name": "弹跳球",
+        "fap_version": "1.0",
+        "fap_category": "Games",
+        "apptype": "EXTERNAL"
       },
       {
         "path": "union/brainfuck/application.fam",
@@ -5918,6 +5889,15 @@
         "apptype": "EXTERNAL"
       },
       {
+        "path": "union/nickname_generator/application.fam",
+        "line": 1,
+        "manifest_sha256": "16918f7f64af5011fc30d5688acdd4e31e7a3f0677a2a614c8c25170641027a7",
+        "appid": "nickname_generator",
+        "name": "昵称生成器",
+        "fap_category": "Tools",
+        "apptype": "EXTERNAL"
+      },
+      {
         "path": "union/ocarina/application.fam",
         "line": 1,
         "manifest_sha256": "aa2645bd065d171306081efba5953b8be7f4bf5a644f236af03d01a15bb4023b",
@@ -5975,6 +5955,26 @@
         "name": "数码管时钟",
         "fap_version": "1.2",
         "fap_category": "Tools",
+        "apptype": "EXTERNAL"
+      },
+      {
+        "path": "union/stack_attack/application.fam",
+        "line": 1,
+        "manifest_sha256": "6cb5497ec3071cc86d3a1ff2e5adfba8e5d06ff652fdae5ab39f7b7392ba5057",
+        "appid": "stack_attack",
+        "name": "方块搬运",
+        "fap_version": "1.0",
+        "fap_category": "Games",
+        "apptype": "EXTERNAL"
+      },
+      {
+        "path": "union/sudoku/application.fam",
+        "line": 3,
+        "manifest_sha256": "eabc3c14da91d61108bdc9a1d7fb6d5821012abd77abae3b7f198f5588e3b3c4",
+        "appid": "sudoku",
+        "name": "数独",
+        "fap_version": "1.1",
+        "fap_category": "Games",
         "apptype": "EXTERNAL"
       }
     ],
