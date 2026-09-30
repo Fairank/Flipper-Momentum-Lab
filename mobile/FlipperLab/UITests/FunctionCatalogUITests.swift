@@ -172,11 +172,11 @@ final class FunctionCatalogUITests: XCTestCase {
             clear.tap()
         }
         if query.isEmpty {
-            // An empty UISearchTextField disables its Search key. End native search
-            // explicitly so later list drags cannot land on the remaining keyboard.
-            let cancel = app.buttons["取消"].firstMatch
-            XCTAssertTrue(cancel.waitForExistence(timeout: 3))
-            cancel.tap()
+            // Empty native search disables Return. Use the real Chinese keyboard
+            // action instead of assuming a system "Cancel" accessibility label.
+            let endSearch = app.buttons["functions.endSearch"]
+            XCTAssertTrue(endSearch.waitForExistence(timeout: 3))
+            endSearch.tap()
             XCTAssertFalse(app.keyboards.firstMatch.exists)
         } else {
             field.typeText(query + "\n")

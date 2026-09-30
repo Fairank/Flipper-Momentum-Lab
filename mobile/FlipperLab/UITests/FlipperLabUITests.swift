@@ -287,7 +287,11 @@ final class FlipperLabUITests: XCTestCase {
                       "Record A should be pre-filled, got \(slotA.label) / \(chosen)")
         capture(app, name: "15-深色大字-比较记录")
 
-        app.tabBars.buttons["任务"].tap()
+        let tasksTab = app.tabBars.buttons["任务"]
+        XCTAssertTrue(tasksTab.isHittable)
+        // Target the visible icon once. iOS 26's combined icon/title accessibility
+        // frame also includes spacing; no repeated tap or navigation retry is used.
+        tasksTab.coordinate(withNormalizedOffset: CGVector(dx: 0.5, dy: 0.3)).tap()
         XCTAssertTrue(app.navigationBars["任务"].waitForExistence(timeout: 5))
         XCTAssertTrue(app.tabBars.buttons["任务"].isSelected)
         capture(app, name: "16-深色大字-任务")

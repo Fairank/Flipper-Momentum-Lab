@@ -6,6 +6,7 @@ import FlipperCore
     let model: AppModel
     @Environment(\.dynamicTypeSize) private var dynamicTypeSize
     @State private var search = ""
+    @State private var searchPresented = false
     @State private var source: FunctionCatalogSource = .all
     @State private var category: FunctionCatalogCategory?
     @State private var installed: [FlipperFunction] = []
@@ -124,9 +125,19 @@ import FlipperCore
         .listStyle(.insetGrouped)
         .navigationTitle("功能")
         .navigationBarTitleDisplayMode(.large)
-        .searchable(text: $search,
+        .searchable(text: $search, isPresented: $searchPresented,
                     placement: .navigationBarDrawer(displayMode: .always),
                     prompt: "搜索功能或设备应用")
+        .toolbar {
+            ToolbarItemGroup(placement: .keyboard) {
+                Spacer()
+                Button("结束搜索") {
+                    search = ""
+                    searchPresented = false
+                }
+                .accessibilityIdentifier("functions.endSearch")
+            }
+        }
         .refreshable { await readInstalled() }
         .onAppear {
             synchronizeSession()
