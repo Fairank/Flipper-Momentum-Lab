@@ -128,14 +128,20 @@ import FlipperCore
         .searchable(text: $search, isPresented: $searchPresented,
                     placement: .navigationBarDrawer(displayMode: .always),
                     prompt: "搜索功能或设备应用")
-        .toolbar {
-            ToolbarItemGroup(placement: .keyboard) {
-                Spacer()
-                Button("结束搜索") {
-                    search = ""
-                    searchPresented = false
+        .safeAreaInset(edge: .bottom, spacing: 0) {
+            if searchPresented {
+                HStack {
+                    Spacer()
+                    Button("结束搜索") {
+                        search = ""
+                        searchPresented = false
+                    }
+                    .frame(minHeight: 44)
+                    .accessibilityIdentifier("functions.endSearch")
                 }
-                .accessibilityIdentifier("functions.endSearch")
+                .padding(.horizontal, 20)
+                .padding(.vertical, 4)
+                .background(.bar)
             }
         }
         .refreshable { await readInstalled() }
