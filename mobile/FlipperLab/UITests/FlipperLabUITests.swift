@@ -162,9 +162,10 @@ final class FlipperLabUITests: XCTestCase {
         app.tabBars.buttons["功能"].tap()
         XCTAssertTrue(app.navigationBars["功能"].waitForExistence(timeout: 5))
         let infraredFunction = buttonContaining("红外遥控", in: app)
-        XCTAssertTrue(infraredFunction.exists)
+        XCTAssertTrue(app.buttons["functions.category.wireless"].exists)
         capture(app, name: "01b-功能中心离线预览")
         XCTAssertTrue(scrollUntilHittable([infraredFunction], in: app))
+        XCTAssertTrue(infraredFunction.exists)
         infraredFunction.tap()
         let offlineExplanation = app.alerts["暂时无法打开"]
         XCTAssertTrue(offlineExplanation.waitForExistence(timeout: 5))

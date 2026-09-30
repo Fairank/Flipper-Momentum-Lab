@@ -124,7 +124,7 @@ struct LCDScreen: View {
             Image(systemName: "checkmark.circle.fill")
                 .foregroundStyle(.green)
                 .accessibilityHidden(true)
-        case .scanning, .connecting, .discovering, .negotiating:
+        case .scanning, .connecting, .discovering, .negotiating, .reconnecting:
             ProgressView()
                 .accessibilityHidden(true)
         case .idle, .unavailable:
@@ -139,7 +139,7 @@ struct LCDScreen: View {
     private var decoration: LCDOverlay {
         switch state {
         case .scanning: return .arcs(reduceMotion ? 3 : arcFrame)
-        case .connecting, .discovering, .negotiating: return .arcs(3)
+        case .connecting, .discovering, .negotiating, .reconnecting: return .arcs(3)
         case .unavailable: return .sleep
         case .idle, .ready: return .empty
         }
@@ -150,6 +150,7 @@ struct LCDScreen: View {
         case .idle: return ["NO LINK"]
         case .scanning: return ["SCAN"]
         case .connecting: return ["PAIR"]
+        case .reconnecting: return ["RETRY"]
         case .discovering: return ["SETUP"]
         case .negotiating: return ["CHECK"]
         case .unavailable: return ["NO BT"]
@@ -193,7 +194,7 @@ struct LCDScreen: View {
                 try? await Task.sleep(for: .milliseconds(120))
                 eyesClosed = false
             }
-        case .connecting, .discovering, .negotiating, .unavailable:
+        case .connecting, .discovering, .negotiating, .reconnecting, .unavailable:
             break
         }
     }

@@ -11,6 +11,7 @@ final class FlipperDevice: NSObject, CBCentralManagerDelegate, CBPeripheralDeleg
         case idle = "尚未连接", scanning = "正在搜索", connecting = "正在配对与连接"
         case discovering = "正在准备通信", negotiating = "正在检查设备", ready = "设备已就绪"
         case unavailable = "蓝牙不可用"
+        case reconnecting = "正在恢复连接"
     }
     private(set) var state: State = .idle
     private(set) var nearby: [NearbyDevice] = []
@@ -55,12 +56,16 @@ final class FlipperDevice: NSObject, CBCentralManagerDelegate, CBPeripheralDeleg
     @ObservationIgnored private var deadline: Task<Void, Never>?
     @ObservationIgnored private var connectionTimer: Task<Void, Never>?
     @ObservationIgnored private var handshake: Task<Void, Never>?
-    @ObservationIgnored private var generation = UUID()
+    private var generation = UUID()
     @ObservationIgnored private var appReady = false
     @ObservationIgnored private var installedAppPaths: Set<String> = []
     @ObservationIgnored private var bridgeActive = false
     @ObservationIgnored private var bridgeSequence: UInt16 = 0
     @ObservationIgnored private var bridgeReply: Data?
+    @ObservationIgnored private var recovery = BLEConnectionRecovery()
+    @ObservationIgnored private var reconnectTask: Task<Void, Never>?
+    @ObservationIgnored private var isForeground = true
+    private(set) var reconnectAttempt = 0
 
     override init() {
         super.init()
@@ -71,6 +76,7 @@ final class FlipperDevice: NSObject, CBCentralManagerDelegate, CBPeripheralDeleg
     func scan() {
         guard central.state == .poweredOn else { updateBluetoothState(); return }
         guard peripheral == nil else { return }
+        reconnectTask?.cancel(); reconnectTask = nil; recovery.cancel(); reconnectAttempt = 0
         nearby = []; peripherals = [:]; lastError = nil; state = .scanning
         // Firmware advertises a color-dependent 16-bit UUID, not its 128-bit serial service.
         central.scanForPeripherals(withServices: Self.advertisedServices, options: nil)
@@ -84,8 +90,14 @@ final class FlipperDevice: NSObject, CBCentralManagerDelegate, CBPeripheralDeleg
 
     func connect(_ device: NearbyDevice) {
         guard peripheral == nil, let selected = peripherals[device.id] else { return }
+        reconnectTask?.cancel(); reconnectTask = nil; recovery.cancel(); reconnectAttempt = 0
+        deviceName = device.name
+        connectPeripheral(selected)
+    }
+
+    private func connectPeripheral(_ selected: CBPeripheral) {
         central.stopScan(); lastError = nil; state = .connecting
-        peripheral = selected; deviceName = device.name; selected.delegate = self
+        peripheral = selected; selected.delegate = self
         central.connect(selected, options: nil)
         connectionTimer?.cancel()
         connectionTimer = Task { [weak self] in
@@ -99,7 +111,20 @@ final class FlipperDevice: NSObject, CBCentralManagerDelegate, CBPeripheralDeleg
     func cancelOperation() { close(error: RPCError.cancelled) }
     func clearError() { lastError = nil }
 
-    private func close(error: Error) {
+    /// Backgrounding stops pending reconnects; existing ready links may remain connected.
+    func setForeground(_ active: Bool) {
+        isForeground = active
+        if active {
+            if ready { recovery.becameReady() }
+        } else {
+            recovery.cancel()
+            if state == .reconnecting || reconnectAttempt > 0 { close(error: RPCError.disconnected) }
+        }
+    }
+
+    private func close(error: Error, keepingRecovery: Bool = false) {
+        reconnectTask?.cancel(); reconnectTask = nil
+        if !keepingRecovery { recovery.cancel(); reconnectAttempt = 0 }
         generation = UUID(); handshake?.cancel(); handshake = nil
         companion.endSession()
         connectionTimer?.cancel(); connectionTimer = nil
@@ -113,6 +138,32 @@ final class FlipperDevice: NSObject, CBCentralManagerDelegate, CBPeripheralDeleg
         state = central.state == .poweredOn ? .idle : .unavailable
     }
     private func fail(_ error: Error) { lastError = PhoneErrorDescription.describe(error); close(error: error) }
+
+    private func recover(_ target: CBPeripheral, error: Error) {
+        guard isForeground else { fail(error); return }
+        guard let delay = recovery.nextDelay(bluetoothAvailable: central.state == .poweredOn) else {
+            fail(error); return
+        }
+        // Fail the old continuation and discard its bytes/decoder/whitelist before reconnecting.
+        // No operation (including App.Start or a write) is carried into the replacement session.
+        close(error: error, keepingRecovery: true)
+        reconnectAttempt = recovery.attempt
+        state = .reconnecting
+        lastError = "连接已中断，正在尝试恢复（\(reconnectAttempt)/\(BLEConnectionRecovery.delays.count)）。原任务不会自动重发。"
+        let session = generation
+        reconnectTask = Task { [weak self] in
+            try? await Task.sleep(for: .seconds(delay))
+            guard !Task.isCancelled, let self, self.generation == session,
+                  self.state == .reconnecting, self.central.state == .poweredOn else { return }
+            self.reconnectTask = nil
+            self.connectPeripheral(target)
+        }
+    }
+
+    private func requireSession(_ session: UUID) throws {
+        try Task.checkCancellation()
+        guard ready, generation == session else { throw RPCError.disconnected }
+    }
     private func finish(_ result: Result<[RPCEnvelope], Error>) {
         timer?.cancel(); timer = nil
         deadline?.cancel(); deadline = nil
@@ -131,11 +182,13 @@ final class FlipperDevice: NSObject, CBCentralManagerDelegate, CBPeripheralDeleg
         }
     }
 
-    private func request(tag: Int, payload: Data = Data()) async throws -> [RPCEnvelope] {
-        try await exchange { id in RPCEnvelope.encode(id: id, tag: tag, payload: payload) }
+    private func request(tag: Int, payload: Data = Data(), session: UUID? = nil) async throws -> [RPCEnvelope] {
+        try await exchange(session: session) { id in RPCEnvelope.encode(id: id, tag: tag, payload: payload) }
     }
-    private func exchange(frames: (UInt32) -> Data) async throws -> [RPCEnvelope] {
+    private func exchange(session: UUID? = nil, frames: (UInt32) -> Data) async throws -> [RPCEnvelope] {
         guard peripheral != nil, state == .ready || state == .negotiating else { throw RPCError.disconnected }
+        if let session, generation != session { throw RPCError.disconnected }
+        let startedSession = generation
         guard continuation == nil, !hasUnsentBytes, !(writeInFlight && writeLane == .command) else { throw RPCError.busy }
         try Task.checkCancellation()
         nextID = nextID == UInt32.max ? 1 : nextID + 1
@@ -143,7 +196,7 @@ final class FlipperDevice: NSObject, CBCentralManagerDelegate, CBPeripheralDeleg
         let bytes = frames(id)
         guard bytes.count <= RPCOutboundQueue.totalLimit else { throw RPCError.tooLarge }
         try outbound.append(bytes, lane: .command)
-        return try await withTaskCancellationHandler {
+        let rows: [RPCEnvelope] = try await withTaskCancellationHandler {
             try await withCheckedThrowingContinuation { continuation in
                 self.continuation = continuation; pendingID = id
                 response = []; responseBytes = 0; responseComplete = false; responseError = nil; transferredBytes = 0
@@ -161,6 +214,8 @@ final class FlipperDevice: NSObject, CBCentralManagerDelegate, CBPeripheralDeleg
                 self.close(error: RPCError.cancelled)
             }
         }
+        guard generation == startedSession else { throw RPCError.disconnected }
+        return rows
     }
 
     private func pump() {
@@ -259,6 +314,8 @@ final class FlipperDevice: NSObject, CBCentralManagerDelegate, CBPeripheralDeleg
                 try Task.checkCancellation()
                 guard peripheral != nil, generation == session else { return }
                 state = .ready; connectionTimer?.cancel(); connectionTimer = nil
+                if isForeground { recovery.becameReady() } else { recovery.cancel() }
+                reconnectAttempt = 0
                 companion.beginSession()
                 handshake = nil
             } catch {
@@ -270,8 +327,10 @@ final class FlipperDevice: NSObject, CBCentralManagerDelegate, CBPeripheralDeleg
 
     func listFiles(_ path: String) async throws -> [DeviceFile] {
         guard ready else { throw RPCError.disconnected }
+        let session = generation
         try validate(path)
-        let rows = try await request(tag: 7, payload: PBMessage.string(1, path))
+        let rows = try await request(tag: 7, payload: PBMessage.string(1, path), session: session)
+        try requireSession(session)
         var files: [DeviceFile] = []
         for row in rows {
             guard row.tag == 8 else { throw RPCError.malformed }
@@ -303,6 +362,7 @@ final class FlipperDevice: NSObject, CBCentralManagerDelegate, CBPeripheralDeleg
 
     func launch(_ feature: FlipperFunction) async throws {
         guard ready else { throw RPCError.disconnected }
+        let session = generation
         let known = FlipperFunction.builtIns.contains {
             $0.id == feature.id && $0.launchName == feature.launchName
         }
@@ -310,7 +370,7 @@ final class FlipperDevice: NSObject, CBCentralManagerDelegate, CBPeripheralDeleg
             throw RPCError.message("请先刷新设备应用列表，再选择设备上确实安装的应用。")
         }
         do {
-            let rows = try await request(tag: 16, payload: PBMessage.string(1, feature.launchName))
+            let rows = try await request(tag: 16, payload: PBMessage.string(1, feature.launchName), session: session)
             guard rows.count == 1, rows[0].tag == 4 else { throw RPCError.malformed }
         } catch RPCError.remote(15) {
             throw RPCError.message("设备未安装这个应用，或当前固件不支持直接打开。")
@@ -319,10 +379,12 @@ final class FlipperDevice: NSObject, CBCentralManagerDelegate, CBPeripheralDeleg
         }
     }
 
-    func readFile(_ path: String) async throws -> Data {
+    func readFile(_ path: String, session: UUID? = nil) async throws -> Data {
         guard ready else { throw RPCError.disconnected }
+        let expected = session ?? generation
+        try requireSession(expected)
         try validate(path)
-        let rows = try await request(tag: 9, payload: PBMessage.string(1, path))
+        let rows = try await request(tag: 9, payload: PBMessage.string(1, path), session: expected)
         var bytes = Data()
         for row in rows {
             guard row.tag == 10, let blob = try PBMessage(row.payload).bytes(1) else { throw RPCError.malformed }
@@ -335,17 +397,18 @@ final class FlipperDevice: NSObject, CBCentralManagerDelegate, CBPeripheralDeleg
 
     func upload(_ record: CaptureRecord) async throws -> String {
         guard ready else { throw RPCError.disconnected }
+        let session = generation
         guard let directory = record.kind.deviceDirectory else { throw RPCError.message("串口日志仅保存在手机，不能作为设备应用文件上传。") }
         let data = Data(record.rawText.utf8)
         guard !data.isEmpty, data.count <= 2 * 1024 * 1024 else { throw RPCError.tooLarge }
         _ = try await Task.detached(priority: .userInitiated) {
             try RecordAnalyzer.analyze(record.rawText, kind: record.kind)
         }.value
-        try Task.checkCancellation()
+        try requireSession(session)
         let path = directory + "/Lab_" + UUID().uuidString + "." + record.kind.fileExtension
-        do { _ = try await request(tag: 13, payload: PBMessage.string(1, directory)) }
+        do { _ = try await request(tag: 13, payload: PBMessage.string(1, directory), session: session) }
         catch RPCError.remote(6) { /* Existing directory is expected. */ }
-        _ = try await exchange { id in
+        _ = try await exchange(session: session) { id in
             var bytes = Data()
             for offset in stride(from: 0, to: data.count, by: 256) {
                 let end = min(offset + 256, data.count)
@@ -355,7 +418,7 @@ final class FlipperDevice: NSObject, CBCentralManagerDelegate, CBPeripheralDeleg
             }
             return bytes
         }
-        guard try await readFile(path) == data else { throw RPCError.message("上传后的内容校验失败，请重新导入检查。") }
+        guard try await readFile(path, session: session) == data else { throw RPCError.message("上传后的内容校验失败，请重新导入检查。") }
         return path
     }
 
@@ -374,7 +437,7 @@ final class FlipperDevice: NSObject, CBCentralManagerDelegate, CBPeripheralDeleg
     func readCompanionFile(_ path: String, session: UUID) async throws -> Data {
         try CompanionStorage.validate(path)
         try await waitForCompanionStorage(session: session)
-        let data = try await readFile(path)
+        let data = try await readFile(path, session: session)
         try Task.checkCancellation()
         guard generation == session else { throw RPCError.disconnected }
         return data
@@ -389,11 +452,11 @@ final class FlipperDevice: NSObject, CBCentralManagerDelegate, CBPeripheralDeleg
         for count in 2..<parts.count {
             let directory = "/" + parts.prefix(count).joined(separator: "/")
             try await waitForCompanionStorage(session: session)
-            do { _ = try await request(tag: 13, payload: PBMessage.string(1, directory)) }
+            do { _ = try await request(tag: 13, payload: PBMessage.string(1, directory), session: session) }
             catch RPCError.remote(6) { /* Directory already exists. */ }
         }
         try await waitForCompanionStorage(session: session)
-        _ = try await exchange { id in
+        _ = try await exchange(session: session) { id in
             var frames = Data()
             // 512 is the pinned storage protocol's maximum chunk. Include one
             // empty final frame to create a genuine zero-byte response file.
@@ -412,74 +475,82 @@ final class FlipperDevice: NSObject, CBCentralManagerDelegate, CBPeripheralDeleg
 
     func sendInfrared(_ record: CaptureRecord, buttonIndex: Int) async throws {
         guard ready else { throw RPCError.disconnected }
+        let session = generation
         guard record.kind == .infrared, let path = record.sourcePath,
               path.hasPrefix("/ext/infrared/") else { throw RPCError.message("请先将此红外记录上传至当前设备。") }
         let analysis = try await Task.detached(priority: .userInitiated) {
             try RecordAnalyzer.analyze(record.rawText, kind: .infrared)
         }.value
-        try Task.checkCancellation()
+        try requireSession(session)
         guard analysis.buttons.indices.contains(buttonIndex) else { throw RPCError.malformed }
-        guard try await readFile(path) == Data(record.rawText.utf8) else {
+        guard try await readFile(path, session: session) == Data(record.rawText.utf8) else {
             throw RPCError.message("设备文件与手机记录不同，请重新导入或上传后再操作。")
         }
         appReady = false
-        _ = try await request(tag: 16, payload: PBMessage.string(1, "Infrared") + PBMessage.string(2, "RPC"))
+        _ = try await request(tag: 16, payload: PBMessage.string(1, "Infrared") + PBMessage.string(2, "RPC"), session: session)
         do {
             for _ in 0..<100 {
+                try requireSession(session)
                 if appReady { break }
                 try await Task.sleep(for: .milliseconds(50))
             }
             guard appReady else { throw RPCError.timeout }
-            _ = try await request(tag: 48, payload: PBMessage.string(1, path))
-            _ = try await request(tag: 75, payload: PBMessage.uint(2, UInt64(buttonIndex)))
-            _ = try await request(tag: 47)
+            _ = try await request(tag: 48, payload: PBMessage.string(1, path), session: session)
+            _ = try await request(tag: 75, payload: PBMessage.uint(2, UInt64(buttonIndex)), session: session)
+            _ = try await request(tag: 47, session: session)
         } catch {
             // The firmware closes the RPC scene and stops output when this connection closes.
-            fail(error)
+            if generation == session { fail(error) }
             throw error
         }
     }
 
     func startSerialBridge(port: UInt8, baud: UInt32) async throws {
         guard ready, !bridgeActive else { throw RPCError.busy }
+        let session = generation
         let configuration = try SerialBridge.configuration(port: port, baud: baud)
         appReady = false
-        _ = try await request(tag: 16, payload: PBMessage.string(1, "Lab Bridge") + PBMessage.string(2, "RPC"))
+        _ = try await request(tag: 16, payload: PBMessage.string(1, "Lab Bridge") + PBMessage.string(2, "RPC"), session: session)
         do {
             for _ in 0..<100 {
+                try requireSession(session)
                 if appReady { break }
                 try await Task.sleep(for: .milliseconds(50))
             }
             guard appReady else { throw RPCError.message("Lab Bridge 没有就绪，请安装本项目的新固件。") }
             bridgeActive = true
-            let hello = try await serialBridgeRequest(.hello)
+            let hello = try await serialBridgeRequest(.hello, session: session)
             guard String(data: hello.payload, encoding: .utf8) == "FlipperLab.Serial/1" else {
                 throw RPCError.message("串口桥版本不兼容。")
             }
-            _ = try await serialBridgeRequest(.open, payload: configuration)
+            _ = try await serialBridgeRequest(.open, payload: configuration, session: session)
         } catch {
-            fail(error)
+            if generation == session { fail(error) }
             throw error
         }
     }
 
-    func readSerialBridge() async throws -> SerialBridge.Reply {
-        try await serialBridgeRequest(.read)
+    func readSerialBridge(session: UUID? = nil) async throws -> SerialBridge.Reply {
+        try await serialBridgeRequest(.read, session: session)
     }
 
-    func stopSerialBridge() async throws {
+    func stopSerialBridge(session: UUID? = nil) async throws {
         guard bridgeActive else { return }
-        _ = try await serialBridgeRequest(.close)
-        _ = try await request(tag: 47)
+        let expected = session ?? generation
+        try requireSession(expected)
+        _ = try await serialBridgeRequest(.close, session: expected)
+        _ = try await request(tag: 47, session: expected)
         bridgeActive = false; bridgeReply = nil
     }
 
-    private func serialBridgeRequest(_ operation: SerialBridge.Operation, payload: Data = Data()) async throws -> SerialBridge.Reply {
+    private func serialBridgeRequest(_ operation: SerialBridge.Operation, payload: Data = Data(), session: UUID? = nil) async throws -> SerialBridge.Reply {
+        let expected = session ?? generation
+        try requireSession(expected)
         guard bridgeActive, appReady else { throw RPCError.message("扩展板串口会话已结束。") }
         bridgeSequence &+= 1
         bridgeReply = nil
         let packet = try SerialBridge.request(operation, sequence: bridgeSequence, payload: payload)
-        let result = try await request(tag: 65, payload: PBMessage.bytes(1, packet))
+        let result = try await request(tag: 65, payload: PBMessage.bytes(1, packet), session: expected)
         guard result.count == 1, result[0].tag == 4, let data = bridgeReply else { throw RPCError.malformed }
         let reply = try SerialBridge.Reply(data)
         guard reply.sequence == bridgeSequence, reply.operation == operation else { throw RPCError.malformed }
@@ -517,18 +588,19 @@ final class FlipperDevice: NSObject, CBCentralManagerDelegate, CBPeripheralDeleg
     }
     func centralManager(_ central: CBCentralManager, didConnect peripheral: CBPeripheral) {
         guard peripheral === self.peripheral else { central.cancelPeripheralConnection(peripheral); return }
+        guard state == .connecting else { return }
         state = .discovering; peripheral.discoverServices([Self.service])
     }
     func centralManager(_ central: CBCentralManager, didFailToConnect peripheral: CBPeripheral, error: Error?) {
-        guard peripheral === self.peripheral else { return }
-        fail(error ?? RPCError.disconnected)
+        guard peripheral === self.peripheral, state == .connecting else { return }
+        recover(peripheral, error: error ?? RPCError.disconnected)
     }
     func centralManager(_ central: CBCentralManager, didDisconnectPeripheral peripheral: CBPeripheral, error: Error?) {
         guard peripheral === self.peripheral else { return }
-        fail(error ?? RPCError.disconnected)
+        recover(peripheral, error: error ?? RPCError.disconnected)
     }
     func peripheral(_ peripheral: CBPeripheral, didDiscoverServices error: Error?) {
-        guard peripheral === self.peripheral else { return }
+        guard peripheral === self.peripheral, state == .discovering else { return }
         if let error { fail(error); return }
         guard let service = peripheral.services?.first(where: { $0.uuid == Self.service }) else {
             fail(RPCError.message("此设备没有兼容的 Flipper 串口服务。")); return
@@ -536,7 +608,7 @@ final class FlipperDevice: NSObject, CBCentralManagerDelegate, CBPeripheralDeleg
         peripheral.discoverCharacteristics([Self.tx, Self.rx, Self.flow, Self.status], for: service)
     }
     func peripheral(_ peripheral: CBPeripheral, didDiscoverCharacteristicsFor service: CBService, error: Error?) {
-        guard peripheral === self.peripheral else { return }
+        guard peripheral === self.peripheral, state == .discovering else { return }
         if let error { fail(error); return }
         for item in service.characteristics ?? [] { characteristics[item.uuid] = item }
         guard let tx = characteristics[Self.tx], let flow = characteristics[Self.flow],
@@ -546,14 +618,14 @@ final class FlipperDevice: NSObject, CBCentralManagerDelegate, CBPeripheralDeleg
         if let status = characteristics[Self.status] { peripheral.setNotifyValue(true, for: status) }
     }
     func peripheral(_ peripheral: CBPeripheral, didUpdateNotificationStateFor characteristic: CBCharacteristic, error: Error?) {
-        guard peripheral === self.peripheral else { return }
+        guard peripheral === self.peripheral, characteristics[characteristic.uuid] === characteristic else { return }
         if let error { fail(error); return }
         if characteristic.isNotifying { subscriptions.insert(characteristic.uuid) }
         else { subscriptions.remove(characteristic.uuid) }
         beginHandshakeIfReady()
     }
     func peripheral(_ peripheral: CBPeripheral, didUpdateValueFor characteristic: CBCharacteristic, error: Error?) {
-        guard peripheral === self.peripheral else { return }
+        guard peripheral === self.peripheral, characteristics[characteristic.uuid] === characteristic else { return }
         if let error { fail(error); return }
         guard let value = characteristic.value else { return }
         do {
@@ -571,7 +643,8 @@ final class FlipperDevice: NSObject, CBCentralManagerDelegate, CBPeripheralDeleg
         } catch { fail(error) }
     }
     func peripheral(_ peripheral: CBPeripheral, didWriteValueFor characteristic: CBCharacteristic, error: Error?) {
-        guard peripheral === self.peripheral, characteristic.uuid == Self.rx else { return }
+        guard peripheral === self.peripheral, characteristic.uuid == Self.rx,
+              characteristics[Self.rx] === characteristic, writeInFlight else { return }
         if let error { fail(error); return }
         refreshTimeout()
         writeInFlight = false; pump(); completeIfDrained()

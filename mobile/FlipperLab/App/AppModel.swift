@@ -164,6 +164,7 @@ final class AppModel {
 
     func startSerial(port: UInt8, baud: UInt32) {
         perform("接收扩展板串口") {
+            let session = self.device.companionSession
             self.serialCapture = SerialCapture()
             self.serialStopRequested = false
             self.serialRunning = true
@@ -177,7 +178,7 @@ final class AppModel {
                 var displayedAt = Date.distantPast
                 while !self.serialStopRequested {
                     try Task.checkCancellation()
-                    let reply = try await self.device.readSerialBridge()
+                    let reply = try await self.device.readSerialBridge(session: session)
                     capture.append(reply)
                     if Date().timeIntervalSince(displayedAt) >= 0.2 {
                         self.serialCapture = capture
@@ -187,11 +188,11 @@ final class AppModel {
                     else { await Task.yield() }
                 }
                 self.serialCapture = capture
-                try await self.device.stopSerialBridge()
+                try await self.device.stopSerialBridge(session: session)
                 return "收到 \(capture.receivedBytes) 字节；设备至少丢失 \(capture.deviceDroppedBytes) 字节；手机截断 \(capture.trimmedBytes) 字节。"
             } catch {
                 // Disconnect releases UART on the Flipper even if a normal close failed.
-                self.device.disconnect()
+                if self.device.companionSession == session { self.device.disconnect() }
                 throw error
             }
         }

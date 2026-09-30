@@ -9,7 +9,8 @@ struct FlipperLabApp: App {
         WindowGroup {
             RootView(model: model)
                 .task { await model.load() }
-                .onChange(of: scenePhase) { _, phase in
+                .onChange(of: scenePhase, initial: true) { _, phase in
+                    model.device.setForeground(phase == .active)
                     if phase == .background { model.device.companion.suspendSharing() }
                 }
                 .tint(LabColor.accent)

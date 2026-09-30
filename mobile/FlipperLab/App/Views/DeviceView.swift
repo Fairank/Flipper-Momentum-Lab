@@ -72,6 +72,7 @@ import FlipperCore
         case .idle: return "搜索附近已开启蓝牙的 Flipper，每次搜索最长 15 秒。"
         case .scanning: return "请把 Flipper 放在手机旁边，15 秒后会自动停止。"
         case .connecting: return "首次配对时，在 iPhone 弹出的窗口中输入 Flipper 屏幕上的 6 位配对码；超过 45 秒未完成会自动断开。"
+        case .reconnecting: return "连接暂时中断，正在恢复连接（\(device.reconnectAttempt)/\(BLEConnectionRecovery.delays.count)）。原任务不会自动重发；恢复后请重新操作。"
         case .discovering: return "正在准备连接…"
         case .negotiating: return "正在检查协议版本并读取设备信息。"
         case .ready: return "可以浏览设备文件并导入记录；资料库中的记录可以上传到 Flipper。"
@@ -117,7 +118,7 @@ import FlipperCore
                 .buttonStyle(.bordered)
                 .controlSize(.large)
                 .accessibilityIdentifier("device.stopScan")
-            case .connecting, .discovering, .negotiating:
+            case .connecting, .discovering, .negotiating, .reconnecting:
                 Button(role: .destructive) { device.disconnect() } label: {
                     WideButtonLabel(title: "取消连接")
                 }
