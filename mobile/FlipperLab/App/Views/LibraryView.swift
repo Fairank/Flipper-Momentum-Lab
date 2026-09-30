@@ -11,7 +11,6 @@ import FlipperCore
     @State private var kind: RecordKind?
     @State private var importing = false
     @State private var browsingDevice = false
-    @State private var comparing = false
     private var visible: [CaptureRecord] {
         model.records.filter {
             (kind == nil || kind == $0.kind) && (search.isEmpty ||
@@ -50,9 +49,6 @@ import FlipperCore
         .navigationDestination(isPresented: $browsingDevice) {
             DeviceFilesView(model: model, path: "/ext")
         }
-        .navigationDestination(isPresented: $comparing) {
-            CompareRecordsView(model: model)
-        }
     }
 
     /// 更多: both import sources and 比较. A disabled item states its reason as the subtitle.
@@ -70,7 +66,9 @@ import FlipperCore
             }
             .disabled(deviceReason != nil)
             .accessibilityIdentifier("library.importDevice")
-            Button { comparing = true } label: {
+            NavigationLink {
+                CompareRecordsView(model: model)
+            } label: {
                 Label("比较两次记录", systemImage: "rectangle.split.2x1")
             }
             .accessibilityIdentifier("library.compare")

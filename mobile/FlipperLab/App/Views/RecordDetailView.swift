@@ -14,7 +14,6 @@ import FlipperCore
     @State private var editing = false
     @State private var deleting = false
     @State private var exporting = false
-    @State private var comparing = false
     @State private var showingPhoneCredentialInfo = false
     private var record: CaptureRecord? { model.records.first { $0.id == id } }
 
@@ -85,9 +84,6 @@ import FlipperCore
             Button("删除记录", role: .destructive) { model.deleteRecord(id) }
         }
         .onChange(of: record == nil) { _, removed in if removed { dismiss() } }
-        .navigationDestination(isPresented: $comparing) {
-            CompareRecordsView(model: model, initialFirst: id)
-        }
     }
 
     private var phoneCredentialSection: some View {
@@ -112,7 +108,9 @@ import FlipperCore
                 Text("原始采集内容，不含中文名称、标签和备注")
             }
             .accessibilityIdentifier("record.export")
-            Button { comparing = true } label: {
+            NavigationLink {
+                CompareRecordsView(model: model, initialFirst: id)
+            } label: {
                 Label("与其他记录比较", systemImage: "rectangle.split.2x1")
             }
             .accessibilityIdentifier("record.compare")
