@@ -104,7 +104,7 @@ static void mf_ultralight_scene_c_dict_attack_prepare_view(NfcApp* instance) {
                 state = DictAttackStateSystemDictInProgress;
                 break;
             }
-            dict_attack_set_header(instance->dict_attack, "MFUL C 用户字典");
+            dict_attack_set_header(instance->dict_attack, "MFUL C User Dictionary");
         } while(false);
     }
     if(state == DictAttackStateSystemDictInProgress) {
@@ -112,7 +112,7 @@ static void mf_ultralight_scene_c_dict_attack_prepare_view(NfcApp* instance) {
             NFC_APP_MF_ULTRALIGHT_C_DICT_SYSTEM_PATH,
             KeysDictModeOpenExisting,
             sizeof(MfUltralightC3DesAuthKey));
-        dict_attack_set_header(instance->dict_attack, "MFUL C 系统字典");
+        dict_attack_set_header(instance->dict_attack, "MFUL C System Dictionary");
     }
 
     instance->mf_ultralight_c_dict_context.dict_keys_total =
@@ -340,7 +340,7 @@ static void mf_ultralight_scene_aes_dict_attack_prepare_view(NfcApp* instance) {
                 state = DictAttackStateSystemDictInProgress;
                 break;
             }
-            dict_attack_set_header(instance->dict_attack, "MFUL AES 用户字典");
+            dict_attack_set_header(instance->dict_attack, "MFUL AES User Dictionary");
         } while(false);
     }
     if(state == DictAttackStateSystemDictInProgress) {
@@ -348,7 +348,7 @@ static void mf_ultralight_scene_aes_dict_attack_prepare_view(NfcApp* instance) {
             NFC_APP_MF_ULTRALIGHT_AES_DICT_SYSTEM_PATH,
             KeysDictModeOpenExisting,
             sizeof(MfUltralightAesKey));
-        dict_attack_set_header(instance->dict_attack, "MFUL AES 系统字典");
+        dict_attack_set_header(instance->dict_attack, "MFUL AES System Dictionary");
     }
 
     instance->mf_ultralight_aes_dict_context.dict_keys_total =
@@ -489,7 +489,7 @@ static void mf_ultralight_scene_unlock_menu_on_enter(NfcApp* nfc) {
         if(mfu_data->type != MfUltralightTypeMfulC) {
             submenu_add_item(
                 submenu,
-                "使用读卡器解锁",
+                "Unlock With Reader",
                 SubmenuIndexMfUlUnlockMenuReader,
                 mf_ultralight_scene_unlock_menu_submenu_callback,
                 nfc);
@@ -497,19 +497,19 @@ static void mf_ultralight_scene_unlock_menu_on_enter(NfcApp* nfc) {
     }
     submenu_add_item(
         submenu,
-        "Ameebo 认证",
+        "Auth As Ameebo",
         SubmenuIndexMfUlUnlockMenuAmeebo,
         mf_ultralight_scene_unlock_menu_submenu_callback,
         nfc);
     submenu_add_item(
         submenu,
-        "小米净化器认证",
+        "Auth As Xiaomi Air Purifier",
         SubmenuIndexMfUlUnlockMenuXiaomi,
         mf_ultralight_scene_unlock_menu_submenu_callback,
         nfc);
     submenu_add_item(
         submenu,
-        "手动输入密码",
+        "Enter Password Manually",
         SubmenuIndexMfUlUnlockMenuManual,
         mf_ultralight_scene_unlock_menu_submenu_callback,
         nfc);
@@ -569,7 +569,7 @@ static void mf_ultralight_scene_unlock_warn_on_enter(NfcApp* nfc) {
         for(size_t i = 0; i < sizeof(nfc->mf_ul_auth->password.data); i++) {
             furi_string_cat_printf(password_str, "%02X ", nfc->mf_ul_auth->password.data[i]);
         }
-        furi_string_cat_str(password_str, "\n注意: 密码错误\n会锁定卡片!");
+        furi_string_cat_str(password_str, "\nWarning: incorrect password\nwill block the card!");
         nfc_text_store_set(nfc, furi_string_get_cstr(password_str));
         furi_string_free(password_str);
 
@@ -577,17 +577,18 @@ static void mf_ultralight_scene_unlock_warn_on_enter(NfcApp* nfc) {
                                                                      "Risky Action!";
         dialog_ex_set_header(dialog_ex, message, 64, 0, AlignCenter, AlignTop);
         dialog_ex_set_text(dialog_ex, nfc->text_store, 64, 10, AlignCenter, AlignTop);
-        dialog_ex_set_left_button_text(dialog_ex, "取消");
-        dialog_ex_set_right_button_text(dialog_ex, "继续");
+        dialog_ex_set_left_button_text(dialog_ex, "Cancel");
+        dialog_ex_set_right_button_text(dialog_ex, "Continue");
 
         if(type == MfUltralightAuthTypeReader) {
             notification_message(nfc->notifications, &sequence_set_green_255);
         }
     } else {
-        dialog_ex_set_header(dialog_ex, "高风险操作!", 64, 4, AlignCenter, AlignTop);
-        dialog_ex_set_text(dialog_ex, "错误密码\n可能锁死\n卡片", 4, 18, AlignLeft, AlignTop);
+        dialog_ex_set_header(dialog_ex, "Risky action!", 64, 4, AlignCenter, AlignTop);
+        dialog_ex_set_text(
+            dialog_ex, "Wrong password\ncan block your\ncard.", 4, 18, AlignLeft, AlignTop);
         dialog_ex_set_icon(dialog_ex, 83, 22, &I_WarningDolphinFlip_45x42);
-        dialog_ex_set_center_button_text(dialog_ex, "确定");
+        dialog_ex_set_center_button_text(dialog_ex, "OK");
     }
 
     view_dispatcher_switch_to_view(nfc->view_dispatcher, NfcViewDialogEx);
@@ -651,7 +652,7 @@ static void mf_ultralight_scene_key_input_byte_input_callback(void* context) {
 static void mf_ultralight_scene_key_input_on_enter(NfcApp* nfc) {
     // Setup view
     ByteInput* byte_input = nfc->byte_input;
-    byte_input_set_header_text(byte_input, "输入十六进制密码");
+    byte_input_set_header_text(byte_input, "Enter the password in hex");
     byte_input_set_result_callback(
         byte_input,
         mf_ultralight_scene_key_input_byte_input_callback,
@@ -705,7 +706,7 @@ static void mf_ultralight_scene_capture_pass_on_enter(NfcApp* instance) {
         AlignLeft,
         AlignCenter,
         FontPrimary,
-        "贴近读卡器\n以获取\n密码...");
+        "Touch the\nreader to get\npassword...");
     widget_add_icon_element(instance->widget, 0, 15, &I_Modern_reader_18x34);
     widget_add_icon_element(instance->widget, 20, 12, &I_Move_flipper_26x39);
     view_dispatcher_switch_to_view(instance->view_dispatcher, NfcViewWidget);
@@ -761,11 +762,11 @@ static void mf_ultralight_scene_aes_dict_attack_warn_on_enter(NfcApp* nfc) {
     dialog_ex_set_result_callback(
         dialog_ex, mf_ultralight_scene_aes_dict_attack_warn_dialog_callback);
 
-    dialog_ex_set_header(dialog_ex, "高风险操作!", 64, 4, AlignCenter, AlignTop);
-    dialog_ex_set_text(dialog_ex, "错误密钥可能\n锁定此卡", 4, 18, AlignLeft, AlignTop);
+    dialog_ex_set_header(dialog_ex, "Risky action!", 64, 4, AlignCenter, AlignTop);
+    dialog_ex_set_text(dialog_ex, "Wrong keys can\nblock this card", 4, 18, AlignLeft, AlignTop);
     dialog_ex_set_icon(dialog_ex, 83, 22, &I_WarningDolphinFlip_45x42);
-    dialog_ex_set_left_button_text(dialog_ex, "取消");
-    dialog_ex_set_right_button_text(dialog_ex, "继续");
+    dialog_ex_set_left_button_text(dialog_ex, "Cancel");
+    dialog_ex_set_right_button_text(dialog_ex, "Continue");
 
     view_dispatcher_switch_to_view(nfc->view_dispatcher, NfcViewDialogEx);
 }

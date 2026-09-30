@@ -303,9 +303,9 @@ const char* hacker_parts[] = {
 
 // Display names only; the word lists above are data and stay in English.
 NicknameCategory categories[] = {
-    {"经典", classic_parts, sizeof(classic_parts) / sizeof(classic_parts[0])},
-    {"网络梗", meme_parts, sizeof(meme_parts) / sizeof(meme_parts[0])},
-    {"黑客", hacker_parts, sizeof(hacker_parts) / sizeof(hacker_parts[0])},
+    {"Classic", classic_parts, sizeof(classic_parts) / sizeof(classic_parts[0])},
+    {"Meme", meme_parts, sizeof(meme_parts) / sizeof(meme_parts[0])},
+    {"Hacker", hacker_parts, sizeof(hacker_parts) / sizeof(hacker_parts[0])},
 };
 
 uint8_t current_category = 0;
@@ -348,19 +348,19 @@ static void draw_callback(Canvas* canvas, void* ctx) {
     furi_mutex_acquire(mutex, FuriWaitForever);
     canvas_clear(canvas);
     canvas_set_font(canvas, FontPrimary);
-    canvas_draw_str(canvas, 2, 12, "昵称生成器"); // 12 px glyphs on rows 2..12
+    canvas_draw_str(canvas, 2, 12, "Nickname Generator"); // 12 px glyphs on rows 2..12
 
     // Category line on rows 16..26: label, then the name between the < > arrows
     // that stand for the Left/Right keys
     char category[32];
     snprintf(category, sizeof(category), "< %s >", categories[current_category].name);
-    canvas_draw_str(canvas, 2, 26, "分类:");
-    canvas_draw_str(canvas, 2 + canvas_string_width(canvas, "分类:") + 4, 26, category);
+    canvas_draw_str(canvas, 2, 26, "Category:");
+    canvas_draw_str(canvas, 2 + canvas_string_width(canvas, "Category:") + 4, 26, category);
 
     canvas_draw_str_aligned(canvas, 60, 44, AlignCenter, AlignCenter, nickname);
 
     canvas_set_font(canvas, FontSecondary);
-    canvas_draw_str(canvas, 2, 63, "OK生成 长按返回退出"); // rows 53..63
+    canvas_draw_str(canvas, 2, 63, "OK:Gen Hold Back:Exit"); // rows 53..63
     furi_mutex_release(mutex);
 }
 //фури

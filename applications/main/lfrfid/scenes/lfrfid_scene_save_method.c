@@ -20,13 +20,9 @@ void lfrfid_scene_save_method_on_enter(void* context) {
     submenu_set_header(submenu, furi_string_get_cstr(label));
     furi_string_free(label);
     submenu_add_item(
-        submenu, "输入 FC/ID", SubmenuIndexFields, lfrfid_scene_save_method_submenu_callback, app);
+        submenu, "Enter FC/ID", SubmenuIndexFields, lfrfid_scene_save_method_submenu_callback, app);
     submenu_add_item(
-        submenu,
-        "输入十六进制数据",
-        SubmenuIndexHex,
-        lfrfid_scene_save_method_submenu_callback,
-        app);
+        submenu, "Enter Hex Data", SubmenuIndexHex, lfrfid_scene_save_method_submenu_callback, app);
 
     submenu_set_selected_item(
         submenu, scene_manager_get_scene_state(app->scene_manager, LfRfidSceneSaveMethod));

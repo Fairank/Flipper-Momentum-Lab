@@ -3,7 +3,7 @@
 static const char* const expansion_uart_text[] = {
     "USART",
     "LPUART",
-    "无",
+    "None",
 };
 
 static void expansion_settings_app_uart_changed(VariableItem* item) {
@@ -44,7 +44,7 @@ static ExpansionSettingsApp* expansion_settings_app_alloc(void) {
 
     item = variable_item_list_add(
         app->var_item_list,
-        "监听 UART",
+        "Listen UART",
         COUNT_OF(expansion_uart_text),
         expansion_settings_app_uart_changed,
         app);

@@ -22,7 +22,7 @@ void archive_scene_new_dir_on_enter(void* context) {
     TextInput* text_input = archive->text_input;
 
     archive->text_store[0] = '\0';
-    text_input_set_header_text(text_input, "新目录:");
+    text_input_set_header_text(text_input, "New directory:");
 
     text_input_set_result_callback(
         text_input,
@@ -63,7 +63,7 @@ bool archive_scene_new_dir_on_event(void* context, SceneManagerEvent event) {
                 dialog_msg = furi_string_alloc();
                 furi_string_cat_printf(
                     dialog_msg,
-                    "无法新建目录:\n%s",
+                    "Cannot mkdir:\n%s",
                     locale_ui_storage_error(storage_error_get_desc(error)));
                 dialog_message_show_storage_error(
                     archive->dialogs, furi_string_get_cstr(dialog_msg));

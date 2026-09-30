@@ -1,6 +1,6 @@
 App(
     appid="ocarina",
-    name="陶笛",
+    name="Ocarina",
     apptype=FlipperAppType.EXTERNAL,
     entry_point="ocarina_app",
     cdefines=["APP_OCARINA"],
@@ -12,5 +12,5 @@ App(
     fap_author="@invalidna-me",
     fap_weburl="https://github.com/invalidna-me/flipperzero-ocarina",
     fap_version="1.3",
-    fap_description="简易版（时之）陶笛，按键操作与 N64 版《时之笛》相同",
+    fap_description="A basic Ocarina (of Time), Controls are the same as the N64 version of the Ocarina of Time",
 )

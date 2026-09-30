@@ -16,7 +16,7 @@ Bubble slots: 1
 Slot: 0
 X: 4
 Y: 21
-Text: 电池异常\n请检查
+Text: I feel so sick!\nI'm dying...
 AlignH: Right
 AlignV: Center
 StartFrame: 0

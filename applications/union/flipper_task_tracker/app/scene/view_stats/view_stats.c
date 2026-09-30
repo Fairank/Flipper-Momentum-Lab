@@ -28,24 +28,24 @@ static void view_stats_draw_callback(Canvas* canvas, void* _model) {
     canvas_set_color(canvas, ColorBlack);
     canvas_set_font(canvas, FontPrimary);
     elements_multiline_text_aligned(
-        canvas, canvas_width(canvas) / 2, 0, AlignCenter, AlignTop, "任务详情");
+        canvas, canvas_width(canvas) / 2, 0, AlignCenter, AlignTop, "Task Details");
 
     if(!shared_task) {
-        canvas_draw_str(canvas, 4, 26, "无当前任务"); // below the header
+        canvas_draw_str(canvas, 4, 26, "No current task"); // below the header
         return;
     }
 
     const char* fields[] = {
-        "编号",
-        "名称",
-        "描述",
-        "时薪",
-        "开始时间",
-        "结束时间",
-        "上次开始",
-        "已完成",
-        "总时长",
-        "状态"};
+        "ID",
+        "Name",
+        "Description",
+        "Price per h",
+        "Start",
+        "End",
+        "Last Start",
+        "Completed",
+        "Total Time",
+        "Status"};
 
     char price_per_hour_str[16];
     snprintf(
@@ -77,9 +77,9 @@ static void view_stats_draw_callback(Canvas* canvas, void* _model) {
         start_time_str,
         end_time_str,
         last_start_time_str,
-        shared_task->completed ? "是" : "否",
+        shared_task->completed ? "Yes" : "No",
         total_time_minutes_str,
-        shared_task->status == TaskStatus_Running ? "运行中" : "已停止"};
+        shared_task->status == TaskStatus_Running ? "Running" : "Stopped"};
 
     const size_t btn_number = sizeof(fields) / sizeof(fields[0]);
     const bool show_scrollbar = btn_number > LIST_ITEMS;

@@ -66,14 +66,14 @@ static void nfc_scene_more_info_on_enter_mf_ultralight(NfcApp* instance) {
         widget_add_button_element(
             instance->widget,
             GuiButtonTypeRight,
-            "原始数据",
+            "Raw Data",
             nfc_protocol_support_common_widget_callback,
             instance);
 
         widget_add_button_element(
             instance->widget,
             GuiButtonTypeLeft,
-            "信息",
+            "Info",
             nfc_protocol_support_common_widget_callback,
             instance);
     } else if(scene_state == NfcSceneMoreInfoStateRawData) {
@@ -288,13 +288,13 @@ static void nfc_scene_read_and_saved_menu_on_enter_mf_ultralight(NfcApp* instanc
         submenu_remove_item(submenu, SubmenuIndexCommonWrite);
         submenu_add_item(
             submenu,
-            "写入并保留密钥",
+            "Write (Keep Key)",
             SubmenuIndexWriteKeepKey,
             nfc_protocol_support_common_submenu_callback,
             instance);
         submenu_add_item(
             submenu,
-            "写入并复制密钥",
+            "Write (Copy Key)",
             SubmenuIndexWriteCopyKey,
             nfc_protocol_support_common_submenu_callback,
             instance);
@@ -306,14 +306,14 @@ static void nfc_scene_read_and_saved_menu_on_enter_mf_ultralight(NfcApp* instanc
         // dictionary attack.
         submenu_add_item(
             submenu,
-            "解锁",
+            "Unlock",
             SubmenuIndexUnlock,
             nfc_protocol_support_common_submenu_callback,
             instance);
         if(data->type == MfUltralightTypeMfulC || data->type == MfUltralightTypeUltralightAES) {
             submenu_add_item(
                 submenu,
-                "使用字典解锁",
+                "Unlock with Dictionary",
                 SubmenuIndexDictAttack,
                 nfc_protocol_support_common_submenu_callback,
                 instance);
@@ -326,7 +326,7 @@ static void nfc_scene_read_and_saved_menu_on_enter_mf_ultralight(NfcApp* instanc
        data->iso14443_3a_data->uid[0] == 0x08) {
         submenu_add_item(
             submenu,
-            "显示真实 UID",
+            "Reveal Real UID",
             SubmenuIndexRevealUid,
             nfc_protocol_support_common_submenu_callback,
             instance);

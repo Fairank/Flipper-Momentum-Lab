@@ -15,7 +15,11 @@ void lfrfid_scene_settings_on_enter(void* context) {
     Submenu* submenu = app->submenu;
 
     submenu_add_item(
-        submenu, "写入芯片", SubmenuIndexWriteTargets, lfrfid_scene_settings_submenu_callback, app);
+        submenu,
+        "Write Chips",
+        SubmenuIndexWriteTargets,
+        lfrfid_scene_settings_submenu_callback,
+        app);
 
     submenu_set_selected_item(
         submenu, scene_manager_get_scene_state(app->scene_manager, LfRfidSceneSettings));

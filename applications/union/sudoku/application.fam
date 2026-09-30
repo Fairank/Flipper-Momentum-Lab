@@ -2,7 +2,7 @@
 
 App(
     appid="sudoku",
-    name="数独",
+    name="Sudoku",
     apptype=FlipperAppType.EXTERNAL,
     entry_point="sudoku_main",
     requires=[
@@ -12,7 +12,7 @@ App(
     fap_category="Games",
     fap_version="1.1",
     fap_icon="sudoku.png",
-    fap_description="数独游戏，竖屏显示，三种难度，可保存进度",
+    fap_description="Sudoku game",
     fap_author="@profelis",
     fap_weburl="https://github.com/profelis/fz-sudoku",
     # fap_icon_assets="images",  # Image assets to compile for this application

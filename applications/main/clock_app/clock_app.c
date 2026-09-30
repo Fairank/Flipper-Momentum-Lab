@@ -205,9 +205,9 @@ static void clock_render_callback(Canvas* const canvas, void* ctx) {
         }
         // FontBigNumbers has no letters, so ALARM has to use a text font.
         canvas_set_font(canvas, FontPrimary);
-        canvas_draw_str_aligned(canvas, 64, 26, AlignCenter, AlignCenter, "! 闹钟 !");
+        canvas_draw_str_aligned(canvas, 64, 26, AlignCenter, AlignCenter, "! ALARM !");
         canvas_set_font(canvas, FontSecondary);
-        canvas_draw_str_aligned(canvas, 64, 44, AlignCenter, AlignCenter, "按任意键停止");
+        canvas_draw_str_aligned(canvas, 64, 44, AlignCenter, AlignCenter, "Press any key to stop");
         return;
     }
 
@@ -279,7 +279,7 @@ static void clock_render_callback(Canvas* const canvas, void* ctx) {
             date_pct_string, sizeof(date_pct_string), "%s   %u%%", date_string, state->battery_pct);
         canvas_draw_str_aligned(
             canvas, 64, 20, AlignCenter, AlignTop, date_pct_string); // DRAW DATE + BATTERY
-        elements_button_left(canvas, "重置");
+        elements_button_left(canvas, "Reset");
     } else {
         canvas_draw_str_aligned(canvas, 64, 32, AlignCenter, AlignCenter, time_string);
         canvas_set_font(canvas, FontSecondary);
@@ -300,9 +300,9 @@ static void clock_render_callback(Canvas* const canvas, void* ctx) {
         }
     }
     if(timer_running) {
-        elements_button_center(canvas, "停止");
+        elements_button_center(canvas, "Stop");
     } else if(timer_start_timestamp != 0 && !timer_running) {
-        elements_button_center(canvas, "开始");
+        elements_button_center(canvas, "Start");
     }
 
     // A small alarm label + alarm time on the left when armed, so the user can see
@@ -319,7 +319,7 @@ static void clock_render_callback(Canvas* const canvas, void* ctx) {
         // Upstream prints '!' as a stand-in bell (the fonts have no bell glyph);
         // here the label says it. Sized for its 7 UTF-8 bytes plus alarm_time.
         char alarm_str[24];
-        snprintf(alarm_str, sizeof(alarm_str), "闹钟 %s", alarm_time);
+        snprintf(alarm_str, sizeof(alarm_str), "! %s", alarm_time);
         canvas_set_font(canvas, FontSecondary);
         canvas_draw_str_aligned(canvas, 2, 62, AlignLeft, AlignBottom, alarm_str);
     }
@@ -418,7 +418,7 @@ static bool clock_input_callback(InputEvent* event, void* context) {
 static void alarm_toggle_changed(VariableItem* item) {
     AppState* app = variable_item_get_context(item);
     app->settings.alarm_enabled = variable_item_get_current_value_index(item) == 1;
-    variable_item_set_current_value_text(item, app->settings.alarm_enabled ? "开" : "关");
+    variable_item_set_current_value_text(item, app->settings.alarm_enabled ? "ON" : "OFF");
     ns_settings_save(app);
 }
 
@@ -451,7 +451,7 @@ static void alarm_time_draw(Canvas* canvas, void* ctx) {
     canvas_clear(canvas);
 
     canvas_set_font(canvas, FontPrimary);
-    canvas_draw_str_aligned(canvas, 64, 4, AlignCenter, AlignTop, "闹钟时间");
+    canvas_draw_str_aligned(canvas, 64, 4, AlignCenter, AlignTop, "Alarm time");
 
     char hh[4], mm[4];
     bool pm = false;
@@ -493,7 +493,7 @@ static void alarm_time_draw(Canvas* canvas, void* ctx) {
     canvas_draw_line(canvas, ux - uw / 2, 46, ux + uw / 2, 46);
 
     canvas_set_font(canvas, FontSecondary);
-    canvas_draw_str_aligned(canvas, 64, 60, AlignCenter, AlignBottom, "上下调整  OK保存");
+    canvas_draw_str_aligned(canvas, 64, 60, AlignCenter, AlignBottom, "Up/Down set  OK save");
 }
 
 static bool alarm_time_input(InputEvent* event, void* context) {
@@ -693,11 +693,11 @@ int32_t clock_app(void* p) {
     // Alarm menu
     app->alarm_menu = variable_item_list_alloc();
     app->alarm_toggle_item =
-        variable_item_list_add(app->alarm_menu, "闹钟", 2, alarm_toggle_changed, app);
+        variable_item_list_add(app->alarm_menu, "Alarm", 2, alarm_toggle_changed, app);
     variable_item_set_current_value_index(app->alarm_toggle_item, app->settings.alarm_enabled);
     variable_item_set_current_value_text(
-        app->alarm_toggle_item, app->settings.alarm_enabled ? "开" : "关");
-    app->alarm_time_item = variable_item_list_add(app->alarm_menu, "设置时间", 1, NULL, app);
+        app->alarm_toggle_item, app->settings.alarm_enabled ? "ON" : "OFF");
+    app->alarm_time_item = variable_item_list_add(app->alarm_menu, "Set time", 1, NULL, app);
     refresh_time_menu_item(app);
     variable_item_list_set_enter_callback(app->alarm_menu, alarm_menu_enter, app);
     view_dispatcher_add_view(

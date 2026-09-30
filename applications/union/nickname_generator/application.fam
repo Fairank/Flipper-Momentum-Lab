@@ -1,10 +1,10 @@
 App(
     appid="nickname_generator",
-    name="昵称生成器",
+    name="NickName Generator",
     apptype=FlipperAppType.EXTERNAL,
     entry_point="nickname_generator_app",
     stack_size=2 * 1024,
     fap_category="Tools",
     fap_icon="icon.png",
-    fap_description="随机生成昵称，可选经典、网络梗、黑客三种风格",
+    fap_description="Generate random nicknames in Classic, Meme or Hacker styles.",
 )

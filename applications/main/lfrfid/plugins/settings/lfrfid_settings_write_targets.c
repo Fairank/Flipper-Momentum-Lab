@@ -12,7 +12,7 @@ static void lfrfid_settings_write_targets_changed(VariableItem* item) {
     LFRFIDWriteTarget target = (LFRFIDWriteTarget)(uintptr_t)variable_item_get_context(item);
     bool enabled = variable_item_get_current_value_index(item) != 0;
 
-    variable_item_set_current_value_text(item, enabled ? "开" : "关");
+    variable_item_set_current_value_text(item, enabled ? "ON" : "OFF");
 
     if(enabled) {
         page.mask |= LFRFID_WRITE_TARGET_BIT(target);
@@ -46,7 +46,7 @@ static void lfrfid_settings_write_targets_on_enter(VariableItemList* list) {
             (void*)(uintptr_t)target);
 
         variable_item_set_current_value_index(item, enabled ? 1 : 0);
-        variable_item_set_current_value_text(item, enabled ? "开" : "关");
+        variable_item_set_current_value_text(item, enabled ? "ON" : "OFF");
     }
 
     variable_item_list_set_enter_callback(list, lfrfid_settings_write_targets_entered, list);

@@ -22,43 +22,43 @@ void nfc_scene_extra_actions_on_enter(void* context) {
 
     submenu_add_item(
         submenu,
-        "读取指定卡型",
+        "Read Specific Card Type",
         SubmenuIndexReadCardType,
         nfc_scene_extra_actions_submenu_callback,
         instance);
     submenu_add_item(
         submenu,
-        "MIFARE Classic 密钥",
+        "MIFARE Classic Keys",
         SubmenuIndexMfClassicKeys,
         nfc_scene_extra_actions_submenu_callback,
         instance);
     submenu_add_item(
         submenu,
-        "MIFARE Plus 密钥",
+        "MIFARE Plus Keys",
         SubmenuIndexMfPlusKeys,
         nfc_scene_extra_actions_submenu_callback,
         instance);
     submenu_add_item(
         submenu,
-        "Ultralight C 密钥",
+        "MIFARE Ultralight C Keys",
         SubmenuIndexMfUltralightCKeys,
         nfc_scene_extra_actions_submenu_callback,
         instance);
     submenu_add_item(
         submenu,
-        "MIFARE UL AES 密钥",
+        "MIFARE UL AES Keys",
         SubmenuIndexMfUltralightAesKeys,
         nfc_scene_extra_actions_submenu_callback,
         instance);
     submenu_add_item(
         submenu,
-        "解锁 NTAG/Ultralight",
+        "Unlock NTAG/Ultralight",
         SubmenuIndexMfUltralightUnlock,
         nfc_scene_extra_actions_submenu_callback,
         instance);
     submenu_add_item(
         submenu,
-        "解锁 SLIX-L",
+        "Unlock SLIX-L",
         SubmenuIndexSlixUnlock,
         nfc_scene_extra_actions_submenu_callback,
         instance);

@@ -1,6 +1,6 @@
 App(
     appid="montyhall",
-    name="三门问题",
+    name="Monty Hall",
     apptype=FlipperAppType.EXTERNAL,
     entry_point="montyhall_game_app",
     cdefines=["APP_MONTYHALL_GAME"],
@@ -10,5 +10,5 @@ App(
     fap_category="Games",
     fap_author="@DevMilanIan",
     fap_version="1.3",
-    fap_description="蒙提霍尔三门问题：猜猜奖品藏在哪扇关着的门后。",
+    fap_description="Monty Hall asks you to guess which closed door a prize is behind.",
 )

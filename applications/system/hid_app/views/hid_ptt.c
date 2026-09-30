@@ -496,100 +496,106 @@ static void hid_ptt_populate_help(HidPushToTalk* hid_ptt, uint32_t appIndex) {
     char* app_specific_help = "";
     switch(appIndex) {
     case HidPushToTalkAppIndexGoogleMeet:
-        app_specific_help = "Google Meet:\n"
-                            "此功能在音频设置中\n"
-                            "默认关闭. 使用屏幕\n"
-                            "阅读器的 Windows\n"
-                            "用户可能无法使用.\n"
-                            "此时空格键会执行\n"
-                            "其他操作.\n\n";
+        app_specific_help =
+            "Google Meet:\nThis feature is off by default in your audio settings and may not work for Windows users who use their screen reader. In this situation, the spacebar performs a different action.\n\n"
+            ""
+            ""
+            ""
+            ""
+            ""
+            "";
         break;
     case HidPushToTalkAppIndexGoogleMeetGlobal:
-        app_specific_help = "Google Meet Global:\n"
-                            "1. 安装 \"Google Meet -\n"
-                            "Global Shortcuts\" 扩展.\n"
-                            "2. 打开 chrome://\n"
-                            "extensions/shortcuts 页面.\n"
-                            "3. 将 'Toggle microphone'\n"
-                            "设为 Cmd+Ctrl+7,\n"
-                            "并选择全局.\n"
-                            "4. 将 'Toggle camera'\n"
-                            "设为 Cmd+Ctrl+8,\n"
-                            "并选择全局.\n"
-                            "5. 将 'Raise hand'\n"
-                            "设为 Cmd+Ctrl+9,\n"
-                            "并选择全局.\n\n";
+        app_specific_help =
+            "Google Meet (Global):\n1. Install \"Google Meet - Global Shortcuts\" extension.\n2. Open chrome://extensions/shortcuts.\n3. Set 'Toggle microphone' to Cmd+Ctrl+7 and enable Global.\n4. Set 'Toggle camera' to Cmd+Ctrl+8 and enable Global.\n5. Set 'Raise hand' to Cmd+Ctrl+9 and enable Global.\n\n"
+            ""
+            ""
+            ""
+            ""
+            ""
+            ""
+            ""
+            ""
+            ""
+            ""
+            ""
+            ""
+            "";
         break;
     case HidPushToTalkAppIndexDiscord:
-        app_specific_help = "Discord:\n"
-                            "1. 打开应用设置 >\n"
-                            "语音与视频,\n"
-                            "将输入模式设为\n"
-                            "按键说话.\n"
-                            "2. 下拉到快捷键,\n"
-                            "点击录制快捷键.\n"
-                            "3. 在本应用按 PTT 键\n"
-                            "完成绑定.\n"
-                            "4. 在快捷键设置中\n"
-                            "绑定静音按键.\n\n";
+        app_specific_help =
+            "Discord:\n1. Under App Settings, click Voice & Video. Under Input Mode, check the box next to Push to Talk.\n2. Scroll down to SHORTCUT, click Record Keybinder.\n3. Press PTT in the app to bind it.4. Go to Keybinds and assign mute button.\n\n"
+            ""
+            ""
+            ""
+            ""
+            ""
+            ""
+            ""
+            ""
+            ""
+            "";
         break;
     case HidPushToTalkAppIndexTeamSpeak:
-        app_specific_help = "TeamSpeak:\n"
-                            "需先在该应用设置中\n"
-                            "绑定按键才能使用.\n\n";
+        app_specific_help = "TeamSpeak:\nTo make keys working bind them in TeamSpeak settings.\n\n"
+                            ""
+                            "";
         break;
     case HidPushToTalkAppIndexTeams:
-        app_specific_help = "Teams:\n"
-                            "进入设置 > 隐私,\n"
-                            "确保已开启\n"
-                            "键盘快捷键取消静音.\n\n";
+        app_specific_help =
+            "Teams:\nGo to Settings > Privacy. Make sure Keyboard shortcut to unmute is toggled on.\n\n"
+            ""
+            ""
+            "";
         break;
     case HidPushToTalkAppIndexZoomGlobal:
-        app_specific_help = "Zoom Global:\n"
-                            "1. 进入设置 >\n"
-                            "键盘快捷键.\n"
-                            "2. 找到静音/解除静音\n"
-                            "快捷键并点击编辑.\n"
-                            "3. 在本应用按静音键\n"
-                            "完成绑定.\n"
-                            "4. 勾选全局选项.\n"
-                            "5. 同样设置视频和\n"
-                            "举手快捷键.\n"
-                            "6. 长按 < 发送 Enter.\n\n";
+        app_specific_help =
+            "Zoom (Global):\n1. Go to Settings > Keyboard Shortcuts.\n2. Find the 'Mute/Unmute' shortcut and click 'Edit'.\n3. Press the Mute button in the app to bind it.\n4. Check global checkbox.\n5. Repeat for video and hand shortcuts.\n6. Long-press < to send Enter key.\n\n"
+            ""
+            ""
+            ""
+            ""
+            ""
+            ""
+            ""
+            ""
+            ""
+            "";
         break;
     case HidPushToTalkAppIndexZoom:
-        app_specific_help = "Zoom:\n"
-                            "1. 进入设置 >\n"
-                            "键盘快捷键.\n"
-                            "2. 找到静音/解除静音\n"
-                            "快捷键并点击编辑.\n"
-                            "3. 在本应用按静音键\n"
-                            "完成绑定.\n"
-                            "4. 同样设置视频和\n"
-                            "举手快捷键.\n"
-                            "5. 长按 < 发送 Enter.\n\n";
+        app_specific_help =
+            "Zoom:\n1. Go to Settings > Keyboard Shortcuts.\n2. Find the 'Mute/Unmute' shortcut and click 'Edit'.\n3. Press the Mute button in the app to bind it.\n4. Repeat for video and hand shortcuts.\n5. Long-press < to send Enter key.\n\n"
+            ""
+            ""
+            ""
+            ""
+            ""
+            ""
+            ""
+            ""
+            "";
         break;
     }
     char* left_button_help = "";
     if(appIndex == HidPushToTalkAppIndexZoom || appIndex == HidPushToTalkAppIndexZoomGlobal) {
-        left_button_help = "长按 < 发送 Enter.\n";
+        left_button_help = "Long-press < sends Enter.\n";
     }
     FuriString* msg = furi_string_alloc();
     furi_string_cat_printf(
         msg,
-        "%s通用说明:\n"
-        "本机的麦克风状态\n"
-        "须与电脑保持一致,\n"
-        "才能正常工作.\n"
-        "长按 > 键可切换\n"
-        "麦克风状态.\n"
-        "%s"
-        "在菜单中长按 OK\n"
-        "可打开此帮助.\n"
-        "按返回键开关麦克风.\n"
-        "按住 OK 进入 PTT 模式,\n"
-        "松开后麦克风关闭.\n"
-        "长按返回键退出.",
+        "%sGeneral:\nTo operate properly flipper microphone status must be in sync with your computer.\nHold > to change mic status.\n%sLong-press OK in menu to open this help.\nPress BACK to switch mic on/off.\nHold 'o' for PTT mode (mic will be off once you release 'o')\nHold BACK to exit."
+        ""
+        ""
+        ""
+        ""
+        ""
+        ""
+        ""
+        ""
+        ""
+        ""
+        ""
+        "",
         app_specific_help,
         left_button_help);
     widget_add_text_scroll_element(hid_ptt->help, 0, 0, 128, 64, furi_string_get_cstr(msg));

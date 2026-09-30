@@ -1,5 +1,5 @@
 App(
-    name="SD卡信息",
+    name="SD Info",
     appid="sd_info",
     apptype=FlipperAppType.EXTERNAL,
     entry_point="sd_card_info_app",
@@ -8,7 +8,7 @@ App(
     fap_category="Tools",
     fap_version="0.1",
     fap_icon="icon.png",
-    fap_description="显示 SD 卡的相关信息",
+    fap_description="The application shows information about the SD card",
     fap_author="sergo",
     fap_weburl="https://github.com/Sladkisnovraper/SD-Info-For-Flipper-Zero",
     sources=["main.c"],

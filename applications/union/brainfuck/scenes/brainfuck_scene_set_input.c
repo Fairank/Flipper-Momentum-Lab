@@ -9,7 +9,7 @@ void brainfuck_scene_set_input_on_enter(void* context) {
     BFApp* app = context;
     TextInput* text_input = app->text_input;
 
-    text_input_set_header_text(text_input, "编辑输入缓冲区");
+    text_input_set_header_text(text_input, "Edit input buffer");
     text_input_set_result_callback(
         text_input, set_input_text_input_callback, app, app->inputBuffer, 64, true);
 

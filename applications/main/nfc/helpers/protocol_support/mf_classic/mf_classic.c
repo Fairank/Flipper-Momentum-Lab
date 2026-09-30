@@ -27,7 +27,7 @@ static void nfc_scene_menu_add_save_keys_mf_classic(NfcApp* instance, const MfCl
 
     submenu_add_item(
         instance->submenu,
-        "保存密钥到字典",
+        "Save Keys to Dictionary",
         SubmenuIndexSaveKeys,
         nfc_protocol_support_common_submenu_callback,
         instance);
@@ -145,21 +145,21 @@ static void nfc_scene_read_menu_on_enter_mf_classic(NfcApp* instance) {
     if(!mf_classic_is_card_read(data)) {
         submenu_add_item(
             submenu,
-            "提取 MFC 密钥",
+            "Extract MFC Keys",
             SubmenuIndexDetectReader,
             nfc_protocol_support_common_submenu_callback,
             instance);
 
         submenu_add_item(
             submenu,
-            "使用字典解锁",
+            "Unlock with Dictionary",
             SubmenuIndexDictAttack,
             nfc_protocol_support_common_submenu_callback,
             instance);
 
         submenu_add_item(
             submenu,
-            "用 MFKey32 分析",
+            "Crack nonces in MFKey32",
             SubmenuIndexCrackNonces,
             nfc_protocol_support_common_submenu_callback,
             instance);
@@ -167,7 +167,7 @@ static void nfc_scene_read_menu_on_enter_mf_classic(NfcApp* instance) {
 
     submenu_add_item(
         submenu,
-        "查看密钥",
+        "Show Keys",
         SubmenuIndexShowKeys,
         nfc_protocol_support_common_submenu_callback,
         instance);
@@ -196,19 +196,19 @@ static void nfc_scene_saved_menu_on_enter_mf_classic(NfcApp* instance) {
     Submenu* submenu = instance->submenu;
     const MfClassicData* data = nfc_device_get_data(instance->nfc_device, NfcProtocolMfClassic);
 
-    submenu_change_item_label(submenu, SubmenuIndexCommonWrite, "写入原卡");
+    submenu_change_item_label(submenu, SubmenuIndexCommonWrite, "Write to Initial Card");
 
     if(!mf_classic_is_card_read(data)) {
         submenu_add_item(
             submenu,
-            "提取 MFC 密钥",
+            "Extract MFC Keys",
             SubmenuIndexDetectReader,
             nfc_protocol_support_common_submenu_callback,
             instance);
 
         submenu_add_item(
             submenu,
-            "使用字典解锁",
+            "Unlock with Dictionary",
             SubmenuIndexDictAttack,
             nfc_protocol_support_common_submenu_callback,
             instance);
@@ -216,14 +216,14 @@ static void nfc_scene_saved_menu_on_enter_mf_classic(NfcApp* instance) {
 
     submenu_add_item(
         submenu,
-        "从原卡更新",
+        "Update from Initial Card",
         SubmenuIndexUpdate,
         nfc_protocol_support_common_submenu_callback,
         instance);
 
     submenu_add_item(
         submenu,
-        "查看密钥",
+        "Show Keys",
         SubmenuIndexShowKeys,
         nfc_protocol_support_common_submenu_callback,
         instance);

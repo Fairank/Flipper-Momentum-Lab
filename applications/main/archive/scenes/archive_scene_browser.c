@@ -355,8 +355,8 @@ bool archive_scene_browser_on_event(void* context, SceneManagerEvent event) {
                         dialog_msg = furi_string_alloc();
                         furi_string_cat_printf(
                             dialog_msg,
-                            "无法%s:\n%s",
-                            copy ? "复制" : "移动",
+                            "Cannot %s:\n%s",
+                            copy ? "copy" : "move",
                             locale_ui_storage_error(storage_error_get_desc(error)));
                         dialog_message_show_storage_error(
                             archive->dialogs, furi_string_get_cstr(dialog_msg));

@@ -25,7 +25,7 @@ void nfc_scene_key_dict_on_enter(void* context) {
     FuriString* temp_str = furi_string_alloc();
     widget_add_string_element(
         instance->widget, 0, 0, AlignLeft, AlignTop, FontPrimary, dict->title);
-    furi_string_printf(temp_str, "系统字典: %lu", system_keys_total);
+    furi_string_printf(temp_str, "System dict: %lu", system_keys_total);
     widget_add_string_element(
         instance->widget,
         0,
@@ -34,7 +34,7 @@ void nfc_scene_key_dict_on_enter(void* context) {
         AlignTop,
         FontSecondary,
         furi_string_get_cstr(temp_str));
-    furi_string_printf(temp_str, "用户字典: %lu", user_keys_total);
+    furi_string_printf(temp_str, "User dict: %lu", user_keys_total);
     widget_add_string_element(
         instance->widget,
         0,
@@ -47,14 +47,14 @@ void nfc_scene_key_dict_on_enter(void* context) {
     widget_add_button_element(
         instance->widget,
         GuiButtonTypeCenter,
-        "添加",
+        "Add",
         nfc_protocol_support_common_widget_callback,
         instance);
     if(user_keys_total > 0) {
         widget_add_button_element(
             instance->widget,
             GuiButtonTypeRight,
-            "列表",
+            "List",
             nfc_protocol_support_common_widget_callback,
             instance);
     }

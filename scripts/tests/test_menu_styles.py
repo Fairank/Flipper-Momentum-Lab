@@ -43,18 +43,18 @@ STYLES = [
     "MenuStyleThreeD",
 ]
 NAMES = [
-    "列表",
+    "List",
     "Wii",
     "DSi",
     "PS4",
-    "纵向",
+    "Vertical",
     "C64",
-    "紧凑",
+    "Compact",
     "MNTM",
-    "封面流",
-    "网格",
-    "经典桌面",
-    "立体",
+    "CoverFlow",
+    "Grid",
+    "Macintosh",
+    "3D",
 ]
 
 # Firmware definitions the helpers use: file, start, text right after it
@@ -392,7 +392,13 @@ class MenuStyleSettingsTests(unittest.TestCase):
 
     def test_settings_screen_names_follow_the_enumeration(self):
         body = source_between(NAMES_C, "menu_style_names[MenuStyleCount] = {", "};")
-        self.assertEqual(re.findall(r'"([^"]*)"', body), NAMES)
+        names = re.findall(r'"([^"]*)"', body)
+        self.assertEqual(len(names), len(STYLES))
+        for stored_number, (style, actual, expected) in enumerate(
+            zip(STYLES, names, NAMES)
+        ):
+            with self.subTest(style=style, stored_number=stored_number):
+                self.assertEqual(actual, expected)
 
     def test_default_style_stays_dsi(self):
         settings = (ROOT / SETTINGS_C).read_text(encoding="utf-8")

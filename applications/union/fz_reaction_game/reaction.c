@@ -37,19 +37,20 @@ static void app_draw_callback(Canvas* canvas, void* ctx) {
     canvas_set_font(canvas, FontPrimary);
     // Chinese labels are centered by their measured width instead of a fixed x
     if(state == 0) {
-        canvas_draw_str_aligned(canvas, 64, 36, AlignCenter, AlignBottom, "按OK键开始！");
+        canvas_draw_str_aligned(canvas, 64, 36, AlignCenter, AlignBottom, "Press OK to start!");
     } else if(state == 1) {
-        canvas_draw_str_aligned(canvas, 64, 36, AlignCenter, AlignBottom, "请等待...");
+        canvas_draw_str_aligned(canvas, 64, 36, AlignCenter, AlignBottom, "Wait...");
     } else if(state == 2) {
-        canvas_draw_str_aligned(canvas, 64, 36, AlignCenter, AlignBottom, "快按OK！");
+        canvas_draw_str_aligned(canvas, 64, 36, AlignCenter, AlignBottom, "Press OK!");
     } else if(state == 3) {
         char time_str[16];
         snprintf(time_str, sizeof(time_str), "%d", time);
         canvas_draw_str(canvas, 56, 36, time_str);
         canvas_set_font(canvas, FontSecondary);
-        canvas_draw_str_aligned(canvas, 64, 24, AlignCenter, AlignBottom, "用时(ms):");
+        canvas_draw_str_aligned(canvas, 64, 24, AlignCenter, AlignBottom, "Time (ms):");
         // Baseline 50: the 11 px Chinese rows (40..50) stay clear of the digits above
-        canvas_draw_str_aligned(canvas, 64, 50, AlignCenter, AlignBottom, "按OK键再玩一次");
+        canvas_draw_str_aligned(
+            canvas, 64, 50, AlignCenter, AlignBottom, "Press OK to play again");
     }
 }
 

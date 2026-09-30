@@ -2,7 +2,8 @@
 #include <stddef.h>
 #include <string.h>
 
-/* Display aliases only. Keep canonical launch names and saved favorite keys unchanged. */
+/* Device UI uses canonical English labels. Keep the old display metadata for
+ * source compatibility; the iPhone owns Chinese labels and descriptions. */
 static inline const char* locale_ui_label(const char* canonical) {
     static const struct {
         const char* canonical;
@@ -49,13 +50,12 @@ static inline const char* locale_ui_label(const char* canonical) {
     };
     if(!canonical) return NULL;
     for(size_t i = 0; i < sizeof(labels) / sizeof(labels[0]); ++i) {
-        if(strcmp(canonical, labels[i].canonical) == 0) return labels[i].chinese;
+        if(strcmp(canonical, labels[i].canonical) == 0) return labels[i].canonical;
     }
     return canonical;
 }
 
-/* Translate only at UI call sites: storage error strings are also a CLI/API
- * contract and must not be changed globally. */
+/* Keep the device's storage errors in canonical English, including UI sites. */
 static inline const char* locale_ui_storage_error(const char* error) {
     static const struct {
         const char* source;
@@ -75,7 +75,7 @@ static inline const char* locale_ui_storage_error(const char* error) {
     };
     if(!error) return NULL;
     for(size_t i = 0; i < sizeof(errors) / sizeof(errors[0]); ++i) {
-        if(strcmp(error, errors[i].source) == 0) return errors[i].label;
+        if(strcmp(error, errors[i].source) == 0) return errors[i].source;
     }
     return error;
 }

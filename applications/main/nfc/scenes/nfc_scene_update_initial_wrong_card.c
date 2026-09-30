@@ -17,13 +17,19 @@ void nfc_scene_update_initial_wrong_card_on_enter(void* context) {
     notification_message(instance->notifications, &sequence_error);
 
     widget_add_icon_element(widget, 83, 22, &I_WarningDolphinFlip_45x42);
-    widget_add_string_element(widget, 3, 4, AlignLeft, AlignTop, FontPrimary, "卡片不匹配!");
+    widget_add_string_element(widget, 3, 4, AlignLeft, AlignTop, FontPrimary, "Wrong Card!");
     widget_add_string_multiline_element(
-        widget, 4, 17, AlignLeft, AlignTop, FontSecondary, "数据管理\n只能使用\n原始卡片");
+        widget,
+        4,
+        17,
+        AlignLeft,
+        AlignTop,
+        FontSecondary,
+        "Data management\nis only possible\nwith source card");
     widget_add_button_element(
         widget,
         GuiButtonTypeLeft,
-        "重试",
+        "Retry",
         nfc_scene_update_initial_wrong_card_widget_callback,
         instance);
 

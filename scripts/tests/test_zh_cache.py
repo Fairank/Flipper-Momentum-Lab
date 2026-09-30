@@ -1757,6 +1757,9 @@ static const Scenario scenarios[] = {
 };
 
 int main(int argc, char** argv) {
+    /* Windows host runs lost buffered stdout at exit, even for --list; explicit
+     * flush/unbuffered probes passed. Keep PASS and font bytes observable. */
+    CHECK(setvbuf(stdout, NULL, _IONBF, 0) == 0);
     const size_t count = sizeof(scenarios) / sizeof(scenarios[0]);
     if(argc == 2 && strcmp(argv[1], "--list") == 0) {
         for(size_t i = 0; i < count; ++i) printf("%s\n", scenarios[i].name);

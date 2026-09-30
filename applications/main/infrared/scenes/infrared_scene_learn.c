@@ -83,7 +83,7 @@ static void infrared_scene_learn_update_button_name(InfraredApp* infrared, bool 
     // Now we know button_index is valid, use it to get the name
     const char* button_name = easy_mode_button_names[button_index];
     dialog_ex_set_text(
-        dialog_ex, "将遥控器对准红外口\n并按下按键:", 5, 10, AlignLeft, AlignCenter);
+        dialog_ex, "Point the remote at IR port\nand press button:", 5, 10, AlignLeft, AlignCenter);
     dialog_ex_set_header(dialog_ex, button_name, 78, 11, AlignLeft, AlignTop);
 
     // For existing remotes, check if there are any more buttons to add
@@ -100,7 +100,7 @@ static void infrared_scene_learn_update_button_name(InfraredApp* infrared, bool 
     if(!has_more_buttons) {
         dialog_ex_set_center_button_text(dialog_ex, NULL);
     } else {
-        dialog_ex_set_center_button_text(dialog_ex, "跳过");
+        dialog_ex_set_center_button_text(dialog_ex, "Skip");
     }
 }
 
@@ -138,14 +138,20 @@ void infrared_scene_learn_on_enter(void* context) {
         infrared_scene_learn_update_button_name(infrared, false);
     } else {
         dialog_ex_set_text(
-            dialog_ex, "将遥控器对准红外口\n并按下按键", 5, 10, AlignLeft, AlignCenter);
+            dialog_ex,
+            "Point the remote at IR port\nand press the button",
+            5,
+            10,
+            AlignLeft,
+            AlignCenter);
     }
 
-    dialog_ex_set_left_button_text(dialog_ex, infrared->app_state.is_easy_mode ? "简易" : "手动");
+    dialog_ex_set_left_button_text(
+        dialog_ex, infrared->app_state.is_easy_mode ? "Easy" : "Manual");
     dialog_ex_set_right_button_text(
         dialog_ex,
-        infrared->app_state.is_decode_forced  ? "解码" :
-        infrared->app_state.is_decode_enabled ? "自动" :
+        infrared->app_state.is_decode_forced  ? "Decode" :
+        infrared->app_state.is_decode_enabled ? "Auto" :
                                                 "RAW");
 
     dialog_ex_set_context(dialog_ex, context);
@@ -194,8 +200,8 @@ bool infrared_scene_learn_on_event(void* context, SceneManagerEvent event) {
                 infrared->worker, infrared->app_state.is_decode_forced);
             dialog_ex_set_right_button_text(
                 infrared->dialog_ex,
-                infrared->app_state.is_decode_forced  ? "解码" :
-                infrared->app_state.is_decode_enabled ? "自动" :
+                infrared->app_state.is_decode_forced  ? "Decode" :
+                infrared->app_state.is_decode_enabled ? "Auto" :
                                                         "RAW");
             consumed = true;
         }

@@ -16,7 +16,7 @@ Bubble slots: 1
 Slot: 0
 X: 22
 Y: 25
-Text: 惹上高手，
+Text: Mess with\nthe best,
 AlignH: Right
 AlignV: Center
 StartFrame: 4
@@ -25,7 +25,7 @@ EndFrame: 7
 Slot: 0
 X: 31
 Y: 25
-Text: 可没好果子吃。
+Text: die like\nthe rest.
 AlignH: Right
 AlignV: Center
 StartFrame: 8

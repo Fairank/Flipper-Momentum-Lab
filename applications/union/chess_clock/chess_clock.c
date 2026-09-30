@@ -45,7 +45,7 @@ static void render_callback(Canvas* const canvas, void* ctx) {
         snprintf(
             text,
             sizeof(text),
-            "玩家1: %02lu:%02lu:%02lu\n玩家2: %02lu:%02lu:%02lu",
+            "Player 1: %02lu:%02lu:%02lu\nPlayer 2: %02lu:%02lu:%02lu",
             plugin_state->time_left_p1 / 60000,
             (plugin_state->time_left_p1 / 1000) % 60,
             (plugin_state->time_left_p1 % 1000) / 10,
@@ -54,7 +54,7 @@ static void render_callback(Canvas* const canvas, void* ctx) {
             (plugin_state->time_left_p2 % 1000) / 10);
         break;
     case ChessClockStateGameOver:
-        snprintf(text, sizeof(text), "玩家%d 获胜！", plugin_state->time_left_p1 > 0 ? 1 : 2);
+        snprintf(text, sizeof(text), "Player %d wins!", plugin_state->time_left_p1 > 0 ? 1 : 2);
         break;
     }
     elements_multiline_text_aligned(canvas, 64, 32, AlignCenter, AlignCenter, text);

@@ -24,7 +24,7 @@ bool validator_is_file_callback(const char* text, FuriString* error, void* conte
     Storage* storage = furi_record_open(RECORD_STORAGE);
     if(storage_common_stat(storage, furi_string_get_cstr(path), NULL) == FSE_OK) {
         ret = false;
-        furi_string_printf(error, "该名称\n已存在！\n请换一个");
+        furi_string_printf(error, "This name\nexists!\nChoose\nanother one.");
     } else {
         ret = true;
     }

@@ -23,13 +23,13 @@ static void slix_scene_unlock_menu_on_enter(NfcApp* instance) {
         scene_manager_get_scene_state(instance->scene_manager, NfcSceneSlixUnlockMenu);
     submenu_add_item(
         submenu,
-        "手动输入密码",
+        "Enter Password Manually",
         SubmenuIndexSlixUnlockMenuManual,
         slix_scene_unlock_menu_submenu_callback,
         instance);
     submenu_add_item(
         submenu,
-        "TommyBox 认证",
+        "Auth As TommyBox",
         SubmenuIndexSlixUnlockMenuTonieBox,
         slix_scene_unlock_menu_submenu_callback,
         instance);
@@ -73,7 +73,7 @@ static void slix_scene_key_input_byte_input_callback(void* context) {
 static void slix_scene_key_input_on_enter(NfcApp* instance) {
     // Setup view
     ByteInput* byte_input = instance->byte_input;
-    byte_input_set_header_text(byte_input, "输入十六进制密码");
+    byte_input_set_header_text(byte_input, "Enter the password in hex");
     byte_input_set_result_callback(
         byte_input,
         slix_scene_key_input_byte_input_callback,
@@ -129,8 +129,9 @@ static NfcCommand slix_scene_unlock_worker_callback(NfcGenericEvent event, void*
 
 static void slix_scene_unlock_on_enter(NfcApp* instance) {
     popup_set_icon(instance->popup, 0, 8, &I_NFC_manual_60x50);
-    popup_set_header(instance->popup, "正在解锁", 97, 15, AlignCenter, AlignTop);
-    popup_set_text(instance->popup, "将卡片贴近\nFlipper 背面", 94, 27, AlignCenter, AlignTop);
+    popup_set_header(instance->popup, "Unlocking", 97, 15, AlignCenter, AlignTop);
+    popup_set_text(
+        instance->popup, "Hold card next\nto Flipper's back", 94, 27, AlignCenter, AlignTop);
     view_dispatcher_switch_to_view(instance->view_dispatcher, NfcViewPopup);
 
     notification_message(instance->notifications, &sequence_blink_start_yellow);
@@ -182,7 +183,7 @@ static void
 
 static void slix_scene_unlock_success_on_enter(NfcApp* instance) {
     Widget* widget = instance->widget;
-    widget_add_string_element(widget, 0, 0, AlignLeft, AlignTop, FontPrimary, "SLIX 已解锁!");
+    widget_add_string_element(widget, 0, 0, AlignLeft, AlignTop, FontPrimary, "SLIX Unlocked!");
 
     FuriString* temp_str = furi_string_alloc_set_str("UID:");
     size_t uid_len = 0;
@@ -190,15 +191,15 @@ static void slix_scene_unlock_success_on_enter(NfcApp* instance) {
     for(size_t i = 0; i < uid_len; i++) {
         furi_string_cat_printf(temp_str, " %02X", uid[i]);
     }
-    furi_string_cat_printf(temp_str, "\n隐私模式: 已关闭");
+    furi_string_cat_printf(temp_str, "\nPrivacy Mode: Disabled");
     widget_add_string_multiline_element(
         widget, 0, 12, AlignLeft, AlignTop, FontSecondary, furi_string_get_cstr(temp_str));
     furi_string_free(temp_str);
 
     widget_add_button_element(
-        widget, GuiButtonTypeLeft, "重试", slix_scene_unlock_success_widget_callback, instance);
+        widget, GuiButtonTypeLeft, "Retry", slix_scene_unlock_success_widget_callback, instance);
     widget_add_button_element(
-        widget, GuiButtonTypeRight, "更多", slix_scene_unlock_success_widget_callback, instance);
+        widget, GuiButtonTypeRight, "More", slix_scene_unlock_success_widget_callback, instance);
 
     view_dispatcher_switch_to_view(instance->view_dispatcher, NfcViewWidget);
 }

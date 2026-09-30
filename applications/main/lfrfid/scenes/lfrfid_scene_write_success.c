@@ -4,7 +4,7 @@ void lfrfid_scene_write_success_on_enter(void* context) {
     LfRfid* app = context;
     Popup* popup = app->popup;
 
-    popup_set_header(popup, "成功!", 75, 10, AlignLeft, AlignTop);
+    popup_set_header(popup, "Success!", 75, 10, AlignLeft, AlignTop);
     popup_set_icon(popup, 0, 9, &I_DolphinSuccess_91x55);
 
     // Show which chip the write actually landed on, when detected. Placed in the strip to

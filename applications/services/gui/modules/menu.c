@@ -423,7 +423,7 @@ static void menu_draw_callback(Canvas* canvas, void* _model) {
             char str[16];
             Dolphin* dolphin = furi_record_open(RECORD_DOLPHIN);
             snprintf(
-                str, sizeof(str), "等级 %i", dolphin_get_level(dolphin->state->data.icounter));
+                str, sizeof(str), "Level %i", dolphin_get_level(dolphin->state->data.icounter));
             furi_record_close(RECORD_DOLPHIN);
             canvas_draw_str_aligned(canvas, 127, 1, AlignRight, AlignTop, str);
             for(int8_t i = -1; i <= 4; i++) {
@@ -442,7 +442,7 @@ static void menu_draw_callback(Canvas* canvas, void* _model) {
                     canvas_set_color(canvas, ColorWhite);
                     canvas_set_font(canvas, FontBatteryPercent);
                     canvas_draw_str_aligned(
-                        canvas, pos_x, pos_y + height / 2 + 1, AlignCenter, AlignTop, "开始");
+                        canvas, pos_x, pos_y + height / 2 + 1, AlignCenter, AlignTop, "Start");
 
                     canvas_set_color(canvas, ColorBlack);
                     canvas_set_font(canvas, FontSecondary);
@@ -627,7 +627,7 @@ static void menu_draw_callback(Canvas* canvas, void* _model) {
 
             // Display OTG state
             char ext5v_display[20];
-            snprintf(ext5v_display, sizeof(ext5v_display), "5v: %s", ext5v ? "开" : "关");
+            snprintf(ext5v_display, sizeof(ext5v_display), "5v: %s", ext5v ? "On" : "Off");
             canvas_draw_str(canvas, 5, 56, ext5v_display);
 
             MenuItem* item = MenuItemArray_get(model->items, position);
@@ -898,7 +898,7 @@ static void menu_draw_callback(Canvas* canvas, void* _model) {
 
         furi_string_free(name);
     } else {
-        canvas_draw_str(canvas, 2, 32, "暂无项目");
+        canvas_draw_str(canvas, 2, 32, "Empty");
         elements_scrollbar(canvas, 0, 0);
     }
 }

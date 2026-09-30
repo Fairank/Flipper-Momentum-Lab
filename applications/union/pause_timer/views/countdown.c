@@ -69,7 +69,7 @@ static void countdown_draw_callback(Canvas* canvas, void* context) {
     canvas_set_font(canvas, FontPrimary);
 
     if(model->state == CountdownState_Running) {
-        elements_multiline_text_aligned(canvas, 64, 10, AlignCenter, AlignTop, "倒计时");
+        elements_multiline_text_aligned(canvas, 64, 10, AlignCenter, AlignTop, "Countdown");
 
         // Calculate from the time value minutes and seconds
         // Technically we let you do more than 60 seconds in minute and seconds but it
@@ -83,18 +83,20 @@ static void countdown_draw_callback(Canvas* canvas, void* context) {
         elements_multiline_text_aligned(canvas, 64, 35, AlignCenter, AlignCenter, timer_str);
 
         canvas_set_font(canvas, FontSecondary);
-        elements_multiline_text_aligned(canvas, 64, 55, AlignCenter, AlignBottom, "按返回键取消");
+        elements_multiline_text_aligned(
+            canvas, 64, 55, AlignCenter, AlignBottom, "Press Back to cancel");
     } else if(model->state == CountdownState_Complete) {
-        elements_multiline_text_aligned(canvas, 64, 10, AlignCenter, AlignTop, "完成！");
+        elements_multiline_text_aligned(canvas, 64, 10, AlignCenter, AlignTop, "Complete!");
 
         if(model->has_ir_signal && model->ir_sent) {
             elements_multiline_text_aligned(
-                canvas, 64, 30, AlignCenter, AlignTop, "红外信号已发送");
+                canvas, 64, 30, AlignCenter, AlignTop, "IR Signal Sent");
         }
 
         // Baseline 55 keeps the 11 px Chinese rows clear of the line above (31..41)
         canvas_set_font(canvas, FontSecondary);
-        elements_multiline_text_aligned(canvas, 64, 55, AlignCenter, AlignBottom, "按任意键返回");
+        elements_multiline_text_aligned(
+            canvas, 64, 55, AlignCenter, AlignBottom, "Press any key to return");
     }
 }
 

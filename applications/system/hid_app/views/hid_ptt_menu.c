@@ -168,8 +168,8 @@ static void
             const size_t row_width = row_right_x - row_left_x;
 
             if((position == model->position) && model->hint_visible) {
-                const char* hint_prefix = " | 长按";
-                const char* hint_suffix = "查看帮助";
+                const char* hint_prefix = " | Long press";
+                const char* hint_suffix = "for help";
                 const int32_t icon_y = text_y - 8;
 
                 const size_t label_w = canvas_string_width(canvas, furi_string_get_cstr(disp_str));

@@ -99,7 +99,7 @@ void scene_on_enter_view_tasks(void* context) {
 
     submenu_reset(app->submenu);
     char header[128];
-    snprintf(header, sizeof(header), "任务 (%lu)", (unsigned long)app->tasks->size);
+    snprintf(header, sizeof(header), "Tasks (%lu)", (unsigned long)app->tasks->size);
     submenu_set_header(app->submenu, header);
 
     if(app->tasks->array != NULL && app->tasks->size > 0) {
@@ -118,14 +118,14 @@ void scene_on_enter_view_tasks(void* context) {
                     sizeof(task_label),
                     "%s (%s)",
                     task->name,
-                    task->status == TaskStatus_Running ? "运行中" : "已停止");
+                    task->status == TaskStatus_Running ? "Running" : "Stopped");
             } else {
-                snprintf(task_label, sizeof(task_label), "%s (已完成)", task->name);
+                snprintf(task_label, sizeof(task_label), "%s (completed)", task->name);
             }
             submenu_add_item(app->submenu, task_label, i + 1, submenu_callback_view_tasks, app);
         }
     } else {
-        submenu_add_item(app->submenu, "暂无任务", NoTask_Menu, submenu_callback_no_tasks, app);
+        submenu_add_item(app->submenu, "No tasks", NoTask_Menu, submenu_callback_no_tasks, app);
     }
 
     view_dispatcher_switch_to_view(app->view_dispatcher, AppView_ViewTasks);

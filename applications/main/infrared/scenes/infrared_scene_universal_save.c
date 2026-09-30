@@ -38,7 +38,7 @@ static void infrared_scene_universal_save_add_to_existing(InfraredApp* infrared)
 
     if(INFRARED_ERROR_PRESENT(error)) {
         infrared_show_error_message(
-            infrared, "添加失败\n\"%s\"", furi_string_get_cstr(infrared->file_path));
+            infrared, "Failed to add to\n\"%s\"", furi_string_get_cstr(infrared->file_path));
     } else {
         scene_manager_next_scene(infrared->scene_manager, InfraredSceneUniversalSaveDone);
     }
@@ -53,13 +53,13 @@ void infrared_scene_universal_save_on_enter(void* context) {
     submenu_set_header(submenu, infrared->text_store[1]);
     submenu_add_item(
         submenu,
-        "保存为新遥控器",
+        "Save as New Remote",
         SubmenuIndexSaveAsNewRemote,
         infrared_scene_universal_save_submenu_callback,
         context);
     submenu_add_item(
         submenu,
-        "添加到已有遥控器",
+        "Add to Existing Remote",
         SubmenuIndexAddToExistingRemote,
         infrared_scene_universal_save_submenu_callback,
         context);

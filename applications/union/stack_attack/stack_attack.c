@@ -244,15 +244,15 @@ static void draw_callback(Canvas* canvas, void* ctx) {
         draw_fb(canvas, app->fb);
         canvas_set_font(canvas, FontSecondary);
         // rows 50..62, right under the 49 px logo
-        draw_button(canvas, 1, 50, 44, "原版", app->title_sel == 0);
-        draw_button(canvas, 47, 50, 32, "快速", app->title_sel == 1);
-        draw_button(canvas, 81, 50, 46, "设置", app->title_sel == 2);
+        draw_button(canvas, 1, 50, 44, "Original", app->title_sel == 0);
+        draw_button(canvas, 47, 50, 32, "Fast", app->title_sel == 1);
+        draw_button(canvas, 81, 50, 46, "Options", app->title_sel == 2);
     } else if(app->screen == ScreenOptions) {
         canvas_set_font(canvas, FontPrimary);
-        canvas_draw_str_aligned(canvas, 64, 7, AlignCenter, AlignCenter, "设置"); // rows 2..12
+        canvas_draw_str_aligned(canvas, 64, 7, AlignCenter, AlignCenter, "Options"); // rows 2..12
         canvas_draw_line(canvas, 0, 14, 127, 14);
         canvas_set_font(canvas, FontSecondary);
-        static const char* const names[OptCount] = {"音效", "LED 灯效", "振动"};
+        static const char* const names[OptCount] = {"Sound", "LED", "Vibration"};
         for(int i = 0; i < OptCount; i++) {
             int y = 17 + i * 14; // 13 px rows, glyphs on rows 1..11 of each
             if(app->opt_sel == i) {
@@ -261,7 +261,7 @@ static void draw_callback(Canvas* canvas, void* ctx) {
             }
             canvas_draw_str_aligned(canvas, 10, y + 6, AlignLeft, AlignCenter, names[i]);
             canvas_draw_str_aligned(
-                canvas, 118, y + 6, AlignRight, AlignCenter, app->opt[i] ? "开" : "关");
+                canvas, 118, y + 6, AlignRight, AlignCenter, app->opt[i] ? "On" : "Off");
             canvas_set_color(canvas, ColorBlack);
         }
     } else {
@@ -272,9 +272,9 @@ static void draw_callback(Canvas* canvas, void* ctx) {
             // Taller than the phone's popup: a title and three 12 px Chinese rows
             draw_popup(canvas, 16, 3, 70, 58); // rows 3..60, inside the double frame 5..58
             canvas_set_font(canvas, FontPrimary);
-            canvas_draw_str_aligned(canvas, 51, 11, AlignCenter, AlignCenter, "暂停"); // 6..16
+            canvas_draw_str_aligned(canvas, 51, 11, AlignCenter, AlignCenter, "Pause"); // 6..16
             canvas_set_font(canvas, FontSecondary);
-            const char* items[3] = {"继续", "设置", "主菜单"};
+            const char* items[3] = {"Continue", "Options", "Menu"};
             for(int i = 0; i < 3; i++) {
                 int y = 19 + i * 13; // rows 19..30, 32..43, 45..56
                 if(app->pause_sel == i) {
@@ -297,7 +297,7 @@ static void draw_callback(Canvas* canvas, void* ctx) {
                 37, // 12 px glyphs on rows 32..42
                 AlignCenter,
                 AlignCenter,
-                app->new_record ? "新纪录！" : "游戏结束");
+                app->new_record ? "New record!" : "Game over");
         }
     }
 

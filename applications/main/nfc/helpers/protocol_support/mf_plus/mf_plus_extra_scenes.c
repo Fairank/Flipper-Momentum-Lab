@@ -208,7 +208,7 @@ static void mf_plus_scene_dict_attack_setup_dicts(NfcApp* instance) {
     // The dict_attack view is shared; its type persists from whichever scene last used it (e.g. the
     // Ultralight-C scene never resets it), so set the sector-oriented layout explicitly on entry.
     dict_attack_set_type(instance->dict_attack, DictAttackTypeMfClassic);
-    dict_attack_set_header(instance->dict_attack, "MF Plus 字典");
+    dict_attack_set_header(instance->dict_attack, "MF Plus Dictionary");
     dict_attack_set_total_dict_keys(instance->dict_attack, ctx->dict_keys_total);
     dict_attack_set_current_dict_key(instance->dict_attack, 0);
     dict_attack_set_callback(
@@ -335,7 +335,7 @@ static void mf_plus_scene_show_keys_on_enter(NfcApp* instance) {
 
     furi_string_reset(str);
     nfc_append_filename_string_when_present(instance, str);
-    furi_string_cat_printf(str, "\e#已找到 MFP 密钥:");
+    furi_string_cat_printf(str, "\033#Found MFP Keys:");
 
     // Sector keys: list only sectors with a recovered key, omitting unknown ones (as MIFARE Classic
     // does), so the screen stays compact on a partially-read card.
@@ -346,7 +346,7 @@ static void mf_plus_scene_show_keys_on_enter(NfcApp* instance) {
         const bool key_b = mf_plus_is_key_found(data, sector, MfPlusKeyTypeB);
         if(!key_a && !key_b) continue;
 
-        furi_string_cat_printf(str, "\n  -> 扇区 %u", sector);
+        furi_string_cat_printf(str, "\n  -> Sector %u", sector);
         if(key_a) {
             found_a++;
             furi_string_cat_printf(str, "\n\e*A: ");
@@ -364,19 +364,19 @@ static void mf_plus_scene_show_keys_on_enter(NfcApp* instance) {
     uint8_t found_admin = 0;
     for(uint8_t type = 0; type < MfPlusAdminKeyNum; type++) {
         if(!mf_plus_is_admin_key_found(data, type)) continue;
-        if(found_admin == 0) furi_string_cat_printf(str, "\n\e*管理密钥:");
+        if(found_admin == 0) furi_string_cat_printf(str, "\n\033*Admin Keys:");
         found_admin++;
         furi_string_cat_printf(str, "\n\e*%s: ", mf_plus_get_admin_key_name(type));
         mf_plus_scene_show_keys_cat_key(str, &data->admin_key[type]);
     }
 
     if(found_a == 0 && found_b == 0 && found_admin == 0) {
-        furi_string_cat_printf(str, "\n\n尚未恢复密钥");
+        furi_string_cat_printf(str, "\n\nNo keys recovered yet.");
     }
 
     furi_string_cat_printf(
         str,
-        "\n找到密钥总计:\n -> %u/%u A 密钥\n -> %u/%u B 密钥\n -> %u/%u 管理密钥",
+        "\nTotal keys found:\n -> %u/%u A keys\n -> %u/%u B keys\n -> %u/%u admin keys",
         found_a,
         num_sectors,
         found_b,
@@ -386,7 +386,7 @@ static void mf_plus_scene_show_keys_on_enter(NfcApp* instance) {
 
     widget_add_text_scroll_element(instance->widget, 2, 2, 124, 60, furi_string_get_cstr(str));
     widget_add_button_element(
-        instance->widget, GuiButtonTypeLeft, "返回", mf_plus_scene_show_keys_callback, instance);
+        instance->widget, GuiButtonTypeLeft, "Back", mf_plus_scene_show_keys_callback, instance);
     view_dispatcher_switch_to_view(instance->view_dispatcher, NfcViewWidget);
 }
 
@@ -416,14 +416,14 @@ static void mf_plus_scene_more_info_on_enter(NfcApp* instance) {
     if(data->security_level == MfPlusSecurityLevel3) {
         submenu_add_item(
             submenu,
-            "查看转储",
+            "View Dump",
             SubmenuIndexViewDump,
             nfc_protocol_support_common_submenu_callback,
             instance);
     }
     submenu_add_item(
         submenu,
-        "ISO14443-4 数据",
+        "ISO14443-4 Data",
         SubmenuIndexIso14443,
         nfc_protocol_support_common_submenu_callback,
         instance);
@@ -505,7 +505,7 @@ static void mf_plus_scene_iso4_info_on_enter(NfcApp* instance) {
     widget_add_button_element(
         instance->widget,
         GuiButtonTypeRight,
-        "更多",
+        "More",
         nfc_protocol_support_common_widget_callback,
         instance);
 
@@ -656,7 +656,7 @@ static void mf_plus_scene_update_initial_on_enter(NfcApp* instance) {
 
     Popup* popup = instance->popup;
     popup_reset(popup);
-    popup_set_text(popup, "请仅使用\n原始卡片", 128, 32, AlignRight, AlignCenter);
+    popup_set_text(popup, "Use the source\ncard only", 128, 32, AlignRight, AlignCenter);
     popup_set_icon(popup, 0, 8, &I_NFC_manual_60x50);
     view_dispatcher_switch_to_view(instance->view_dispatcher, NfcViewPopup);
 

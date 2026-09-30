@@ -33,11 +33,11 @@ void nfc_scene_key_dict_delete_on_enter(void* context) {
         AlignCenter,
         AlignTop,
         FontPrimary,
-        key_loaded ? "删除此密钥?" : "未找到密钥");
+        key_loaded ? "Delete this key?" : "Key Not Found");
     widget_add_button_element(
         instance->widget,
         GuiButtonTypeLeft,
-        key_loaded ? "取消" : "返回",
+        key_loaded ? "Cancel" : "Back",
         nfc_protocol_support_common_widget_callback,
         instance);
 
@@ -47,7 +47,7 @@ void nfc_scene_key_dict_delete_on_enter(void* context) {
         widget_add_button_element(
             instance->widget,
             GuiButtonTypeRight,
-            "删除",
+            "Delete",
             nfc_protocol_support_common_widget_callback,
             instance);
 

@@ -28,23 +28,24 @@ void animation_caption_draw(Canvas* canvas, AnimationCaption caption, uint8_t y)
     if(caption == AnimationCaptionError) {
         canvas_draw_box(canvas, 0, 0, 128, 64);
         canvas_set_color(canvas, ColorBlack);
-        canvas_draw_str_aligned(canvas, 64, 12, AlignCenter, AlignBottom, "动画加载失败");
-        canvas_draw_str_aligned(canvas, 64, 26, AlignCenter, AlignBottom, "详情见串口日志");
-        canvas_draw_str_aligned(canvas, 64, 40, AlignCenter, AlignBottom, "长按确定键");
-        canvas_draw_str_aligned(canvas, 64, 54, AlignCenter, AlignBottom, "尝试其他动画");
+        canvas_draw_str_aligned(canvas, 64, 12, AlignCenter, AlignBottom, "Animation load error");
+        canvas_draw_str_aligned(canvas, 64, 26, AlignCenter, AlignBottom, "See serial logs");
+        canvas_draw_str_aligned(canvas, 64, 40, AlignCenter, AlignBottom, "Hold OK");
+        canvas_draw_str_aligned(canvas, 64, 54, AlignCenter, AlignBottom, "to try another anim");
         return;
     }
     if(caption == AnimationCaptionNoSd) {
         canvas_draw_box(canvas, 38, y + 18, 52, 64 - y - 18);
         canvas_set_color(canvas, ColorBlack);
-        canvas_draw_str_aligned(canvas, 63, y + 29, AlignCenter, AlignBottom, "请插入");
-        canvas_draw_str_aligned(canvas, 63, y + 43, AlignCenter, AlignBottom, "SD 卡");
+        canvas_draw_str_aligned(canvas, 63, y + 29, AlignCenter, AlignBottom, "Insert");
+        canvas_draw_str_aligned(canvas, 63, y + 43, AlignCenter, AlignBottom, "SD card");
         return;
     }
     if(caption == AnimationCaptionBattery) {
         canvas_draw_box(canvas, 0, y + 34, 128, 13);
         canvas_set_color(canvas, ColorBlack);
-        canvas_draw_str_aligned(canvas, 64, y + 46, AlignCenter, AlignBottom, "电池状态异常");
+        canvas_draw_str_aligned(
+            canvas, 64, y + 46, AlignCenter, AlignBottom, "Battery status error");
         return;
     }
     const char* first;
@@ -52,25 +53,25 @@ void animation_caption_draw(Canvas* canvas, AnimationCaption caption, uint8_t y)
     bool more = false;
     switch(caption) {
     case AnimationCaptionNoDatabase:
-        first = "SD 卡未找到";
-        second = "数据库";
+        first = "SD card has no";
+        second = "database";
         more = true;
         break;
     case AnimationCaptionSdBad:
-        first = "SD 卡";
-        second = "挂载失败";
+        first = "SD card";
+        second = "mount failed";
         break;
     case AnimationCaptionSdOk:
-        first = "数据将保存";
-        second = "到 SD 卡";
+        first = "Will save data";
+        second = "to SD card";
         break;
     case AnimationCaptionUrl:
-        first = "请访问";
+        first = "Please visit";
         second = "flipp.dev/upd";
         break;
     case AnimationCaptionMail:
-        first = "新的";
-        second = "邮件";
+        first = "New";
+        second = "mail";
         more = true;
         break;
     default:
@@ -85,7 +86,7 @@ void animation_caption_draw(Canvas* canvas, AnimationCaption caption, uint8_t y)
     canvas_draw_str_aligned(canvas, center, y + 25, AlignCenter, AlignBottom, second);
     canvas_draw_rframe(canvas, 84, y + 30, 44, 16, 2);
     canvas_draw_str_aligned(
-        canvas, 106, y + 43, AlignCenter, AlignBottom, more ? "更多 >" : "确定 >");
+        canvas, 106, y + 43, AlignCenter, AlignBottom, more ? "More >" : "OK >");
 }
 
 void animation_caption_draw_levelup(Canvas* canvas) {
@@ -93,9 +94,9 @@ void animation_caption_draw_levelup(Canvas* canvas) {
     canvas_draw_box(canvas, 80, 0, 48, 64);
     canvas_set_color(canvas, ColorWhite);
     canvas_set_font(canvas, FontSecondary);
-    canvas_draw_str_aligned(canvas, 104, 26, AlignCenter, AlignBottom, "等级");
-    canvas_draw_str_aligned(canvas, 104, 40, AlignCenter, AlignBottom, "提升");
+    canvas_draw_str_aligned(canvas, 104, 26, AlignCenter, AlignBottom, "Level");
+    canvas_draw_str_aligned(canvas, 104, 40, AlignCenter, AlignBottom, "up");
     canvas_draw_rframe(canvas, 84, 46, 44, 17, 2);
-    canvas_draw_str_aligned(canvas, 106, 59, AlignCenter, AlignBottom, "确定 >");
+    canvas_draw_str_aligned(canvas, 106, 59, AlignCenter, AlignBottom, "OK >");
     canvas_set_color(canvas, ColorBlack);
 }

@@ -4,7 +4,7 @@
 
 #define TAG "Archive"
 
-const char* units[] = {"字节", "KiB", "MiB", "GiB", "TiB"};
+const char* units[] = {"Bytes", "KiB", "MiB", "GiB", "TiB"};
 
 void archive_scene_info_widget_callback(GuiButtonType result, InputType type, void* context) {
     furi_assert(context);
@@ -28,9 +28,10 @@ static uint32_t archive_scene_info_dirwalk(void* context) {
         while(scene_manager_get_scene_state(instance->scene_manager, ArchiveAppSceneInfo)) {
             DirWalkResult result = dir_walk_read(dir_walk, NULL, &fileinfo);
             if(result == DirWalkError) {
-                widget_element_text_box_set_text(instance->size_element, "大小: \e#错误\e#");
+                widget_element_text_box_set_text(instance->size_element, "Size: \033#Error\033#");
                 if(instance->count_element) {
-                    widget_element_text_box_set_text(instance->count_element, "项目: \e#错误\e#");
+                    widget_element_text_box_set_text(
+                        instance->count_element, "Items: \033#Error\033#");
                 }
                 break;
             }
@@ -47,7 +48,7 @@ static uint32_t archive_scene_info_dirwalk(void* context) {
                 snprintf(
                     buf,
                     sizeof(buf),
-                    unit ? "大小: %s\e#%.2f\e# %s" : "大小: %s\e#%.0f\e# %s",
+                    unit ? "Size: %s\033#%.2f\033# %s" : "Size: %s\033#%.0f\033# %s",
                     is_last ? "" : "... ",
                     show,
                     units[unit]);
@@ -55,16 +56,20 @@ static uint32_t archive_scene_info_dirwalk(void* context) {
 
                 if(instance->count_element) {
                     snprintf(
-                        buf, sizeof(buf), "项目: %s\e#%lu\e#", is_last ? "" : "... ", item_count);
+                        buf,
+                        sizeof(buf),
+                        "Items: %s\033#%lu\033#",
+                        is_last ? "" : "... ",
+                        item_count);
                     widget_element_text_box_set_text(instance->count_element, buf);
                 }
             }
             if(is_last) break;
         }
     } else {
-        widget_element_text_box_set_text(instance->size_element, "大小: \e#错误\e#");
+        widget_element_text_box_set_text(instance->size_element, "Size: \033#Error\033#");
         if(instance->count_element) {
-            widget_element_text_box_set_text(instance->count_element, "项目: \e#错误\e#");
+            widget_element_text_box_set_text(instance->count_element, "Items: \033#Error\033#");
         }
     }
     dir_walk_free(dir_walk);
@@ -118,7 +123,7 @@ static uint32_t archive_scene_info_md5sum(void* context) {
     furi_record_close(RECORD_STORAGE);
 
     if(!result) {
-        widget_element_text_box_set_text(instance->size_element, "MD5: 错误");
+        widget_element_text_box_set_text(instance->size_element, "MD5: Error");
     }
 
     view_dispatcher_switch_to_view(instance->view_dispatcher, ArchiveViewWidget);
@@ -161,10 +166,10 @@ void archive_scene_info_on_enter(void* context) {
     if(storage_common_stat(
            furi_record_open(RECORD_STORAGE), furi_string_get_cstr(current->path), &fileinfo) !=
        FSE_OK) {
-        snprintf(buf, sizeof(buf), "大小: \e#错误\e#");
+        snprintf(buf, sizeof(buf), "Size: \033#Error\033#");
     } else if(file_info_is_dir(&fileinfo)) {
         is_dir = true;
-        snprintf(buf, sizeof(buf), "大小: ... \e#0\e# %s", units[0]);
+        snprintf(buf, sizeof(buf), "Size: ... \033#0\033# %s", units[0]);
     } else {
         double show = fileinfo.size;
         size_t unit;
@@ -175,7 +180,7 @@ void archive_scene_info_on_enter(void* context) {
         snprintf(
             buf,
             sizeof(buf),
-            unit ? "大小: \e#%.2f\e# %s" : "大小: \e#%.0f\e# %s",
+            unit ? "Size: \033#%.2f\033# %s" : "Size: \033#%.0f\033# %s",
             show,
             units[unit]);
     }
@@ -184,14 +189,14 @@ void archive_scene_info_on_enter(void* context) {
         instance->widget, 1, 27, 126, 13, AlignLeft, AlignTop, buf, true);
     WidgetElement* count_element = NULL;
     if(is_dir) {
-        snprintf(buf, sizeof(buf), "项目: ... \e#0\e#");
+        snprintf(buf, sizeof(buf), "Items: ... \033#0\033#");
         count_element = widget_add_text_box_element(
             instance->widget, 1, 40, 126, 13, AlignLeft, AlignTop, buf, true);
     }
 
     // MD5 hash
     if(!is_dir) {
-        strlcpy(buf, "MD5: 计算中...", sizeof(buf));
+        strlcpy(buf, "MD5: Loading...", sizeof(buf));
         size_element = widget_add_text_box_element(
             instance->widget, 0, 40, 128, 24, AlignLeft, AlignTop, buf, false);
     }

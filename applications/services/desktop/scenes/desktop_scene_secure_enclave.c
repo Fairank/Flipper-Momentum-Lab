@@ -16,11 +16,11 @@ void desktop_scene_secure_enclave_on_enter(void* context) {
     Popup* popup = desktop->popup;
     popup_set_context(popup, desktop);
     popup_set_header(
-        popup, "未找到出厂密钥", 64, 12 + STATUS_BAR_Y_SHIFT, AlignCenter, AlignBottom);
+        popup, "No Factory Keys Found", 64, 12 + STATUS_BAR_Y_SHIFT, AlignCenter, AlignBottom);
     popup_set_text(
         popup,
-        "安全区已损坏\n"
-        "部分应用无法工作",
+        "Secure Enclave is damaged.\nSome apps will not work."
+        "",
         64,
         33 + STATUS_BAR_Y_SHIFT,
         AlignCenter,

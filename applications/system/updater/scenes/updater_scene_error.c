@@ -5,20 +5,20 @@
 // Display-only labels: the library keeps its existing CLI error descriptions.
 static const char* updater_preparation_result_label(UpdatePrepareResult result) {
     static const char* const labels[] = {
-        [UpdatePrepareResultOK] = "准备完成",
-        [UpdatePrepareResultManifestPathInvalid] = "升级清单\n名称或位置无效",
-        [UpdatePrepareResultManifestFolderNotFound] = "未找到升级目录",
-        [UpdatePrepareResultManifestInvalid] = "升级清单数据无效",
-        [UpdatePrepareResultStageMissing] = "缺少升级加载器",
-        [UpdatePrepareResultStageIntegrityError] = "升级加载器已损坏",
-        [UpdatePrepareResultManifestPointerCreateError] = "无法创建\n升级路径文件",
-        [UpdatePrepareResultManifestPointerCheckError] = "升级路径文件错误",
-        [UpdatePrepareResultTargetMismatch] = "硬件目标不匹配",
-        [UpdatePrepareResultOutdatedManifestVersion] = "升级包版本过旧",
-        [UpdatePrepareResultIntFull] = "内部存储空间不足",
-        [UpdatePrepareResultUnspecifiedError] = "未知错误",
+        [UpdatePrepareResultOK] = "Ready",
+        [UpdatePrepareResultManifestPathInvalid] = "Update manifest\nname or path invalid",
+        [UpdatePrepareResultManifestFolderNotFound] = "No update folder",
+        [UpdatePrepareResultManifestInvalid] = "Bad manifest data",
+        [UpdatePrepareResultStageMissing] = "No update loader",
+        [UpdatePrepareResultStageIntegrityError] = "Update loader broken",
+        [UpdatePrepareResultManifestPointerCreateError] = "Cannot create\nupdate path file",
+        [UpdatePrepareResultManifestPointerCheckError] = "Bad update path file",
+        [UpdatePrepareResultTargetMismatch] = "HW target mismatch",
+        [UpdatePrepareResultOutdatedManifestVersion] = "Update pkg too old",
+        [UpdatePrepareResultIntFull] = "Low internal storage",
+        [UpdatePrepareResultUnspecifiedError] = "Unknown error",
     };
-    return (uint32_t)result < COUNT_OF(labels) ? labels[result] : "未知错误";
+    return (uint32_t)result < COUNT_OF(labels) ? labels[result] : "Unknown error";
 }
 
 void updater_scene_error_callback(GuiButtonType result, InputType type, void* context) {
@@ -38,10 +38,10 @@ void updater_scene_error_on_enter(void* context) {
     Updater* updater = (Updater*)context;
 
     widget_add_button_element(
-        updater->widget, GuiButtonTypeLeft, "退出", updater_scene_error_callback, updater);
+        updater->widget, GuiButtonTypeLeft, "Exit", updater_scene_error_callback, updater);
 
     widget_add_string_multiline_element(
-        updater->widget, 64, 13, AlignCenter, AlignCenter, FontPrimary, "错误");
+        updater->widget, 64, 13, AlignCenter, AlignCenter, FontPrimary, "Error");
 
     widget_add_string_multiline_element(
         updater->widget,

@@ -57,11 +57,11 @@ static void desktop_view_pin_timeout_draw(Canvas* canvas, void* _model) {
     DesktopViewPinTimeoutModel* model = _model;
 
     canvas_set_font(canvas, FontPrimary);
-    canvas_draw_str(canvas, 36, 31, "PIN 码错误!");
+    canvas_draw_str(canvas, 36, 31, "Wrong PIN!");
 
     canvas_set_font(canvas, FontSecondary);
     char str[30] = {0};
-    snprintf(str, sizeof(str), "请等待 %lu 秒", model->time_left);
+    snprintf(str, sizeof(str), "Timeout: %lus", model->time_left);
     canvas_draw_str_aligned(canvas, 64, 38, AlignCenter, AlignCenter, str);
 }
 

@@ -348,7 +348,7 @@ static void loader_menu_build_menu(LoaderMenuApp* app, LoaderMenu* menu) {
         NULL);
     menu_add_item(
         app->primary_menu,
-        "设置",
+        "Settings",
         &A_Settings_14,
         LoaderMenuIndexSettings,
         loader_menu_switch_to_settings,

@@ -88,34 +88,34 @@ static void render_callback(Canvas* canvas, void* context) {
 
     if(!gps_view->connected) {
         canvas_set_font(canvas, FontPrimary);
-        canvas_draw_str_aligned(canvas, 64, 32, AlignCenter, AlignBottom, "未连接 USB/BLE");
+        canvas_draw_str_aligned(canvas, 64, 32, AlignCenter, AlignBottom, "No USB/BLE connection");
     } else if(gps_view->status == GpsStatusNotSupported) {
         canvas_set_font(canvas, FontPrimary);
-        canvas_draw_str_aligned(canvas, 64, 32, AlignCenter, AlignBottom, "GPS 不可用");
+        canvas_draw_str_aligned(canvas, 64, 32, AlignCenter, AlignBottom, "GPS not available");
     } else if(gps_view->status == GpsStatusNoPermission) {
         canvas_set_font(canvas, FontPrimary);
-        canvas_draw_str_aligned(canvas, 64, 32, AlignCenter, AlignBottom, "定位权限被拒绝");
+        canvas_draw_str_aligned(canvas, 64, 32, AlignCenter, AlignBottom, "Permission denied");
     } else if(gps_view->status == GpsStatusDisabled) {
         canvas_set_font(canvas, FontPrimary);
-        canvas_draw_str_aligned(canvas, 64, 32, AlignCenter, AlignBottom, "定位服务已关闭");
+        canvas_draw_str_aligned(canvas, 64, 32, AlignCenter, AlignBottom, "Location disabled");
     } else if(gps_view->status == GpsStatusUnknown) {
         canvas_set_font(canvas, FontPrimary);
-        canvas_draw_str_aligned(canvas, 64, 32, AlignCenter, AlignBottom, "定位出错");
+        canvas_draw_str_aligned(canvas, 64, 32, AlignCenter, AlignBottom, "Location error");
     } else if(!gps_view->has_fix) {
         canvas_set_font(canvas, FontPrimary);
-        canvas_draw_str_aligned(canvas, 64, 32, AlignCenter, AlignBottom, "等待数据...");
+        canvas_draw_str_aligned(canvas, 64, 32, AlignCenter, AlignBottom, "Waiting for data...");
     } else {
         const GpsLocation* location = &gps_view->location;
 
         // Chinese labels are 11 rows tall: baselines 10/32/54, values 19/41/63
         canvas_set_font(canvas, FontPrimary);
-        canvas_draw_str_aligned(canvas, 32, 10, AlignCenter, AlignBottom, "纬度");
-        canvas_draw_str_aligned(canvas, 96, 10, AlignCenter, AlignBottom, "经度");
-        canvas_draw_str_aligned(canvas, 21, 32, AlignCenter, AlignBottom, "航向");
-        canvas_draw_str_aligned(canvas, 64, 32, AlignCenter, AlignBottom, "速度");
-        canvas_draw_str_aligned(canvas, 107, 32, AlignCenter, AlignBottom, "海拔");
-        canvas_draw_str_aligned(canvas, 32, 54, AlignCenter, AlignBottom, "卫星");
-        canvas_draw_str_aligned(canvas, 96, 54, AlignCenter, AlignBottom, "精度");
+        canvas_draw_str_aligned(canvas, 32, 10, AlignCenter, AlignBottom, "Latitude");
+        canvas_draw_str_aligned(canvas, 96, 10, AlignCenter, AlignBottom, "Longitude");
+        canvas_draw_str_aligned(canvas, 21, 32, AlignCenter, AlignBottom, "Course");
+        canvas_draw_str_aligned(canvas, 64, 32, AlignCenter, AlignBottom, "Speed");
+        canvas_draw_str_aligned(canvas, 107, 32, AlignCenter, AlignBottom, "Altitude");
+        canvas_draw_str_aligned(canvas, 32, 54, AlignCenter, AlignBottom, "Satellites");
+        canvas_draw_str_aligned(canvas, 96, 54, AlignCenter, AlignBottom, "Accuracy");
 
         canvas_set_font(canvas, FontSecondary);
 

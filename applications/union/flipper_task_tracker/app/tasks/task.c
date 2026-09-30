@@ -154,7 +154,10 @@ bool create_new_task(App* app) {
     strncpy(default_task.name, nameId, 50);
 
     // Copy the description into the array
-    strncpy(default_task.description, "非常重要的任务", sizeof(default_task.description) - 1);
+    strncpy(
+        default_task.description,
+        "Very flipppery important task",
+        sizeof(default_task.description) - 1);
     default_task.description[sizeof(default_task.description) - 1] =
         '\0'; // Ensure null-termination
 

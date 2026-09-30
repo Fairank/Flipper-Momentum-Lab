@@ -24,70 +24,70 @@ void infrared_scene_universal_on_enter(void* context) {
 
     submenu_add_item(
         submenu,
-        "电视",
+        "TVs",
         SubmenuIndexUniversalTV,
         infrared_scene_universal_submenu_callback,
         context);
 
     submenu_add_item(
         submenu,
-        "投影仪",
+        "Projectors",
         SubmenuIndexUniversalProjector,
         infrared_scene_universal_submenu_callback,
         context);
 
     submenu_add_item(
         submenu,
-        "音响",
+        "Audio",
         SubmenuIndexUniversalAudio,
         infrared_scene_universal_submenu_callback,
         context);
 
     submenu_add_item(
         submenu,
-        "空调",
+        "ACs",
         SubmenuIndexUniversalAirConditioner,
         infrared_scene_universal_submenu_callback,
         context);
 
     submenu_add_item(
         submenu,
-        "LED灯",
+        "LEDs",
         SubmenuIndexUniversalLEDs,
         infrared_scene_universal_submenu_callback,
         context);
 
     submenu_add_item(
         submenu,
-        "风扇",
+        "Fans",
         SubmenuIndexUniversalFan,
         infrared_scene_universal_submenu_callback,
         context);
 
     submenu_add_item(
         submenu,
-        "蓝光/DVD",
+        "Blu-ray/DVDs",
         SubmenuIndexUniversalBluray,
         infrared_scene_universal_submenu_callback,
         context);
 
     submenu_add_item(
         submenu,
-        "显示器",
+        "Monitors",
         SubmenuIndexUniversalMonitor,
         infrared_scene_universal_submenu_callback,
         context);
 
     submenu_add_item(
         submenu,
-        "数字标牌",
+        "Digital Signs",
         SubmenuIndexUniversalDigitalSign,
         infrared_scene_universal_submenu_callback,
         context);
 
     submenu_add_item(
         submenu,
-        "从库文件加载",
+        "Load from Library File",
         SubmenuIndexUniversalFromFile,
         infrared_scene_universal_submenu_callback,
         context);

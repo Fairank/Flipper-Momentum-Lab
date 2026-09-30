@@ -119,7 +119,7 @@ void infrared_scene_universal_leds_on_enter(void* context) {
     button_panel_add_icon(button_panel, 19, 121, &I_color_text_24x5);
     infrared_brute_force_add_record(brute_force, i++, "White");
 
-    button_panel_add_label(button_panel, 20, 11, FontPrimary, "灯光");
+    button_panel_add_label(button_panel, 20, 11, FontPrimary, "LEDs");
 
     infrared_scene_universal_common_on_enter(context);
 }

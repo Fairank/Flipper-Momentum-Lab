@@ -68,7 +68,7 @@ import FlipperCore
                     try RecordAnalyzer.analyze(record.rawText, kind: record.kind)
                 }.value
                 try Task.checkCancellation(); report = value
-            } catch { if !Task.isCancelled { failure = error.localizedDescription } }
+            } catch { if !Task.isCancelled { failure = PhoneErrorDescription.describe(error) } }
         }
         .sheet(isPresented: $editing) {
             if let record { NavigationStack { EditRecordView(model: model, record: record) } }
@@ -78,7 +78,7 @@ import FlipperCore
         }
         .fileExporter(isPresented: $exporting, document: RawRecordDocument(text: record?.rawText ?? ""), contentType: .data,
                       defaultFilename: "Lab_\(id.uuidString).\(record?.kind.fileExtension ?? "txt")") { result in
-            if case .failure(let error) = result { model.error = error.localizedDescription }
+            if case .failure(let error) = result { model.error = PhoneErrorDescription.describe(error) }
         }
         .confirmationDialog("删除此手机记录？设备上的文件会保留。", isPresented: $deleting, titleVisibility: .visible) {
             Button("删除记录", role: .destructive) { model.deleteRecord(id) }

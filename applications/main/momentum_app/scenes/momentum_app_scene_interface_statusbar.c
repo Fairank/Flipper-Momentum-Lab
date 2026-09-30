@@ -33,7 +33,7 @@ static void momentum_app_scene_interface_statusbar_battery_icon_changed(Variable
 static void momentum_app_scene_interface_statusbar_statusbar_clock_changed(VariableItem* item) {
     MomentumApp* app = variable_item_get_context(item);
     bool value = variable_item_get_current_value_index(item);
-    variable_item_set_current_value_text(item, value ? "开" : "关");
+    variable_item_set_current_value_text(item, value ? "ON" : "OFF");
     app->desktop_settings.display_clock = value;
     app->save_desktop = true;
 }
@@ -41,7 +41,7 @@ static void momentum_app_scene_interface_statusbar_statusbar_clock_changed(Varia
 static void momentum_app_scene_interface_statusbar_status_icons_changed(VariableItem* item) {
     MomentumApp* app = variable_item_get_context(item);
     bool value = variable_item_get_current_value_index(item);
-    variable_item_set_current_value_text(item, value ? "开" : "关");
+    variable_item_set_current_value_text(item, value ? "ON" : "OFF");
     momentum_settings.status_icons = value;
     app->save_settings = true;
 }
@@ -49,7 +49,7 @@ static void momentum_app_scene_interface_statusbar_status_icons_changed(Variable
 static void momentum_app_scene_interface_statusbar_bar_borders_changed(VariableItem* item) {
     MomentumApp* app = variable_item_get_context(item);
     bool value = variable_item_get_current_value_index(item);
-    variable_item_set_current_value_text(item, value ? "开" : "关");
+    variable_item_set_current_value_text(item, value ? "ON" : "OFF");
     momentum_settings.bar_borders = value;
     app->save_settings = true;
 }
@@ -57,7 +57,7 @@ static void momentum_app_scene_interface_statusbar_bar_borders_changed(VariableI
 static void momentum_app_scene_interface_statusbar_bar_background_changed(VariableItem* item) {
     MomentumApp* app = variable_item_get_context(item);
     bool value = variable_item_get_current_value_index(item);
-    variable_item_set_current_value_text(item, value ? "开" : "关");
+    variable_item_set_current_value_text(item, value ? "ON" : "OFF");
     momentum_settings.bar_background = value;
     app->save_settings = true;
 }
@@ -69,7 +69,7 @@ void momentum_app_scene_interface_statusbar_on_enter(void* context) {
 
     item = variable_item_list_add(
         var_item_list,
-        "电池图标",
+        "Battery Icon",
         BatteryIconCount,
         momentum_app_scene_interface_statusbar_battery_icon_changed,
         app);
@@ -78,39 +78,39 @@ void momentum_app_scene_interface_statusbar_on_enter(void* context) {
 
     item = variable_item_list_add(
         var_item_list,
-        "显示时钟",
+        "Show Clock",
         2,
         momentum_app_scene_interface_statusbar_statusbar_clock_changed,
         app);
     variable_item_set_current_value_index(item, app->desktop_settings.display_clock);
-    variable_item_set_current_value_text(item, app->desktop_settings.display_clock ? "开" : "关");
+    variable_item_set_current_value_text(item, app->desktop_settings.display_clock ? "ON" : "OFF");
 
     item = variable_item_list_add(
         var_item_list,
-        "状态图标",
+        "Status Icons",
         2,
         momentum_app_scene_interface_statusbar_status_icons_changed,
         app);
     variable_item_set_current_value_index(item, momentum_settings.status_icons);
-    variable_item_set_current_value_text(item, momentum_settings.status_icons ? "开" : "关");
+    variable_item_set_current_value_text(item, momentum_settings.status_icons ? "ON" : "OFF");
 
     item = variable_item_list_add(
         var_item_list,
-        "状态栏边框",
+        "Bar Borders",
         2,
         momentum_app_scene_interface_statusbar_bar_borders_changed,
         app);
     variable_item_set_current_value_index(item, momentum_settings.bar_borders);
-    variable_item_set_current_value_text(item, momentum_settings.bar_borders ? "开" : "关");
+    variable_item_set_current_value_text(item, momentum_settings.bar_borders ? "ON" : "OFF");
 
     item = variable_item_list_add(
         var_item_list,
-        "状态栏背景",
+        "Bar Background",
         2,
         momentum_app_scene_interface_statusbar_bar_background_changed,
         app);
     variable_item_set_current_value_index(item, momentum_settings.bar_background);
-    variable_item_set_current_value_text(item, momentum_settings.bar_background ? "开" : "关");
+    variable_item_set_current_value_text(item, momentum_settings.bar_background ? "ON" : "OFF");
 
     variable_item_list_set_enter_callback(
         var_item_list, momentum_app_scene_interface_statusbar_var_item_list_callback, app);

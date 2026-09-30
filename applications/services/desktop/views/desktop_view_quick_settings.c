@@ -14,9 +14,9 @@ typedef enum {
 } DesktopQuickSettingsIndex;
 
 static const char* const desktop_quick_settings_labels[DesktopQuickSettingsIndexTotalCount] = {
-    "亮度",
-    "音量",
-    "振动",
+    "Brightness",
+    "Volume",
+    "Vibro",
 };
 
 // Rows keep the pitch and the frame of the first lock menu page, so paging sideways

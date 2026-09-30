@@ -43,7 +43,7 @@
 #define CENTER_IM_MAX (1.5f)
 
 #define HINT_DURATION_MS 2000
-#define HINT_STARTUP     "长按OK缩小"
+#define HINT_STARTUP     "Hold OK to zoom out"
 
 typedef struct {
     FuriMessageQueue* queue;
@@ -179,7 +179,7 @@ static void mandelbrot_zoom(Mandelbrot* app, int8_t direction) {
         sizeof(text),
         "x%lu%s",
         (unsigned long)(1UL << app->zoom_level),
-        app->zoom_level == ZOOM_LEVEL_MAX ? " 最大" : "");
+        app->zoom_level == ZOOM_LEVEL_MAX ? " max" : "");
     mandelbrot_hint(app, text);
 }
 

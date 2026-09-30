@@ -13,7 +13,7 @@ void infrared_scene_universal_save_name_on_enter(void* context) {
     infrared_text_store_set(infrared, 0, "%s", furi_string_get_cstr(remote_name));
     furi_string_free(remote_name);
 
-    text_input_set_header_text(text_input, "遥控器名称");
+    text_input_set_header_text(text_input, "Name the remote");
     text_input_set_result_callback(
         text_input,
         infrared_text_input_callback,
@@ -41,7 +41,7 @@ bool infrared_scene_universal_save_name_on_event(void* context, SceneManagerEven
                 dolphin_deed(DolphinDeedIrSave);
                 scene_manager_next_scene(infrared->scene_manager, InfraredSceneUniversalSaveDone);
             } else {
-                infrared_show_error_message(infrared, "创建文件失败");
+                infrared_show_error_message(infrared, "Failed to\ncreate file");
                 scene_manager_previous_scene(infrared->scene_manager);
             }
             consumed = true;

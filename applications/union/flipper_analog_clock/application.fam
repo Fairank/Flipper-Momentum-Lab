@@ -2,7 +2,7 @@
 
 App(
     appid="analog_clock",  # Must be unique
-    name="指针时钟",  # Displayed in UI
+    name="Analog Clock",  # Displayed in UI
     apptype=FlipperAppType.EXTERNAL,
     entry_point="analog_clock_app",
     stack_size=2 * 1024,
@@ -13,5 +13,5 @@ App(
     fap_author="@scrolltex",
     fap_weburl="https://github.com/scrolltex/flipper_analog_clock",
     fap_version="1.4",
-    fap_description="在 Flipper 屏幕上显示指针时钟",
+    fap_description="Shows analog clock on Flipper screen",
 )

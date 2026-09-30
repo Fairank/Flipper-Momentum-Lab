@@ -17,7 +17,7 @@ void nfc_scene_select_protocol_on_enter(void* context) {
         nfc_detected_protocols_fill_all_protocols(instance->detected_protocols);
     } else {
         prefix = "Read as";
-        submenu_set_header(submenu, "多协议卡片");
+        submenu_set_header(submenu, "Multi-protocol card");
     }
 
     for(uint32_t i = 0; i < nfc_detected_protocols_get_num(instance->detected_protocols); i++) {

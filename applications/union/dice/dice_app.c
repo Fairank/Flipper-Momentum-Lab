@@ -116,15 +116,15 @@ static void draw_main_menu(const State* state, Canvas* canvas) {
 
     // buttons
     if(isAnimState(state->app_state) == false) {
-        canvas_draw_str_aligned(canvas, 128, 64, AlignRight, AlignBottom, "投掷");
-        canvas_draw_str_aligned(canvas, 0, 64, AlignLeft, AlignBottom, "记录");
+        canvas_draw_str_aligned(canvas, 128, 64, AlignRight, AlignBottom, "Roll");
+        canvas_draw_str_aligned(canvas, 0, 64, AlignLeft, AlignBottom, "Hist");
     }
 
     if(state->app_state == AnimResultState || state->app_state == ResultState) {
         canvas_set_color(canvas, ColorWhite);
         canvas_draw_box(canvas, 0, 52, 24, 12);
         canvas_set_color(canvas, ColorBlack);
-        canvas_draw_str_aligned(canvas, 0, 64, AlignLeft, AlignBottom, "返回");
+        canvas_draw_str_aligned(canvas, 0, 64, AlignLeft, AlignBottom, "Back");
     }
 
     furi_string_free(count);
@@ -152,7 +152,7 @@ static void draw_history(const State* state, Canvas* canvas) {
             if(entry->index < 0 || entry->index >= DICE_TYPES) {
                 furi_string_set(hist, "--");
             } else if(entry->index == 0) {
-                furi_string_set(hist, entry->result == 1 ? "正面" : "反面");
+                furi_string_set(hist, entry->result == 1 ? "Heads" : "Tails");
             } else {
                 furi_string_printf(
                     hist, "%ud%u:%u", entry->count, dice_types[entry->index].type, entry->result);
@@ -168,10 +168,10 @@ static void draw_history(const State* state, Canvas* canvas) {
         y += HISTORY_STEP_Y;
     }
 
-    canvas_draw_str_aligned(canvas, 0, 64, AlignLeft, AlignBottom, "返回");
+    canvas_draw_str_aligned(canvas, 0, 64, AlignLeft, AlignBottom, "Back");
     furi_string_printf(hist, "%u/%u", state->history_page + 1, HISTORY_PAGES);
     canvas_draw_str_aligned(canvas, 64, 64, AlignCenter, AlignBottom, furi_string_get_cstr(hist));
-    canvas_draw_str_aligned(canvas, 128, 64, AlignRight, AlignBottom, "上下翻页");
+    canvas_draw_str_aligned(canvas, 128, 64, AlignRight, AlignBottom, "Up/Dn:Page");
     furi_string_free(hist);
 }
 

@@ -47,7 +47,7 @@ import FlipperCore
                 let result = try await model.directory(path)
                 try Task.checkCancellation(); files = result
             } catch {
-                if !Task.isCancelled { failure = error.localizedDescription }
+                if !Task.isCancelled { failure = PhoneErrorDescription.describe(error) }
             }
         }
     }

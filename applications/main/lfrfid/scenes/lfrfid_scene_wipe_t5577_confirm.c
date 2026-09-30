@@ -4,9 +4,9 @@ void lfrfid_scene_wipe_t5577_confirm_on_enter(void* context) {
     LfRfid* app = context;
     Widget* widget = app->widget;
 
-    widget_add_button_element(widget, GuiButtonTypeLeft, "退出", lfrfid_widget_callback, app);
-    widget_add_button_element(widget, GuiButtonTypeRight, "擦除", lfrfid_widget_callback, app);
-    widget_add_string_element(widget, 64, 3, AlignCenter, AlignTop, FontPrimary, "擦除 T5577");
+    widget_add_button_element(widget, GuiButtonTypeLeft, "Exit", lfrfid_widget_callback, app);
+    widget_add_button_element(widget, GuiButtonTypeRight, "Wipe", lfrfid_widget_callback, app);
+    widget_add_string_element(widget, 64, 3, AlignCenter, AlignTop, FontPrimary, "Wipe T5577");
     widget_add_string_multiline_element(
         widget,
         64,
@@ -14,7 +14,7 @@ void lfrfid_scene_wipe_t5577_confirm_on_enter(void* context) {
         AlignCenter,
         AlignTop,
         FontSecondary,
-        "将擦除全部数据\n重写前无法读取\n操作时请勿移动");
+        "Erases all data. Tag won't\nread until re-written.\nHold still while running");
 
     view_dispatcher_switch_to_view(app->view_dispatcher, LfRfidViewWidget);
 }

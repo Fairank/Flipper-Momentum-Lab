@@ -1,10 +1,12 @@
 # Flipper Momentum 个人定制与换机交接
 
+**当前语言目标（2026-09-30）：Flipper 本机恢复英文，保留功能升级；iPhone 通过蓝牙使用中文界面和功能说明。** 已补手机嵌套应用发现、31 项已安装应用的中文映射及 NFC 按字段／块／页比较。手机修订 `7b6069e3b` 的 178 项 Swift、7 项界面测试与模拟器编译通过；英文设备本机 129 项回归通过。最新范围与原始页面见 [本机英文、手机中文](documentation/custom/DEVICE_ENGLISH_PHONE_CHINESE_20260930.md)，当前提交验收见 [验证记录](documentation/custom/VALIDATION.md)。以下分轮记录为历史，本机全中文不再是待办目标；完整功能并集和真机联调仍未完成。
+
 **2026-09-30 第四轮更新：**增加弹跳球、方块搬运、数独、昵称生成器，累计导入二十四个应用；补掷骰分页、Brainfuck/记事本中文按钮、任务时长与上午/下午显示。修复记事本 UTF-8 编辑、末行/长行处理及保存故障保护，数独改用明确字段存档并兼容旧 ARM 格式。应用代码 `12b8c35f3` 与存储回归、手机比较入口修订 `6f94bdc9d` 已推送到现有草稿 PR，本地完整构建、129 项 Python/C 回归及格式检查通过；云端 129 项主机、151 项 Swift、6 项界面测试、iOS 与固件构建均通过。准确云端验收以 [本轮说明与预览](documentation/custom/UNION_CHINESE_20260930.md) 和 [验证记录](documentation/custom/VALIDATION.md) 为准。固定参考仍有 232 项匹配源码差异、134 项未匹配应用和 19 项未匹配插件，**完整并集、全界面中文及真机联调仍未完成**。下方 9 月 29 日数字保留为历史证据。
 
 **2026-09-29 第三轮更新：**补上 iPhone GPS/网络共享处理端，中文改用含 7,097 字形的 SD 资源和有界缓存，主固件到无线栈前余量从 944 增至 9,136 字节；增加 68 条中文动画对白、九类默认动画文字层、第二批十个应用及手机入口。累计导入二十个工具/应用，并建立逐项源码差异表。代码 `41fd31347` 的 112 项 Python/C、148 项 Swift、6 项 iPhone 界面测试、完整固件与外置应用构建及 Lint 全部通过。详见 [本轮实现及页面预览](documentation/custom/COMPANION_AND_CHINESE_20260929.md)、[手机共享使用说明](documentation/custom/PHONE_COMPANION_GUIDE.zh-CN.md) 和 [云端验证与固件附件](documentation/custom/VALIDATION.md)。**仍不是全部功能的完整并集或全界面中文覆盖，尚未刷机和真机联调。**
 
-以 Momentum 保留 Xtreme 风格，逐项适配 Unleashed，并新增 iPhone 中文 App（`mobile/FlipperLab`）与设备端中文入口 Flipper Lab（`applications/main/lab`）。当前分支 `codex/iphone-zh-architecture` 已推送，草稿 PR [#1](https://github.com/Fairank/Flipper-Momentum-Lab/pull/1) 指向 `codex/momentum-unleashed`。已完成：资源加载进度、插件扫描容错、构建源文件顺序修复、UTF-8 换行修复；Windows 上完整更新包（含外部应用与 Flipper Lab）构建成功；桌面回归与字库生成器测试通过；iPhone App 的 Swift 包测试、不签名模拟器构建和离线 UI 测试在 GitHub macOS CI 通过。**尚未刷写真机，蓝牙真机未测，现有原生应用的全面中文化仍是待办需求。**
+以 Momentum 保留 Xtreme 风格，逐项适配 Unleashed，并新增 iPhone 中文 App（`mobile/FlipperLab`）与设备端英文功能入口 Flipper Lab（`applications/main/lab`）。当前分支 `codex/iphone-zh-architecture` 已推送，草稿 PR [#1](https://github.com/Fairank/Flipper-Momentum-Lab/pull/1) 指向 `codex/momentum-unleashed`。资源加载进度、插件扫描容错、构建源文件顺序修复与 UTF-8 换行修复保留；完整构建、桌面回归和手机模拟器检查见对应提交的验证记录。**尚未刷写真机，蓝牙真机未测。**
 
 **换电脑继续请先读 [HANDOFF.md](HANDOFF.md)**。其他入口：[已完成改动](LOCAL_CHANGES.md) · [全部需求与待办](documentation/custom/REQUIREMENTS.md) · [验证记录](documentation/custom/VALIDATION.md) · [iPhone App 说明](mobile/FlipperLab/README.zh-CN.md) · [初步评估](documentation/custom/INITIAL_ASSESSMENT.md) · [固定源码版本](documentation/custom/SOURCE_LOCK.json)。
 

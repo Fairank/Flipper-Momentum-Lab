@@ -36,7 +36,7 @@ static void felica_scene_more_info_on_enter(NfcApp* nfc) {
 
         for(uint32_t i = 0; i < simple_array_get_count(data->systems); ++i) {
             const FelicaSystem* system = simple_array_cget(data->systems, i);
-            furi_string_printf(label, "系统 %04X", system->system_code);
+            furi_string_printf(label, "System %04X", system->system_code);
             submenu_add_item(
                 submenu,
                 furi_string_get_cstr(label),
@@ -124,7 +124,7 @@ static void felica_scene_system_on_enter(NfcApp* nfc) {
 
     submenu_add_item(
         submenu,
-        "目录",
+        "Directory",
         FelicaSystemSubmenuIndexDirectory,
         felica_scene_system_submenu_callback,
         nfc);
@@ -138,7 +138,7 @@ static void felica_scene_system_on_enter(NfcApp* nfc) {
         if(!is_public) {
             continue;
         }
-        furi_string_printf(label, "可读服务 %04X", service->code);
+        furi_string_printf(label, "Readable serv %04X", service->code);
         submenu_add_item(
             submenu,
             furi_string_get_cstr(label),
@@ -181,7 +181,7 @@ static bool felica_scene_system_on_event(NfcApp* nfc, SceneManagerEvent event) {
                 furi_string_reset(nfc->text_box_store);
 
                 const FelicaService* service = simple_array_cget(system->services, service_ind);
-                furi_string_cat_printf(nfc->text_box_store, "服务 0x%04X\n", service->code);
+                furi_string_cat_printf(nfc->text_box_store, "Service 0x%04X\n", service->code);
                 nfc_more_info_render_felica_blocks(
                     data, system, nfc->text_box_store, service->code);
 

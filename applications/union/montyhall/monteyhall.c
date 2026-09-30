@@ -199,12 +199,12 @@ void revealDoors_updateScore(MontyState* monty_state) {
 static void draw_top(Canvas* canvas, const MontyState* monty_state) {
     // Baseline 10: the 11 px Chinese rows (0..10) end above the doors at y 12
     char buffer[16];
-    snprintf(buffer, sizeof(buffer), "汽车: %u", monty_state->score);
+    snprintf(buffer, sizeof(buffer), "Cars: %u", monty_state->score);
     canvas_draw_str_aligned(canvas, 2, 10, AlignLeft, AlignBottom, buffer);
 
     if(monty_state->game_state == RoundThree) {
         canvas_draw_str_aligned(
-            canvas, SCREEN_WIDTH - 5, 10, AlignRight, AlignBottom, "已开山羊门");
+            canvas, SCREEN_WIDTH - 5, 10, AlignRight, AlignBottom, "Opened a decoy door");
     }
 }
 
@@ -217,7 +217,7 @@ static void draw_doors(Canvas* canvas, const MontyState* monty_state) {
             draw_car(canvas, 18, 26);
         } else {
             canvas_draw_frame(canvas, 16, 12, 22, 35);
-            canvas_draw_str(canvas, 22, 34, "羊");
+            canvas_draw_str(canvas, 22, 34, "Goat");
         }
     } else {
         canvas_draw_icon(canvas, 16, 12, &I_DoorClosed_22x35);
@@ -229,7 +229,7 @@ static void draw_doors(Canvas* canvas, const MontyState* monty_state) {
             draw_car(canvas, 55, 26);
         } else {
             canvas_draw_frame(canvas, 53, 12, 22, 35);
-            canvas_draw_str(canvas, 59, 34, "羊");
+            canvas_draw_str(canvas, 59, 34, "Goat");
         }
     } else {
         canvas_draw_icon(canvas, 53, 12, &I_DoorClosed_22x35);
@@ -241,7 +241,7 @@ static void draw_doors(Canvas* canvas, const MontyState* monty_state) {
             draw_car(canvas, 92, 26);
         } else {
             canvas_draw_frame(canvas, 90, 12, 22, 35);
-            canvas_draw_str(canvas, 96, 34, "羊");
+            canvas_draw_str(canvas, 96, 34, "Goat");
         }
     } else {
         canvas_draw_icon(canvas, 90, 12, &I_DoorClosed_22x35);
@@ -250,42 +250,42 @@ static void draw_doors(Canvas* canvas, const MontyState* monty_state) {
 
 static void draw_bottom(Canvas* canvas, const MontyState* monty_state) {
     if(monty_state->game_state == RoundOne) {
-        elements_button_left(canvas, "左门");
-        elements_button_center(canvas, "中门");
-        elements_button_right(canvas, "右门");
+        elements_button_left(canvas, "Left");
+        elements_button_center(canvas, "Center");
+        elements_button_right(canvas, "Right");
     }
 
     if(monty_state->game_state == RoundThree) {
         if(monty_state->door_state.doors[0].isSelected) {
-            elements_button_left(canvas, "不换");
+            elements_button_left(canvas, "Keep");
             if(!monty_state->door_state.doors[1].isOpen) {
-                elements_button_center(canvas, "换门");
+                elements_button_center(canvas, "Switch");
             } else {
-                elements_button_right(canvas, "换门");
+                elements_button_right(canvas, "Switch");
             }
         } else if(monty_state->door_state.doors[1].isSelected) {
-            elements_button_center(canvas, "不换");
+            elements_button_center(canvas, "Keep");
             if(!monty_state->door_state.doors[0].isOpen) {
-                elements_button_left(canvas, "换门");
+                elements_button_left(canvas, "Switch");
             } else {
-                elements_button_right(canvas, "换门");
+                elements_button_right(canvas, "Switch");
             }
         } else if(monty_state->door_state.doors[2].isSelected) {
-            elements_button_right(canvas, "不换");
+            elements_button_right(canvas, "Keep");
             if(!monty_state->door_state.doors[0].isOpen) {
-                elements_button_left(canvas, "换门");
+                elements_button_left(canvas, "Switch");
             } else {
-                elements_button_center(canvas, "换门");
+                elements_button_center(canvas, "Switch");
             }
         }
     }
 
     if(monty_state->game_state == RoundFour) {
-        elements_button_center(canvas, "揭晓");
+        elements_button_center(canvas, "Reveal");
     }
 
     if(monty_state->game_state == GameOver) {
-        canvas_draw_str(canvas, 16, SCREEN_HEIGHT - 5, "长按中键重新开始");
+        canvas_draw_str(canvas, 16, SCREEN_HEIGHT - 5, "Hold center to restart");
     }
 }
 

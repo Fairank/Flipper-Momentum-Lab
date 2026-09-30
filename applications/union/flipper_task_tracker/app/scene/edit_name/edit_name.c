@@ -21,13 +21,13 @@ bool validator_is_text_callback(const char* text, FuriString* error, void* conte
 
     // Check if the text is empty
     if(text == NULL || strlen(text) == 0) {
-        furi_string_set_str(error, "不能为空");
+        furi_string_set_str(error, "Input cannot be empty.");
         return false;
     }
 
     // Check if the text length exceeds the size of text_store
     if(strlen(text) > KEY_NAME_SIZE) {
-        furi_string_set_str(error, "输入过长");
+        furi_string_set_str(error, "Input is too long.");
         return false;
     }
 
@@ -47,7 +47,7 @@ void scene_on_enter_task_name_input(void* context) {
     app->text_store[KEY_NAME_SIZE] = '\0'; // Ensure null-termination
 
     const char* key_name = furi_string_get_cstr(task_name_string);
-    text_input_set_header_text(text_input, "编辑任务名称");
+    text_input_set_header_text(text_input, "Edit Task Name");
 
     text_input_set_result_callback(
         text_input, text_input_callback, app, app->text_store, KEY_NAME_SIZE, key_name);

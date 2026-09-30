@@ -13,17 +13,22 @@ static void
         // many, or a partial save is indistinguishable from nothing having happened at all.
         notification_message(instance->notifications, &sequence_error);
         popup_set_icon(popup, 83, 22, &I_WarningDolphinFlip_45x42);
-        popup_set_header(popup, "保存失败", 64, 3, AlignCenter, AlignTop);
+        popup_set_header(popup, "Save Failed", 64, 3, AlignCenter, AlignTop);
         nfc_text_store_set(
             instance,
-            "已存 %u / %u\nSD 卡已满\n或为只读",
+            "Saved %u of %u\nSD card full\nor read-only",
             (unsigned)stats->added,
             (unsigned)(stats->candidates - stats->known));
     } else {
         // The two counts are the point of the screen: they say whether this card's keys were
         // worth carrying in a dictionary every future attack has to walk.
         popup_set_header(
-            popup, stats->added > 0 ? "密钥已保存" : "无可添加内容", 64, 3, AlignCenter, AlignTop);
+            popup,
+            stats->added > 0 ? "Keys Saved" : "Nothing to Add",
+            64,
+            3,
+            AlignCenter,
+            AlignTop);
         nfc_text_store_set(
             instance,
             "New keys: %u\nAlready known: %u",

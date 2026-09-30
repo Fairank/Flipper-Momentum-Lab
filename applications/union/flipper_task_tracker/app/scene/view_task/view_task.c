@@ -57,7 +57,7 @@ void submenu_callback_task_actions(void* context, uint32_t index) {
         submenu_change_item_label(
             app->submenu_task_actions,
             TaskAction_ToggleCompleted,
-            app->current_task->completed ? "标为未完成" : "标为已完成");
+            app->current_task->completed ? "Unmark as done" : "Mark as done");
 
         // Update the task in the CSV file
         if(tasks_update(app, app->current_task)) {
@@ -94,47 +94,51 @@ void scene_on_enter_task_actions(void* context) {
     Task* task = app->current_task;
     char header[128];
 
-    snprintf(header, sizeof(header), "任务: %s", task->name);
+    snprintf(header, sizeof(header), "Task: %s", task->name);
     submenu_set_header(app->submenu_task_actions, header);
     if(task->status == TaskStatus_Running) {
         submenu_add_item(
             app->submenu_task_actions,
-            "停止",
+            "Stop",
             TaskAction_Continue,
             submenu_callback_task_actions,
             app);
     } else {
         submenu_add_item(
             app->submenu_task_actions,
-            "开始",
+            "Start",
             TaskAction_Continue,
             submenu_callback_task_actions,
             app);
     }
     submenu_add_item(
-        app->submenu_task_actions, "编辑", TaskAction_Edit, submenu_callback_task_actions, app);
+        app->submenu_task_actions, "Edit", TaskAction_Edit, submenu_callback_task_actions, app);
     submenu_add_item(
-        app->submenu_task_actions, "详情", TaskAction_Stats, submenu_callback_task_actions, app);
+        app->submenu_task_actions, "Stats", TaskAction_Stats, submenu_callback_task_actions, app);
 
     // Add the "Mark as done" or "Unmark as done" item based on the completed flag
     if(task->completed) {
         submenu_add_item(
             app->submenu_task_actions,
-            "标为未完成",
+            "Unmark as done",
             TaskAction_ToggleCompleted,
             submenu_callback_task_actions,
             app);
     } else {
         submenu_add_item(
             app->submenu_task_actions,
-            "标为已完成",
+            "Mark as done",
             TaskAction_ToggleCompleted,
             submenu_callback_task_actions,
             app);
     }
 
     submenu_add_item(
-        app->submenu_task_actions, "删除！", TaskAction_Delete, submenu_callback_task_actions, app);
+        app->submenu_task_actions,
+        "Delete !",
+        TaskAction_Delete,
+        submenu_callback_task_actions,
+        app);
 
     view_dispatcher_switch_to_view(app->view_dispatcher, AppView_TaskActions);
 }

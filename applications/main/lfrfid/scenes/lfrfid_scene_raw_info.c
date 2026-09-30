@@ -6,7 +6,8 @@ void lfrfid_scene_raw_info_on_enter(void* context) {
 
     if(storage_sd_status(app->storage) != FSE_OK) {
         widget_add_icon_element(widget, 83, 22, &I_WarningDolphinFlip_45x42);
-        widget_add_string_element(widget, 64, 0, AlignCenter, AlignTop, FontPrimary, "无SD卡!");
+        widget_add_string_element(
+            widget, 64, 0, AlignCenter, AlignTop, FontPrimary, "No SD Card!");
         widget_add_string_multiline_element(
             widget,
             0,
@@ -14,8 +15,8 @@ void lfrfid_scene_raw_info_on_enter(void* context) {
             AlignLeft,
             AlignTop,
             FontSecondary,
-            "请插入SD卡\n"
-            "以使用此功能");
+            "Insert an SD card\nto use this function"
+            "");
 
     } else {
         widget_add_text_box_element(
@@ -26,14 +27,13 @@ void lfrfid_scene_raw_info_on_enter(void* context) {
             64,
             AlignLeft,
             AlignTop,
-            "\e#RAW RFID数据读取\e#\n"
-            "1. 将卡靠近Flipper\n"
-            "2. 按OK键\n"
-            "3. 等待读取完成",
+            "\033#RAW RFID Data Reader\033#\n1. Hold card next to Flipper\n2. Press OK\n3. Wait until data is read"
+            ""
+            ""
+            "",
             false);
 
-        widget_add_button_element(
-            widget, GuiButtonTypeCenter, "确定", lfrfid_widget_callback, app);
+        widget_add_button_element(widget, GuiButtonTypeCenter, "OK", lfrfid_widget_callback, app);
     }
 
     view_dispatcher_switch_to_view(app->view_dispatcher, LfRfidViewWidget);

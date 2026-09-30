@@ -9,11 +9,11 @@ void ibutton_scene_delete_confirm_on_enter(void* context) {
     FuriString* tmp = furi_string_alloc();
     FuriString* uid = furi_string_alloc();
 
-    widget_add_button_element(widget, GuiButtonTypeLeft, "返回", ibutton_widget_callback, context);
+    widget_add_button_element(widget, GuiButtonTypeLeft, "Back", ibutton_widget_callback, context);
     widget_add_button_element(
-        widget, GuiButtonTypeRight, "删除", ibutton_widget_callback, context);
+        widget, GuiButtonTypeRight, "Delete", ibutton_widget_callback, context);
 
-    furi_string_printf(tmp, "\e#删除 %s?\e#\n", ibutton->key_name);
+    furi_string_printf(tmp, "\033#Delete %s?\033#\n", ibutton->key_name);
 
     ibutton_protocols_render_uid(ibutton->protocols, key, uid);
 
@@ -54,7 +54,7 @@ bool ibutton_scene_delete_confirm_on_event(void* context, SceneManagerEvent even
             if(ibutton_delete_key(ibutton)) {
                 scene_manager_next_scene(scene_manager, iButtonSceneDeleteSuccess);
             } else {
-                dialog_message_show_storage_error(ibutton->dialogs, "无法删除\n钥匙文件");
+                dialog_message_show_storage_error(ibutton->dialogs, "Cannot delete\nkey file");
                 scene_manager_previous_scene(scene_manager);
             }
         } else if(event.event == GuiButtonTypeLeft) {

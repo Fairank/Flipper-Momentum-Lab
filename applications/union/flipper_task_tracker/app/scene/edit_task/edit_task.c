@@ -60,15 +60,15 @@ static void draw_edit_task_menu(App* app) {
     VariableItem* item;
 
     item =
-        variable_item_list_add(variable_item_list, "名称", 1, edit_task_scene_name_callback, app);
+        variable_item_list_add(variable_item_list, "Name", 1, edit_task_scene_name_callback, app);
     variable_item_set_current_value_text(item, name);
 
     item = variable_item_list_add(
-        variable_item_list, "描述", 1, edit_task_scene_description_callback, app);
+        variable_item_list, "Description", 1, edit_task_scene_description_callback, app);
     variable_item_set_current_value_text(item, description);
 
     item = variable_item_list_add(
-        variable_item_list, "时薪", 1, edit_task_scene_price_per_hour_callback, app);
+        variable_item_list, "Price per Hour", 1, edit_task_scene_price_per_hour_callback, app);
     variable_item_set_current_value_text(item, price_per_hour_str);
 }
 

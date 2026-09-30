@@ -44,7 +44,7 @@ static void lfrfid_scene_write_set_status(LfRfid* app, const char* target) {
     } else if(target) {
         snprintf(app->text_store, LFRFID_TEXT_STORE_SIZE, "[%s]\n(%s)", proto, target);
     } else {
-        snprintf(app->text_store, LFRFID_TEXT_STORE_SIZE, "[%s]\n未保存标签", proto);
+        snprintf(app->text_store, LFRFID_TEXT_STORE_SIZE, "[%s]\nUnsaved Tag", proto);
     }
     popup_set_text(app->popup, app->text_store, 94, 29, AlignCenter, AlignTop);
 }
@@ -55,7 +55,7 @@ static void lfrfid_scene_write_show_error(LfRfid* app, const char* text) {
     lfrfid_write_warning_shown = true;
 
     popup_set_icon(app->popup, 83, 22, &I_WarningDolphinFlip_45x42);
-    popup_set_header(app->popup, "错误", 64, 3, AlignCenter, AlignTop);
+    popup_set_header(app->popup, "Error", 64, 3, AlignCenter, AlignTop);
     popup_set_text(app->popup, text, 3, 17, AlignLeft, AlignTop);
     notification_message(app->notifications, &sequence_blink_start_red);
 }
@@ -67,7 +67,7 @@ void lfrfid_scene_write_on_enter(void* context) {
     lfrfid_write_warning_shown = false;
 
     popup_set_icon(popup, 0, 8, &I_NFC_manual_60x50);
-    popup_set_header(popup, "写入中", 94, 16, AlignCenter, AlignTop);
+    popup_set_header(popup, "Writing", 94, 16, AlignCenter, AlignTop);
 
     lfrfid_scene_write_set_status(app, NULL);
 
@@ -107,7 +107,7 @@ bool lfrfid_scene_write_on_event(void* context, SceneManagerEvent event) {
             scene_manager_next_scene(app->scene_manager, LfRfidSceneWriteSuccess);
             consumed = true;
         } else if(event.event == LfRfidEventWriteProtocolCannotBeWritten) {
-            lfrfid_scene_write_show_error(app, "此协议\n无法写入");
+            lfrfid_scene_write_show_error(app, "This protocol\ncannot be written");
             consumed = true;
         } else if(event.event == LfRfidEventWriteNoEnabledTarget) {
             // Same remedy either way, but naming the emptier case saves a puzzled trip to a
@@ -116,20 +116,20 @@ bool lfrfid_scene_write_on_event(void* context, SceneManagerEvent event) {
                 scene_manager_get_scene_state(app->scene_manager, LfRfidSceneWrite) == 0;
             lfrfid_scene_write_show_error(
                 app,
-                none_enabled ? "未启用写入芯片\n请在设置中\n启用一种" :
-                               "已启用芯片\n均不支持\n此协议");
+                none_enabled ? "No write chips\nenabled. Enable\none in Settings" :
+                               "No enabled chip\ncan write this\nprotocol");
             consumed = true;
         } else if(
             (event.event == LfRfidEventWriteFobCannotBeWritten) ||
             (event.event == LfRfidEventWriteTooLongToWrite)) {
             lfrfid_write_warning_shown = true;
             popup_set_icon(popup, 83, 22, &I_WarningDolphinFlip_45x42);
-            popup_set_header(popup, "仍在尝试写入...", 64, 0, AlignCenter, AlignTop);
+            popup_set_header(popup, "Still Trying to Write...", 64, 0, AlignCenter, AlignTop);
             popup_set_text(
                 popup,
-                "请确认此卡\n"
-                "可以写入且\n"
-                "未受保护",
+                "Make sure this\ncard is writable\nand not protected"
+                ""
+                "",
                 0,
                 13,
                 AlignLeft,

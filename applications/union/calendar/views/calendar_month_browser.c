@@ -21,7 +21,7 @@
 
 // Sunday first, like the columns filled from get_first_day_of_week()
 static const char* const weekdays[GRID_TEMPLATE_COLUMNS] =
-    {"日", "一", "二", "三", "四", "五", "六"};
+    {"Su", "Mo", "Tu", "We", "Th", "Fr", "Sa"};
 
 struct MonthBrowser {
     View* view;

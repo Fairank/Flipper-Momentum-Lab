@@ -11,7 +11,7 @@ void brainfuck_scene_file_create_on_enter(void* context) {
     BFApp* app = context;
     TextInput* text_input = app->text_input;
 
-    text_input_set_header_text(text_input, "新脚本名称");
+    text_input_set_header_text(text_input, "New script name");
     text_input_set_result_callback(
         text_input, file_name_text_input_callback, app, tmpName, 64, true);
 

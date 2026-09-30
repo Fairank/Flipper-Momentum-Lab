@@ -15,7 +15,7 @@ void ibutton_scene_settings_on_enter(void* context) {
 
     submenu_add_item(
         submenu,
-        "写入空白钥匙",
+        "Write Blanks",
         SubmenuIndexWriteTargets,
         ibutton_scene_settings_submenu_callback,
         ibutton);

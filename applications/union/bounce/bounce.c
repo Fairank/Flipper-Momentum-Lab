@@ -475,7 +475,7 @@ static void hint_locked_exit(Game* g, int dir) {
     for(int r = r0; r <= r1; r++) {
         if(TILE_TYPE(tile_at(g, c, r)) == TileExit) {
             char buf[32];
-            snprintf(buf, sizeof(buf), "还差%u个圆环！", g->rings_left);
+            snprintf(buf, sizeof(buf), "%u ring(s) left!", g->rings_left);
             show_msg(g, buf);
             return;
         }
@@ -665,7 +665,7 @@ static void ball_collect(Game* g) {
                     g->score += 100;
                     if(g->rings_left == 0) {
                         play(g, &seq_door);
-                        show_msg(g, "出口已打开！");
+                        show_msg(g, "Exit open!");
                     } else {
                         play(g, &seq_ring);
                     }
@@ -677,13 +677,13 @@ static void ball_collect(Game* g) {
                 g->cp_r = r;
                 g->score += 50;
                 play(g, &seq_checkpoint);
-                show_msg(g, "存档点");
+                show_msg(g, "Checkpoint");
             } else if(type == TileLife) {
                 g->tiles[r][c] &= TILE_WATER;
                 if(g->lives < MAX_LIVES) g->lives++;
                 g->score += 250;
                 play(g, &seq_life);
-                show_msg(g, "额外生命！");
+                show_msg(g, "Extra life!");
             } else if(type == TileExit && g->rings_left == 0) {
                 level_complete(g);
                 return;
@@ -1091,9 +1091,9 @@ static void draw_menu_item(Canvas* canvas, int y, int h, const char* text, bool 
 /* One line explaining the HUD symbols: ball = lives, ring = rings, L = level.
  * The 8px HUD itself keeps its compact digits. */
 static void draw_hud_legend(Canvas* canvas, int y) {
-    static const char* lives = "生命";
-    static const char* rings = "圆环";
-    static const char* level = "L=关卡";
+    static const char* lives = "Lives";
+    static const char* rings = "Rings";
+    static const char* level = "L=Level";
     const int gap = 6;
     int w = 7 + canvas_string_width(canvas, lives) + gap + 7 + canvas_string_width(canvas, rings) +
             gap + canvas_string_width(canvas, level);
@@ -1130,7 +1130,7 @@ static void draw_title(Canvas* canvas, const Game* g) {
     /* Best score top right: x >= 104 clears the logo (x <= 99) and the ball (x <= 83),
      * so the label may share rows with the logo; the digits end above the bricks */
     canvas_set_font(canvas, FontSecondary);
-    canvas_draw_str(canvas, 127 - canvas_string_width(canvas, "最佳"), 23, "最佳");
+    canvas_draw_str(canvas, 127 - canvas_string_width(canvas, "BEST"), 23, "BEST");
     snprintf(buf, sizeof(buf), "%06lu", (unsigned long)g->save.best_score);
     canvas_draw_str(canvas, 127 - canvas_string_width(canvas, buf), 32, buf);
 
@@ -1138,19 +1138,19 @@ static void draw_title(Canvas* canvas, const Game* g) {
     snprintf(
         buf,
         sizeof(buf),
-        "%s 第%u关 %s",
+        "%s Level %u %s",
         g->title_level > 1 ? "<" : " ",
         g->title_level,
         g->title_level < g->save.unlocked ? ">" : " ");
     draw_menu_item(canvas, 42, 11, buf, g->menu_sel == 0);
-    draw_menu_item(canvas, 53, 11, g->save.sound ? "音效: 开" : "音效: 关", g->menu_sel == 1);
+    draw_menu_item(canvas, 53, 11, g->save.sound ? "Sound: On" : "Sound: Off", g->menu_sel == 1);
 }
 
 static void draw_intro(Canvas* canvas, const Game* g) {
     char buf[16];
     draw_panel(canvas, 6, 8, 116, 42); /* rows 8..49, wide enough for the legend */
     canvas_set_font(canvas, FontPrimary);
-    snprintf(buf, sizeof(buf), "第%u关", g->level_idx + 1);
+    snprintf(buf, sizeof(buf), "LEVEL %u", g->level_idx + 1);
     draw_centered(canvas, 21, buf); /* glyph rows 11..21 */
     canvas_set_font(canvas, FontSecondary);
     draw_centered(canvas, 34, levels[g->level_idx].name);
@@ -1158,10 +1158,10 @@ static void draw_intro(Canvas* canvas, const Game* g) {
 }
 
 static void draw_pause(Canvas* canvas, const Game* g) {
-    static const char* items[] = {"继续游戏", "重玩本关", "返回标题"};
+    static const char* items[] = {"Resume", "Restart level", "Title screen"};
     draw_panel(canvas, 14, 3, 100, 52); /* rows 3..54, above the HUD bar */
     canvas_set_font(canvas, FontPrimary);
-    draw_centered(canvas, 15, "暂停"); /* glyph rows 5..15 */
+    draw_centered(canvas, 15, "PAUSED"); /* glyph rows 5..15 */
     canvas_set_font(canvas, FontSecondary);
     for(int i = 0; i < 3; i++) {
         draw_menu_item(canvas, 17 + i * 12, 12, items[i], g->menu_sel == i); /* rows 17..52 */
@@ -1172,11 +1172,11 @@ static void draw_clear(Canvas* canvas, const Game* g) {
     char buf[24];
     draw_panel(canvas, 14, 6, 100, 42); /* rows 6..47 */
     canvas_set_font(canvas, FontPrimary);
-    draw_centered(canvas, 19, "过关！"); /* glyph rows 8..19 */
+    draw_centered(canvas, 19, "LEVEL CLEAR!"); /* glyph rows 8..19 */
     canvas_set_font(canvas, FontSecondary);
-    snprintf(buf, sizeof(buf), "得分 %06lu", (unsigned long)g->score);
+    snprintf(buf, sizeof(buf), "Score %06lu", (unsigned long)g->score);
     draw_centered(canvas, 32, buf); /* rows 22..32 */
-    draw_centered(canvas, 45, "按OK键继续"); /* rows 35..45 */
+    draw_centered(canvas, 45, "OK: continue"); /* rows 35..45 */
 }
 
 /* Game over / win screen. Headline, score, best, the brick row and the hint need
@@ -1186,13 +1186,13 @@ static void draw_end(Canvas* canvas, const Game* g, const char* title) {
     canvas_set_font(canvas, FontPrimary);
     draw_centered(canvas, 12, title); /* glyph rows 1..12 */
     canvas_set_font(canvas, FontSecondary);
-    snprintf(buf, sizeof(buf), "得分 %06lu", (unsigned long)g->score);
+    snprintf(buf, sizeof(buf), "Score %06lu", (unsigned long)g->score);
     draw_centered(canvas, 26, buf); /* rows 16..26 */
-    snprintf(buf, sizeof(buf), "最高 %06lu", (unsigned long)g->save.best_score);
+    snprintf(buf, sizeof(buf), "Best  %06lu", (unsigned long)g->save.best_score);
     draw_centered(canvas, 40, buf); /* rows 30..40 */
     for(int x = 0; x < VIEW_W; x += TILE)
         draw_bits(canvas, x, 44, bmp_brick, 8); /* rows 44..51 */
-    draw_centered(canvas, 63, "按OK键返回标题"); /* rows 53..63 */
+    draw_centered(canvas, 63, "OK: title screen"); /* rows 53..63 */
 }
 
 static void draw_callback(Canvas* canvas, void* ctx) {
@@ -1206,10 +1206,10 @@ static void draw_callback(Canvas* canvas, void* ctx) {
         draw_title(canvas, g);
         break;
     case StateGameOver:
-        draw_end(canvas, g, "游戏结束，球已用完");
+        draw_end(canvas, g, "GAME OVER");
         break;
     case StateWin:
-        draw_end(canvas, g, "恭喜！全部关卡通过");
+        draw_end(canvas, g, "Every level cleared");
         break;
     default:
         draw_world(canvas, g);

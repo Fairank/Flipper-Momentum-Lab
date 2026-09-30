@@ -1,7 +1,7 @@
 App(
     appid="calendar",
     apptype=FlipperAppType.EXTERNAL,
-    name="日历",
+    name="Calendar",
     entry_point="calendar_app",
     stack_size=1 * 1024,
     fap_icon="icon.png",

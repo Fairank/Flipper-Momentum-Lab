@@ -36,7 +36,12 @@ static void infrared_progress_view_draw_callback(Canvas* canvas, void* _model) {
 
     canvas_set_font(canvas, FontSecondary);
     elements_multiline_text_aligned(
-        canvas, x + 32, y + 9, AlignCenter, AlignCenter, model->is_paused ? "已暂停" : "发送中");
+        canvas,
+        x + 32,
+        y + 9,
+        AlignCenter,
+        AlignCenter,
+        model->is_paused ? "Paused" : "Sending...");
 
     float progress_value = model->progress_total ? (float)model->progress / model->progress_total :
                                                    0;
@@ -62,18 +67,18 @@ static void infrared_progress_view_draw_callback(Canvas* canvas, void* _model) {
     uint8_t buttons_y = y + (model->is_paused ? 42 : 50);
 
     canvas_draw_icon(canvas, buttons_x + 0, buttons_y + 0, &I_Pin_back_arrow_10x8);
-    canvas_draw_str(canvas, buttons_x + 14, buttons_y + 12, model->is_paused ? "继续" : "停止");
+    canvas_draw_str(canvas, buttons_x + 14, buttons_y + 12, model->is_paused ? "resume" : "stop");
 
     canvas_draw_icon(canvas, buttons_x + 1, buttons_y + 15, &I_Ok_btn_9x9);
-    canvas_draw_str(canvas, buttons_x + 14, buttons_y + 24, model->is_paused ? "单发" : "暂停");
+    canvas_draw_str(canvas, buttons_x + 14, buttons_y + 24, model->is_paused ? "send 1" : "pause");
 
     if(model->is_paused) {
         canvas_draw_icon(canvas, buttons_x + 2, buttons_y + 29, &I_ButtonLeftSmall_3x5);
         canvas_draw_icon(canvas, buttons_x + 7, buttons_y + 29, &I_ButtonRightSmall_3x5);
-        canvas_draw_str(canvas, buttons_x + 14, buttons_y + 36, "选择");
+        canvas_draw_str(canvas, buttons_x + 14, buttons_y + 36, "select");
 
         canvas_draw_icon(canvas, buttons_x + 2, buttons_y + 41, &I_SmallArrowDown_3x5);
-        canvas_draw_str(canvas, buttons_x + 14, buttons_y + 48, "保存");
+        canvas_draw_str(canvas, buttons_x + 14, buttons_y + 48, "save");
     }
 }
 

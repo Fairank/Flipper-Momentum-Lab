@@ -28,23 +28,26 @@ static void ir_learn_draw_callback(Canvas* canvas, void* context) {
     // Chinese rows are 11 px tall, so up to five lines share the 64 px at a 12..13 px pitch
     canvas_clear(canvas);
     canvas_set_font(canvas, FontPrimary);
-    elements_multiline_text_aligned(canvas, 64, 0, AlignCenter, AlignTop, "红外学习");
+    elements_multiline_text_aligned(canvas, 64, 0, AlignCenter, AlignTop, "IR Learning");
 
     canvas_set_font(canvas, FontSecondary);
 
     if(model->receiving) {
-        elements_multiline_text_aligned(canvas, 64, 16, AlignCenter, AlignTop, "等待红外信号...");
         elements_multiline_text_aligned(
-            canvas, 64, 33, AlignCenter, AlignTop, "将遥控器对准 Flipper");
+            canvas, 64, 16, AlignCenter, AlignTop, "Waiting for IR signal...");
+        elements_multiline_text_aligned(
+            canvas, 64, 33, AlignCenter, AlignTop, "Point remote at Flipper");
     } else if(model->signal_received) {
-        elements_multiline_text_aligned(canvas, 64, 13, AlignCenter, AlignTop, "信号已学习！");
+        elements_multiline_text_aligned(canvas, 64, 13, AlignCenter, AlignTop, "Signal Learned!");
         elements_multiline_text_aligned(canvas, 64, 26, AlignCenter, AlignTop, model->message);
-        elements_multiline_text_aligned(canvas, 64, 50, AlignCenter, AlignBottom, "按 OK 键继续");
+        elements_multiline_text_aligned(
+            canvas, 64, 50, AlignCenter, AlignBottom, "Press OK to continue");
     } else {
         furi_crash("Reached impossible state");
     }
 
-    elements_multiline_text_aligned(canvas, 64, 63, AlignCenter, AlignBottom, "按返回键取消");
+    elements_multiline_text_aligned(
+        canvas, 64, 63, AlignCenter, AlignBottom, "Press Back to cancel");
 }
 
 static void ir_learn_worker_rx_callback(void* context, InfraredWorkerSignal* received_signal) {
@@ -79,7 +82,8 @@ static void ir_learn_worker_rx_callback(void* context, InfraredWorkerSignal* rec
                     message->address,
                     message->command);
             } else {
-                snprintf(display_message, sizeof(display_message), "协议: %d", message->protocol);
+                snprintf(
+                    display_message, sizeof(display_message), "Protocol: %d", message->protocol);
             }
         }
     } else {
@@ -98,13 +102,13 @@ static void ir_learn_worker_rx_callback(void* context, InfraredWorkerSignal* rec
                 is_decoded = false;
 
                 snprintf(
-                    display_message, sizeof(display_message), "原始: %d 个样本", (int)timings_size);
+                    display_message, sizeof(display_message), "Raw: %d timings", (int)timings_size);
             }
         }
     }
 
     if(!signal_received) {
-        snprintf(display_message, sizeof(display_message), "未收到信号");
+        snprintf(display_message, sizeof(display_message), "No signal received");
     }
 
     with_view_model(

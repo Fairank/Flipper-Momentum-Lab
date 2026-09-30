@@ -15,16 +15,16 @@ void power_settings_scene_reboot_on_enter(void* context) {
     PowerSettingsApp* app = context;
     Submenu* submenu = app->submenu;
 
-    submenu_set_header(submenu, "重启方式");
+    submenu_set_header(submenu, "Reboot Type");
     submenu_add_item(
         submenu,
-        "固件升级",
+        "Firmware Upgrade",
         PowerSettingsRebootSubmenuIndexDfu,
         power_settings_scene_reboot_submenu_callback,
         app);
     submenu_add_item(
         submenu,
-        "重启 Flipper",
+        "Reboot Flipper",
         PowerSettingsRebootSubmenuIndexOs,
         power_settings_scene_reboot_submenu_callback,
         app);

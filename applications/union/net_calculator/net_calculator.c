@@ -166,8 +166,8 @@ static void vlsm_calculate(VlsmApp* app) {
     if(app->host_count == 0U) {
         furi_string_set(
             app->results,
-            "暂无子网需求\n"
-            "请先添加主机数");
+            "No subnet requests.\nAdd host counts first."
+            "");
 
         return;
     }
@@ -194,7 +194,7 @@ static void vlsm_calculate(VlsmApp* app) {
      * The text scroll widget wraps byte by byte and does not measure CJK
      * glyphs, so every line below is kept short enough for 128 px.
      */
-    furi_string_cat(app->results, "父网段: ");
+    furi_string_cat(app->results, "Parent: ");
     vlsm_append_ip(app->results, parent_network);
 
     furi_string_cat_printf(app->results, "/%u\n\n", app->prefix);
@@ -204,7 +204,8 @@ static void vlsm_calculate(VlsmApp* app) {
         uint8_t subnet_prefix;
 
         if(!vlsm_block_for_hosts(sorted[i], &block_size, &subnet_prefix)) {
-            furi_string_cat_printf(app->results, "#%u: 主机数无效\n", (unsigned int)(i + 1U));
+            furi_string_cat_printf(
+                app->results, "#%u: invalid host count\n", (unsigned int)(i + 1U));
 
             continue;
         }
@@ -220,8 +221,8 @@ static void vlsm_calculate(VlsmApp* app) {
            broadcast64 > 0xFFFFFFFFULL) {
             furi_string_cat_printf(
                 app->results,
-                "#%u: %lu 个主机\n"
-                "超出父网段\n",
+                "#%u: %lu hosts\nOVERFLOW\n"
+                "",
                 (unsigned int)(i + 1U),
                 (unsigned long)sorted[i]);
 
@@ -238,23 +239,23 @@ static void vlsm_calculate(VlsmApp* app) {
 
         furi_string_cat_printf(
             app->results,
-            "#%u  主机:%lu  /%u\n"
-            "网络: ",
+            "#%u  hosts:%lu  /%u\nN: "
+            "",
             (unsigned int)(i + 1U),
             (unsigned long)sorted[i],
             subnet_prefix);
 
         vlsm_append_ip(app->results, network);
 
-        furi_string_cat(app->results, "\n首主机: ");
+        furi_string_cat(app->results, "\nF: ");
 
         vlsm_append_ip(app->results, first_host);
 
-        furi_string_cat(app->results, "\n末主机: ");
+        furi_string_cat(app->results, "\nL: ");
 
         vlsm_append_ip(app->results, last_host);
 
-        furi_string_cat(app->results, "\n广播: ");
+        furi_string_cat(app->results, "\nB: ");
 
         vlsm_append_ip(app->results, broadcast);
 
@@ -315,7 +316,7 @@ static void vlsm_number_saved(void* context, int32_t number) {
 
         char header[24];
 
-        snprintf(header, sizeof(header), "IP 第%u/4段", app->ip_octet_index + 1U);
+        snprintf(header, sizeof(header), "IP octet %u/4", app->ip_octet_index + 1U);
 
         number_input_set_header_text(app->number_input, header);
 
@@ -393,7 +394,7 @@ static void vlsm_menu_callback(void* context, uint32_t index) {
 
         app->ip_octet_index = 0U;
 
-        number_input_set_header_text(app->number_input, "IP 第1/4段");
+        number_input_set_header_text(app->number_input, "IP octet 1/4");
 
         number_input_set_result_callback(
             app->number_input, vlsm_number_saved, app, app->ip[0], 0, 255);
@@ -405,7 +406,7 @@ static void vlsm_menu_callback(void* context, uint32_t index) {
     case VlsmMenuPrefix:
         app->number_mode = VlsmNumberPrefix;
 
-        number_input_set_header_text(app->number_input, "父网段前缀 /8..30");
+        number_input_set_header_text(app->number_input, "Parent prefix /8..30");
 
         number_input_set_result_callback(
             app->number_input, vlsm_number_saved, app, app->prefix, 8, 30);
@@ -418,8 +419,8 @@ static void vlsm_menu_callback(void* context, uint32_t index) {
         if(app->host_count >= VLSM_MAX_REQUESTS) {
             furi_string_set(
                 app->results,
-                "已达上限:\n"
-                "最多16个子网需求");
+                "Limit reached:\n16 subnet requests."
+                "");
 
             widget_reset(app->widget);
 
@@ -433,7 +434,7 @@ static void vlsm_menu_callback(void* context, uint32_t index) {
 
         app->number_mode = VlsmNumberHosts;
 
-        number_input_set_header_text(app->number_input, "所需可用主机数");
+        number_input_set_header_text(app->number_input, "Required usable hosts");
 
         number_input_set_result_callback(
             app->number_input, vlsm_number_saved, app, 10, 1, 16777214);
@@ -480,12 +481,12 @@ static void vlsm_menu_callback(void* context, uint32_t index) {
 static void vlsm_rebuild_requests_menu(VlsmApp* app) {
     submenu_reset(app->requests_submenu);
 
-    submenu_set_header(app->requests_submenu, "子网需求 OK=删除");
+    submenu_set_header(app->requests_submenu, "Requests: OK=delete");
 
     if(app->host_count == 0U) {
         submenu_add_item(
             app->requests_submenu,
-            "暂无需求",
+            "No requests",
             VLSM_EMPTY_REQUEST_INDEX,
             vlsm_request_callback,
             app);
@@ -497,7 +498,7 @@ static void vlsm_rebuild_requests_menu(VlsmApp* app) {
         snprintf(
             app->request_item_labels[i],
             sizeof(app->request_item_labels[i]),
-            "%u: %lu 个主机",
+            "%u: %lu hosts",
             (unsigned int)(i + 1U),
             (unsigned long)app->host_requests[i]);
 
@@ -516,7 +517,7 @@ static void vlsm_rebuild_requests_menu(VlsmApp* app) {
 static void vlsm_rebuild_menu(VlsmApp* app) {
     submenu_reset(app->submenu);
 
-    submenu_set_header(app->submenu, "子网计算器");
+    submenu_set_header(app->submenu, "Net Calculator");
 
     snprintf(
         app->ip_label,
@@ -527,25 +528,25 @@ static void vlsm_rebuild_menu(VlsmApp* app) {
         app->ip[2],
         app->ip[3]);
 
-    snprintf(app->prefix_label, sizeof(app->prefix_label), "前缀: /%u", app->prefix);
+    snprintf(app->prefix_label, sizeof(app->prefix_label), "Prefix: /%u", app->prefix);
 
     snprintf(
         app->requests_label,
         sizeof(app->requests_label),
-        "子网需求: %u",
+        "Requests: %u",
         (unsigned int)app->host_count);
 
     submenu_add_item(app->submenu, app->ip_label, VlsmMenuIp, vlsm_menu_callback, app);
 
     submenu_add_item(app->submenu, app->prefix_label, VlsmMenuPrefix, vlsm_menu_callback, app);
 
-    submenu_add_item(app->submenu, "添加主机需求", VlsmMenuAddHosts, vlsm_menu_callback, app);
+    submenu_add_item(app->submenu, "Add host request", VlsmMenuAddHosts, vlsm_menu_callback, app);
 
     submenu_add_item(app->submenu, app->requests_label, VlsmMenuRequests, vlsm_menu_callback, app);
 
-    submenu_add_item(app->submenu, "计算", VlsmMenuCalculate, vlsm_menu_callback, app);
+    submenu_add_item(app->submenu, "Calculate", VlsmMenuCalculate, vlsm_menu_callback, app);
 
-    submenu_add_item(app->submenu, "重置", VlsmMenuReset, vlsm_menu_callback, app);
+    submenu_add_item(app->submenu, "Reset", VlsmMenuReset, vlsm_menu_callback, app);
 }
 
 /*

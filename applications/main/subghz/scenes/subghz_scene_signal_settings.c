@@ -208,14 +208,14 @@ void subghz_scene_signal_settings_on_enter(void* context) {
 
     item = variable_item_list_add(
         variable_item_list,
-        "计数器模式",
+        "Counter Mode",
         mode_count,
         subghz_scene_signal_settings_counter_mode_changed,
         subghz);
     value_index = value_index_int32(counter_mode, counter_mode_value, mode_count);
     variable_item_set_current_value_index(item, value_index);
     variable_item_set_current_value_text(item, counter_mode_text[value_index]);
-    variable_item_set_locked(item, (counter_mode == 0xff), "此协议\n不支持此功能!");
+    variable_item_set_locked(item, (counter_mode == 0xff), "Not available\nfor this\nprotocol !");
     //
 
     SubGhzProtocolDecoderBase* decoder = subghz_txrx_get_decoder(subghz->txrx);
@@ -253,10 +253,10 @@ void subghz_scene_signal_settings_on_enter(void* context) {
         }
     }
 
-    item = variable_item_list_add(variable_item_list, "编辑计数器", 1, NULL, subghz);
+    item = variable_item_list_add(variable_item_list, "Edit Counter", 1, NULL, subghz);
     variable_item_set_current_value_index(item, 0);
     variable_item_set_current_value_text(item, furi_string_get_cstr(tmp_text));
-    variable_item_set_locked(item, (counter_not_available), "此协议\n不支持此功能!");
+    variable_item_set_locked(item, (counter_not_available), "Not available\nfor this\nprotocol !");
     //
 
     // ### Button edit section ###
@@ -270,10 +270,10 @@ void subghz_scene_signal_settings_on_enter(void* context) {
         btn_byte_ptr = (uint8_t*)&button;
     }
 
-    item = variable_item_list_add(variable_item_list, "编辑按键", 1, NULL, subghz);
+    item = variable_item_list_add(variable_item_list, "Edit Button", 1, NULL, subghz);
     variable_item_set_current_value_index(item, 0);
     variable_item_set_current_value_text(item, furi_string_get_cstr(tmp_text));
-    variable_item_set_locked(item, (button_not_available), "此协议\n不支持此功能!");
+    variable_item_set_locked(item, (button_not_available), "Not available\nfor this\nprotocol !");
     //
 
     furi_assert(cnt_byte_ptr);

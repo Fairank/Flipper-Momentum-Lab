@@ -3,12 +3,12 @@
 static const char* infrared_scene_gpio_settings_pin_text[] = {
     "Flipper",
     "2 (A7)",
-    "自动检测",
+    "Detect",
 };
 
 static const char* infrared_scene_gpio_settings_otg_text[] = {
-    "关",
-    "开",
+    "OFF",
+    "ON",
 };
 
 static void infrared_scene_gpio_settings_pin_change_callback(VariableItem* item) {
@@ -38,7 +38,7 @@ static void infrared_scene_gpio_settings_init(InfraredApp* infrared) {
 
     item = variable_item_list_add(
         var_item_list,
-        "信号输出",
+        "Signal Output",
         COUNT_OF(infrared_scene_gpio_settings_pin_text),
         infrared_scene_gpio_settings_pin_change_callback,
         infrared);
@@ -49,7 +49,7 @@ static void infrared_scene_gpio_settings_init(InfraredApp* infrared) {
 
     item = variable_item_list_add(
         var_item_list,
-        "GPIO 5V供电",
+        "5V on GPIO",
         COUNT_OF(infrared_scene_gpio_settings_otg_text),
         infrared_scene_gpio_settings_otg_change_callback,
         infrared);
@@ -62,7 +62,7 @@ static void infrared_scene_gpio_settings_init(InfraredApp* infrared) {
     } else {
         variable_item_set_values_count(item, 1);
         variable_item_set_current_value_index(item, 0);
-        variable_item_set_current_value_text(item, "自动");
+        variable_item_set_current_value_text(item, "Auto");
     }
 }
 

@@ -16,7 +16,7 @@ Bubble slots: 2
 Slot: 0
 X: 22
 Y: 40
-Text: 我想你了
+Text: I miss you
 AlignH: Right
 AlignV: Bottom
 StartFrame: 9
@@ -25,16 +25,16 @@ EndFrame: 11
 Slot: 0
 X: 17
 Y: 40
-Text: 我的朋友...
+Text: my friend...
 AlignH: Right
 AlignV: Bottom
 StartFrame: 12
 EndFrame: 15
 
 Slot: 1
-X: 4
+X: 2
 Y: 29
-Text: 怎么总不在？
+Text: Why are you\nalways away?
 AlignH: Right
 AlignV: Bottom
 StartFrame: 9

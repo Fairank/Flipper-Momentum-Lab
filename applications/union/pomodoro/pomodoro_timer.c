@@ -110,11 +110,11 @@ void pomodoro_draw_callback(Canvas* canvas, void* context, int max_seconds, int 
 
     // Header
     canvas_set_font(canvas, FontPrimary);
-    elements_multiline_text_aligned(canvas, 0, 0, AlignLeft, AlignTop, "番茄钟");
+    elements_multiline_text_aligned(canvas, 0, 0, AlignLeft, AlignTop, "Pomodoro");
 
     canvas_draw_icon(canvas, 68, 1, &I_Pin_back_arrow_10x8);
     canvas_set_font(canvas, FontSecondary);
-    elements_multiline_text_aligned(canvas, 127, 1, AlignRight, AlignTop, "长按退出");
+    elements_multiline_text_aligned(canvas, 127, 1, AlignRight, AlignTop, "Hold to exit");
 
     // Start/Pause/Continue
     // Baseline 35 keeps the 11 rows of the Chinese labels inside the pressed box
@@ -126,16 +126,16 @@ void pomodoro_draw_callback(Canvas* canvas, void* context, int max_seconds, int 
     }
     if(model->timer_running) {
         model->time_passed = current_timestamp - model->timer_start_timestamp;
-        elements_multiline_text_aligned(canvas, 83, txt_main_y, AlignLeft, AlignBottom, "暂停");
+        elements_multiline_text_aligned(canvas, 83, txt_main_y, AlignLeft, AlignBottom, "Pause");
         canvas_draw_box(canvas, 71, 27, 2, 8);
         canvas_draw_box(canvas, 75, 27, 2, 8);
     } else {
         if(model->time_passed) {
             elements_multiline_text_aligned(
-                canvas, 83, txt_main_y, AlignLeft, AlignBottom, "继续");
+                canvas, 83, txt_main_y, AlignLeft, AlignBottom, "Continue");
         } else {
             elements_multiline_text_aligned(
-                canvas, 83, txt_main_y, AlignLeft, AlignBottom, "开始");
+                canvas, 83, txt_main_y, AlignLeft, AlignBottom, "Start");
         }
         canvas_draw_icon(canvas, 70, 26, &I_Ok_btn_9x9); // OK icon
     }
@@ -149,7 +149,7 @@ void pomodoro_draw_callback(Canvas* canvas, void* context, int max_seconds, int 
             canvas_set_color(canvas, ColorWhite);
         }
         canvas_draw_icon(canvas, 72, 50, &I_ButtonLeft_4x7);
-        elements_multiline_text_aligned(canvas, 83, 58, AlignLeft, AlignBottom, "重置");
+        elements_multiline_text_aligned(canvas, 83, 58, AlignLeft, AlignBottom, "Reset");
         canvas_set_color(canvas, ColorBlack);
     }
 
@@ -182,7 +182,7 @@ void pomodoro_draw_callback(Canvas* canvas, void* context, int max_seconds, int 
     }
     if(model->timer_running) {
         canvas_set_font(canvas, FontPrimary);
-        elements_multiline_text_aligned(canvas, 0, 50, AlignLeft, AlignTop, "专注工作");
+        elements_multiline_text_aligned(canvas, 0, 50, AlignLeft, AlignTop, "Time to work");
     }
 
     // Time to rest
@@ -215,7 +215,7 @@ void pomodoro_draw_callback(Canvas* canvas, void* context, int max_seconds, int 
         canvas_draw_str(canvas, 0, 60, buffer);
 
         canvas_set_font(canvas, FontPrimary);
-        elements_multiline_text_aligned(canvas, 0, 27, AlignLeft, AlignTop, "休息一下");
+        elements_multiline_text_aligned(canvas, 0, 27, AlignLeft, AlignTop, "Have a rest");
     }
 
     // Clocks

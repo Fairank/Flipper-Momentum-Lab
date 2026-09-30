@@ -37,7 +37,7 @@ static void ibutton_scene_write_draw(iButton* ibutton, const char* target) {
     Widget* widget = ibutton->widget;
     const char* proto =
         ibutton_protocols_get_name(ibutton->protocols, ibutton_key_get_protocol_id(ibutton->key));
-    const char* source = furi_string_empty(ibutton->file_path) ? "未保存钥匙" : ibutton->key_name;
+    const char* source = furi_string_empty(ibutton->file_path) ? "Unsaved Key" : ibutton->key_name;
 
     if(target) {
         snprintf(
@@ -57,7 +57,7 @@ static void ibutton_scene_write_draw(iButton* ibutton, const char* target) {
         AlignCenter,
         AlignTop,
         FontPrimary,
-        ibutton->write_mode == iButtonWriteModeCopy ? "完整写入中" : "写入ID中");
+        ibutton->write_mode == iButtonWriteModeCopy ? "Full Writing" : "Writing ID");
 }
 
 // Replaces the writing screen once the worker has given up, so it stays until the user
@@ -65,7 +65,7 @@ static void ibutton_scene_write_draw(iButton* ibutton, const char* target) {
 static void ibutton_scene_write_show_error(iButton* ibutton, const char* text) {
     widget_reset(ibutton->widget);
     widget_add_string_element(
-        ibutton->widget, 64, 4, AlignCenter, AlignTop, FontPrimary, "无法写入");
+        ibutton->widget, 64, 4, AlignCenter, AlignTop, FontPrimary, "Cannot Write");
     widget_add_text_box_element(
         ibutton->widget, 0, 20, 128, 44, AlignCenter, AlignTop, text, false);
 }
@@ -91,7 +91,7 @@ void ibutton_scene_write_on_enter(void* context) {
     // an empty blank list must not block it. Knowable before the worker runs, so say it
     // rather than flashing up a writing screen the first tick would replace a second later.
     if(ibutton->write_mode == iButtonWriteModeId && enabled == 0) {
-        ibutton_scene_write_show_error(ibutton, "未启用空白钥匙\n请在设置中\n启用一种");
+        ibutton_scene_write_show_error(ibutton, "No blanks enabled.\nEnable one in\nSettings");
         ibutton_notification_message(ibutton, iButtonNotificationMessageYellowBlink);
         view_dispatcher_switch_to_view(ibutton->view_dispatcher, iButtonViewWidget);
         return;
@@ -132,7 +132,7 @@ bool ibutton_scene_write_on_event(void* context, SceneManagerEvent event) {
         } else if(event.event == iButtonCustomEventWorkerWriteStartTarget) {
             ibutton_scene_write_draw(ibutton, ibutton_worker_get_write_chip_name(ibutton->worker));
         } else if(event.event == iButtonCustomEventWorkerWriteNoEnabledTarget) {
-            ibutton_scene_write_show_error(ibutton, "已启用空白钥匙\n均不支持此钥匙");
+            ibutton_scene_write_show_error(ibutton, "No enabled blank\ncan write this key");
             ibutton_notification_message(ibutton, iButtonNotificationMessageYellowBlink);
         }
     }

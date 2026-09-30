@@ -336,7 +336,7 @@ static void format_alarm_time(char* buf, size_t n, uint8_t h24, uint8_t minute, 
         uint8_t h12;
         bool pm;
         to_12h(h24, &h12, &pm);
-        snprintf(buf, n, "%u:%.2u %s", h12, minute, pm ? "下午" : "上午");
+        snprintf(buf, n, "%u:%.2u %s", h12, minute, pm ? "PM" : "AM");
     } else {
         snprintf(buf, n, "%.2u:%.2u", h24, minute);
     }
@@ -412,7 +412,7 @@ static void draw_clock_face(Canvas* canvas, SegmentClock* clock) {
     if(clock->time_format == LocaleTimeFormat12h) {
         canvas_set_font(canvas, FontSecondary);
         canvas_draw_str_aligned(
-            canvas, 126, 62, AlignRight, AlignBottom, (hours >= 12) ? "下午" : "上午");
+            canvas, 126, 62, AlignRight, AlignBottom, (hours >= 12) ? "PM" : "AM");
     }
 
     // A small filled dot in the top-left corner marks the alarm as armed - kept
@@ -443,14 +443,14 @@ static void draw_alarm_firing(Canvas* canvas, SegmentClock* clock) {
     }
     // FontBigNumbers has no letters, so ALARM has to use a text font.
     canvas_set_font(canvas, FontPrimary);
-    canvas_draw_str_aligned(canvas, 64, 26, AlignCenter, AlignCenter, "! 闹钟 !");
+    canvas_draw_str_aligned(canvas, 64, 26, AlignCenter, AlignCenter, "! ALARM !");
     canvas_set_font(canvas, FontSecondary);
-    canvas_draw_str_aligned(canvas, 64, 44, AlignCenter, AlignCenter, "按任意键停止");
+    canvas_draw_str_aligned(canvas, 64, 44, AlignCenter, AlignCenter, "Press any key to stop");
 }
 
 static void draw_alarm_menu(Canvas* canvas, SegmentClock* clock) {
     canvas_set_font(canvas, FontPrimary);
-    canvas_draw_str_aligned(canvas, 64, 3, AlignCenter, AlignTop, "闹钟");
+    canvas_draw_str_aligned(canvas, 64, 3, AlignCenter, AlignTop, "Alarm");
 
     char timebuf[20];
     format_alarm_time(
@@ -460,8 +460,8 @@ static void draw_alarm_menu(Canvas* canvas, SegmentClock* clock) {
         clock->settings.alarm_minute,
         clock->time_format == LocaleTimeFormat12h);
     char row0[24], row1[32];
-    snprintf(row0, sizeof(row0), "闹钟: %s", clock->settings.alarm_enabled ? "开启" : "关闭");
-    snprintf(row1, sizeof(row1), "时间: %s", timebuf);
+    snprintf(row0, sizeof(row0), "Alarm:  %s", clock->settings.alarm_enabled ? "ON" : "OFF");
+    snprintf(row1, sizeof(row1), "Time:   %s", timebuf);
     const char* rows[2] = {row0, row1};
 
     canvas_set_font(canvas, FontSecondary);
@@ -474,13 +474,13 @@ static void draw_alarm_menu(Canvas* canvas, SegmentClock* clock) {
         canvas_draw_str_aligned(canvas, 10, y + 5, AlignLeft, AlignCenter, rows[i]);
         canvas_set_color(canvas, ColorBlack);
     }
-    canvas_draw_str_aligned(canvas, 64, 62, AlignCenter, AlignBottom, "OK:选择  返回:退出");
+    canvas_draw_str_aligned(canvas, 64, 62, AlignCenter, AlignBottom, "OK select   Back exit");
 }
 
 static void draw_alarm_time(Canvas* canvas, SegmentClock* clock) {
     bool h12mode = (clock->time_format == LocaleTimeFormat12h);
     canvas_set_font(canvas, FontPrimary);
-    canvas_draw_str_aligned(canvas, 64, 4, AlignCenter, AlignTop, "闹钟时间");
+    canvas_draw_str_aligned(canvas, 64, 4, AlignCenter, AlignTop, "Alarm time");
 
     char hh[4], mm[4];
     bool pm = false;
@@ -503,7 +503,7 @@ static void draw_alarm_time(Canvas* canvas, SegmentClock* clock) {
     canvas_draw_str_aligned(canvas, mx, 32, AlignCenter, AlignCenter, mm);
     if(h12mode) {
         canvas_set_font(canvas, FontPrimary);
-        canvas_draw_str_aligned(canvas, 104, 32, AlignCenter, AlignCenter, pm ? "下午" : "上午");
+        canvas_draw_str_aligned(canvas, 104, 32, AlignCenter, AlignCenter, pm ? "PM" : "AM");
     }
 
     uint8_t ux, uw;
@@ -520,7 +520,7 @@ static void draw_alarm_time(Canvas* canvas, SegmentClock* clock) {
     canvas_draw_line(canvas, ux - uw / 2, 46, ux + uw / 2, 46);
 
     canvas_set_font(canvas, FontSecondary);
-    canvas_draw_str_aligned(canvas, 64, 60, AlignCenter, AlignBottom, "上/下:调整  OK:保存");
+    canvas_draw_str_aligned(canvas, 64, 60, AlignCenter, AlignBottom, "Up/Down set   OK save");
 }
 
 static void draw_callback(Canvas* canvas, void* ctx) {

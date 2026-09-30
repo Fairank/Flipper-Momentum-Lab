@@ -73,10 +73,10 @@ void format_time_string(char* buffer, size_t size, int32_t total_minutes) {
 
     // Display only: compact Chinese unit suffixes, no plural forms
     if(days > 0) {
-        snprintf(buffer, size, "%ld天%ld时%ld分", (long)days, (long)hours, (long)minutes);
+        snprintf(buffer, size, "%ldd %ldh %ldmin", (long)days, (long)hours, (long)minutes);
     } else if(hours > 0) {
-        snprintf(buffer, size, "%ld时%ld分", (long)hours, (long)minutes);
+        snprintf(buffer, size, "%ldh %ldmin", (long)hours, (long)minutes);
     } else {
-        snprintf(buffer, size, "%ld分", (long)minutes);
+        snprintf(buffer, size, "%ldmin", (long)minutes);
     }
 }

@@ -1,6 +1,6 @@
 App(
     appid="gps_rpc",
-    name="手机 GPS",
+    name="[RPC] GPS",
     apptype=FlipperAppType.EXTERNAL,
     entry_point="gps_app",
     requires=["gui"],
@@ -9,5 +9,5 @@ App(
     fap_category="Tools",
     fap_author="@ezod & @xMasterX & @apfxtech",
     fap_version="3.0",
-    fap_description="通过 RPC 显示配套设备的位置信息",
+    fap_description="Shows the companion device location over RPC",
 )

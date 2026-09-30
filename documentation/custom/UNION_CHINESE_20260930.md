@@ -1,5 +1,7 @@
 # 中文界面与第三方应用：第四轮（2026-09-30）
 
+> 历史记录：用户随后改为本机英文、手机中文；本机中文待办已撤销，功能修复保留。当前范围见 [本机英文、手机中文](DEVICE_ENGLISH_PHONE_CHINESE_20260930.md)。下方中文截图与数字对应当时的提交。
+
 接续代码基线 `e3c8cfaf`，继续在 [草稿 PR #1](https://github.com/Fairank/Flipper-Momentum-Lab/pull/1) 的 `codex/iphone-zh-architecture` 分支工作。应用与固件代码为 `12b8c35f3`，存储回归及手机比较入口修订为 `6f94bdc9d`。本轮增加四个可编译应用，继续补中文按钮和文字编辑正确性；**仍未达到中文全覆盖或 Momentum/Unleashed 的完整功能并集**。提交、自动测试和安装附件以 [验证记录](VALIDATION.md) 本轮段落为准，逐文件摘要与实际模型状态见 [JSON 记录](UNION_CHINESE_20260930.json)。
 
 ## 新增应用

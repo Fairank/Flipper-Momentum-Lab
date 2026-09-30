@@ -26,7 +26,7 @@ static void mf_desfire_scene_more_info_on_enter(NfcApp* nfc) {
 
     submenu_add_item(
         submenu,
-        "卡片信息",
+        "Card info",
         MoreInfoSubmenuIndexCardInfo,
         nfc_protocol_support_common_submenu_callback,
         nfc);
@@ -36,7 +36,7 @@ static void mf_desfire_scene_more_info_on_enter(NfcApp* nfc) {
     for(uint32_t i = 0; i < simple_array_get_count(data->application_ids); ++i) {
         const MfDesfireApplicationId* app_id = simple_array_cget(data->application_ids, i);
         furi_string_printf(
-            label, "应用 %02x%02x%02x", app_id->data[2], app_id->data[1], app_id->data[0]);
+            label, "App %02x%02x%02x", app_id->data[2], app_id->data[1], app_id->data[0]);
         submenu_add_item(
             submenu,
             furi_string_get_cstr(label),
@@ -125,7 +125,7 @@ static void mf_desfire_scene_app_on_enter(NfcApp* nfc) {
     text_box_set_font(nfc->text_box, TextBoxFontHex);
     submenu_add_item(
         nfc->submenu,
-        "应用信息",
+        "App info",
         AppSubmenuIndexAppInfo,
         mf_desfire_scene_app_submenu_callback,
         nfc);
@@ -141,7 +141,7 @@ static void mf_desfire_scene_app_on_enter(NfcApp* nfc) {
     for(uint32_t i = 0; i < simple_array_get_count(app->file_ids); ++i) {
         const MfDesfireFileId file_id =
             *(const MfDesfireFileId*)simple_array_cget(app->file_ids, i);
-        furi_string_printf(label, "文件 %d", file_id);
+        furi_string_printf(label, "File %d", file_id);
         submenu_add_item(
             nfc->submenu,
             furi_string_get_cstr(label),

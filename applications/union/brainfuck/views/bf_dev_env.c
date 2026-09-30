@@ -129,7 +129,7 @@ static void bf_dev_draw_callback(Canvas* canvas, void* _model) {
     UNUSED(_model);
 
     if(saveNotifyCountdown > 0) {
-        canvas_draw_str_aligned(canvas, 64, 32, AlignCenter, AlignCenter, "已保存");
+        canvas_draw_str_aligned(canvas, 64, 32, AlignCenter, AlignCenter, "SAVED");
         saveNotifyCountdown--;
         return;
     }
@@ -144,10 +144,10 @@ static void bf_dev_draw_callback(Canvas* canvas, void* _model) {
     bf_dev_draw_button(canvas, 113, 36, (selectedButton == 7), ","); //B 3
 
     //backspace, input, run, save
-    bf_dev_draw_action(canvas, 0, (selectedButton == 8), "删除");
-    bf_dev_draw_action(canvas, 1, (selectedButton == 9), "输入");
-    bf_dev_draw_action(canvas, 2, (selectedButton == 10), "运行");
-    bf_dev_draw_action(canvas, 3, (selectedButton == 11), "保存");
+    bf_dev_draw_action(canvas, 0, (selectedButton == 8), "Del");
+    bf_dev_draw_action(canvas, 1, (selectedButton == 9), "Input");
+    bf_dev_draw_action(canvas, 2, (selectedButton == 10), "Run");
+    bf_dev_draw_action(canvas, 3, (selectedButton == 11), "Save");
 
     if(saveNotifyCountdown > 0) {
         canvas_draw_icon(canvas, 98, 54, &I_ButtonRightSmall_3x5);

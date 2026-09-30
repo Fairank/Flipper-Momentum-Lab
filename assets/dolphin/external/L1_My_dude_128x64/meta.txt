@@ -16,7 +16,7 @@ Bubble slots: 1
 Slot: 0
 X: 41
 Y: 43
-Text: 老兄
+Text: My dude
 AlignH: Right
 AlignV: Top
 StartFrame: 50
@@ -25,7 +25,7 @@ EndFrame: 50
 Slot: 0
 X: 59
 Y: 43
-Text: 老兄
+Text: My dude
 AlignH: Left
 AlignV: Top
 StartFrame: 54

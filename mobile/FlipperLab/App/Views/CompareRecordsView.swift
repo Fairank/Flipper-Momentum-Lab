@@ -97,7 +97,7 @@ private struct RecordComparison: Sendable {
             do {
                 let output = try await Task.detached(priority: .userInitiated) { try RecordComparison.make(a, b) }.value
                 try Task.checkCancellation(); result = output
-            } catch { if !Task.isCancelled { failure = error.localizedDescription } }
+            } catch { if !Task.isCancelled { failure = PhoneErrorDescription.describe(error) } }
         }
     }
 

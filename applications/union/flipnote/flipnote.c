@@ -66,12 +66,12 @@ typedef enum {
 
 /* ---- static data ---- */
 static const float SCALES[SCALE_COUNT] = {0.25f, 0.50f, 0.75f, 1.00f, 1.25f, 1.50f, 1.75f, 2.00f};
-static const char* TAB_NAMES[3] = {"文", "编", "视"}; /* 文件 / 编辑 / 视图 */
+static const char* TAB_NAMES[3] = {"F", "E", "V"}; /* 文件 / 编辑 / 视图 */
 static const int TAB_X[3] = {1, 17, 33};
-static const char* FILE_ITEMS[4] = {"新建", "打开", "保存", "另存为"};
+static const char* FILE_ITEMS[4] = {"New", "Open", "Save", "Save As"};
 static const char* EDIT_ITEMS[7] =
-    {"查找", "查找替换", "复制行", "粘贴行", "删除行", "全部清空", "跳转到行"};
-static const char* VIEW_ITEMS[4] = {"缩放", "行号", "首行", "末行"};
+    {"Find", "Find+Replace", "Copy Line", "Paste Line", "Delete Row", "Clear All", "Goto Row"};
+static const char* VIEW_ITEMS[4] = {"Scale", "Row Numbers", "First Row", "Last Row"};
 
 /* ---- model (heap-allocated via view) ---- */
 typedef struct {
@@ -615,7 +615,7 @@ static void draw_cb(Canvas* canvas, void* ctx) {
         if(m->ftotal > 0)
             snprintf(cnt, sizeof(cnt), "%d/%d", m->fidx + 1, m->ftotal);
         else
-            snprintf(cnt, sizeof(cnt), "无匹配");
+            snprintf(cnt, sizeof(cnt), "no match");
         uint16_t w = canvas_string_width(canvas, cnt);
         header_fit(canvas, hdr, 127 - w - 3);
         canvas_draw_str(canvas, 1, hdr_base(hdr), hdr);
@@ -633,7 +633,7 @@ static void draw_cb(Canvas* canvas, void* ctx) {
         canvas_draw_line(canvas, TAB_SEP_X, 0, TAB_SEP_X, HEADER_H - 1);
         char disp[48];
         if(m->is_new)
-            snprintf(disp, sizeof(disp), "%s(新建)", m->dirty ? "*" : "");
+            snprintf(disp, sizeof(disp), "%s(new)", m->dirty ? "*" : "");
         else {
             const char* fn = m->filename;
             const char* sl = strrchr(fn, '/');
@@ -648,11 +648,11 @@ static void draw_cb(Canvas* canvas, void* ctx) {
         }
         char info[24];
         if(m->read_only)
-            snprintf(info, sizeof(info), "只读");
+            snprintf(info, sizeof(info), "Read-only");
         else if(m->save_failed)
-            snprintf(info, sizeof(info), "保存失败");
+            snprintf(info, sizeof(info), "Save failed");
         else
-            snprintf(info, sizeof(info), "%d行", m->total);
+            snprintf(info, sizeof(info), "%dL", m->total);
         uint16_t w = canvas_string_width(canvas, info);
         header_fit(canvas, disp, 127 - w - (TAB_SEP_X + 2) - 2);
         canvas_draw_str(canvas, TAB_SEP_X + 2, hdr_base(disp), disp);
@@ -739,9 +739,9 @@ static void draw_cb(Canvas* canvas, void* ctx) {
                 if(m->scale_ed)
                     snprintf(lbl, sizeof(lbl), "<%.2f>", (double)SCALES[m->scale]);
                 else
-                    snprintf(lbl, sizeof(lbl), "缩放 %.2f", (double)SCALES[m->scale]);
+                    snprintf(lbl, sizeof(lbl), "Scale %.2f", (double)SCALES[m->scale]);
             } else if(tab == 2 && item == 1) {
-                snprintf(lbl, sizeof(lbl), "行号 [%s]", m->row_nums ? "开" : "关");
+                snprintf(lbl, sizeof(lbl), "Row# [%s]", m->row_nums ? "ON" : "OFF");
             } else {
                 snprintf(lbl, sizeof(lbl), "%s", mname(tab, item));
             }
@@ -777,15 +777,15 @@ static bool custom_ev(void* ctx, uint32_t ev) {
     if(ev == EvReadOnly) {
         DialogsApp* d = furi_record_open(RECORD_DIALOGS);
         DialogMessage* message = dialog_message_alloc();
-        dialog_message_set_header(message, "只读预览", 64, 2, AlignCenter, AlignTop);
+        dialog_message_set_header(message, "Read-only preview", 64, 2, AlignCenter, AlignTop);
         dialog_message_set_text(
             message,
-            "文件无法安全编辑\n每行最多127字节\n最多2000行",
+            "File unsafe to edit\nMax 127 bytes/line\nMax 2000 lines",
             64,
             17,
             AlignCenter,
             AlignTop);
-        dialog_message_set_buttons(message, NULL, "知道了", NULL);
+        dialog_message_set_buttons(message, NULL, "Got it", NULL);
         dialog_message_show(d, message);
         dialog_message_free(message);
         furi_record_close(RECORD_DIALOGS);
@@ -902,7 +902,7 @@ static void text_done(void* ctx) {
         view_commit_model(app->ev, false);
         strncpy(app->ptxt, app->ebuf, MAX_LINE - 1);
         app->pending = PFindRepR;
-        show_text(app, "替换为", "");
+        show_text(app, "Replace with", "");
         break;
     case PFindRepR:
         do_find_replace_virtual(m, m->filename, app->ptxt, app->ebuf);
@@ -1179,18 +1179,18 @@ static bool input_cb(InputEvent* ev, void* ctx) {
 
     if(post == PEditLine) {
         app->pending = PEditLine;
-        show_text(app, "编辑行", app->ebuf);
+        show_text(app, "Edit Line", app->ebuf);
     } else if(post == PSavePath) {
         app->pending = PSavePath;
-        show_text(app, "另存为", "/ext/");
+        show_text(app, "Save As", "/ext/");
     } else if(post == PFindQ) {
         app->pending = PFindQ;
-        show_text(app, "查找", "");
+        show_text(app, "Find", "");
     } else if(post == PFindRepQ) {
         app->pending = PFindRepQ;
-        show_text(app, "查找", "");
+        show_text(app, "Find", "");
     } else if(post == PGotoRow) {
-        number_input_set_header_text(app->ni, "跳转到行");
+        number_input_set_header_text(app->ni, "Goto Row");
         number_input_set_result_callback(app->ni, num_done, app, app->goto_cur, 1, app->goto_cnt);
         view_dispatcher_switch_to_view(app->vd, AppViewNum);
     }

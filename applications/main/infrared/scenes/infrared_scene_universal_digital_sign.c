@@ -67,7 +67,7 @@ void infrared_scene_universal_digital_sign_on_enter(void* context) {
     button_panel_add_icon(button_panel, 38, 80, &I_stop_text_19x5);
     infrared_brute_force_add_record(brute_force, i++, "STOP");
 
-    button_panel_add_label(button_panel, 1, 11, FontPrimary, "标牌");
+    button_panel_add_label(button_panel, 1, 11, FontPrimary, "Digital Signs");
 
     infrared_scene_universal_common_on_enter(context);
 }

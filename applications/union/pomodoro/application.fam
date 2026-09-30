@@ -1,6 +1,6 @@
 App(
     appid="pomodoro_timer",
-    name="番茄钟",
+    name="Pomodoro Timer",
     apptype=FlipperAppType.EXTERNAL,
     entry_point="pomodoro_app",
     stack_size=1 * 1024,
@@ -14,5 +14,5 @@ App(
     fap_author="@sbrin",
     fap_weburl="https://github.com/sbrin/flipperzero_pomodoro",
     fap_version="1.5",
-    fap_description="把 Flipper Zero 用作番茄工作法计时器。",
+    fap_description="Use your Flipper Zero as a Pomodoro Timer.",
 )

@@ -70,7 +70,7 @@ static void render_callback(Canvas* canvas, void* context) {
     char buffer[64];
 
     canvas_set_font(canvas, FontPrimary);
-    canvas_draw_str_aligned(canvas, 64, 11, AlignCenter, AlignBottom, "手机联网测试");
+    canvas_draw_str_aligned(canvas, 64, 11, AlignCenter, AlignBottom, "Internet test");
 
     canvas_set_font(canvas, FontSecondary);
     canvas_draw_str_aligned(canvas, 64, 21, AlignCenter, AlignBottom, NETWORK_TEST_URL);
@@ -78,19 +78,19 @@ static void render_callback(Canvas* canvas, void* context) {
     const char* status;
     switch(test->state) {
     case AppStateNoBridge:
-        status = "请连接手机并开启共享";
+        status = "No USB/BLE connection";
         break;
     case AppStateInit:
-        status = "按确定键开始";
+        status = "Press OK to start";
         break;
     case AppStateRequesting:
-        status = "正在请求并写入 SD 卡";
+        status = "Requesting...";
         break;
     case AppStateDone:
-        status = "手机联网请求已完成";
+        status = "Internet available";
         break;
     case AppStateError:
-        status = "失败，按确定重试";
+        status = "Failed, OK to retry";
         break;
     default:
         status = "";
@@ -99,7 +99,7 @@ static void render_callback(Canvas* canvas, void* context) {
     canvas_draw_str_aligned(canvas, 64, 33, AlignCenter, AlignBottom, status);
 
     if(test->state == AppStateError) {
-        snprintf(buffer, sizeof(buffer), "错误码: %u", (unsigned)test->error);
+        snprintf(buffer, sizeof(buffer), "Error code: %u", (unsigned)test->error);
         canvas_draw_str_aligned(canvas, 64, 46, AlignCenter, AlignBottom, buffer);
     } else if(test->http_status) {
         snprintf(buffer, sizeof(buffer), "HTTP %lu", (unsigned long)test->http_status);
@@ -107,8 +107,8 @@ static void render_callback(Canvas* canvas, void* context) {
     }
 
     if(test->state == AppStateDone) {
-        const char* tail = test->saved_to_file ? "已存卡" : "已接收";
-        snprintf(buffer, sizeof(buffer), "%lu 字节 %s", (unsigned long)test->body_size, tail);
+        const char* tail = test->saved_to_file ? "saved to SD" : "received";
+        snprintf(buffer, sizeof(buffer), "%lu bytes %s", (unsigned long)test->body_size, tail);
         canvas_draw_str_aligned(canvas, 64, 59, AlignCenter, AlignBottom, buffer);
     }
 

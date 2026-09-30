@@ -73,7 +73,7 @@ typedef struct {
 } History;
 
 static const Dice dice_types[] = {
-    {2, 0, 0, "硬币"},
+    {2, 0, 0, "Coin"},
     {4, 0, 0, "d4"},
     {6, 0, 0, "d6"},
     {8, 0, 0, "d8"},

@@ -16,7 +16,7 @@ static void momentum_app_scene_interface_graphics_asset_pack_changed(VariableIte
     MomentumApp* app = variable_item_get_context(item);
     uint8_t index = variable_item_get_current_value_index(item);
     variable_item_set_current_value_text(
-        item, index == 0 ? "默认" : *CharList_get(app->asset_pack_names, index - 1));
+        item, index == 0 ? "Default" : *CharList_get(app->asset_pack_names, index - 1));
     strlcpy(
         momentum_settings.asset_pack,
         index == 0 ? "" : *CharList_get(app->asset_pack_names, index - 1),
@@ -107,7 +107,7 @@ static void momentum_app_scene_interface_graphics_cycle_anims_changed(VariableIt
 static void momentum_app_scene_interface_graphics_unlock_anims_changed(VariableItem* item) {
     MomentumApp* app = variable_item_get_context(item);
     bool value = variable_item_get_current_value_index(item);
-    variable_item_set_current_value_text(item, value ? "开" : "关");
+    variable_item_set_current_value_text(item, value ? "ON" : "OFF");
     momentum_settings.unlock_anims = value;
     app->save_settings = true;
 }
@@ -120,7 +120,7 @@ void momentum_app_scene_interface_graphics_on_enter(void* context) {
 
     item = variable_item_list_add(
         var_item_list,
-        "资源包",
+        "Asset Pack",
         CharList_size(app->asset_pack_names) + 1,
         momentum_app_scene_interface_graphics_asset_pack_changed,
         app);
@@ -128,12 +128,12 @@ void momentum_app_scene_interface_graphics_on_enter(void* context) {
     variable_item_set_current_value_text(
         item,
         app->asset_pack_index == 0 ?
-            "默认" :
+            "Default" :
             *CharList_get(app->asset_pack_names, app->asset_pack_index - 1));
 
     item = variable_item_list_add(
         var_item_list,
-        "动画速度",
+        "Anim Speed",
         COUNT_OF(anim_speed_names),
         momentum_app_scene_interface_graphics_anim_speed_changed,
         app);
@@ -144,7 +144,7 @@ void momentum_app_scene_interface_graphics_on_enter(void* context) {
 
     item = variable_item_list_add(
         var_item_list,
-        "轮播动画",
+        "Cycle Anims",
         COUNT_OF(cycle_anims_names),
         momentum_app_scene_interface_graphics_cycle_anims_changed,
         app);
@@ -155,12 +155,12 @@ void momentum_app_scene_interface_graphics_on_enter(void* context) {
 
     item = variable_item_list_add(
         var_item_list,
-        "解锁动画",
+        "Unlock Anims",
         2,
         momentum_app_scene_interface_graphics_unlock_anims_changed,
         app);
     variable_item_set_current_value_index(item, momentum_settings.unlock_anims);
-    variable_item_set_current_value_text(item, momentum_settings.unlock_anims ? "开" : "关");
+    variable_item_set_current_value_text(item, momentum_settings.unlock_anims ? "ON" : "OFF");
 
     variable_item_list_set_enter_callback(
         var_item_list, momentum_app_scene_interface_graphics_var_item_list_callback, app);

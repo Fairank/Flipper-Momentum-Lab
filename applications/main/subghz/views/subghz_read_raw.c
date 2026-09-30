@@ -318,16 +318,16 @@ void subghz_read_raw_draw(Canvas* canvas, SubGhzReadRAWModel* model) {
 
     switch(model->status) {
     case SubGhzReadRAWStatusIDLE:
-        elements_button_left(canvas, "擦除");
-        elements_button_center(canvas, "发送");
-        elements_button_right(canvas, "保存");
+        elements_button_left(canvas, "Erase");
+        elements_button_center(canvas, "Send");
+        elements_button_right(canvas, "Save");
         break;
     case SubGhzReadRAWStatusLoadKeyIDLE:
         if(!model->raw_send_only) {
-            elements_button_left(canvas, "新建");
-            elements_button_right(canvas, "更多");
+            elements_button_left(canvas, "New");
+            elements_button_right(canvas, "More");
         }
-        elements_button_center(canvas, "发送");
+        elements_button_center(canvas, "Send");
         elements_text_box(
             canvas,
             4,
@@ -345,16 +345,16 @@ void subghz_read_raw_draw(Canvas* canvas, SubGhzReadRAWModel* model) {
     case SubGhzReadRAWStatusLoadKeyTX:
     case SubGhzReadRAWStatusLoadKeyTXRepeat:
         graphics_mode = 0;
-        elements_button_center(canvas, "长按重复");
+        elements_button_center(canvas, "Hold to repeat");
         break;
 
     case SubGhzReadRAWStatusStart:
-        elements_button_left(canvas, "配置");
-        elements_button_center(canvas, "录制");
+        elements_button_left(canvas, "Config");
+        elements_button_center(canvas, "REC");
         break;
 
     default:
-        elements_button_center(canvas, "停止");
+        elements_button_center(canvas, "Stop");
         break;
     }
 

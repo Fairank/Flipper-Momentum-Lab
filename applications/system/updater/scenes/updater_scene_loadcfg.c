@@ -25,7 +25,7 @@ void updater_scene_loadcfg_on_enter(void* context) {
 
     if(update_manifest_init(loaded_manifest, furi_string_get_cstr(updater->startup_arg))) {
         widget_add_string_element(
-            updater->widget, 64, 12, AlignCenter, AlignCenter, FontPrimary, "固件升级");
+            updater->widget, 64, 12, AlignCenter, AlignCenter, FontPrimary, "Update");
 
         widget_add_text_box_element(
             updater->widget,
@@ -41,16 +41,20 @@ void updater_scene_loadcfg_on_enter(void* context) {
         widget_add_button_element(
             updater->widget,
             GuiButtonTypeRight,
-            "安装",
+            "Install",
             updater_scene_loadcfg_apply_callback,
             updater);
     } else {
         widget_add_string_element(
-            updater->widget, 64, 24, AlignCenter, AlignCenter, FontPrimary, "升级清单无效");
+            updater->widget, 64, 24, AlignCenter, AlignCenter, FontPrimary, "Invalid manifest");
     }
 
     widget_add_button_element(
-        updater->widget, GuiButtonTypeLeft, "取消", updater_scene_loadcfg_apply_callback, updater);
+        updater->widget,
+        GuiButtonTypeLeft,
+        "Cancel",
+        updater_scene_loadcfg_apply_callback,
+        updater);
 
     view_dispatcher_switch_to_view(updater->view_dispatcher, UpdaterViewWidget);
 }

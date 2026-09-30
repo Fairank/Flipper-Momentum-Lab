@@ -43,7 +43,7 @@ import FlipperCore
         .fileImporter(isPresented: $importing, allowedContentTypes: [.data, .text]) { result in
             switch result {
             case .success(let url): model.importFile(url)
-            case .failure(let error): model.error = error.localizedDescription
+            case .failure(let error): model.error = PhoneErrorDescription.describe(error)
             }
         }
         .navigationDestination(isPresented: $browsingDevice) {

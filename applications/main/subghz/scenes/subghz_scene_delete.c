@@ -54,9 +54,9 @@ void subghz_scene_delete_on_enter(void* context) {
     furi_string_free(text_out);
 
     widget_add_button_element(
-        subghz->widget, GuiButtonTypeRight, "删除", subghz_scene_delete_callback, subghz);
+        subghz->widget, GuiButtonTypeRight, "Delete", subghz_scene_delete_callback, subghz);
     widget_add_button_element(
-        subghz->widget, GuiButtonTypeLeft, "取消", subghz_scene_delete_callback, subghz);
+        subghz->widget, GuiButtonTypeLeft, "Cancel", subghz_scene_delete_callback, subghz);
 
     view_dispatcher_switch_to_view(subghz->view_dispatcher, SubGhzViewIdWidget);
 }

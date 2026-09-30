@@ -135,14 +135,14 @@ static const char* const level8_rows[] = {
 };
 
 static const LevelDef levels[] = {
-    {"初次弹跳", 8, level1_rows},
-    {"荆棘", 8, level2_rows},
-    {"弹簧塔", 10, level3_rows},
-    {"刺球", 8, level4_rows},
-    {"攀登", 16, level5_rows},
-    {"深水", 10, level6_rows},
-    {"尖刺走廊", 8, level7_rows},
-    {"最终关卡", 12, level8_rows},
+    {"First Bounce", 8, level1_rows},
+    {"Thorns", 8, level2_rows},
+    {"Spring Tower", 10, level3_rows},
+    {"Spikers", 8, level4_rows},
+    {"The Climb", 16, level5_rows},
+    {"Deep Water", 10, level6_rows},
+    {"Spike Alley", 8, level7_rows},
+    {"Grand Finale", 12, level8_rows},
 };
 
 #define LEVEL_COUNT (sizeof(levels) / sizeof(levels[0]))

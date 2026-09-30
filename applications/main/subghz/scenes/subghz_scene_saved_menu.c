@@ -17,21 +17,21 @@ void subghz_scene_saved_menu_on_enter(void* context) {
     SubGhz* subghz = context;
     submenu_add_item(
         subghz->submenu,
-        "模拟",
+        "Emulate",
         SubmenuIndexEmulate,
         subghz_scene_saved_menu_submenu_callback,
         subghz);
 
     submenu_add_item(
         subghz->submenu,
-        "重命名",
+        "Rename",
         SubmenuIndexEdit,
         subghz_scene_saved_menu_submenu_callback,
         subghz);
 
     submenu_add_item(
         subghz->submenu,
-        "删除",
+        "Delete",
         SubmenuIndexDelete,
         subghz_scene_saved_menu_submenu_callback,
         subghz);
@@ -40,7 +40,7 @@ void subghz_scene_saved_menu_on_enter(void* context) {
        !isnanf(subghz_txrx_get_longitude(subghz->txrx)) || subghz->gps) {
         submenu_add_item(
             subghz->submenu,
-            "位置信息",
+            "Geographic info",
             SubmenuIndexGeo,
             subghz_scene_saved_menu_submenu_callback,
             subghz);
@@ -48,15 +48,15 @@ void subghz_scene_saved_menu_on_enter(void* context) {
 
     submenu_add_lockable_item(
         subghz->submenu,
-        "信号设置",
+        "Signal Settings",
         SubmenuIndexSignalSettings,
         subghz_scene_saved_menu_submenu_callback,
         subghz,
         !furi_hal_rtc_is_flag_set(FuriHalRtcFlagDebug),
-        "请开启\n"
-        "设置 >\n"
-        "系统 >\n"
-        "调试");
+        "Enable\nSettings >\nSystem >\nDebug"
+        ""
+        ""
+        "");
 
     submenu_set_selected_item(
         subghz->submenu,

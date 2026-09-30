@@ -14,5 +14,5 @@ App(
     fap_author="@nymda",
     fap_weburl="https://github.com/nymda/FlipperZeroBrainfuck",
     fap_version="1.5",
-    fap_description="Brainfuck 语言解释器",
+    fap_description="Brainfuck language interpreter",
 )

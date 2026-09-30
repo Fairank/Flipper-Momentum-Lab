@@ -68,7 +68,7 @@ void infrared_scene_universal_monitor_on_enter(void* context) {
     button_panel_add_icon(button_panel, 39, 80, &I_exit_text_18x5);
     infrared_brute_force_add_record(brute_force, i++, "EXIT");
 
-    button_panel_add_label(button_panel, 10, 11, FontPrimary, "显示器");
+    button_panel_add_label(button_panel, 10, 11, FontPrimary, "Monitors");
 
     infrared_scene_universal_common_on_enter(context);
 }

@@ -48,11 +48,11 @@ typedef struct {
 // Drawn with FontSecondary plus the 12 px Chinese glyphs, never with the 6 px grid font.
 // At most 4 ideographs (47 px) fit the 50 px highlight of the 62 px menu window.
 const char* MENU_ITEMS[] = {
-    "继续",
-    "简单",
-    "普通",
-    "困难",
-    "保存退出",
+    "Continue",
+    "Easy game",
+    "Nornal game",
+    "Hard game",
+    "Save+Exit",
 };
 
 /*
@@ -279,7 +279,7 @@ static void draw_callback(Canvas* canvas, void* ctx) {
                 winY + offY + itemH * i + itemH / 2,
                 AlignCenter,
                 AlignCenter,
-                i == 0 && state->state == GameStateVictory ? "胜利！" : MENU_ITEMS[i]);
+                i == 0 && state->state == GameStateVictory ? "VICTORY!" : MENU_ITEMS[i]);
         }
     }
     furi_mutex_release(state->mutex);

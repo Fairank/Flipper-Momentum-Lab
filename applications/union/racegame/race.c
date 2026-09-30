@@ -150,11 +150,11 @@ static void draw_callback(Canvas* canvas, void* ctx) {
         canvas_draw_frame(canvas, 1, 49, 62, 30);
 
         canvas_set_font(canvas, FontPrimary);
-        canvas_draw_str(canvas, 8, 62, "游戏结束");
+        canvas_draw_str(canvas, 8, 62, "Game Over");
 
         // 6 bytes of label, the colon and 5 digits fill the 13 byte buffer exactly
         char buffer[13];
-        snprintf(buffer, sizeof(buffer), "得分:%u", race_state->score);
+        snprintf(buffer, sizeof(buffer), "Score: %u", race_state->score);
         canvas_set_font(canvas, FontSecondary);
         canvas_draw_str_aligned(canvas, 32, 75, AlignCenter, AlignBottom, buffer);
     }

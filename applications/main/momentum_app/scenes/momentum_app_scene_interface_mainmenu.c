@@ -15,18 +15,18 @@ void momentum_app_scene_interface_mainmenu_var_item_list_callback(void* context,
 }
 
 const char* const menu_style_names[MenuStyleCount] = {
-    "列表",
+    "List",
     "Wii",
     "DSi",
     "PS4",
-    "纵向",
+    "Vertical",
     "C64",
-    "紧凑",
+    "Compact",
     "MNTM",
-    "封面流",
-    "网格",
-    "经典桌面",
-    "立体",
+    "CoverFlow",
+    "Grid",
+    "Macintosh",
+    "3D",
 };
 static void momentum_app_scene_interface_mainmenu_menu_style_changed(VariableItem* item) {
     MomentumApp* app = variable_item_get_context(item);
@@ -43,7 +43,7 @@ static void momentum_app_scene_interface_mainmenu_app_changed(VariableItem* item
         item, *CharList_get(app->mainmenu_app_labels, app->mainmenu_app_index));
     size_t count = CharList_size(app->mainmenu_app_labels);
     char label[32];
-    snprintf(label, sizeof(label), "项目 %u/%u", 1 + app->mainmenu_app_index, count);
+    snprintf(label, sizeof(label), "Item  %u/%u", 1 + app->mainmenu_app_index, count);
     variable_item_set_item_label(item, label);
 }
 
@@ -76,40 +76,40 @@ void momentum_app_scene_interface_mainmenu_on_enter(void* context) {
 
     item = variable_item_list_add(
         var_item_list,
-        "菜单样式",
+        "Menu Style",
         MenuStyleCount,
         momentum_app_scene_interface_mainmenu_menu_style_changed,
         app);
     variable_item_set_current_value_text(item, menu_style_names[momentum_settings.menu_style]);
     variable_item_set_current_value_index(item, momentum_settings.menu_style);
 
-    variable_item_list_add(var_item_list, "重置菜单", 0, NULL, app);
+    variable_item_list_add(var_item_list, "Reset Menu", 0, NULL, app);
 
     size_t count = CharList_size(app->mainmenu_app_labels);
     item = variable_item_list_add(
-        var_item_list, "项目", count, momentum_app_scene_interface_mainmenu_app_changed, app);
+        var_item_list, "Item", count, momentum_app_scene_interface_mainmenu_app_changed, app);
     if(count) {
         app->mainmenu_app_index = CLAMP(app->mainmenu_app_index, count - 1, 0U);
         char label[32];
-        snprintf(label, sizeof(label), "项目 %u/%u", 1 + app->mainmenu_app_index, count);
+        snprintf(label, sizeof(label), "Item  %u/%u", 1 + app->mainmenu_app_index, count);
         variable_item_set_item_label(item, label);
         variable_item_set_current_value_text(
             item, *CharList_get(app->mainmenu_app_labels, app->mainmenu_app_index));
     } else {
         app->mainmenu_app_index = 0;
-        variable_item_set_current_value_text(item, "无");
+        variable_item_set_current_value_text(item, "None");
     }
     variable_item_set_current_value_index(item, app->mainmenu_app_index);
 
-    variable_item_list_add(var_item_list, "添加项目", 0, NULL, app);
+    variable_item_list_add(var_item_list, "Add Item", 0, NULL, app);
 
     item = variable_item_list_add(
-        var_item_list, "移动项目", 3, momentum_app_scene_interface_mainmenu_move_app_changed, app);
+        var_item_list, "Move Item", 3, momentum_app_scene_interface_mainmenu_move_app_changed, app);
     variable_item_set_current_value_text(item, "");
     variable_item_set_current_value_index(item, 1);
-    variable_item_set_locked(item, count < 2, "至少需要\n两个应用\n才能移动");
+    variable_item_set_locked(item, count < 2, "Can't move\nwith less\nthan 2 apps!");
 
-    variable_item_list_add(var_item_list, "移除项目", 0, NULL, app);
+    variable_item_list_add(var_item_list, "Remove Item", 0, NULL, app);
 
     variable_item_list_set_enter_callback(
         var_item_list, momentum_app_scene_interface_mainmenu_var_item_list_callback, app);
@@ -159,8 +159,8 @@ bool momentum_app_scene_interface_mainmenu_on_event(void* context, SceneManagerE
                     item, *CharList_get(app->mainmenu_app_labels, app->mainmenu_app_index));
             } else {
                 app->mainmenu_app_index = 0;
-                variable_item_set_item_label(item, "项目");
-                variable_item_set_current_value_text(item, "无");
+                variable_item_set_item_label(item, "Item");
+                variable_item_set_current_value_text(item, "None");
             }
             variable_item_set_current_value_index(item, app->mainmenu_app_index);
             variable_item_set_values_count(item, count);

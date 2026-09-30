@@ -16,7 +16,7 @@ Bubble slots: 1
 Slot: 0
 X: 83
 Y: 42
-Text: 嗨
+Text: Sup
 AlignH: Left
 AlignV: Top
 StartFrame: 38
@@ -25,25 +25,25 @@ EndFrame: 40
 Slot: 0
 X: 66
 Y: 35
-Text: 刚才
+Text: What just
 AlignH: Left
 AlignV: Center
 StartFrame: 62
 EndFrame: 65
 
 Slot: 0
-X: 46
+X: 66
 Y: 35
-Text: 发生了什么？
+Text: happened?
 AlignH: Left
 AlignV: Center
 StartFrame: 66
 EndFrame: 68
 
 Slot: 0
-X: 81
+X: 87
 Y: 38
-Text: 不知道
+Text: Idk
 AlignH: Left
 AlignV: Top
 StartFrame: 70

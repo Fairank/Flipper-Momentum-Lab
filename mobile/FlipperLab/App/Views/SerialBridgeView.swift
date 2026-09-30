@@ -53,7 +53,7 @@ import FlipperCore
         .onChange(of: scenePhase) { _, phase in if phase != .active { model.stopSerial() } }
         .fileExporter(isPresented: $exporting, document: SerialDataDocument(data: model.serialCapture.data),
                       contentType: .data, defaultFilename: "Flipper-serial.bin") { result in
-            if case .failure(let error) = result { exportError = error.localizedDescription }
+            if case .failure(let error) = result { exportError = PhoneErrorDescription.describe(error) }
         }
         .alert("导出失败", isPresented: Binding(get: { exportError != nil }, set: { if !$0 { exportError = nil } })) {
             Button("知道了") { exportError = nil }

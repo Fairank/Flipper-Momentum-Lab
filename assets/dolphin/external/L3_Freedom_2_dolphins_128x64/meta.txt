@@ -14,9 +14,9 @@ Active cooldown: 7
 Bubble slots: 1
 
 Slot: 0
-X: 50
-Y: 44
-Text: 谢了，朋友！
+X: 52
+Y: 46
+Text: Thanks, man!
 AlignH: Left
 AlignV: Top
 StartFrame: 37

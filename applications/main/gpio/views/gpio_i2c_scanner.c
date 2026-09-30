@@ -21,19 +21,19 @@ static void gpio_i2c_scanner_draw_callback(Canvas* canvas, void* _model) {
     GpioI2CScannerModel* model = _model;
 
     char temp_str[25];
-    elements_button_center(canvas, "开始扫描");
+    elements_button_center(canvas, "Start scan");
     canvas_draw_line(canvas, 2, 14, 125, 14);
     canvas_draw_line(canvas, 2, 52, 125, 52);
 
     canvas_set_font(canvas, FontPrimary);
-    canvas_draw_str(canvas, 2, 11, "I2C 扫描");
+    canvas_draw_str(canvas, 2, 11, "I2C Scanner");
     canvas_draw_str(canvas, 3, 27, "SDA:15");
     canvas_draw_str(canvas, 3, 42, "SCL:16");
 
     canvas_set_font(canvas, FontSecondary);
-    snprintf(temp_str, 25, "设备:%u", model->items);
+    snprintf(temp_str, 25, "Slaves: %u", model->items);
     canvas_draw_str_aligned(canvas, 126, 11, AlignRight, AlignBottom, temp_str);
-    canvas_draw_str(canvas, 48, 26, "地址");
+    canvas_draw_str(canvas, 48, 26, "Pin 16");
 
     canvas_set_font(canvas, FontSecondary);
 

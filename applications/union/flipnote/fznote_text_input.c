@@ -276,7 +276,7 @@ static void fznote_text_input_draw_save_key(Canvas* canvas, int32_t x, int32_t y
     }
     // Baseline on the last row of the icon rectangle: the glyph rows fill it exactly
     canvas_draw_str_aligned(
-        canvas, x + SAVE_KEY_W / 2, y + SAVE_KEY_H - 1, AlignCenter, AlignBottom, "保存");
+        canvas, x + SAVE_KEY_W / 2, y + SAVE_KEY_H - 1, AlignCenter, AlignBottom, "Save");
     canvas_set_color(canvas, ColorBlack);
     canvas_set_font(canvas, FontKeyboard);
 }

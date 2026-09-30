@@ -63,7 +63,7 @@ static void nfc_protocol_support_on_enter_load_failed(NfcApp* instance) {
     widget_reset(instance->widget);
     widget_add_icon_element(instance->widget, 83, 22, &I_WarningDolphinFlip_45x42);
     widget_add_string_element(
-        instance->widget, 3, 4, AlignLeft, AlignTop, FontPrimary, "插件未加载");
+        instance->widget, 3, 4, AlignLeft, AlignTop, FontPrimary, "Plugin Not Loaded");
     widget_add_string_multiline_element(
         instance->widget,
         4,
@@ -71,7 +71,7 @@ static void nfc_protocol_support_on_enter_load_failed(NfcApp* instance) {
         AlignLeft,
         AlignTop,
         FontSecondary,
-        "插件缺失\n或版本过旧.\n请更新资源.");
+        "Plugin file missing\nor outdated. Update\nthe firmware\nresources.");
     notification_message(instance->notifications, &sequence_error);
     view_dispatcher_switch_to_view(instance->view_dispatcher, NfcViewWidget);
 }
@@ -385,7 +385,7 @@ static void nfc_protocol_support_scene_info_on_enter(NfcApp* instance) {
         widget_add_button_element(
             instance->widget,
             GuiButtonTypeRight,
-            "更多",
+            "More",
             nfc_protocol_support_common_widget_callback,
             instance);
     }
@@ -454,7 +454,7 @@ static void nfc_protocol_support_scene_read_on_enter(NfcApp* instance) {
         return;
     }
 
-    popup_set_header(instance->popup, "请勿移动", 85, 27, AlignCenter, AlignTop);
+    popup_set_header(instance->popup, "Don't move", 85, 27, AlignCenter, AlignTop);
     popup_set_icon(instance->popup, 12, 23, &A_Loading_24);
 
     view_dispatcher_switch_to_view(instance->view_dispatcher, NfcViewPopup);
@@ -552,7 +552,7 @@ static void nfc_protocol_support_scene_read_menu_on_enter(NfcApp* instance) {
 
     submenu_add_item(
         submenu,
-        "保存",
+        "Save",
         SubmenuIndexCommonSave,
         nfc_protocol_support_common_submenu_callback,
         instance);
@@ -560,7 +560,7 @@ static void nfc_protocol_support_scene_read_menu_on_enter(NfcApp* instance) {
     if(scene_manager_has_previous_scene(instance->scene_manager, NfcSceneGenerateInfo)) {
         submenu_add_item(
             submenu,
-            "修改 UID",
+            "Change UID",
             SubmenuIndexCommonEdit,
             nfc_protocol_support_common_submenu_callback,
             instance);
@@ -569,7 +569,7 @@ static void nfc_protocol_support_scene_read_menu_on_enter(NfcApp* instance) {
     if(nfc_protocol_support_has_feature(protocol, instance, NfcProtocolFeatureEmulateUid)) {
         submenu_add_item(
             submenu,
-            "模拟 UID",
+            "Emulate UID",
             SubmenuIndexCommonEmulate,
             nfc_protocol_support_common_submenu_callback,
             instance);
@@ -577,7 +577,7 @@ static void nfc_protocol_support_scene_read_menu_on_enter(NfcApp* instance) {
     } else if(nfc_protocol_support_has_feature(protocol, instance, NfcProtocolFeatureEmulateFull)) {
         submenu_add_item(
             submenu,
-            "模拟",
+            "Emulate",
             SubmenuIndexCommonEmulate,
             nfc_protocol_support_common_submenu_callback,
             instance);
@@ -586,7 +586,7 @@ static void nfc_protocol_support_scene_read_menu_on_enter(NfcApp* instance) {
     if(nfc_protocol_support_has_feature(protocol, instance, NfcProtocolFeatureWrite)) {
         submenu_add_item(
             submenu,
-            "写入",
+            "Write",
             SubmenuIndexCommonWrite,
             nfc_protocol_support_common_submenu_callback,
             instance);
@@ -596,7 +596,7 @@ static void nfc_protocol_support_scene_read_menu_on_enter(NfcApp* instance) {
 
     submenu_add_item(
         submenu,
-        "信息",
+        "Info",
         SubmenuIndexCommonInfo,
         nfc_protocol_support_common_submenu_callback,
         instance);
@@ -656,7 +656,7 @@ static void nfc_protocol_support_scene_read_saved_menu_on_exit(NfcApp* instance)
 static void nfc_protocol_support_scene_read_success_on_enter(NfcApp* instance) {
     Widget* widget = instance->widget;
 
-    popup_set_header(instance->popup, "正在解析", 85, 27, AlignCenter, AlignTop);
+    popup_set_header(instance->popup, "Parsing", 85, 27, AlignCenter, AlignTop);
     popup_set_icon(instance->popup, 12, 23, &A_Loading_24);
     view_dispatcher_switch_to_view(instance->view_dispatcher, NfcViewPopup);
 
@@ -672,9 +672,9 @@ static void nfc_protocol_support_scene_read_success_on_enter(NfcApp* instance) {
     furi_string_free(temp_str);
 
     widget_add_button_element(
-        widget, GuiButtonTypeLeft, "重试", nfc_protocol_support_common_widget_callback, instance);
+        widget, GuiButtonTypeLeft, "Retry", nfc_protocol_support_common_widget_callback, instance);
     widget_add_button_element(
-        widget, GuiButtonTypeRight, "更多", nfc_protocol_support_common_widget_callback, instance);
+        widget, GuiButtonTypeRight, "More", nfc_protocol_support_common_widget_callback, instance);
 
     notification_message_block(instance->notifications, &sequence_set_green_255);
     view_dispatcher_switch_to_view(instance->view_dispatcher, NfcViewWidget);
@@ -725,7 +725,7 @@ static void nfc_protocol_support_scene_saved_menu_on_enter(NfcApp* instance) {
     if(nfc_protocol_support_has_feature(protocol, instance, NfcProtocolFeatureEmulateUid)) {
         submenu_add_item(
             submenu,
-            "模拟 UID",
+            "Emulate UID",
             SubmenuIndexCommonEmulate,
             nfc_protocol_support_common_submenu_callback,
             instance);
@@ -733,7 +733,7 @@ static void nfc_protocol_support_scene_saved_menu_on_enter(NfcApp* instance) {
     } else if(nfc_protocol_support_has_feature(protocol, instance, NfcProtocolFeatureEmulateFull)) {
         submenu_add_item(
             submenu,
-            "模拟",
+            "Emulate",
             SubmenuIndexCommonEmulate,
             nfc_protocol_support_common_submenu_callback,
             instance);
@@ -742,7 +742,7 @@ static void nfc_protocol_support_scene_saved_menu_on_enter(NfcApp* instance) {
     if(nfc_protocol_support_has_feature(protocol, instance, NfcProtocolFeatureWrite)) {
         submenu_add_item(
             submenu,
-            "写入",
+            "Write",
             SubmenuIndexCommonWrite,
             nfc_protocol_support_common_submenu_callback,
             instance);
@@ -751,7 +751,7 @@ static void nfc_protocol_support_scene_saved_menu_on_enter(NfcApp* instance) {
     if(nfc_protocol_support_has_feature(protocol, instance, NfcProtocolFeatureEditUid)) {
         submenu_add_item(
             submenu,
-            "编辑 UID",
+            "Edit UID",
             SubmenuIndexCommonEdit,
             nfc_protocol_support_common_submenu_callback,
             instance);
@@ -764,7 +764,7 @@ static void nfc_protocol_support_scene_saved_menu_on_enter(NfcApp* instance) {
     if(nfc_has_shadow_file(instance)) {
         submenu_add_item(
             submenu,
-            "恢复原始状态",
+            "Restore to Original State",
             SubmenuIndexCommonRestore,
             nfc_protocol_support_common_submenu_callback,
             instance);
@@ -772,19 +772,19 @@ static void nfc_protocol_support_scene_saved_menu_on_enter(NfcApp* instance) {
 
     submenu_add_item(
         submenu,
-        "重命名",
+        "Rename",
         SubmenuIndexCommonRename,
         nfc_protocol_support_common_submenu_callback,
         instance);
     submenu_add_item(
         submenu,
-        "删除",
+        "Delete",
         SubmenuIndexCommonDelete,
         nfc_protocol_support_common_submenu_callback,
         instance);
     submenu_add_item(
         submenu,
-        "信息",
+        "Info",
         SubmenuIndexCommonInfo,
         nfc_protocol_support_common_submenu_callback,
         instance);
@@ -871,7 +871,7 @@ static void nfc_protocol_support_scene_save_name_on_enter(NfcApp* instance) {
         path_extract_dirname(furi_string_get_cstr(instance->file_path), folder_path);
     }
 
-    text_input_set_header_text(text_input, "卡片名称");
+    text_input_set_header_text(text_input, "Name the card");
     text_input_set_result_callback(
         text_input,
         nfc_protocol_support_common_text_input_done_callback,
@@ -998,7 +998,7 @@ static void nfc_protocol_support_scene_emulate_on_enter(NfcApp* instance) {
 
     if(nfc_protocol_support_has_feature(protocol, instance, NfcProtocolFeatureEmulateUid)) {
         widget_add_string_element(
-            widget, 90, 26, AlignCenter, AlignCenter, FontPrimary, "正在模拟 UID");
+            widget, 90, 26, AlignCenter, AlignCenter, FontPrimary, "Emulating UID");
 
         size_t uid_len;
         const uint8_t* uid = nfc_device_get_uid(instance->nfc_device, &uid_len);
@@ -1011,7 +1011,7 @@ static void nfc_protocol_support_scene_emulate_on_enter(NfcApp* instance) {
 
     } else {
         widget_add_string_element(
-            widget, 90, 26, AlignCenter, AlignCenter, FontPrimary, "正在模拟");
+            widget, 90, 26, AlignCenter, AlignCenter, FontPrimary, "Emulating");
         if(!furi_string_empty(instance->file_name)) {
             furi_string_printf(
                 temp_str,
@@ -1059,7 +1059,7 @@ static bool
                 widget_add_button_element(
                     instance->widget,
                     GuiButtonTypeCenter,
-                    "日志",
+                    "Log",
                     nfc_protocol_support_common_widget_callback,
                     instance);
                 scene_manager_set_scene_state(
@@ -1162,7 +1162,7 @@ static void nfc_protocol_support_scene_write_setup_view(NfcApp* instance) {
     NfcView view = NfcViewPopup;
 
     if(state == NfcSceneWriteStateSearching) {
-        popup_set_header(popup, "正在写入", 95, 20, AlignCenter, AlignCenter);
+        popup_set_header(popup, "Writing", 95, 20, AlignCenter, AlignCenter);
         popup_set_text(
             popup,
             furi_string_get_cstr(instance->text_box_store),
@@ -1172,10 +1172,10 @@ static void nfc_protocol_support_scene_write_setup_view(NfcApp* instance) {
             AlignCenter);
         popup_set_icon(popup, 0, 8, &I_NFC_manual_60x50);
     } else if(state == NfcSceneWriteStateWriting) {
-        popup_set_header(popup, "正在写入\n请勿移动...", 52, 32, AlignLeft, AlignCenter);
+        popup_set_header(popup, "Writing\nDon't move...", 52, 32, AlignLeft, AlignCenter);
         popup_set_icon(popup, 12, 23, &A_Loading_24);
     } else if(state == NfcSceneWriteStateSuccess) {
-        popup_set_header(popup, "写入\n成功!", 126, 2, AlignRight, AlignTop);
+        popup_set_header(popup, "Successfully\nwritten!", 126, 2, AlignRight, AlignTop);
         popup_set_icon(popup, 0, 9, &I_DolphinSuccess_91x55);
         popup_set_timeout(popup, 1500);
         popup_set_context(popup, instance);
@@ -1183,7 +1183,8 @@ static void nfc_protocol_support_scene_write_setup_view(NfcApp* instance) {
         popup_enable_timeout(popup);
     } else if(state == NfcSceneWriteStateFailure) {
         view = NfcViewWidget;
-        widget_add_string_element(widget, 7, 4, AlignLeft, AlignTop, FontPrimary, "写入失败!");
+        widget_add_string_element(
+            widget, 7, 4, AlignLeft, AlignTop, FontPrimary, "Writing gone wrong!");
         widget_add_string_multiline_element(
             widget,
             7,
@@ -1196,12 +1197,12 @@ static void nfc_protocol_support_scene_write_setup_view(NfcApp* instance) {
         widget_add_button_element(
             widget,
             GuiButtonTypeLeft,
-            "重试",
+            "Retry",
             nfc_protocol_support_scene_write_widget_callback,
             instance);
     } else if(state == NfcSceneWriteStateWrongCard) {
         view = NfcViewWidget;
-        widget_add_string_element(widget, 3, 4, AlignLeft, AlignTop, FontPrimary, "卡片不匹配!");
+        widget_add_string_element(widget, 3, 4, AlignLeft, AlignTop, FontPrimary, "Wrong card!");
         widget_add_string_multiline_element(
             widget,
             4,
@@ -1214,7 +1215,7 @@ static void nfc_protocol_support_scene_write_setup_view(NfcApp* instance) {
         widget_add_button_element(
             widget,
             GuiButtonTypeLeft,
-            "重试",
+            "Retry",
             nfc_protocol_support_scene_write_widget_callback,
             instance);
     }

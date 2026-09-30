@@ -85,19 +85,19 @@ const TimeInputKey time_input_keyset[ROW_COUNT][COLUMN_COUNT] = {
     // Chinese labels: one glyph (11 px) in the 20 px keys, at most three (9 bytes,
     // the room in key_string) in the wide ones
     {
-        {.width = 1, .height = 1, .key = "清", .value = PT_INPUT_CLEAR},
+        {.width = 1, .height = 1, .key = "CLR", .value = PT_INPUT_CLEAR},
         {.width = 1, .height = 1, .key = "0", .value = PT_INPUT_0},
-        {.width = 1, .height = 1, .key = "删", .value = PT_INPUT_DEL},
+        {.width = 1, .height = 1, .key = "DEL", .value = PT_INPUT_DEL},
     },
     {
-        {.width = 3, .height = 1, .key = "开始", .value = PT_INPUT_START},
-        {.width = 0, .height = 1, .key = "开始", .value = PT_INPUT_START},
-        {.width = 0, .height = 1, .key = "开始", .value = PT_INPUT_START},
+        {.width = 3, .height = 1, .key = "START", .value = PT_INPUT_START},
+        {.width = 0, .height = 1, .key = "START", .value = PT_INPUT_START},
+        {.width = 0, .height = 1, .key = "START", .value = PT_INPUT_START},
     },
     {
-        {.width = 3, .height = 1, .key = "学习", .value = PT_INPUT_LEARN},
-        {.width = 0, .height = 1, .key = "学习", .value = PT_INPUT_LEARN},
-        {.width = 0, .height = 1, .key = "学习", .value = PT_INPUT_LEARN},
+        {.width = 3, .height = 1, .key = "LEARN", .value = PT_INPUT_LEARN},
+        {.width = 0, .height = 1, .key = "LEARN", .value = PT_INPUT_LEARN},
+        {.width = 0, .height = 1, .key = "LEARN", .value = PT_INPUT_LEARN},
     },
 };
 
@@ -190,7 +190,7 @@ static void time_input_draw_callback(Canvas* canvas, void* context) {
     TimeInputModel* model = context;
 
     canvas_set_font(canvas, FontPrimary);
-    elements_multiline_text_aligned(canvas, 0, 1, AlignLeft, AlignTop, "暂停定时器");
+    elements_multiline_text_aligned(canvas, 0, 1, AlignLeft, AlignTop, "Pause Timer");
 
     canvas_set_font(canvas, FontBigNumbers);
     FuriString* timer_str = get_timer_string(model->timer_val);

@@ -31,11 +31,11 @@ void hid_scene_rename_on_enter(void* context) {
         app->ble_hid_cfg.name,
         sizeof(app->ble_hid_cfg.name),
         true);
-    text_input_set_header_text(app->text_input, "蓝牙名称");
+    text_input_set_header_text(app->text_input, "Bluetooth Name");
 
     // Rename success popup view
     popup_set_icon(app->popup, 48, 6, &I_DolphinDone_80x58);
-    popup_set_header(app->popup, "完成", 14, 15, AlignLeft, AlignTop);
+    popup_set_header(app->popup, "Done", 14, 15, AlignLeft, AlignTop);
     popup_set_timeout(app->popup, 1500);
     popup_set_context(app->popup, app);
     popup_set_callback(app->popup, hid_scene_rename_popup_callback);

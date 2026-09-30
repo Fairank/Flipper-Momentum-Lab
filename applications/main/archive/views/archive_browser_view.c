@@ -10,19 +10,19 @@
 #define SCROLL_DELAY    (2)
 
 static const char* ArchiveTabNames[] = {
-    [ArchiveTabFavorites] = "收藏夹",
+    [ArchiveTabFavorites] = "Favorites",
     [ArchiveTabIButton] = "iButton",
     [ArchiveTabNFC] = "NFC",
     [ArchiveTabSubGhz] = "Sub-GHz",
-    [ArchiveTabLFRFID] = "低频 RFID",
-    [ArchiveTabInfrared] = "红外",
+    [ArchiveTabLFRFID] = "RFID LF",
+    [ArchiveTabInfrared] = "Infrared",
     [ArchiveTabBadUsb] = "Bad KB",
     [ArchiveTabU2f] = "U2F",
-    [ArchiveTabApplications] = "应用",
-    [ArchiveTabSearch] = "搜索",
-    [ArchiveTabDiskImage] = "镜像",
-    [ArchiveTabInternal] = "内部",
-    [ArchiveTabBrowser] = "浏览",
+    [ArchiveTabApplications] = "Apps",
+    [ArchiveTabSearch] = "Search",
+    [ArchiveTabDiskImage] = "Disk Image",
+    [ArchiveTabInternal] = "Internal",
+    [ArchiveTabBrowser] = "Browser",
 };
 
 static const Icon* ArchiveItemIcons[] = {
@@ -129,33 +129,33 @@ static void render_item_menu(Canvas* canvas, ArchiveBrowserViewModel* model) {
                 if(model->clipboard != NULL) {
                     archive_menu_add_item(
                         menu_array_push_raw(model->context_menu),
-                        "粘贴",
+                        "Paste",
                         ArchiveBrowserEventFileMenuPaste);
                 } else if(selected) {
                     archive_menu_add_item(
                         menu_array_push_raw(model->context_menu),
-                        "剪切",
+                        "Cut",
                         ArchiveBrowserEventFileMenuCut);
                     archive_menu_add_item(
                         menu_array_push_raw(model->context_menu),
-                        "复制",
+                        "Copy",
                         ArchiveBrowserEventFileMenuCopy);
                 }
                 archive_menu_add_item(
                     menu_array_push_raw(model->context_menu),
-                    "新目录",
+                    "New Dir",
                     ArchiveBrowserEventFileMenuNewDir);
             }
             if(selected) {
                 if(!selected->is_app) {
                     archive_menu_add_item(
                         menu_array_push_raw(model->context_menu),
-                        "重命名",
+                        "Rename",
                         ArchiveBrowserEventFileMenuRename);
                 }
                 archive_menu_add_item(
                     menu_array_push_raw(model->context_menu),
-                    "删除",
+                    "Delete",
                     ArchiveBrowserEventFileMenuDelete);
             }
         } else if(selected) {
@@ -163,30 +163,30 @@ static void render_item_menu(Canvas* canvas, ArchiveBrowserViewModel* model) {
                 if(selected->type != ArchiveFileTypeFolder) {
                     archive_menu_add_item(
                         menu_array_push_raw(model->context_menu),
-                        "打开",
+                        "Run In App",
                         ArchiveBrowserEventFileMenuRun);
                 }
                 archive_menu_add_item(
                     menu_array_push_raw(model->context_menu),
-                    (selected->fav || favorites) ? "已收藏" : "收藏",
+                    (selected->fav || favorites) ? "Unfavorite" : "Pin",
                     ArchiveBrowserEventFileMenuFavorite);
             }
             if(!selected->is_app) {
                 archive_menu_add_item(
                     menu_array_push_raw(model->context_menu),
-                    "信息",
+                    "Info",
                     ArchiveBrowserEventFileMenuInfo);
                 if(selected->type != ArchiveFileTypeFolder) {
                     archive_menu_add_item(
                         menu_array_push_raw(model->context_menu),
-                        selected->type == ArchiveFileTypeDiskImage ? "挂载" : "查看",
+                        selected->type == ArchiveFileTypeDiskImage ? "Mount" : "Show",
                         ArchiveBrowserEventFileMenuShow);
                 }
             }
             if(favorites) {
                 archive_menu_add_item(
                     menu_array_push_raw(model->context_menu),
-                    "移动",
+                    "Move",
                     ArchiveBrowserEventEnterFavMove);
             }
         }
@@ -205,7 +205,7 @@ static void render_item_menu(Canvas* canvas, ArchiveBrowserViewModel* model) {
     canvas_draw_rframe(canvas, 71, 0, 57, menu_height, 3);
 
     canvas_draw_str_aligned(
-        canvas, 100, 12, AlignCenter, AlignBottom, model->menu_manage ? "管理:" : "操作:");
+        canvas, 100, 12, AlignCenter, AlignBottom, model->menu_manage ? "Manage:" : "Actions:");
     if(model->menu_can_switch) {
         if(model->menu_manage) {
             canvas_draw_icon(canvas, 74, 4, &I_ButtonLeft_4x7);
@@ -361,7 +361,7 @@ static void archive_render_status_bar(Canvas* canvas, ArchiveBrowserViewModel* m
     const char* tab_name = NULL;
     if(model->tab_idx == ArchiveTabSearch) {
         if(scene_manager_get_scene_state(model->archive->scene_manager, ArchiveAppSceneSearch)) {
-            tab_name = "搜索中";
+            tab_name = "Searching";
         } else {
             tab_name = ArchiveTabNames[model->tab_idx];
         }
@@ -400,7 +400,7 @@ static void archive_render_status_bar(Canvas* canvas, ArchiveBrowserViewModel* m
         canvas_draw_line(canvas, 92, 1, 92, 11);
         canvas_draw_line(canvas, 70, 11, 92, 11);
         canvas_draw_str_aligned(
-            canvas, 81, 10, AlignCenter, AlignBottom, model->clipboard_copy ? "复制" : "剪切");
+            canvas, 81, 10, AlignCenter, AlignBottom, model->clipboard_copy ? "Copy" : "Cut");
     }
 
     canvas_draw_rframe(canvas, 107, 0, 21, 13, 1);
@@ -433,7 +433,8 @@ static void archive_view_render(Canvas* canvas, void* mdl) {
     } else if(model->item_cnt > 0) {
         draw_list(canvas, model);
     } else {
-        canvas_draw_str_aligned(canvas, GUI_DISPLAY_WIDTH / 2, 40, AlignCenter, AlignCenter, "空");
+        canvas_draw_str_aligned(
+            canvas, GUI_DISPLAY_WIDTH / 2, 40, AlignCenter, AlignCenter, "Empty");
         if(model->menu) {
             render_item_menu(canvas, model);
         }

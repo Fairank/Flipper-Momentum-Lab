@@ -1,6 +1,6 @@
 App(
     appid="hid_usb",
-    name="USB 遥控器",
+    name="USB Remote",
     apptype=FlipperAppType.EXTERNAL,
     entry_point="hid_usb_app",
     stack_size=2 * 1024,
@@ -17,7 +17,7 @@ App(
 
 App(
     appid="hid_ble",
-    name="蓝牙遥控器",
+    name="Bluetooth Remote",
     apptype=FlipperAppType.EXTERNAL,
     entry_point="hid_ble_app",
     stack_size=2 * 1024,

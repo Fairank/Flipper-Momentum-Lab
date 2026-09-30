@@ -16,7 +16,7 @@ Bubble slots: 1
 Slot: 0
 X: 5
 Y: 28
-Text: 猜到了结局
+Text: Predictable twist
 AlignH: Right
 AlignV: Bottom
 StartFrame: 14

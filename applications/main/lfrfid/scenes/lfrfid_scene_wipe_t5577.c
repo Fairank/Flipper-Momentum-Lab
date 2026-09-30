@@ -51,7 +51,7 @@ static void lfrfid_wipe_t5577_draw_progress(LfRfid* app, uint16_t ticks) {
     Widget* widget = app->widget;
     widget_reset(widget);
 
-    widget_add_string_element(widget, 64, 7, AlignCenter, AlignTop, FontPrimary, "正在擦除 T5577");
+    widget_add_string_element(widget, 64, 7, AlignCenter, AlignTop, FontPrimary, "Wiping T5577");
     widget_add_rect_element(widget, WIPE_BAR_X, WIPE_BAR_Y, WIPE_BAR_W, WIPE_BAR_H, 2, false);
 
     uint8_t fill = (uint8_t)(((uint32_t)WIPE_BAR_FILL_W * ticks) / WIPE_T5577_TICK_COUNT);
@@ -62,7 +62,7 @@ static void lfrfid_wipe_t5577_draw_progress(LfRfid* app, uint16_t ticks) {
     }
 
     widget_add_string_element(
-        widget, 64, 47, AlignCenter, AlignTop, FontSecondary, "请勿移动标签");
+        widget, 64, 47, AlignCenter, AlignTop, FontSecondary, "Keep tag still");
 }
 
 static void lfrfid_wipe_t5577_show_result(LfRfid* app, bool wiped) {
@@ -70,14 +70,19 @@ static void lfrfid_wipe_t5577_show_result(LfRfid* app, bool wiped) {
     popup_reset(popup);
 
     if(wiped) {
-        popup_set_header(popup, "已擦除!", 75, 10, AlignLeft, AlignTop);
+        popup_set_header(popup, "Wiped!", 75, 10, AlignLeft, AlignTop);
         popup_set_icon(popup, 0, 9, &I_DolphinSuccess_91x55);
         notification_message(app->notifications, &sequence_single_vibro);
     } else {
-        popup_set_header(popup, "擦除未完成", 64, 3, AlignCenter, AlignTop);
+        popup_set_header(popup, "Not Wiped", 64, 3, AlignCenter, AlignTop);
         popup_set_icon(popup, 83, 22, &I_WarningDolphinFlip_45x42);
         popup_set_text(
-            popup, "标签仍可读取\n可能非 T5577\n或已锁定保护", 3, 19, AlignLeft, AlignTop);
+            popup,
+            "Tag still reads.\nNot a T5577, or\nlocked/protected",
+            3,
+            19,
+            AlignLeft,
+            AlignTop);
         notification_message(app->notifications, &sequence_double_vibro);
     }
 

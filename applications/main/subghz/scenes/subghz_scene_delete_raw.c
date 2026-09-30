@@ -29,7 +29,7 @@ void subghz_scene_delete_raw_on_enter(void* context) {
         subghz->widget, 0, 0, 128, 23, AlignCenter, AlignCenter, delete_str, false);
 
     widget_add_string_element(
-        subghz->widget, 38, 25, AlignLeft, AlignTop, FontSecondary, "RAW 信号");
+        subghz->widget, 38, 25, AlignLeft, AlignTop, FontSecondary, "RAW signal");
     subghz_txrx_get_frequency_and_modulation(subghz->txrx, frequency_str, modulation_str, false);
     widget_add_string_element(
         subghz->widget,
@@ -53,9 +53,9 @@ void subghz_scene_delete_raw_on_enter(void* context) {
     furi_string_free(modulation_str);
 
     widget_add_button_element(
-        subghz->widget, GuiButtonTypeRight, "删除", subghz_scene_delete_raw_callback, subghz);
+        subghz->widget, GuiButtonTypeRight, "Delete", subghz_scene_delete_raw_callback, subghz);
     widget_add_button_element(
-        subghz->widget, GuiButtonTypeLeft, "返回", subghz_scene_delete_raw_callback, subghz);
+        subghz->widget, GuiButtonTypeLeft, "Back", subghz_scene_delete_raw_callback, subghz);
 
     view_dispatcher_switch_to_view(subghz->view_dispatcher, SubGhzViewIdWidget);
 }

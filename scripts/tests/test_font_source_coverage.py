@@ -53,13 +53,10 @@ class FontSourceCoverageTests(unittest.TestCase):
             (generator.ROOT / "lib/u8g2/u8g2_fonts.c").read_text(encoding="utf-8"),
             "u8g2_font_wqy12_t_gb2312",
         )
-        subset = verify_subset(
-            parse_font(original), data, generator.required_characters(updater=True)
-        )
+        required = generator.required_characters(updater=True)
+        subset = verify_subset(parse_font(original), data, required)
         self.assertFalse(subset.ascii)
-        self.assertTrue(
-            set(map(ord, "升级安装重试返回退出等待卡校验固件")) <= set(subset.unicode)
-        )
+        self.assertEqual(set(subset.unicode), required)
         self.assertLess(
             len(data), 8192
         )  # Separate CI check enforces the whole updater limit.

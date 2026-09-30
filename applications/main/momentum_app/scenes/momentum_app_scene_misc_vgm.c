@@ -88,7 +88,7 @@ void momentum_app_scene_misc_vgm_on_enter(void* context) {
 
     item = variable_item_list_add(
         var_item_list,
-        "前景色",
+        "Foreground",
         vgm_colors_count,
         momentum_app_scene_misc_vgm_foreground_changed,
         app);
@@ -121,7 +121,7 @@ void momentum_app_scene_misc_vgm_on_enter(void* context) {
 
     item = variable_item_list_add(
         var_item_list,
-        "背景色",
+        "Background",
         vgm_colors_count,
         momentum_app_scene_misc_vgm_background_changed,
         app);

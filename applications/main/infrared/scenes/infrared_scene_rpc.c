@@ -26,8 +26,8 @@ void infrared_scene_rpc_on_enter(void* context) {
 static void infrared_scene_rpc_show(InfraredApp* infrared) {
     Popup* popup = infrared->popup;
 
-    popup_set_header(popup, "红外", 89, 42, AlignCenter, AlignBottom);
-    popup_set_text(popup, "RPC模式", 89, 44, AlignCenter, AlignTop);
+    popup_set_header(popup, "Infrared", 89, 42, AlignCenter, AlignBottom);
+    popup_set_text(popup, "RPC mode", 89, 44, AlignCenter, AlignTop);
     popup_set_text(popup, infrared->text_store[0], 89, 44, AlignCenter, AlignTop);
 
     popup_set_icon(popup, 0, 12, &I_RFIDDolphinSend_97x61);
@@ -61,7 +61,7 @@ bool infrared_scene_rpc_on_event(void* context, SceneManagerEvent event) {
 
             if(!INFRARED_ERROR_PRESENT(task_error)) {
                 const char* remote_name = infrared_remote_get_name(infrared->remote);
-                infrared_text_store_set(infrared, 0, "已加载\n%s", remote_name);
+                infrared_text_store_set(infrared, 0, "loaded\n%s", remote_name);
                 scene_manager_set_scene_state(
                     infrared->scene_manager, InfraredSceneRpc, InfraredRpcStateLoaded);
             } else {
@@ -98,7 +98,7 @@ bool infrared_scene_rpc_on_event(void* context, SceneManagerEvent event) {
                         infrared_tx_start_button_index(infrared, app_state->current_button_index);
                     if(!INFRARED_ERROR_PRESENT(error)) {
                         const char* remote_name = infrared_remote_get_name(infrared->remote);
-                        infrared_text_store_set(infrared, 0, "发送中\n%s", remote_name);
+                        infrared_text_store_set(infrared, 0, "emulating\n%s", remote_name);
 
                         infrared_scene_rpc_show(infrared);
                         result = true;
@@ -149,7 +149,7 @@ bool infrared_scene_rpc_on_event(void* context, SceneManagerEvent event) {
                         infrared, app_state->current_button_index);
                     if(!INFRARED_ERROR_PRESENT(error)) {
                         const char* remote_name = infrared_remote_get_name(infrared->remote);
-                        infrared_text_store_set(infrared, 0, "发送中\n%s", remote_name);
+                        infrared_text_store_set(infrared, 0, "emulating\n%s", remote_name);
 
                         infrared_scene_rpc_show(infrared);
                         result = true;

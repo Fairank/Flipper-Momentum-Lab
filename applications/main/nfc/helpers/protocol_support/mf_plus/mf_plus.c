@@ -32,7 +32,7 @@ static void nfc_scene_mf_plus_add_show_keys(NfcApp* instance) {
     if(!nfc_scene_mf_plus_is_sl3(instance)) return;
     submenu_add_item(
         instance->submenu,
-        "查看密钥",
+        "Show Keys",
         SubmenuIndexShowKeys,
         nfc_protocol_support_common_submenu_callback,
         instance);
@@ -50,10 +50,11 @@ static void nfc_scene_mf_plus_read_menu_on_enter(NfcApp* instance) {
 // card with the saved keys to refresh the dump).
 static void nfc_scene_mf_plus_saved_menu_on_enter(NfcApp* instance) {
     if(nfc_scene_mf_plus_is_sl3(instance)) {
-        submenu_change_item_label(instance->submenu, SubmenuIndexCommonWrite, "写入原卡");
+        submenu_change_item_label(
+            instance->submenu, SubmenuIndexCommonWrite, "Write to Initial Card");
         submenu_add_item(
             instance->submenu,
-            "从原卡更新",
+            "Update from Initial Card",
             SubmenuIndexUpdate,
             nfc_protocol_support_common_submenu_callback,
             instance);

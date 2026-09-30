@@ -64,7 +64,7 @@ void gpio_items_set_all_pins(GPIOItems* items, bool level) {
 const char* gpio_items_get_pin_name(GPIOItems* items, uint8_t index) {
     furi_assert(index < items->count + 1);
     if(index == items->count) {
-        return "全部";
+        return "ALL";
     } else {
         return items->pins[index].name;
     }

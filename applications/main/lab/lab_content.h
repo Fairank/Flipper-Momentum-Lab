@@ -20,7 +20,7 @@
 #define LAB_ROWS            3
 #define LAB_RULE_BOTTOM     50
 #define LAB_FOOTER_Y        62
-#define LAB_TEXT_MAX_BYTES  27
+#define LAB_TEXT_MAX_BYTES  19
 #define LAB_TOPIC_COUNT     10
 
 typedef struct {
@@ -38,137 +38,137 @@ typedef struct {
     uint8_t page_count;
 } LabTopic;
 
-static const char lab_menu_title[] = "中文功能指南";
-static const char lab_menu_footer[] = "↑↓选择 OK查看";
+static const char lab_menu_title[] = "Feature Guide";
+static const char lab_menu_footer[] = "Up/Dn pick, OK open";
 
 static const LabPage lab_pages_about[] = {
-    {"1/4", {"这里是中文说明台", "介绍各功能怎么用", "本页不收发任何信号"}},
-    {"2/4", {"↑↓选择主题", "OK查看 ←→翻页", "返回键回到上一级"}},
-    {"3/4", {"详情页按OK", "可打开对应原应用", "多项菜单已中文化"}},
-    {"4/4", {"中文界面仍在完善", "部分页面仍有英文", "实物显示待验证"}},
+    {"1/4", {"A short guide to", "using each feature", "No signal in or out"}},
+    {"2/4", {"Topic: Up, Down, OK", "Page: Left or Right", "Back: up one level"}},
+    {"3/4", {"On a topic page, OK", "opens its app", "Flipper UI: English"}},
+    {"4/4", {"Phone app: Chinese", "Added features kept", "Device test pending"}},
 };
 
 static const LabPage lab_pages_bluetooth[] = {
-    {"1/7", {"蓝牙让手机App", "连上Flipper", "传文件和看状态"}},
-    {"2/7", {"清单1 打开蓝牙", "进入设置中的蓝牙", "将蓝牙切换为开"}},
-    {"3/7", {"清单2 手机授权", "iPhone蓝牙已打开", "允许App使用蓝牙"}},
-    {"4/7", {"清单3 在手机配对", "Flipper显示6位码", "照提示输入或确认"}},
-    {"5/7", {"清单4 打开App", "打开配套手机App", "在App里选这台设备"}},
-    {"6/7", {"还连不上就重配", "本机：解除全部配对", "iPhone：忽略此设备"}},
-    {"7/7", {"蓝牙连上只是通道", "能用哪些功能", "取决于App和固件"}},
+    {"1/7", {"Phone app connects", "over Bluetooth for", "files and status"}},
+    {"2/7", {"1. Bluetooth on", "Settings: Bluetooth", "Set Bluetooth to ON"}},
+    {"3/7", {"2. Phone permission", "iPhone Bluetooth on", "Allow app to use it"}},
+    {"4/7", {"3. Pair on phone", "6 digits on Flipper", "Enter or confirm"}},
+    {"5/7", {"4. Open the app", "Open companion app", "Choose this Flipper"}},
+    {"6/7", {"No link\? Pair again", "Flipper: unpair all", "iPhone: forget it"}},
+    {"7/7", {"Just a data channel", "What works depends", "on app and firmware"}},
 };
 
 static const LabPage lab_pages_infrared[] = {
-    {"1/7", {"学习家电遥控按键", "保存后可随时发射", "像一个万能遥控器"}},
-    {"2/7", {"步骤1 学习", "选择学习新遥控", "遥控对准顶部窗口"}},
-    {"3/7", {"按一下遥控按键", "成功后起名保存", "其他按键逐个学"}},
-    {"4/7", {"步骤2 使用", "选择已保存遥控", "选按键即可发射"}},
-    {"5/7", {"选择万能遥控", "按设备类别使用", "会依次尝试多种码"}},
-    {"6/7", {"收发由Flipper完成", "手机可导入记录", "做脉冲统计和整理"}},
-    {"7/7", {"只对红外设备有效", "蓝牙或射频遥控不行", "未知协议存为RAW"}},
+    {"1/7", {"Learn remote keys", "Save, send anytime", "One remote for all"}},
+    {"2/7", {"Step 1: Learn", "Learn New Remote", "Aim remote at top"}},
+    {"3/7", {"Press a remote key", "Then name and save", "Repeat for each key"}},
+    {"4/7", {"Step 2: Use", "Open Saved Remotes", "Pick a key to send"}},
+    {"5/7", {"Universal Remotes:", "pick a device type", "Tries codes in turn"}},
+    {"6/7", {"Flipper: TX and RX", "Phone: file import,", "pulse stats, labels"}},
+    {"7/7", {"Only for IR devices", "Not Bluetooth or RF", "Unknown: saved RAW"}},
 };
 
 static const LabPage lab_pages_subghz[] = {
-    {"1/7", {"收发1GHz以下的", "无线遥控信号", "如门铃和遥控插座"}},
-    {"2/7", {"默认可用频段：", "300-348 387-464", "779-928 MHz"}},
-    {"3/7", {"读取：解码常见协议", "读取RAW：录波形", "已保存：查看记录"}},
-    {"4/7", {"选择频率分析仪", "先找出信号频率", "再用读取接收"}},
-    {"5/7", {"收发由Flipper完成", "手机可导入记录", "做时序统计和比较"}},
-    {"6/7", {"滚动码通常无法重放", "加密内容无法解读", "仅用于自有设备"}},
-    {"7/7", {"发射受地区法规", "和频段限制", "使用前先确认合法"}},
+    {"1/7", {"Send and receive", "sub-1 GHz remotes:", "doorbells, outlets"}},
+    {"2/7", {"Default bands:", "300-348 387-464", "779-928 MHz"}},
+    {"3/7", {"Read: decode signal", "Read RAW: waveform", "Saved: view records"}},
+    {"4/7", {"Frequency Analyzer:", "find the frequency,", "then use Read"}},
+    {"5/7", {"Flipper: TX and RX", "Phone: file import,", "timing stats, diffs"}},
+    {"6/7", {"Rolling: no replay", "Cannot decrypt data", "Own devices only"}},
+    {"7/7", {"TX is limited by", "local law and bands", "Check the law first"}},
 };
 
 static const LabPage lab_pages_nfc[] = {
-    {"1/6", {"读取13.56MHz卡片", "如门禁卡和公交卡", "可保存并模拟部分卡"}},
-    {"2/6", {"步骤1 选择读取", "卡片贴在背面", "读完按提示保存"}},
-    {"3/6", {"步骤2 选择已保存", "选中卡后选择模拟", "读卡器靠近背面"}},
-    {"4/6", {"Classic认证样本", "可在手机离线恢复", "密钥并验证字典"}},
-    {"5/6", {"加密扇区需要密钥", "银行卡不能复制", "部分卡只能模拟UID"}},
-    {"6/6", {"NFC和125kHz", "是两种不同硬件", "卡片类型要分清"}},
+    {"1/6", {"Read 13.56MHz cards", "door and bus cards", "Save, emulate some"}},
+    {"2/6", {"Step 1: choose Read", "Hold card to back", "Save when prompted"}},
+    {"3/6", {"Step 2: open Saved", "Pick card, Emulate", "Hold back to reader"}},
+    {"4/6", {"Saved auth samples:", "phone checks keys", "offline, not live"}},
+    {"5/6", {"Sectors need keys", "Bank cards: no copy", "Some: UID only"}},
+    {"6/6", {"NFC and 125kHz use", "different hardware", "Know your card type"}},
 };
 
 static const LabPage lab_pages_lfrfid[] = {
-    {"1/5", {"读取低频ID卡", "如EM4100和HID", "可保存模拟或写入"}},
-    {"2/5", {"步骤1 选择读取", "卡片贴在背面", "等几秒显示卡号"}},
-    {"3/5", {"步骤2 选择已保存", "模拟：模拟卡片", "写入：写入空白卡"}},
-    {"4/5", {"只支持125kHz低频", "加密卡不能复制", "需T5577等空白卡"}},
-    {"5/5", {"读写由Flipper完成", "手机可导入记录", "做记录整理和比较"}},
+    {"1/5", {"Read, save LF cards", "like EM4100 and HID", "Emulate or write"}},
+    {"2/5", {"Step 1: choose Read", "Hold card to back", "Wait for card ID"}},
+    {"3/5", {"Step 2: open Saved", "Emulate: mimic card", "Write: onto a blank"}},
+    {"4/5", {"125kHz LF only", "Encrypted: no copy", "Blanks: e.g. T5577"}},
+    {"5/5", {"Flipper: read-write", "Phone: file import,", "labels, comparison"}},
 };
 
 static const LabPage lab_pages_ibutton[] = {
-    {"1/5", {"读取接触式钥匙扣", "如DS1990门禁钥匙", "可保存模拟或写入"}},
-    {"2/5", {"步骤1 选择读取", "钥匙扣贴住背面", "的iButton触点"}},
-    {"3/5", {"步骤2 选择已保存", "模拟：模拟钥匙", "写入ID：写入空白件"}},
-    {"4/5", {"触点要接触良好", "支持Dallas等协议", "写入需兼容空白件"}},
-    {"5/5", {"读写由Flipper完成", "手机可导入记录", "做记录整理和比较"}},
+    {"1/5", {"Read, save contact", "keys like DS1990", "Emulate or write"}},
+    {"2/5", {"Step 1: choose Read", "Touch key to back", "iButton contacts"}},
+    {"3/5", {"Step 2: open Saved", "Emulate: mimic key", "Write ID: to blanks"}},
+    {"4/5", {"Make good contact", "Supports Dallas etc", "Use matching blanks"}},
+    {"5/5", {"Flipper: read-write", "Phone: file import,", "labels, comparison"}},
 };
 
 static const LabPage lab_pages_gpio[] = {
-    {"1/6", {"USB-UART桥接", "让电脑经Flipper", "连接板子的串口"}},
-    {"2/6", {"接线 默认13和14脚", "13为TX 14为RX", "TX与RX交叉相接"}},
-    {"3/6", {"GND与GND相连", "按3.3V电平使用", "5V设备要电平转换"}},
-    {"4/6", {"进入USB-UART桥接", "波特率与板子一致", "电脑用串口软件看"}},
-    {"5/6", {"手机扩展板实时数据", "经Lab Bridge接收", "需确认端口与波特率"}},
-    {"6/6", {"AIO Board 1.4", "芯片固件待核实", "本机连接未验证"}},
+    {"1/6", {"USB-UART Bridge:", "PC uses Flipper to", "reach a board UART"}},
+    {"2/6", {"Default pins 13, 14", "13 is TX, 14 is RX", "Cross TX and RX"}},
+    {"3/6", {"Connect GND to GND", "Use 3.3V logic", "5V: level shifter"}},
+    {"4/6", {"Run USB-UART Bridge", "Baud same as board", "PC: serial terminal"}},
+    {"5/6", {"Lab Bridge: live", "board data to phone", "Check port and baud"}},
+    {"6/6", {"AIO Board 1.4:", "chip, firmware and", "link are unverified"}},
 };
 
 static const LabPage lab_pages_files[] = {
-    {"1/4", {"记录存在SD卡", "各功能分目录", "如infrared nfc"}},
-    {"2/4", {"桌面短按下键", "打开文件管理浏览", "按键设置改过则不同"}},
-    {"3/4", {"电脑可用qFlipper", "或拔卡用读卡器", "手机App也可传文件"}},
-    {"4/4", {"蓝牙传大文件较慢", "文件名建议用英文", "改动前请先备份"}},
+    {"1/4", {"Records save to SD", "One folder per app", "like infrared, nfc"}},
+    {"2/4", {"Desktop: press Down", "to open the Archive", "unless remapped"}},
+    {"3/4", {"Copy files by PC:", "qFlipper, SD reader", "or by the phone app"}},
+    {"4/4", {"BT: big files slow", "Short file names", "Back up, then edit"}},
 };
 
 static const LabPage lab_pages_phone[] = {
-    {"1/5", {"手机负责重计算", "Flipper负责硬件", "和实时收发"}},
-    {"2/5", {"App代码与测试已备", "需Mac安装到手机", "蓝牙实物连接待验证"}},
-    {"3/5", {"导入记录统计比较", "Classic离线计算", "串口输出经蓝牙接收"}},
-    {"4/5", {"不能扩大射频频段", "也不增加发射距离", "未知信号未必能识别"}},
-    {"5/5", {"蓝牙断开后", "Flipper仍可单独用", "本机按返回可停止"}},
+    {"1/5", {"Phone: heavy math", "Flipper: hardware", "and live TX and RX"}},
+    {"2/5", {"App code available", "Install needs a Mac", "Bluetooth: untested"}},
+    {"3/5", {"Files, record stats", "Classic keys, UART", "GPS+proxy: app open"}},
+    {"4/5", {"No wider RF bands", "or longer TX range", "May not ID unknowns"}},
+    {"5/5", {"If Bluetooth drops,", "Flipper works alone", "Press Back to stop"}},
 };
 
 static const LabTopic lab_topics[LAB_TOPIC_COUNT] = {
     {
-        .label = "使用说明",
+        .label = "How to Use",
         .indicator = "1/10",
-        .title = "使用说明",
-        .footer = "←→翻页 返回列表",
+        .title = "How to Use",
+        .footer = "L/R page, Back list",
         .launch = NULL,
         .pages = lab_pages_about,
         .page_count = 4,
     },
     {
-        .label = "蓝牙连接",
+        .label = "Bluetooth Link",
         .indicator = "2/10",
-        .title = "蓝牙连接",
-        .footer = "←→翻页 OK打开应用",
+        .title = "Bluetooth Link",
+        .footer = "L/R page, OK app",
         .launch = "Bluetooth",
         .pages = lab_pages_bluetooth,
         .page_count = 7,
     },
     {
-        .label = "红外遥控",
+        .label = "Infrared Remote",
         .indicator = "3/10",
-        .title = "红外遥控",
-        .footer = "←→翻页 OK打开应用",
+        .title = "Infrared Remote",
+        .footer = "L/R page, OK app",
         .launch = "Infrared",
         .pages = lab_pages_infrared,
         .page_count = 7,
     },
     {
-        .label = "Sub-GHz无线",
+        .label = "Sub-GHz Radio",
         .indicator = "4/10",
-        .title = "Sub-GHz无线",
-        .footer = "←→翻页 OK打开应用",
+        .title = "Sub-GHz Radio",
+        .footer = "L/R page, OK app",
         .launch = "Sub-GHz",
         .pages = lab_pages_subghz,
         .page_count = 7,
     },
     {
-        .label = "NFC卡片",
+        .label = "NFC Cards",
         .indicator = "5/10",
-        .title = "NFC卡片",
-        .footer = "←→翻页 OK打开应用",
+        .title = "NFC Cards",
+        .footer = "L/R page, OK app",
         .launch = "NFC",
         .pages = lab_pages_nfc,
         .page_count = 6,
@@ -177,43 +177,43 @@ static const LabTopic lab_topics[LAB_TOPIC_COUNT] = {
         .label = "125kHz RFID",
         .indicator = "6/10",
         .title = "125kHz RFID",
-        .footer = "←→翻页 OK打开应用",
+        .footer = "L/R page, OK app",
         .launch = "125 kHz RFID",
         .pages = lab_pages_lfrfid,
         .page_count = 5,
     },
     {
-        .label = "iButton钥匙",
+        .label = "iButton Keys",
         .indicator = "7/10",
-        .title = "iButton钥匙",
-        .footer = "←→翻页 OK打开应用",
+        .title = "iButton Keys",
+        .footer = "L/R page, OK app",
         .launch = "iButton",
         .pages = lab_pages_ibutton,
         .page_count = 5,
     },
     {
-        .label = "GPIO串口",
+        .label = "GPIO Serial",
         .indicator = "8/10",
-        .title = "GPIO串口",
-        .footer = "←→翻页 OK打开应用",
+        .title = "GPIO Serial",
+        .footer = "L/R page, OK app",
         .launch = "GPIO",
         .pages = lab_pages_gpio,
         .page_count = 6,
     },
     {
-        .label = "文件管理",
+        .label = "File Management",
         .indicator = "9/10",
-        .title = "文件管理",
-        .footer = "←→翻页 返回列表",
+        .title = "File Management",
+        .footer = "L/R page, Back list",
         .launch = NULL,
         .pages = lab_pages_files,
         .page_count = 4,
     },
     {
-        .label = "手机算力",
+        .label = "Phone Companion",
         .indicator = "10/10",
-        .title = "手机算力",
-        .footer = "←→翻页 返回列表",
+        .title = "Phone Companion",
+        .footer = "L/R page, Back list",
         .launch = NULL,
         .pages = lab_pages_phone,
         .page_count = 5,

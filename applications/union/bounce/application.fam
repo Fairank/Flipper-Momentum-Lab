@@ -1,6 +1,6 @@
 App(
     appid="bounce",
-    name="弹跳球",
+    name="Bounce",
     apptype=FlipperAppType.EXTERNAL,
     entry_point="bounce_app",
     requires=["gui", "storage", "notification"],
@@ -10,5 +10,5 @@ App(
     fap_version="1.0",
     fap_author="Tom Varghese",
     fap_weburl="https://github.com/tomxposed/flipper-bounce",
-    fap_description="诺基亚风格弹跳球：滚动、跳跃，收集所有圆环后到达出口。",
+    fap_description="Nokia-style Bounce: roll, jump, collect every ring and reach the exit.",
 )

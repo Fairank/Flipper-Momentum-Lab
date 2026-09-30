@@ -80,12 +80,12 @@ import FlipperCore
         .fileImporter(isPresented: $importing, allowedContentTypes: [.data], allowsMultipleSelection: importDictionary) { result in
             switch result {
             case .success(let urls): workbench.importFiles(urls, dictionary: importDictionary)
-            case .failure(let error): workbench.error = error.localizedDescription
+            case .failure(let error): workbench.error = PhoneErrorDescription.describe(error)
             }
         }
         .fileExporter(isPresented: $exporting, document: SerialDataDocument(data: Data(exportText.utf8)),
                       contentType: .data, defaultFilename: "Flipper-verified-keys.nfc") { result in
-            if case .failure(let error) = result { workbench.error = error.localizedDescription }
+            if case .failure(let error) = result { workbench.error = PhoneErrorDescription.describe(error) }
         }
         .onDisappear { workbench.cancel() }
         .onChange(of: scenePhase) { _, phase in if phase != .active { workbench.cancel() } }
@@ -116,7 +116,7 @@ import FlipperCore
             samples = try ClassicSample.parse("Sec 0 key A cuid 12345678 nt0 1AD8DF2B nr0 1D316024 ar0 620EF048 nt1 30D6CB07 nr1 C52077E2 ar1 837AC61A")
             dictionary = try NFCKeyDictionary(text: "FFFFFFFFFFFF\nA0A1A2A3A4A5\n000000000000\n")
             results = []; error = nil; status = "已载入 Proxmark3 公开测试样本和 3 个候选密钥。"
-        } catch { self.error = error.localizedDescription }
+        } catch { self.error = PhoneErrorDescription.describe(error) }
     }
 
     func importFiles(_ urls: [URL], dictionary isDictionary: Bool) {
@@ -133,7 +133,7 @@ import FlipperCore
                 if isDictionary { dictionary = input.dictionary } else { samples = input.samples }
                 results = []; status = "材料已检查，可以开始离线验证。"
             } catch is CancellationError { status = "已取消导入。" }
-            catch { self.error = error.localizedDescription; status = "导入失败，原有材料已保留。" }
+            catch { self.error = PhoneErrorDescription.describe(error); status = "导入失败，原有材料已保留。" }
         }
     }
 
@@ -157,7 +157,7 @@ import FlipperCore
                 else if let dictionary { results = try await ClassicOffline.verify(samples: input, dictionary: dictionary, progress: update) }
                 status = "验证完成：\(results.filter { $0.key != nil }.count)/\(results.count) 组样本命中。"
             } catch is CancellationError { status = "已取消分析。" }
-            catch { self.error = error.localizedDescription; status = "分析未完成。" }
+            catch { self.error = PhoneErrorDescription.describe(error); status = "分析未完成。" }
         }
     }
     func mergeVerified() {
@@ -166,7 +166,7 @@ import FlipperCore
             let recovered = try NFCKeyDictionary(text: verifiedText)
             dictionary = try NFCKeyDictionary.merge((dictionary.map { [$0] } ?? []) + [recovered])
             status = "已合并并去重，可以导出增强后的字典。"
-        } catch { self.error = error.localizedDescription }
+        } catch { self.error = PhoneErrorDescription.describe(error) }
     }
     func cancel() { task?.cancel() }
 }

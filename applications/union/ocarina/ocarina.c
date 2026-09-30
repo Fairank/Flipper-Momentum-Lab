@@ -55,28 +55,28 @@ typedef struct {
 } OcarinaSong;
 
 OcarinaSong songs[] = {
-    {"塞尔达摇篮曲", "Left Up Right Left Up Right", "◀ ▲ ▶ ◀ ▲ ▶"},
-    {"艾波娜之歌", "Up Left Right Up Left Right", "▲ ◀ ▶ ▲ ◀ ▶"},
-    {"莎莉亚之歌", "Down Right Left Down Right Left", "▼ ▶ ◀ ▼ ▶ ◀"},
-    {"太阳之歌", "Right Down Up Right Down Up", "▶ ▼ ▲ ▶ ▼ ▲"},
-    {"时之歌", "Right Ok Down Right Ok Down", "▶ ◉ ▼ ▶ ◉ ▼"},
-    {"风暴之歌", "Ok Down Up Ok Down Up", "◉ ▼ ▲ ◉ ▼ ▲"},
+    {"Zelda's Lullaby", "Left Up Right Left Up Right", "◀ ▲ ▶ ◀ ▲ ▶"},
+    {"Epona's Song", "Up Left Right Up Left Right", "▲ ◀ ▶ ▲ ◀ ▶"},
+    {"Saria's Song", "Down Right Left Down Right Left", "▼ ▶ ◀ ▼ ▶ ◀"},
+    {"Sun's Song", "Right Down Up Right Down Up", "▶ ▼ ▲ ▶ ▼ ▲"},
+    {"Song of Time", "Right Ok Down Right Ok Down", "▶ ◉ ▼ ▶ ◉ ▼"},
+    {"Song of Storms", "Ok Down Up Ok Down Up", "◉ ▼ ▲ ◉ ▼ ▲"},
     // Adding Warp Songs from Ocarina of Time
-    {"翱翔之歌", "Down Right Up Down Right Up", "▼ ▶ ▲ ▼ ▶ ▲"},
-    {"光之前奏曲", "Up Left Right Up Left Right", "▲ ◀ ▶ ▲ ◀ ▶"},
-    {"森林小步舞曲", "Left Down Right Left Down Right", "◀ ▼ ▶ ◀ ▼ ▶"},
-    {"火之波莱罗舞曲", "Right Down Left Right Down Left", "▶ ▼ ◀ ▶ ▼ ◀"},
-    {"水之小夜曲", "Down Left Right Down Left Right", "▼ ◀ ▶ ▼ ◀ ▶"},
-    {"魂之安魂曲", "Right Left Left Right Up Down", "▶ ◀ ◀ ▶ ▲ ▼"},
-    {"影之夜曲", "Up Right Down Up Right Down", "▲ ▶ ▼ ▲ ▶ ▼"},
+    {"Song of Soaring", "Down Right Up Down Right Up", "▼ ▶ ▲ ▼ ▶ ▲"},
+    {"Prelude of Light", "Up Left Right Up Left Right", "▲ ◀ ▶ ▲ ◀ ▶"},
+    {"Minuet of Forest", "Left Down Right Left Down Right", "◀ ▼ ▶ ◀ ▼ ▶"},
+    {"Bolero of Fire", "Right Down Left Right Down Left", "▶ ▼ ◀ ▶ ▼ ◀"},
+    {"Serenade of Water", "Down Left Right Down Left Right", "▼ ◀ ▶ ▼ ◀ ▶"},
+    {"Requiem of Spirit", "Right Left Left Right Up Down", "▶ ◀ ◀ ▶ ▲ ▼"},
+    {"Nocturne of Shadow", "Up Right Down Up Right Down", "▲ ▶ ▼ ▲ ▶ ▼"},
     // Adding some songs from Majora's Mask
-    {"治愈之歌", "Down Right Up Down Right Up", "▼ ▶ ▲ ▼ ▶ ▲"},
-    {"空虚挽歌", "Left Down Right Left Down Right", "◀ ▼ ▶ ◀ ▼ ▶"},
-    {"秩序之誓", "Right Up Left Right Up Left", "▶ ▲ ◀ ▶ ▲ ◀"},
+    {"Song of Healing", "Down Right Up Down Right Up", "▼ ▶ ▲ ▼ ▶ ▲"},
+    {"Elegy of Emptiness", "Left Down Right Left Down Right", "◀ ▼ ▶ ◀ ▼ ▶"},
+    {"Oath to Order", "Right Up Left Right Up Left", "▶ ▲ ◀ ▶ ▲ ◀"},
     // Adding additional Majora's Mask Songs
-    {"觉醒奏鸣曲", "Right Left Down Right Left Down", "▶ ◀ ▼ ▶ ◀ ▼ ▶"},
-    {"鼓隆摇篮曲", "Left Right Left Right Down Up", "◀ ▶ ◀ ▶ ▼ ▲"},
-    {"新潮波萨诺瓦", "Right Left Up Down Left Right", "▶ ◀ ▲ ▼ ◀ ▶"}};
+    {"Sonata of Awakening", "Right Left Down Right Left Down", "▶ ◀ ▼ ▶ ◀ ▼ ▶"},
+    {"Goron Lullaby", "Left Right Left Right Down Up", "◀ ▶ ◀ ▶ ▼ ▲"},
+    {"New Wave Bossa Nova", "Right Left Up Down Left Right", "▶ ◀ ▲ ▼ ◀ ▶"}};
 
 const int song_count = sizeof(songs) / sizeof(OcarinaSong);
 
@@ -130,7 +130,7 @@ void draw_callback(Canvas* canvas, void* ctx) {
     // Draw title: four Chinese glyphs (47 px) centered, rows 2..12 below the frame
     canvas_set_font(canvas, FontPrimary);
     canvas_draw_frame(canvas, 0, 0, 128, 64);
-    canvas_draw_str(canvas, 40, 12, "陶笛曲目");
+    canvas_draw_str(canvas, 40, 12, "Ocarina Songs");
 
     // Draw songs titles and their sequences
     for(int i = 0; i < SONGS_PER_PAGE; i++) {

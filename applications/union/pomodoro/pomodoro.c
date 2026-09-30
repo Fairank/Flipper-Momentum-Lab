@@ -87,11 +87,23 @@ Pomodoro* pomodoro_app_alloc() {
     // Submenu view
     app->submenu = submenu_alloc();
     submenu_add_item(
-        app->submenu, "经典 工作25 休息5", PomodoroSubmenuIndex25, pomodoro_submenu_callback, app);
+        app->submenu,
+        "Classic: 25 work 5 rest",
+        PomodoroSubmenuIndex25,
+        pomodoro_submenu_callback,
+        app);
     submenu_add_item(
-        app->submenu, "长时 工作50 休息10", PomodoroSubmenuIndex50, pomodoro_submenu_callback, app);
+        app->submenu,
+        "Long: 50 work 10 rest",
+        PomodoroSubmenuIndex50,
+        pomodoro_submenu_callback,
+        app);
     submenu_add_item(
-        app->submenu, "冲刺 工作10 休息2", PomodoroSubmenuIndex10, pomodoro_submenu_callback, app);
+        app->submenu,
+        "Sprint: 10 work 2 rest",
+        PomodoroSubmenuIndex10,
+        pomodoro_submenu_callback,
+        app);
     view_set_previous_callback(submenu_get_view(app->submenu), pomodoro_exit);
     view_dispatcher_add_view(
         app->view_dispatcher, PomodoroViewSubmenu, submenu_get_view(app->submenu));
@@ -100,10 +112,10 @@ Pomodoro* pomodoro_app_alloc() {
     app->dialog = dialog_ex_alloc();
     dialog_ex_set_result_callback(app->dialog, pomodoro_dialog_callback);
     dialog_ex_set_context(app->dialog, app);
-    dialog_ex_set_left_button_text(app->dialog, "退出");
-    dialog_ex_set_right_button_text(app->dialog, "取消");
-    dialog_ex_set_center_button_text(app->dialog, "菜单");
-    dialog_ex_set_header(app->dialog, "退出当前应用？", 16, 12, AlignLeft, AlignTop);
+    dialog_ex_set_left_button_text(app->dialog, "Exit");
+    dialog_ex_set_right_button_text(app->dialog, "Stay");
+    dialog_ex_set_center_button_text(app->dialog, "Menu");
+    dialog_ex_set_header(app->dialog, "Close Current App?", 16, 12, AlignLeft, AlignTop);
     view_dispatcher_add_view(
         app->view_dispatcher, PomodoroViewExitConfirm, dialog_ex_get_view(app->dialog));
 

@@ -166,20 +166,20 @@ static void lab_bridge_draw(Canvas* canvas, void* context) {
     LabBridgeModel* model = context;
     char line[48];
     canvas_set_font(canvas, FontPrimary);
-    canvas_draw_str(canvas, 2, 12, "扩展板串口");
+    canvas_draw_str(canvas, 2, 12, "Expansion Serial");
     canvas_set_font(canvas, FontSecondary);
     canvas_draw_str(
         canvas,
         2,
         25,
-        model->busy   ? "串口已被占用" :
-        model->opened ? "正在接收" :
-                        "串口未打开");
+        model->busy   ? "Serial port busy" :
+        model->opened ? "Receiving" :
+                        "Serial port closed");
     snprintf(line, sizeof(line), "%lu baud  RX %lu", model->baud, model->received);
     canvas_draw_str(canvas, 2, 37, line);
-    snprintf(line, sizeof(line), "丢失: %lu", model->dropped);
+    snprintf(line, sizeof(line), "Dropped: %lu", model->dropped);
     canvas_draw_str(canvas, 2, 49, line);
-    canvas_draw_str(canvas, 2, 62, model->remote ? "请在手机停止接收" : "OK 接收  返回退出");
+    canvas_draw_str(canvas, 2, 62, model->remote ? "Stop RX on phone" : "OK:Receive Back:Exit");
 }
 
 static bool lab_bridge_input(InputEvent* event, void* context) {

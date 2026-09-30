@@ -17,9 +17,9 @@ void archive_scene_delete_on_enter(void* context) {
     ArchiveApp* app = (ArchiveApp*)context;
 
     widget_add_button_element(
-        app->widget, GuiButtonTypeLeft, "取消", archive_scene_delete_widget_callback, app);
+        app->widget, GuiButtonTypeLeft, "Cancel", archive_scene_delete_widget_callback, app);
     widget_add_button_element(
-        app->widget, GuiButtonTypeRight, "删除", archive_scene_delete_widget_callback, app);
+        app->widget, GuiButtonTypeRight, "Delete", archive_scene_delete_widget_callback, app);
 
     FuriString* filename;
     filename = furi_string_alloc();
@@ -34,7 +34,7 @@ void archive_scene_delete_on_enter(void* context) {
     path_extract_filename(current->path, filename, false);
 
     widget_add_text_box_element(
-        app->widget, 0, 0, 128, 13, AlignCenter, AlignTop, "删除此项目？", false);
+        app->widget, 0, 0, 128, 13, AlignCenter, AlignTop, "Delete this item?", false);
     widget_add_text_box_element(
         app->widget, 0, 16, 128, 28, AlignCenter, AlignTop, furi_string_get_cstr(filename), true);
 

@@ -1,6 +1,6 @@
 App(
     appid="example_network",
-    name="手机联网测试",
+    name="[RPC] Network",
     apptype=FlipperAppType.EXTERNAL,
     entry_point="network_app",
     requires=["gui"],

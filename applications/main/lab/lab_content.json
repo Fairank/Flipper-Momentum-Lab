@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "notes": "设备端中文短说明。修改后运行 python scripts/generate_lab_font.py 重新生成 lab_content.h 和 lab_font.h。每行最多 10 个非 ASCII 字符，像素宽度和上下边界由生成器按实际字形检查。launch 必须是 applications/main 或 applications/settings 中 MENUEXTERNAL/SETTINGS 应用的 name。",
+  "notes": "Short on-device help text in English (ASCII only). After editing, run python scripts/generate_lab_font.py to regenerate lab_content.h and lab_font.h. Keep every menu label, title, footer and page line within 19 characters and every page within 3 lines; do not use a slash in menu labels or page lines. The generator checks pixel width and vertical bounds against the actual glyphs, and layout.max_wide_chars still caps non-ASCII characters per line. launch must be the name of a MENUEXTERNAL/SETTINGS app in applications/main or applications/settings.",
   "layout": {
     "text_x": 2,
     "text_max_width": 120,
@@ -16,82 +16,82 @@
     "max_wide_chars": 10
   },
   "ui": {
-    "menu_title": "中文功能指南",
-    "menu_footer": "↑↓选择 OK查看",
-    "detail_footer": "←→翻页 返回列表",
-    "detail_footer_launch": "←→翻页 OK打开应用",
+    "menu_title": "Feature Guide",
+    "menu_footer": "Up/Dn pick, OK open",
+    "detail_footer": "L/R page, Back list",
+    "detail_footer_launch": "L/R page, OK app",
     "indicator": "{index}/{count}"
   },
   "topics": [
     {
       "id": "about",
-      "menu": "使用说明",
-      "title": "使用说明",
+      "menu": "How to Use",
+      "title": "How to Use",
       "launch": null,
       "pages": [
-        ["这里是中文说明台", "介绍各功能怎么用", "本页不收发任何信号"],
-        ["↑↓选择主题", "OK查看 ←→翻页", "返回键回到上一级"],
-        ["详情页按OK", "可打开对应原应用", "多项菜单已中文化"],
-        ["中文界面仍在完善", "部分页面仍有英文", "实物显示待验证"]
+        ["A short guide to", "using each feature", "No signal in or out"],
+        ["Topic: Up, Down, OK", "Page: Left or Right", "Back: up one level"],
+        ["On a topic page, OK", "opens its app", "Flipper UI: English"],
+        ["Phone app: Chinese", "Added features kept", "Device test pending"]
       ]
     },
     {
       "id": "bluetooth",
-      "menu": "蓝牙连接",
-      "title": "蓝牙连接",
+      "menu": "Bluetooth Link",
+      "title": "Bluetooth Link",
       "launch": "Bluetooth",
       "pages": [
-        ["蓝牙让手机App", "连上Flipper", "传文件和看状态"],
-        ["清单1 打开蓝牙", "进入设置中的蓝牙", "将蓝牙切换为开"],
-        ["清单2 手机授权", "iPhone蓝牙已打开", "允许App使用蓝牙"],
-        ["清单3 在手机配对", "Flipper显示6位码", "照提示输入或确认"],
-        ["清单4 打开App", "打开配套手机App", "在App里选这台设备"],
-        ["还连不上就重配", "本机：解除全部配对", "iPhone：忽略此设备"],
-        ["蓝牙连上只是通道", "能用哪些功能", "取决于App和固件"]
+        ["Phone app connects", "over Bluetooth for", "files and status"],
+        ["1. Bluetooth on", "Settings: Bluetooth", "Set Bluetooth to ON"],
+        ["2. Phone permission", "iPhone Bluetooth on", "Allow app to use it"],
+        ["3. Pair on phone", "6 digits on Flipper", "Enter or confirm"],
+        ["4. Open the app", "Open companion app", "Choose this Flipper"],
+        ["No link? Pair again", "Flipper: unpair all", "iPhone: forget it"],
+        ["Just a data channel", "What works depends", "on app and firmware"]
       ]
     },
     {
       "id": "infrared",
-      "menu": "红外遥控",
-      "title": "红外遥控",
+      "menu": "Infrared Remote",
+      "title": "Infrared Remote",
       "launch": "Infrared",
       "pages": [
-        ["学习家电遥控按键", "保存后可随时发射", "像一个万能遥控器"],
-        ["步骤1 学习", "选择学习新遥控", "遥控对准顶部窗口"],
-        ["按一下遥控按键", "成功后起名保存", "其他按键逐个学"],
-        ["步骤2 使用", "选择已保存遥控", "选按键即可发射"],
-        ["选择万能遥控", "按设备类别使用", "会依次尝试多种码"],
-        ["收发由Flipper完成", "手机可导入记录", "做脉冲统计和整理"],
-        ["只对红外设备有效", "蓝牙或射频遥控不行", "未知协议存为RAW"]
+        ["Learn remote keys", "Save, send anytime", "One remote for all"],
+        ["Step 1: Learn", "Learn New Remote", "Aim remote at top"],
+        ["Press a remote key", "Then name and save", "Repeat for each key"],
+        ["Step 2: Use", "Open Saved Remotes", "Pick a key to send"],
+        ["Universal Remotes:", "pick a device type", "Tries codes in turn"],
+        ["Flipper: TX and RX", "Phone: file import,", "pulse stats, labels"],
+        ["Only for IR devices", "Not Bluetooth or RF", "Unknown: saved RAW"]
       ]
     },
     {
       "id": "subghz",
-      "menu": "Sub-GHz无线",
-      "title": "Sub-GHz无线",
+      "menu": "Sub-GHz Radio",
+      "title": "Sub-GHz Radio",
       "launch": "Sub-GHz",
       "pages": [
-        ["收发1GHz以下的", "无线遥控信号", "如门铃和遥控插座"],
-        ["默认可用频段：", "300-348 387-464", "779-928 MHz"],
-        ["读取：解码常见协议", "读取RAW：录波形", "已保存：查看记录"],
-        ["选择频率分析仪", "先找出信号频率", "再用读取接收"],
-        ["收发由Flipper完成", "手机可导入记录", "做时序统计和比较"],
-        ["滚动码通常无法重放", "加密内容无法解读", "仅用于自有设备"],
-        ["发射受地区法规", "和频段限制", "使用前先确认合法"]
+        ["Send and receive", "sub-1 GHz remotes:", "doorbells, outlets"],
+        ["Default bands:", "300-348 387-464", "779-928 MHz"],
+        ["Read: decode signal", "Read RAW: waveform", "Saved: view records"],
+        ["Frequency Analyzer:", "find the frequency,", "then use Read"],
+        ["Flipper: TX and RX", "Phone: file import,", "timing stats, diffs"],
+        ["Rolling: no replay", "Cannot decrypt data", "Own devices only"],
+        ["TX is limited by", "local law and bands", "Check the law first"]
       ]
     },
     {
       "id": "nfc",
-      "menu": "NFC卡片",
-      "title": "NFC卡片",
+      "menu": "NFC Cards",
+      "title": "NFC Cards",
       "launch": "NFC",
       "pages": [
-        ["读取13.56MHz卡片", "如门禁卡和公交卡", "可保存并模拟部分卡"],
-        ["步骤1 选择读取", "卡片贴在背面", "读完按提示保存"],
-        ["步骤2 选择已保存", "选中卡后选择模拟", "读卡器靠近背面"],
-        ["Classic认证样本", "可在手机离线恢复", "密钥并验证字典"],
-        ["加密扇区需要密钥", "银行卡不能复制", "部分卡只能模拟UID"],
-        ["NFC和125kHz", "是两种不同硬件", "卡片类型要分清"]
+        ["Read 13.56MHz cards", "door and bus cards", "Save, emulate some"],
+        ["Step 1: choose Read", "Hold card to back", "Save when prompted"],
+        ["Step 2: open Saved", "Pick card, Emulate", "Hold back to reader"],
+        ["Saved auth samples:", "phone checks keys", "offline, not live"],
+        ["Sectors need keys", "Bank cards: no copy", "Some: UID only"],
+        ["NFC and 125kHz use", "different hardware", "Know your card type"]
       ]
     },
     {
@@ -100,63 +100,63 @@
       "title": "125kHz RFID",
       "launch": "125 kHz RFID",
       "pages": [
-        ["读取低频ID卡", "如EM4100和HID", "可保存模拟或写入"],
-        ["步骤1 选择读取", "卡片贴在背面", "等几秒显示卡号"],
-        ["步骤2 选择已保存", "模拟：模拟卡片", "写入：写入空白卡"],
-        ["只支持125kHz低频", "加密卡不能复制", "需T5577等空白卡"],
-        ["读写由Flipper完成", "手机可导入记录", "做记录整理和比较"]
+        ["Read, save LF cards", "like EM4100 and HID", "Emulate or write"],
+        ["Step 1: choose Read", "Hold card to back", "Wait for card ID"],
+        ["Step 2: open Saved", "Emulate: mimic card", "Write: onto a blank"],
+        ["125kHz LF only", "Encrypted: no copy", "Blanks: e.g. T5577"],
+        ["Flipper: read-write", "Phone: file import,", "labels, comparison"]
       ]
     },
     {
       "id": "ibutton",
-      "menu": "iButton钥匙",
-      "title": "iButton钥匙",
+      "menu": "iButton Keys",
+      "title": "iButton Keys",
       "launch": "iButton",
       "pages": [
-        ["读取接触式钥匙扣", "如DS1990门禁钥匙", "可保存模拟或写入"],
-        ["步骤1 选择读取", "钥匙扣贴住背面", "的iButton触点"],
-        ["步骤2 选择已保存", "模拟：模拟钥匙", "写入ID：写入空白件"],
-        ["触点要接触良好", "支持Dallas等协议", "写入需兼容空白件"],
-        ["读写由Flipper完成", "手机可导入记录", "做记录整理和比较"]
+        ["Read, save contact", "keys like DS1990", "Emulate or write"],
+        ["Step 1: choose Read", "Touch key to back", "iButton contacts"],
+        ["Step 2: open Saved", "Emulate: mimic key", "Write ID: to blanks"],
+        ["Make good contact", "Supports Dallas etc", "Use matching blanks"],
+        ["Flipper: read-write", "Phone: file import,", "labels, comparison"]
       ]
     },
     {
       "id": "gpio",
-      "menu": "GPIO串口",
-      "title": "GPIO串口",
+      "menu": "GPIO Serial",
+      "title": "GPIO Serial",
       "launch": "GPIO",
       "pages": [
-        ["USB-UART桥接", "让电脑经Flipper", "连接板子的串口"],
-        ["接线 默认13和14脚", "13为TX 14为RX", "TX与RX交叉相接"],
-        ["GND与GND相连", "按3.3V电平使用", "5V设备要电平转换"],
-        ["进入USB-UART桥接", "波特率与板子一致", "电脑用串口软件看"],
-        ["手机扩展板实时数据", "经Lab Bridge接收", "需确认端口与波特率"],
-        ["AIO Board 1.4", "芯片固件待核实", "本机连接未验证"]
+        ["USB-UART Bridge:", "PC uses Flipper to", "reach a board UART"],
+        ["Default pins 13, 14", "13 is TX, 14 is RX", "Cross TX and RX"],
+        ["Connect GND to GND", "Use 3.3V logic", "5V: level shifter"],
+        ["Run USB-UART Bridge", "Baud same as board", "PC: serial terminal"],
+        ["Lab Bridge: live", "board data to phone", "Check port and baud"],
+        ["AIO Board 1.4:", "chip, firmware and", "link are unverified"]
       ]
     },
     {
       "id": "files",
-      "menu": "文件管理",
-      "title": "文件管理",
+      "menu": "File Management",
+      "title": "File Management",
       "launch": null,
       "pages": [
-        ["记录存在SD卡", "各功能分目录", "如infrared nfc"],
-        ["桌面短按下键", "打开文件管理浏览", "按键设置改过则不同"],
-        ["电脑可用qFlipper", "或拔卡用读卡器", "手机App也可传文件"],
-        ["蓝牙传大文件较慢", "文件名建议用英文", "改动前请先备份"]
+        ["Records save to SD", "One folder per app", "like infrared, nfc"],
+        ["Desktop: press Down", "to open the Archive", "unless remapped"],
+        ["Copy files by PC:", "qFlipper, SD reader", "or by the phone app"],
+        ["BT: big files slow", "Short file names", "Back up, then edit"]
       ]
     },
     {
       "id": "phone",
-      "menu": "手机算力",
-      "title": "手机算力",
+      "menu": "Phone Companion",
+      "title": "Phone Companion",
       "launch": null,
       "pages": [
-        ["手机负责重计算", "Flipper负责硬件", "和实时收发"],
-        ["App代码与测试已备", "需Mac安装到手机", "蓝牙实物连接待验证"],
-        ["导入记录统计比较", "Classic离线计算", "串口输出经蓝牙接收"],
-        ["不能扩大射频频段", "也不增加发射距离", "未知信号未必能识别"],
-        ["蓝牙断开后", "Flipper仍可单独用", "本机按返回可停止"]
+        ["Phone: heavy math", "Flipper: hardware", "and live TX and RX"],
+        ["App code available", "Install needs a Mac", "Bluetooth: untested"],
+        ["Files, record stats", "Classic keys, UART", "GPS+proxy: app open"],
+        ["No wider RF bands", "or longer TX range", "May not ID unknowns"],
+        ["If Bluetooth drops,", "Flipper works alone", "Press Back to stop"]
       ]
     }
   ]

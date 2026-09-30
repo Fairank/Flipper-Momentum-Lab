@@ -15,19 +15,19 @@ void desktop_settings_scene_keybinds_type_on_enter(void* context) {
 
     submenu_add_item(
         submenu,
-        "短按",
+        "Press",
         DesktopKeybindTypePress,
         desktop_settings_scene_keybinds_type_submenu_callback,
         app);
 
     submenu_add_item(
         submenu,
-        "长按",
+        "Hold",
         DesktopKeybindTypeHold,
         desktop_settings_scene_keybinds_type_submenu_callback,
         app);
 
-    submenu_set_header(submenu, "快捷键类型:");
+    submenu_set_header(submenu, "Keybind type:");
 
     submenu_set_selected_item(
         submenu,

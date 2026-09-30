@@ -1,6 +1,6 @@
 App(
     appid="chess_clock",
-    name="棋钟",
+    name="Chess Clock",
     apptype=FlipperAppType.EXTERNAL,
     entry_point="chess_clock_app",
     requires=["gui"],
@@ -10,5 +10,5 @@ App(
     fap_author="@ihatecsv",
     fap_weburl="https://github.com/ihatecsv",
     fap_version="1.0",
-    fap_description="简易棋钟",
+    fap_description="A simple chess clock",
 )

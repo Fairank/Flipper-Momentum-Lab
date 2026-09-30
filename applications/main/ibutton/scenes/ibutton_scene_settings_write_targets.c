@@ -69,8 +69,14 @@ void ibutton_scene_settings_write_targets_on_enter(void* context) {
     // a 1.5 s timeout on it.
     popup_reset(ibutton->popup);
     popup_set_icon(ibutton->popup, 83, 22, &I_WarningDolphinFlip_45x42);
-    popup_set_header(ibutton->popup, "错误", 64, 3, AlignCenter, AlignTop);
-    popup_set_text(ibutton->popup, "设置页面缺失\n请更新\nSD 卡资源", 3, 19, AlignLeft, AlignTop);
+    popup_set_header(ibutton->popup, "Error", 64, 3, AlignCenter, AlignTop);
+    popup_set_text(
+        ibutton->popup,
+        "Settings page\nmissing.\nUpdate the\nSD resources",
+        3,
+        19,
+        AlignLeft,
+        AlignTop);
     view_dispatcher_switch_to_view(ibutton->view_dispatcher, iButtonViewPopup);
 }
 
@@ -82,7 +88,7 @@ bool ibutton_scene_settings_write_targets_on_event(void* context, SceneManagerEv
     // blocking on a modal would be wrong.
     if(event.type == SceneManagerEventTypeBack && settings_plugin) {
         if(!settings_plugin->write_targets->on_save()) {
-            dialog_message_show_storage_error(ibutton->dialogs, "无法保存\n设置");
+            dialog_message_show_storage_error(ibutton->dialogs, "Cannot save\nsettings");
         }
         settings_plugin = NULL;
     }

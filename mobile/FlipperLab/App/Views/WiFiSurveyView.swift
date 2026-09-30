@@ -72,7 +72,7 @@ import FlipperCore
                 failure = nil
             } catch {
                 survey = nil
-                failure = error.localizedDescription
+                failure = PhoneErrorDescription.describe(error)
             }
         }
     }

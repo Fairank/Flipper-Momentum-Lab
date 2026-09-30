@@ -136,7 +136,7 @@ void infrared_scene_universal_bluray_on_enter(void* context) {
     button_panel_add_icon(button_panel, 39, 123, &I_subtitle_text_19x5);
     infrared_brute_force_add_record(brute_force, i++, "Subtitle");
 
-    button_panel_add_label(button_panel, 1, 11, FontPrimary, "蓝光/DVD");
+    button_panel_add_label(button_panel, 1, 11, FontPrimary, "Blu-ray/DVD");
 
     FURI_LOG_I(TAG, "Calling infrared_scene_universal_common_on_enter");
     infrared_scene_universal_common_on_enter(context);

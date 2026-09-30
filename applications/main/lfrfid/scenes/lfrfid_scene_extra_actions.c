@@ -22,51 +22,51 @@ void lfrfid_scene_extra_actions_on_enter(void* context) {
 
     submenu_add_item(
         submenu,
-        "读取ASK(FDX,常规)",
+        "Read ASK (FDX,Regular)",
         SubmenuIndexASK,
         lfrfid_scene_extra_actions_submenu_callback,
         app);
     submenu_add_item(
         submenu,
-        "读取PSK(Indala)",
+        "Read PSK (Indala)",
         SubmenuIndexPSK,
         lfrfid_scene_extra_actions_submenu_callback,
         app);
     submenu_add_item(
         submenu,
-        "清除T5577密码",
+        "Clear T5577 Password",
         SubmenuIndexClearT5577,
         lfrfid_scene_extra_actions_submenu_callback,
         app);
     submenu_add_item(
         submenu,
-        "擦除 T5577",
+        "Wipe T5577",
         SubmenuIndexWipeT5577,
         lfrfid_scene_extra_actions_submenu_callback,
         app);
 
     submenu_add_lockable_item(
         submenu,
-        "读取RAW RFID数据",
+        "Read RAW RFID data",
         SubmenuIndexRAW,
         lfrfid_scene_extra_actions_submenu_callback,
         app,
         !furi_hal_rtc_is_flag_set(FuriHalRtcFlagDebug),
-        "请开启\n"
-        "设置 >\n"
-        "系统 >\n"
-        "调试");
+        "Enable\nSettings >\nSystem >\nDebug"
+        ""
+        ""
+        "");
     submenu_add_lockable_item(
         submenu,
-        "模拟RAW RFID数据",
+        "Emulate RAW RFID data",
         SubmenuIndexRAWEmulate,
         lfrfid_scene_extra_actions_submenu_callback,
         app,
         !furi_hal_rtc_is_flag_set(FuriHalRtcFlagDebug),
-        "请开启\n"
-        "设置 >\n"
-        "系统 >\n"
-        "调试");
+        "Enable\nSettings >\nSystem >\nDebug"
+        ""
+        ""
+        "");
 
     submenu_set_selected_item(
         submenu, scene_manager_get_scene_state(app->scene_manager, LfRfidSceneExtraActions));

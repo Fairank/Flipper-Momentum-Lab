@@ -75,10 +75,10 @@ static void draw_menu(BadUsbApp* bad_usb) {
 
     variable_item_list_reset(var_item_list);
 
-    variable_item_list_add(var_item_list, "全局键盘布局", 0, NULL, NULL);
+    variable_item_list_add(var_item_list, "Keyboard Layout (global)", 0, NULL, NULL);
 
     item = variable_item_list_add(
-        var_item_list, "连接方式", 2, bad_usb_scene_config_connection_callback, bad_usb);
+        var_item_list, "Connection", 2, bad_usb_scene_config_connection_callback, bad_usb);
     variable_item_set_current_value_index(item, bad_usb->interface == BadUsbHidInterfaceBle);
     variable_item_set_current_value_text(
         item, bad_usb->interface == BadUsbHidInterfaceBle ? "BLE" : "USB");
@@ -88,7 +88,7 @@ static void draw_menu(BadUsbApp* bad_usb) {
 
         item = variable_item_list_add(
             var_item_list,
-            "保留配对",
+            "Persist Pairing",
             2,
             bad_usb_scene_config_ble_persist_pairing_callback,
             bad_usb);
@@ -97,32 +97,32 @@ static void draw_menu(BadUsbApp* bad_usb) {
 
         item = variable_item_list_add(
             var_item_list,
-            "配对模式",
+            "Pairing Mode",
             GapPairingCount,
             bad_usb_scene_config_ble_pairing_mode_callback,
             bad_usb);
         variable_item_set_current_value_index(item, ble_hid_cfg->pairing);
         variable_item_set_current_value_text(item, ble_pairing_mode_names[ble_hid_cfg->pairing]);
 
-        variable_item_list_add(var_item_list, "设备名称", 0, NULL, NULL);
+        variable_item_list_add(var_item_list, "Set Device Name", 0, NULL, NULL);
 
-        variable_item_list_add(var_item_list, "设置 MAC 地址", 0, NULL, NULL);
+        variable_item_list_add(var_item_list, "Set MAC Address", 0, NULL, NULL);
 
-        variable_item_list_add(var_item_list, "随机 MAC 地址", 0, NULL, NULL);
+        variable_item_list_add(var_item_list, "Randomize MAC Address", 0, NULL, NULL);
 
-        variable_item_list_add(var_item_list, "恢复蓝牙默认值", 0, NULL, NULL);
+        variable_item_list_add(var_item_list, "Restore BLE Defaults", 0, NULL, NULL);
 
-        variable_item_list_add(var_item_list, "清除蓝牙配对", 0, NULL, NULL);
+        variable_item_list_add(var_item_list, "Remove BLE Pairing", 0, NULL, NULL);
     } else {
-        variable_item_list_add(var_item_list, "制造商名称", 0, NULL, NULL);
+        variable_item_list_add(var_item_list, "Set Manufacturer Name", 0, NULL, NULL);
 
-        variable_item_list_add(var_item_list, "产品名称", 0, NULL, NULL);
+        variable_item_list_add(var_item_list, "Set Product Name", 0, NULL, NULL);
 
-        variable_item_list_add(var_item_list, "设置 VID 和 PID", 0, NULL, NULL);
+        variable_item_list_add(var_item_list, "Set VID and PID", 0, NULL, NULL);
 
-        variable_item_list_add(var_item_list, "随机 VID 和 PID", 0, NULL, NULL);
+        variable_item_list_add(var_item_list, "Randomize VID and PID", 0, NULL, NULL);
 
-        variable_item_list_add(var_item_list, "恢复 USB 默认值", 0, NULL, NULL);
+        variable_item_list_add(var_item_list, "Restore USB Defaults", 0, NULL, NULL);
     }
 }
 

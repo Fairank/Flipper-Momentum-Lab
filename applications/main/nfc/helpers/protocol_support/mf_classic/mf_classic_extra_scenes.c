@@ -304,7 +304,7 @@ static void mf_classic_scene_dict_attack_prepare_view(NfcApp* instance) {
             }
 
             instance->nfc_dict_context.dict = dict;
-            dict_attack_set_header(instance->dict_attack, "MFC CUID 字典");
+            dict_attack_set_header(instance->dict_attack, "MF Classic CUID Dictionary");
             instance->nfc_dict_context.current_key_idx = 0; // Initialize key index for CUID mode
         } while(false);
 
@@ -346,13 +346,13 @@ static void mf_classic_scene_dict_attack_prepare_view(NfcApp* instance) {
                 break;
             }
 
-            dict_attack_set_header(instance->dict_attack, "MFC 用户字典");
+            dict_attack_set_header(instance->dict_attack, "MF Classic User Dictionary");
         } while(false);
     }
     if(state == DictAttackStateSystemDictInProgress) {
         instance->nfc_dict_context.dict = keys_dict_alloc(
             NFC_APP_MF_CLASSIC_DICT_SYSTEM_PATH, KeysDictModeOpenExisting, sizeof(MfClassicKey));
-        dict_attack_set_header(instance->dict_attack, "MFC 系统字典");
+        dict_attack_set_header(instance->dict_attack, "MF Classic System Dictionary");
     }
 
     instance->nfc_dict_context.dict_keys_total =
@@ -747,7 +747,7 @@ static void
 
 static void mf_classic_scene_mfkey_complete_on_enter(NfcApp* instance) {
     widget_add_string_element(
-        instance->widget, 64, 0, AlignCenter, AlignTop, FontPrimary, "已完成!");
+        instance->widget, 64, 0, AlignCenter, AlignTop, FontPrimary, "Completed!");
 
     NfcSceneMfClassicMfKeyCompleteState scene_state =
         storage_common_exists(instance->storage, NFC_MFKEY32_APP_PATH) ?
@@ -764,12 +764,12 @@ static void mf_classic_scene_mfkey_complete_on_enter(NfcApp* instance) {
             AlignCenter,
             AlignTop,
             FontSecondary,
-            "用 Mfkey32 提取密钥\nr.flipper.net/nfc-tools");
+            "Now use Mfkey32 to extract \nkeys: r.flipper.net/nfc-tools");
         widget_add_icon_element(instance->widget, 50, 39, &I_MFKey_qr_25x25);
         widget_add_button_element(
             instance->widget,
             GuiButtonTypeRight,
-            "完成",
+            "Finish",
             mf_classic_scene_mfkey_complete_callback,
             instance);
     } else {
@@ -780,12 +780,12 @@ static void mf_classic_scene_mfkey_complete_on_enter(NfcApp* instance) {
             AlignLeft,
             AlignTop,
             FontSecondary,
-            "运行 Mfkey32\n以提取\n密钥");
+            "Now run Mfkey32\n to extract \nkeys");
         widget_add_icon_element(instance->widget, 5, 18, &I_WarningDolphin_45x42);
         widget_add_button_element(
             instance->widget,
             GuiButtonTypeRight,
-            "运行",
+            "Run",
             mf_classic_scene_mfkey_complete_callback,
             instance);
     }
@@ -835,11 +835,11 @@ static void mf_classic_scene_mfkey_nonces_info_on_enter(NfcApp* instance) {
     FuriString* temp_str = furi_string_alloc();
 
     size_t mfkey_params_saved = mfkey32_logger_get_params_num(instance->mfkey32_logger);
-    furi_string_printf(temp_str, "已存 Nonce 对: %zu\n", mfkey_params_saved);
+    furi_string_printf(temp_str, "Nonce pairs saved: %zu\n", mfkey_params_saved);
     widget_add_string_element(
         instance->widget, 0, 0, AlignLeft, AlignTop, FontPrimary, furi_string_get_cstr(temp_str));
     widget_add_string_element(
-        instance->widget, 0, 12, AlignLeft, AlignTop, FontSecondary, "已认证扇区:");
+        instance->widget, 0, 12, AlignLeft, AlignTop, FontSecondary, "Authenticated sectors:");
 
     mfkey32_logger_get_params_data(instance->mfkey32_logger, temp_str);
     widget_add_text_scroll_element(
@@ -847,7 +847,7 @@ static void mf_classic_scene_mfkey_nonces_info_on_enter(NfcApp* instance) {
     widget_add_button_element(
         instance->widget,
         GuiButtonTypeCenter,
-        "确定",
+        "OK",
         mf_classic_scene_mfkey_nonces_info_callback,
         instance);
 
@@ -906,7 +906,7 @@ static void mf_classic_scene_show_keys_on_enter(NfcApp* instance) {
     furi_string_reset(instance->text_box_store);
     nfc_append_filename_string_when_present(instance, instance->text_box_store);
 
-    furi_string_cat_printf(instance->text_box_store, "\e#已找到 MFC 密钥:");
+    furi_string_cat_printf(instance->text_box_store, "\033#Found MFC Keys:");
 
     uint8_t num_sectors = mf_classic_get_total_sectors_num(mfc_data->type);
     uint8_t found_keys_a = 0, found_keys_b = 0;
@@ -917,7 +917,7 @@ static void mf_classic_scene_show_keys_on_enter(NfcApp* instance) {
         bool key_b = FURI_BIT(mfc_data->key_b_mask, i);
 
         if(key_a || key_b) {
-            furi_string_cat_printf(instance->text_box_store, "\n  -> 扇区 %d\n\e*访问位:", i);
+            furi_string_cat_printf(instance->text_box_store, "\n  -> Sector %d\n\033*AccBits:", i);
             for(uint8_t j = 0; j < MF_CLASSIC_ACCESS_BYTES_SIZE; j++) {
                 furi_string_cat_printf(
                     instance->text_box_store, " %02X", sec_tr->access_bits.data[j]);
@@ -940,7 +940,7 @@ static void mf_classic_scene_show_keys_on_enter(NfcApp* instance) {
 
     furi_string_cat_printf(
         instance->text_box_store,
-        "\n找到密钥总计:\n -> %d/%d A 密钥\n -> %d/%d B 密钥",
+        "\nTotal keys found:\n -> %d/%d A keys\n -> %d/%d B keys",
         found_keys_a,
         num_sectors,
         found_keys_b,
@@ -949,7 +949,7 @@ static void mf_classic_scene_show_keys_on_enter(NfcApp* instance) {
     widget_add_text_scroll_element(
         instance->widget, 2, 2, 124, 60, furi_string_get_cstr(instance->text_box_store));
     widget_add_button_element(
-        instance->widget, GuiButtonTypeLeft, "返回", mf_classic_scene_show_keys_callback, instance);
+        instance->widget, GuiButtonTypeLeft, "Back", mf_classic_scene_show_keys_callback, instance);
     view_dispatcher_switch_to_view(instance->view_dispatcher, NfcViewWidget);
 }
 
@@ -1085,10 +1085,11 @@ static void mf_classic_scene_update_initial_setup_view(NfcApp* instance) {
         scene_manager_get_scene_state(instance->scene_manager, NfcSceneMfClassicUpdateInitial);
 
     if(state == NfcSceneMfClassicUpdateInitialStateCardSearch) {
-        popup_set_text(instance->popup, "请仅使用\n原始卡片", 128, 32, AlignRight, AlignCenter);
+        popup_set_text(
+            instance->popup, "Use the source\ncard only", 128, 32, AlignRight, AlignCenter);
         popup_set_icon(instance->popup, 0, 8, &I_NFC_manual_60x50);
     } else {
-        popup_set_header(popup, "正在更新\n请勿移动...", 52, 32, AlignLeft, AlignCenter);
+        popup_set_header(popup, "Updating\nDon't move...", 52, 32, AlignLeft, AlignCenter);
         popup_set_icon(popup, 12, 23, &A_Loading_24);
     }
 

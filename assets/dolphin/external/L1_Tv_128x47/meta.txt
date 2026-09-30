@@ -14,18 +14,18 @@ Active cooldown: 5
 Bubble slots: 2
 
 Slot: 0
-X: 4
+X: 1
 Y: 23
-Text: 选红色药丸
+Text: Take the red pill
 AlignH: Right
 AlignV: Bottom
 StartFrame: 7
 EndFrame: 9
 
 Slot: 1
-X: 4
+X: 1
 Y: 23
-Text: 我更会讲笑话
+Text: I can joke better
 AlignH: Right
 AlignV: Bottom
 StartFrame: 7

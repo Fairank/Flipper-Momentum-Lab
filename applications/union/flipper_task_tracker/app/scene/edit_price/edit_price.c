@@ -21,7 +21,7 @@ void scene_on_enter_price_input(void* context) {
     NumberInput* number_input = app->number_input;
 
     char str[50];
-    snprintf(str, sizeof(str), "设置时薪 (0 - 1000)");
+    snprintf(str, sizeof(str), "Set Price (0 - 1000)");
 
     number_input_set_header_text(number_input, str);
     number_input_set_result_callback(

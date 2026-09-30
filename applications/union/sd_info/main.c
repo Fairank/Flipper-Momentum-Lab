@@ -87,29 +87,29 @@ static const char* get_manufacturer_name(uint8_t id) {
 static const char* get_month_name(uint8_t month) {
     switch(month) {
     case 1:
-        return "1月";
+        return "Jan";
     case 2:
-        return "2月";
+        return "Feb";
     case 3:
-        return "3月";
+        return "Mar";
     case 4:
-        return "4月";
+        return "Apr";
     case 5:
-        return "5月";
+        return "May";
     case 6:
-        return "6月";
+        return "Jun";
     case 7:
-        return "7月";
+        return "Jul";
     case 8:
-        return "8月";
+        return "Aug";
     case 9:
-        return "9月";
+        return "Sep";
     case 10:
-        return "10月";
+        return "Oct";
     case 11:
-        return "11月";
+        return "Nov";
     case 12:
-        return "12月";
+        return "Dec";
     default:
         return "???";
     }
@@ -135,24 +135,24 @@ static void get_test_result_string(
     char* speed_buf,
     size_t speed_size) {
     if(results->read_speed == 0 || results->write_speed == 0) {
-        snprintf(status_buf, status_size, "未测试");
+        snprintf(status_buf, status_size, "Not tested");
         speed_buf[0] = '\0';
         return;
     }
 
     const char* health;
     if(results->has_bad_blocks) {
-        health = "有坏块！";
+        health = "Bad blocks!";
     } else if(results->errors > 0) {
-        health = "有错误";
+        health = "Errors";
     } else if(results->access_time > 100.0f) {
-        health = "较慢";
+        health = "Slow";
     } else if(results->read_speed < 2.0f || results->write_speed < 1.0f) {
-        health = "很慢";
+        health = "Very slow";
     } else if(results->read_speed > 8.0f && results->write_speed > 5.0f) {
-        health = "良好";
+        health = "Good";
     } else {
-        health = "一般";
+        health = "Fair";
     }
 
     snprintf(status_buf, status_size, "%s", health);
@@ -172,14 +172,15 @@ static void draw_callback(Canvas* canvas, void* ctx) {
     if(app->has_card) {
         // Заголовок с номером страницы
         char title[32];
-        snprintf(title, sizeof(title), "SD卡信息 %d/%d", app->current_page + 1, TOTAL_PAGES);
+        snprintf(
+            title, sizeof(title), "SD Card Info: Page %d/%d", app->current_page + 1, TOTAL_PAGES);
         canvas_draw_str(canvas, 2, FIRST_LINE_Y, title);
 
         canvas_set_font(canvas, FontSecondary);
 
         if(app->is_testing) {
             // Заголовок теста
-            canvas_draw_str(canvas, 2, FIRST_LINE_Y + LINE_HEIGHT, "正在测试SD卡...");
+            canvas_draw_str(canvas, 2, FIRST_LINE_Y + LINE_HEIGHT, "Testing SD card...");
 
             // Пояснение что тестируется
             char test_info[64];
@@ -190,7 +191,7 @@ static void draw_callback(Canvas* canvas, void* ctx) {
             snprintf(
                 test_info,
                 sizeof(test_info),
-                "块: %d/%d  轮次: %d/%d",
+                "Block: %d/%d  Pass: %d/%d",
                 block_num,
                 TEST_BLOCKS,
                 iter_num,
@@ -245,33 +246,35 @@ static void draw_callback(Canvas* canvas, void* ctx) {
             get_test_result_string(
                 &app->test_results, status, sizeof(status), speed, sizeof(speed));
 
-            canvas_draw_str(canvas, 2, FIRST_LINE_Y + LINE_HEIGHT, "测试结果:");
+            canvas_draw_str(canvas, 2, FIRST_LINE_Y + LINE_HEIGHT, "Test Results:");
 
             // Статус теста
-            snprintf(app->info_lines[6], INFO_LINE_LEN, "状态: %s", status);
+            snprintf(app->info_lines[6], INFO_LINE_LEN, "Status: %s", status);
             canvas_draw_str(canvas, 2, FIRST_LINE_Y + LINE_HEIGHT * 2, app->info_lines[6]);
 
             if(speed[0] != '\0') {
                 // Скорость чтения/записи
-                snprintf(app->info_lines[7], INFO_LINE_LEN, "读/写: %s", speed);
+                snprintf(app->info_lines[7], INFO_LINE_LEN, "R/W: %s", speed);
                 canvas_draw_str(canvas, 2, FIRST_LINE_Y + LINE_HEIGHT * 3, app->info_lines[7]);
 
                 if(app->test_results.errors > 0) {
                     char errors[32];
-                    snprintf(errors, sizeof(errors), "错误数: %ld", app->test_results.errors);
+                    snprintf(
+                        errors, sizeof(errors), "Errors found: %ld", app->test_results.errors);
                     canvas_draw_str(canvas, 2, FIRST_LINE_Y + LINE_HEIGHT * 4, errors);
                 }
             } else {
-                canvas_draw_str(canvas, 2, FIRST_LINE_Y + LINE_HEIGHT * 3, "测试约需15秒");
+                canvas_draw_str(
+                    canvas, 2, FIRST_LINE_Y + LINE_HEIGHT * 3, "Test time: ~15 seconds");
             }
         }
 
         // Подсказка для кнопки OK (только на странице теста и когда тест не запущен)
         if(app->current_page == 2 && !app->is_testing && app->test_results.errors == 0) {
-            canvas_draw_str(canvas, 2, 63, "按OK开始测试");
+            canvas_draw_str(canvas, 2, 63, "Press OK to start test");
         }
     } else {
-        canvas_draw_str(canvas, 2, 32, "未检测到SD卡");
+        canvas_draw_str(canvas, 2, 32, "No SD Card detected");
     }
 }
 
@@ -383,24 +386,24 @@ static void get_sd_info(SDCardInfo* app) {
             snprintf(
                 app->info_lines[0],
                 INFO_LINE_LEN,
-                "厂商: %s",
+                "Maker: %s",
                 get_manufacturer_name(sd_info.manufacturer_id));
 
-            snprintf(app->info_lines[1], INFO_LINE_LEN, "名称: %s", sd_info.product_name);
+            snprintf(app->info_lines[1], INFO_LINE_LEN, "Name: %s", sd_info.product_name);
 
             snprintf(app->info_lines[2], INFO_LINE_LEN, "OEM ID: %s", sd_info.oem_id);
 
             snprintf(
                 app->info_lines[3],
                 INFO_LINE_LEN,
-                "生产日期: %s %d",
+                "Made: %s %d",
                 get_month_name(sd_info.manufacturing_month),
                 sd_info.manufacturing_year);
 
             snprintf(
                 app->info_lines[4],
                 INFO_LINE_LEN,
-                "版本: %d.%d",
+                "Rev: %d.%d",
                 sd_info.product_revision_major,
                 sd_info.product_revision_minor);
 
@@ -408,13 +411,14 @@ static void get_sd_info(SDCardInfo* app) {
             char speed[16];
             get_test_result_string(
                 &app->test_results, status, sizeof(status), speed, sizeof(speed));
-            snprintf(app->info_lines[6], INFO_LINE_LEN, "测试: %s", status);
+            snprintf(app->info_lines[6], INFO_LINE_LEN, "Test: %s", status);
             if(speed[0] != '\0') {
-                snprintf(app->info_lines[7], INFO_LINE_LEN, "速度: %s", speed);
+                snprintf(app->info_lines[7], INFO_LINE_LEN, "Speed: %s", speed);
             } else if(app->test_results.errors > 0) {
-                snprintf(app->info_lines[7], INFO_LINE_LEN, "错误: %ld", app->test_results.errors);
+                snprintf(
+                    app->info_lines[7], INFO_LINE_LEN, "Errors: %ld", app->test_results.errors);
             } else {
-                snprintf(app->info_lines[7], INFO_LINE_LEN, "按OK测试");
+                snprintf(app->info_lines[7], INFO_LINE_LEN, "Press OK to test");
             }
         }
 
@@ -423,7 +427,7 @@ static void get_sd_info(SDCardInfo* app) {
             char free_str[SIZE_STR_LEN];
             format_size(total_str, SIZE_STR_LEN, total_space);
             format_size(free_str, SIZE_STR_LEN, free_space);
-            snprintf(app->info_lines[5], INFO_LINE_LEN, "可用/总: %s/%s", free_str, total_str);
+            snprintf(app->info_lines[5], INFO_LINE_LEN, "Mem:%s/%s", free_str, total_str);
         }
     } else {
         app->has_card = false;

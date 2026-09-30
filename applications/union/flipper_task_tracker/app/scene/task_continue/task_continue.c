@@ -38,7 +38,7 @@ static void task_continue_update(App* app) {
             snprintf(
                 buffer_text,
                 sizeof(buffer_text),
-                "%ld分%ld秒\n累计%s",
+                "%ld min %ld sec\n%s total",
                 (long)elapsed_minutes,
                 (long)elapsed_remaining_seconds,
                 total_time_formatted);
@@ -47,12 +47,12 @@ static void task_continue_update(App* app) {
             snprintf(
                 buffer_text,
                 sizeof(buffer_text),
-                "%ld分%ld秒",
+                "%ld min %ld sec",
                 (long)elapsed_minutes,
                 (long)elapsed_remaining_seconds);
             dialog_ex_set_icon(dialog_ex, 1, 1, &I_dolphinWait_59x54);
         }
-        dialog_ex_set_center_button_text(dialog_ex, "停止");
+        dialog_ex_set_center_button_text(dialog_ex, "Stop");
         break;
 
     case TaskStatus_Stopped:
@@ -61,28 +61,28 @@ static void task_continue_update(App* app) {
                 total_time_formatted,
                 sizeof(total_time_formatted),
                 app->current_task->total_time_minutes);
-            snprintf(buffer_text, sizeof(buffer_text), "累计%s", total_time_formatted);
+            snprintf(buffer_text, sizeof(buffer_text), "\n\n\n\n%s total", total_time_formatted);
             dialog_ex_set_icon(dialog_ex, -40, 1, &I_dolphinMafia_119x62);
         } else {
             if(app->current_task->total_time_minutes == 0) {
-                snprintf(buffer_text, sizeof(buffer_text), "开始任务吧");
+                snprintf(buffer_text, sizeof(buffer_text), "Start the task !");
                 dialog_ex_set_icon(dialog_ex, 1, 1, &I_DolphinReadingSuccess_59x63);
             } else {
                 format_time_string(
                     total_time_formatted,
                     sizeof(total_time_formatted),
                     app->current_task->total_time_minutes);
-                snprintf(buffer_text, sizeof(buffer_text), "已停止于\n%s", total_time_formatted);
+                snprintf(buffer_text, sizeof(buffer_text), "Stopped at\n%s", total_time_formatted);
                 dialog_ex_set_icon(dialog_ex, -20, 1, &I_DolphinDone_80x58);
             }
-            dialog_ex_set_center_button_text(dialog_ex, "开始");
+            dialog_ex_set_center_button_text(dialog_ex, "Start");
         }
         break;
     }
 
     dialog_ex_set_icon(dialog_ex, 0, 0, NULL);
     dialog_ex_set_text(dialog_ex, buffer_text, 64, 22, AlignCenter, AlignCenter);
-    dialog_ex_set_left_button_text(dialog_ex, "退出");
+    dialog_ex_set_left_button_text(dialog_ex, "Exit");
     dialog_ex_set_result_callback(dialog_ex, task_continue_scene_dialog_callback);
     dialog_ex_set_context(dialog_ex, app);
 }
@@ -140,7 +140,7 @@ bool scene_on_event_task_continue(void* context, SceneManagerEvent event) {
                 task_copy->total_time_minutes += time_difference_minutes;
 
                 // Update UI
-                dialog_ex_set_center_button_text(dialog_ex, "开始");
+                dialog_ex_set_center_button_text(dialog_ex, "Start");
 
             } else {
                 // Task is stopped -> start it
@@ -152,7 +152,7 @@ bool scene_on_event_task_continue(void* context, SceneManagerEvent event) {
                 task_copy->last_start_time = datetime_start_time;
 
                 // Update UI
-                dialog_ex_set_center_button_text(dialog_ex, "停止");
+                dialog_ex_set_center_button_text(dialog_ex, "Stop");
             }
 
             // Update the original current_task with the modified copy

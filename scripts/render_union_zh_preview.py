@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Compile production C draw calls and replay them as Chinese layout previews.
+"""Compile production C draw calls and replay their current UI labels.
 
 These pictures are source previews, not device or simulator captures. The dice
 history and FlipNote keyboard use the full production draw functions. Brainfuck
@@ -201,12 +201,23 @@ for(int i=0;i<10;i++)add_to_history(&s,indexes[i],counts[i],results[i]);s.histor
             "typedef struct FzNoteTextInput FzNoteTextInput;\nstruct FzNoteTextInput {",
             1,
         )
+        caller = (UNION / "flipnote/flipnote.c").read_text(encoding="utf-8")
+        header = re.search(
+            r'show_text\(app, ("(?:\\.|[^"\\])*")\s*, app->ebuf\)', caller
+        )
+        if header is None:
+            raise ValueError("Cannot find FlipNote's production edit-line title")
         code += r"""
 int main(void){Canvas c=0;char text[128]="中文笔记：甲乙丙丁";FzNoteTextInputModel m={0};
-m.header="编辑行";m.text_buffer=text;m.text_buffer_size=sizeof(text);m.cursor_pos=strlen(text);
+m.header=EDIT_LINE_TITLE;m.text_buffer=text;m.text_buffer_size=sizeof(text);m.cursor_pos=strlen(text);
 m.selected_row=2;m.selected_column=9;fznote_text_input_view_draw_callback(&c,&m);}
 """
-        paths = ["flipnote/fznote_text_input.c", "flipnote/flipnote_utf8.h"]
+        code = code.replace("EDIT_LINE_TITLE", header.group(1))
+        paths = [
+            "flipnote/fznote_text_input.c",
+            "flipnote/flipnote_utf8.h",
+            "flipnote/flipnote.c",
+        ]
     return base + code, paths
 
 
