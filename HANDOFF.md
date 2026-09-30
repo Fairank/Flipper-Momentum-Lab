@@ -2,13 +2,13 @@
 
 更新：2026-09-30。工作分支 `codex/iphone-zh-architecture`，草稿 PR [#1](https://github.com/Fairank/Flipper-Momentum-Lab/pull/1)，目标分支 `codex/momentum-unleashed`。尚未合并，也没有上架或已签名 IPA。
 
-**当前语言目标已改变：本机英文、手机中文，保留功能升级。** 本轮已发布恢复 2,252 处 C 文案、27 个名称、23 份应用介绍和22份动画元数据，Flipper Lab 为10个英文主题／56页；固定外部子模块的 APDU 中文保留，SD 字库和125字形无卡子集支持中文用户文件，265字形完整扫描参考子集不链接到主固件。手机补31项应用中文映射、嵌套应用发现、结构化NFC比较和中文错误展示。最新目录筛选及连接恢复见 [手机优化](documentation/custom/OFFICIAL_APP_REFINEMENT_20260930.md)。手机 `7b6069e3b` 的178项Swift、7项界面测试为上轮验收，新代码状态见 [验证记录](documentation/custom/VALIDATION.md)。下文旧中文覆盖与包尺寸为历史记录，不能作为最新交付判断。
+**当前目标：本机英文、手机中文，保留功能升级。** 已恢复2,252处C文案、27个名称、23份介绍、22份动画元数据及10主题／56页英文帮助；固定子模块APDU中文保留，SD字库及125字形无卡子集支持中文用户文件，265字形扫描参考子集不链接主固件。手机保留31项中文映射、嵌套发现、结构化NFC比较和中文错误，并已加入来源／分类／多词筛选、独立功能详情及有限前台恢复。最新源码及原图见 [手机优化](documentation/custom/OFFICIAL_APP_REFINEMENT_20260930.md)，逐提交真实结果见 [验证记录](documentation/custom/VALIDATION.md)。下文旧中文覆盖及测试／包数字为历史，不代表最新交付。
 
-用户另要求手机更多参考官方 Flipper App 的应用目录、分类与筛选，并参考其连接／控制实现优化。正在对照官方固定源码；保持独立中文手机页面、点击直接在设备打开、现有启动白名单和实际连接状态，不照搬打开应用后自动跳屏幕遥控的流程。
+本轮对照官方固定源码实现应用浏览和连接恢复；点选直接在设备打开，手机不自动切到屏幕镜像。恢复会清理旧会话、重新握手和读取目录，具体操作不会重发；旧任务异常不能关闭新连接。目录预览明确标记样例，不改变真实连接或启动白名单。真实BLE／AIO、逐应用控制和完整功能并集仍未验收完成；未提供签名IPA。
 
-本轮代码 `12b8c35f3` 增加四个中文应用、记事本数据保护和真实 WebSocket 回环测试，`6f94bdc9d` 补存储回归与手机比较入口导航修订，见 [第四轮实现与预览](documentation/custom/UNION_CHINESE_20260930.md)。累计导入二十四个应用，手机中文映射为 28 项；正式包 295 个 FAP / 121 个 FAL，本地 129 项 Python/C 回归无跳过。下文第三轮的测试/包数量为历史记录，最新实际验收以 [VALIDATION.md](documentation/custom/VALIDATION.md) 首节为准。
+历史第四轮代码 `12b8c35f3` 增加四个中文应用、记事本数据保护和真实 WebSocket 回环测试，`6f94bdc9d` 补存储回归与手机比较入口导航修订，见 [第四轮实现与预览](documentation/custom/UNION_CHINESE_20260930.md)。该轮累计导入二十四个应用，手机中文映射当时为28项（现为31项）；正式包295个FAP／121个FAL，本地129项Python／C回归无跳过。下文第三轮的测试／包数量为历史记录，最新实际验收以 [VALIDATION.md](documentation/custom/VALIDATION.md) 首节为准。
 
-手机能力共享详见 [第三轮](documentation/custom/COMPANION_AND_CHINESE_20260929.md)，历史实现见 [第二轮](documentation/custom/UNION_CHINESE_CONTINUATION.md) 和 [协议适配](documentation/custom/UPSTREAM_FUSION.md)。API 为 89.0，protobuf 为 0.29 并保留 ASCII 输入扩展；iPhone GPS/网络处理端现已实现。常规中文改用 SD 字库及有界缓存，覆盖 7,097 个字形；无卡保留 223 字形子集，升级器独立保留 135 字形。最新测试与产物证据见 [VALIDATION.md](documentation/custom/VALIDATION.md)。旧编译包与 API 89.0 的应用不能混用。
+手机能力共享详见 [第三轮](documentation/custom/COMPANION_AND_CHINESE_20260929.md)，历史实现见 [第二轮](documentation/custom/UNION_CHINESE_CONTINUATION.md) 和 [协议适配](documentation/custom/UPSTREAM_FUSION.md)。API为89.0，protobuf为0.29并保留ASCII输入扩展；iPhone GPS／网络处理端已实现。中文用户文件兼容保留7,097字形SD资源及有界缓存，实际无卡子集125字形／3,450字节；升级器已恢复英文，CJK子集为空。最新测试与产物证据见 [VALIDATION.md](documentation/custom/VALIDATION.md)。旧编译包与API89.0的应用不能混用。
 
 ## 当前实现
 
@@ -18,7 +18,7 @@
 | MIFARE Classic | “功能 → NFC 离线工作台”：两组认证样本恢复密钥、字典验证、合并去重和导出。公开答案、生成样本、取消和模拟器界面已自动验证；普通 .nfc 转储不能代替认证样本 |
 | AIO 数据链路 | “功能 → 扩展板实时数据”：Lab Bridge 把 UART 输出经 BLE 转到手机，显示真实字节、丢失/截断并导出。代码和构建通过，实物链路未测；未实现未知板卡固件的专用无线驱动 |
 | 原生英文界面 | 用户要求恢复英文，已按原文／审核提案恢复文案及显示名称；保留功能修复与中文用户文件兼容，没有重写全部驱动 |
-| 本机新功能 | 快捷设置、床头时钟、菜单过渡；累计二十四个导入工具/应用及手机端中文说明。最近增加弹跳球、方块搬运、数独、昵称生成器，继续补掷骰、记事本与时钟中文 |
+| 本机新功能 | 快捷设置、床头时钟、菜单过渡；累计二十四个导入工具／应用及手机端中文说明。最近增加弹跳球、方块搬运、数独、昵称生成器，保留掷骰、记事本与时钟的输入、存档和文件保护修复，设备显示恢复英文 |
 | 手机定位与网络共享 | “设备 → 手机能力共享”中分别开启，要求 BLE 就绪和 App 前台。GPS、HTTP(S)、TCP、UDP、WebSocket 请求处理已实现；系统 TLS/ATS 保持默认。实际 BLE 链路与权限流程尚未真机验收 |
 | 固件功能说明 | Flipper Lab 为英文帮助，10个主题／56页，启动标识不改；当前有66张菜单及帮助源码预览，均不是真机截图 |
 | Wi-Fi | 已保存扫描日志的离线多网络分析可用；没有新增定向断链控制。通用串口接收不能等同于 Wi-Fi 控制或实物板卡已适配 |
@@ -38,7 +38,7 @@
 - 使用仓库工具链 39。完整打包先执行 `./fbt updater_package`，成功后**另一次**执行 `./fbt fap_dist`；同一 SCons 图同时请求两者可能因分发目录清理失败。Windows 用 `fbt.cmd`，必要时将工作区映射为 ASCII 路径再构建。
 - 运行 `python scripts/generate_lab_font.py --check`、`python scripts/generate_native_zh_font.py --check`、`python scripts/generate_native_zh_font.py --updater --check` 和 `python scripts/generate_zh_resource.py --check`；修改中文文案后重新生成对应字库。
 - 桌面检查：`python -m unittest discover -s scripts/tests -p "test*.py" -v`。必须有 C 编译器，跳过 C 测试不能算通过。Linux 的恢复与原生 GUI 回归启用 ASan/UBSan。
-- CI 检查恢复升级器不超过 131,072 字节；本轮另外核验升级包内 28 项指定应用和 SD 字库。常规包包含 295 个正式 FAP、121 个 FAL，完整开发分发另含开发示例。本地主固件到当前无线栈前还余 9,112 字节；云端准确值见验证记录。新增内容仍必须通过打包边界检查，不能按链接器全部 `.free_flash` 估算；还需检查新字库缓存的运行时 RAM 和线程栈。
+- CI检查恢复升级器不超过131,072字节；另核验升级包内28项指定应用和SD字库。常规包包含295个正式FAP、121个FAL，完整开发分发另含开发示例。恢复英文后本地主固件到当前无线栈前余11,816字节，已核验的云端包余11,840字节；准确提交和附件见验证记录。新增内容仍必须通过打包边界检查，不能按链接器全部`.free_flash`估算；还需检查字库缓存的运行时RAM和线程栈。
 - UI 预览脚本为 `scripts/render_lab_preview.py`、`scripts/render_native_zh_preview.py`、`scripts/render_animation_zh_preview.py` 和 `scripts/render_union_zh_preview.py`。后三者需 `--output-dir`，动画和应用预览还需 Pillow 与主机 C 编译器。从源码绘制的图片不能替代刷机验收。
 
 ## 记录与分工

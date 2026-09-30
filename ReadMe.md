@@ -1,6 +1,6 @@
 # Flipper Momentum 个人定制与换机交接
 
-**当前语言目标（2026-09-30）：Flipper 本机恢复英文，保留功能升级；iPhone 通过蓝牙使用中文界面和功能说明。** 已补手机嵌套应用发现、31 项已安装应用的中文映射及 NFC 按字段／块／页比较。手机修订 `7b6069e3b` 的 178 项 Swift、7 项界面测试与模拟器编译通过；英文设备本机 129 项回归通过。最新范围与原始页面见 [本机英文、手机中文](documentation/custom/DEVICE_ENGLISH_PHONE_CHINESE_20260930.md)，当前提交验收见 [验证记录](documentation/custom/VALIDATION.md)。以下分轮记录为历史，本机全中文不再是待办目标；完整功能并集和真机联调仍未完成。
+**当前语言目标（2026-09-30）：Flipper 本机英文，保留功能升级；iPhone 中文界面和功能介绍。** 手机参考官方 App，增加“全部／常用／已安装”、六类目录、多词搜索和独立中文详情；点选直接在 Flipper 打开，手机保持自己的页面。前台意外断连增加有限恢复，旧会话失效、旧动作不重放；实际安装目录从当前设备读取。嵌套应用发现、31项中文显示映射及NFC按字段／块／页比较保留。新页面和验收见 [手机优化与原图](documentation/custom/OFFICIAL_APP_REFINEMENT_20260930.md)、[验证记录](documentation/custom/VALIDATION.md)，语言范围见 [设备英文／手机中文](documentation/custom/DEVICE_ENGLISH_PHONE_CHINESE_20260930.md)。以下分轮记录为历史；真实BLE／AIO与逐应用控制未验收，没有已签名IPA，完整Momentum／Unleashed功能并集仍未完成。
 
 **2026-09-30 第四轮更新：**增加弹跳球、方块搬运、数独、昵称生成器，累计导入二十四个应用；补掷骰分页、Brainfuck/记事本中文按钮、任务时长与上午/下午显示。修复记事本 UTF-8 编辑、末行/长行处理及保存故障保护，数独改用明确字段存档并兼容旧 ARM 格式。应用代码 `12b8c35f3` 与存储回归、手机比较入口修订 `6f94bdc9d` 已推送到现有草稿 PR，本地完整构建、129 项 Python/C 回归及格式检查通过；云端 129 项主机、151 项 Swift、6 项界面测试、iOS 与固件构建均通过。准确云端验收以 [本轮说明与预览](documentation/custom/UNION_CHINESE_20260930.md) 和 [验证记录](documentation/custom/VALIDATION.md) 为准。固定参考仍有 232 项匹配源码差异、134 项未匹配应用和 19 项未匹配插件，**完整并集、全界面中文及真机联调仍未完成**。下方 9 月 29 日数字保留为历史证据。
 

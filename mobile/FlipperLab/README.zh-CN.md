@@ -17,15 +17,17 @@
    脚本 [`prepare-mac.sh`](prepare-mac.sh) 只检查完整 Xcode 与 XcodeGen、生成并打开 `FlipperLab.xcodeproj`，然后打印后续步骤；它不安装工具、不登录 Apple ID、不改签名、不生成 IPA，也不执行 Git 操作。检查不通过时会用中文说明原因并退出。
 4. 在 Xcode 中登录 Apple ID、选择自己的团队、连接 iPhone 后按 ⌘R 安装，逐步说明见[第 4 节](#4-用自己的团队签名安装到-iphone-17-pro-max)。
 
-该脚本和真机安装尚未在真实 Mac 上执行过，真实 iPhone 与 Flipper 的蓝牙连接也未验收；第一次执行请记录实际输出和错误。
+该脚本的`--prepare-only`模式已在GitHub macOS CI执行，并完成无签名模拟器构建。默认打开Xcode的交互流程、个人账号签名安装，以及真实iPhone与Flipper的蓝牙连接尚未验收；首次真机安装请记录实际输出和错误。
 
 ## 当前状态
 
-2026-09-29 第三轮新增“设备 → 手机能力共享”：显式开启手机定位或网络后，固件应用可请求 GPS、HTTP(S)、TCP、UDP 与 WebSocket。需要 BLE 就绪、App 保持前台；关闭、断连或进入后台时停止共享。代码 `41fd31347` 的 [最新 CI](https://github.com/Fairank/Flipper-Momentum-Lab/actions/runs/36553662778) 已通过 148 项 Swift、6 项 iPhone 界面测试和模拟器构建，导出 24 张原始截图；同次主机任务通过 112 项 Python/C 回归。见 [使用说明与真机验收清单](../../documentation/custom/PHONE_COMPANION_GUIDE.zh-CN.md) 和 [最新验证记录](../../documentation/custom/VALIDATION.md)。下方原有测试表为 `0d741468` 的历史记录，不代表最新提交已经完成实机验证。
+2026-09-30：中文“功能”页参考官方Flipper App，支持全部／常用／已安装、六类筛选、多词搜索和独立功能介绍，点选在Flipper启动，手机保持自己的页面。真实已安装目录由当前连接读取；断连或换设备会失效旧目录，恢复后重读。意外断连仅在曾就绪且前台时有限恢复，旧启动／写文件／红外／串口操作不会重放；具体边界、最新测试和原始页面见 [手机优化](../../documentation/custom/OFFICIAL_APP_REFINEMENT_20260930.md)、[验收记录](../../documentation/custom/VALIDATION.md)。目前没有真实BLE／AIO或逐应用控制验收，没有签名IPA；完整固件功能并集仍未完成。安装步骤沿用上方Mac入口。
+
+历史第三轮（2026-09-29）新增“设备 → 手机能力共享”：显式开启手机定位或网络后，固件应用可请求GPS、HTTP(S)、TCP、UDP与WebSocket，需要BLE就绪及App前台。关闭、断连或后台时停止共享。`41fd31347` 的 [历史CI](https://github.com/Fairank/Flipper-Momentum-Lab/actions/runs/36553662778) 为148项Swift、6项UI及模拟器构建通过，主机112项通过；其截图和下方 `0d741468` 测试表不代表最新版的验收。[共享说明与真机清单](../../documentation/custom/PHONE_COMPANION_GUIDE.zh-CN.md) 保留。
 
 手机使用设备、功能、资料库、任务、指南五个主页面，采用原生大标题、分组列表、表单和菜单，保留橙色及像素小屏。比较入口在资料库和记录详情的“更多”菜单中。既有四页的设计决定、实际模型和运行证据见 [苹果界面优化验收](../../documentation/custom/UI_APPLE_REVIEW.md)。
 
-本轮新增独立的“功能”页作为第五个主页面。手机以中文介绍功能，点击条目通过蓝牙在 Flipper 打开现有应用；不显示设备屏幕镜像。启动范围、设备忙碌时的限制和真机验收边界见 [手机功能中心说明](FUNCTION_LAUNCH.zh-CN.md)。下表的 CI 结果已包含该页的离线界面测试和 2 项功能条目包测试，但不包含通过蓝牙实际启动 Flipper 应用的验证。本轮还修正了设备颜色对应的蓝牙广播服务号，修正后的构建结果以 PR 检查为准。
+既有独立“功能”页保持为第五个主页面，本轮优化目录筛选、搜索、介绍与连接恢复。手机以中文介绍功能，点击条目通过蓝牙在Flipper打开现有应用；不显示设备屏幕镜像。启动范围、设备忙碌时的限制和真机验收边界见 [手机功能中心说明](FUNCTION_LAUNCH.zh-CN.md)。下表保留旧版本CI记录，当前结果见 [验证记录](../../documentation/custom/VALIDATION.md)；不代表通过蓝牙实际启动应用的验收。设备颜色对应的四个广播服务号仍保持与固件一致。
 
 从 Flipper 导入的 NFC／低频 RFID 记录可以在手机保存、查看与分析，但不能直接变成 iPhone 可刷的门禁凭证。卡类型和正式手机凭证的条件见 [门禁卡记录与 iPhone NFC](CARD_ON_IPHONE.zh-CN.md)；后续手机算力与 AIO Board 1.4 的 ESP32、CC1101、nRF24 扩展需求见 [手机算力分析清单](../../documentation/custom/PHONE_COMPUTE_ROADMAP.zh-CN.md)。新增 [MIFARE Classic 离线密钥恢复、字典验证与合并](CLASSIC_OFFLINE.zh-CN.md)，以及 [Flipper 串口输出经蓝牙到手机](SERIAL_BRIDGE.zh-CN.md)。离线计算、协议和 iOS 界面已通过自动测试；扩展板实物通信仍待验证。
 
@@ -138,7 +140,7 @@ xcrun xcresulttool export attachments \
   --output-path "$TMPDIR/screenshots"
 ```
 
-三项测试都以简体中文启动 App：`testOfflineNavigationAndChineseGuide` 进入设备、功能、资料库、任务、指南五个页面，检查功能中心离线状态、资料库菜单、比较记录和“设备连接”指南；`testExampleRecordAnalysis` 用 `-ui-testing-fixtures` 载入两条示例记录，检查分析、完整脉冲图、离线红外按钮和删除确认；`testDarkAppearanceAndAccessibilityTextNavigation` 检查深色大字页面，以及从记录进入比较时预选记录 A。新增的“01b-功能中心离线预览”是模拟器截图；这些测试只验证离线界面，不证明蓝牙、上传或红外。
+旧基础测试举例：`testOfflineNavigationAndChineseGuide` 以简体中文进入五个页面，检查离线状态、资料库菜单、比较记录和“设备连接”指南；`testExampleRecordAnalysis` 载入示例记录，检查分析、脉冲图、离线红外按钮和删除确认；`testDarkAppearanceAndAccessibilityTextNavigation` 检查深色大字及比较时预选记录A。当前共10项UI测试，新增 [`FunctionCatalogUITests.swift`](UITests/FunctionCatalogUITests.swift) 检查中文搜索与详情、预览游戏分类和禁止启动、深色大字分类；结束搜索要等待系统键盘退出动画完成，保留入口恢复与选中状态断言。实际结果和原始截图见最新验证记录。测试只验证离线／样例界面，不证明蓝牙、上传或红外。
 
 ## 4. 用自己的团队签名，安装到 iPhone 17 Pro Max
 
@@ -219,21 +221,21 @@ xcodebuild build \
 - 每项操作在“任务”页显示为进行中、已完成、失败或已取消；只保留本次运行期间最近 100 条，不会持久保存。
 - 同一时间只执行一项设备操作，忙时新操作会被拒绝。
 - 取消设备操作会断开蓝牙连接，之后需要重新连接；已写入设备的部分文件可能保留。
-- 单次请求 45 秒无响应即视为超时并断开连接；App 不会自动重试或重放操作。
+- 单次请求45秒无进展即视为超时并断开连接；意外断连符合条件时可以有限恢复连接，具体操作不会自动重试或重放。
 
 **离线中文指南**
 
 - 内容来自内置的 `FeatureCatalog.json`，无需连接设备即可阅读；它必须与 `documentation/custom/FEATURE_CATALOG.zh-CN.json` 逐字节一致。
-- 共 8 篇：设备连接、中文资料库、红外工作台、中文入口与功能说明、Sub-GHz 记录分析、NFC/RFID/iButton 记录、串口日志查看、AIO Board 1.4 参考与状态。
+- 共8篇：设备连接、中文资料库、红外工作台、手机中文界面与功能说明、Sub-GHz记录分析、NFC记录与离线工作台、串口实时接收与日志、AIO Board 1.4参考与状态。
 - 截至本文更新时，该文件标注为实现中（`catalog_status: implementation_in_progress`），条目状态为 `implemented_unverified`、`in_progress` 或 `hardware_required`；指南中的描述不等于功能已经在真机上验证。
 
 ## 未提供的功能与限制
 
-- 不支持任何扩展板（ESP32、“WiFi 终结者”等）：代码中没有相关实现，也不按名称推断兼容性。
+- 已有通用Lab Bridge串口接收代码；AIO Board 1.4的厂商、现装固件及接线仍未知，没有实物链路验收，也不能据板名声明ESP32、CC1101或nRF24专用无线协议兼容。
 - `.wscan` 是离线记录格式；扫描来源需要另行确认。手机可分析多个网络，但没有指定网络断连或无线干扰功能。
 - 不做原始射频或红外信号的实时蓝牙流式传输，也不通过蓝牙逐脉冲控制 Flipper；手机只处理已保存的记录文件。
-- 除红外按钮执行外，App 不会让 Flipper 发射或模拟 Sub-GHz、NFC、RFID、iButton 信号；这些记录只能导入、分析、整理、导出和上传。
-- 没有手机触发的采集、实时串口采集或 iCloud 同步。
+- 已保存的射频与卡片记录可导入、分析、整理、导出和上传；手机可打开Flipper上的对应应用，应用内操作仍由设备执行。没有为每种协议提供独立手机采集／发射界面，逐应用控制尚未真机验收。
+- 已实现经Lab Bridge启动、轮询和停止的实时串口接收；未提供所有射频协议的手机直接采集或iCloud同步。
 - 手机算力不会扩大 Flipper 的硬件能力（频段、采样率、支持的标签类型等）。
 - 界面只有简体中文。设备族包含 iPad，可以安装，但没有做过任何 iPad 测试。
 
@@ -283,7 +285,7 @@ xcodebuild build \
 
 设备端固件由另一个工作流 [`lab-firmware.yml`](../../.github/workflows/lab-firmware.yml) 构建，产物 `flipper-lab-firmware-<提交>` 含更新包、`SHA256SUMS.txt` 和 `dist/f7-C/apps/Tools/lab.fap`，保留 14 天；最终提交的运行 [36109714494](https://github.com/Fairank/Flipper-Momentum-Lab/actions/runs/36109714494) 已通过。
 
-当前界面和最新运行结果见 [UI_APPLE_DESIGN.md](../../documentation/custom/UI_APPLE_DESIGN.md) 与 [UI_APPLE_REVIEW.md](../../documentation/custom/UI_APPLE_REVIEW.md)。此前五页像素机身方案的历史验证保留在 [UI_REVIEW.md](../../documentation/custom/UI_REVIEW.md)。CI 通过不代表蓝牙、上传或红外功能在真机上可用。
+当前界面与原图见 [手机优化说明](../../documentation/custom/OFFICIAL_APP_REFINEMENT_20260930.md)，最新运行结果见 [验证记录](../../documentation/custom/VALIDATION.md)。此前苹果风格方案保留在 [UI_APPLE_DESIGN.md](../../documentation/custom/UI_APPLE_DESIGN.md) 与 [UI_APPLE_REVIEW.md](../../documentation/custom/UI_APPLE_REVIEW.md)，五页像素机身方案的历史验证保留在 [UI_REVIEW.md](../../documentation/custom/UI_REVIEW.md)。CI通过不代表蓝牙、上传或红外功能在真机上可用。
 
 ## 真机验证清单（尚未执行）
 
