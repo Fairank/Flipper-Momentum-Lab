@@ -112,7 +112,7 @@ final class FlipperDevice: NSObject, CBCentralManagerDelegate, CBPeripheralDeleg
         finish(.failure(error)); info = [:]; protocolVersion = "未检查"
         state = central.state == .poweredOn ? .idle : .unavailable
     }
-    private func fail(_ error: Error) { lastError = error.localizedDescription; close(error: error) }
+    private func fail(_ error: Error) { lastError = PhoneErrorDescription.describe(error); close(error: error) }
     private func finish(_ result: Result<[RPCEnvelope], Error>) {
         timer?.cancel(); timer = nil
         deadline?.cancel(); deadline = nil
@@ -285,26 +285,18 @@ final class FlipperDevice: NSObject, CBCentralManagerDelegate, CBPeripheralDeleg
 
     func listInstalledApps() async throws -> [FlipperFunction] {
         guard ready else { throw RPCError.disconnected }
-        let root: [DeviceFile]
-        do { root = try await listFiles("/ext/apps") }
-        catch RPCError.remote(7) { installedAppPaths = []; return [] }
-        let directories = root.filter(\.isDirectory)
-        guard directories.count <= 40 else { throw RPCError.tooLarge }
-        var apps: [FlipperFunction] = []
-        func collect(_ files: [DeviceFile]) throws {
-            for file in files where !file.isDirectory {
-                guard let app = FlipperFunction.installed(path: file.path) else { continue }
-                guard apps.count < 600 else { throw RPCError.tooLarge }
-                apps.append(app)
-            }
+        let session = generation
+        installedAppPaths = []
+        let result = try await InstalledAppDiscovery.collect { path in
+            guard self.ready, self.generation == session else { throw RPCError.disconnected }
+            let files: [DeviceFile]
+            do { files = try await self.listFiles(path) }
+            catch RPCError.remote(7) where path == InstalledAppDiscovery.root { return [] }
+            guard self.ready, self.generation == session else { throw RPCError.disconnected }
+            return files
         }
-        try collect(root)
-        for directory in directories {
-            try Task.checkCancellation()
-            try collect(try await listFiles(directory.path))
-        }
-        let unique = Dictionary(apps.map { ($0.id, $0) }, uniquingKeysWith: { first, _ in first })
-        let result = unique.values.sorted { $0.title.localizedStandardCompare($1.title) == .orderedAscending }
+        try Task.checkCancellation()
+        guard ready, generation == session else { throw RPCError.disconnected }
         installedAppPaths = Set(result.map(\.launchName))
         return result
     }

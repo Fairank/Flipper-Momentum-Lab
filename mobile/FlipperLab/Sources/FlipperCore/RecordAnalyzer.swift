@@ -95,6 +95,43 @@ public enum RecordAnalyzer {
     /// Sub-GHz 文件中全部 `RAW_Data` 样本的数量上限。
     public static let maxSubGhzSamples = 1_000_000
 
+    // Reuse the file-header, UTF-8 and Flipper key/value rules without exposing
+    // the analyzer's parser types to the app. This is comparison input, not a
+    // guarantee that every optional protocol field can be loaded by firmware.
+    static func nfcComparisonSource(_ text: String) throws -> NFCComparisonSource {
+        let input = try TextInput(text)
+        try input.requireNoTerminalControls()
+        guard let parsed = try readHeader(input) else {
+            throw RecordAnalysisError.missingHeader(expected: .nfc)
+        }
+        guard parsed.header.kind == .nfc else {
+            throw RecordAnalysisError.kindMismatch(requested: .nfc, detected: parsed.header.kind)
+        }
+        var cursor = parsed.cursor
+        var fields: [NFCComparisonField] = []
+        while let line = cursor.nextContentLine() {
+            guard fields.count < 8192 else {
+                throw RecordAnalysisError.limitExceeded(item: "NFC 字段数量", limit: 8192)
+            }
+            let entry = try FF.entry(line, input.bytes)
+            guard entry.valueEnd - entry.valueStart <= 8192 else {
+                throw RecordAnalysisError.invalidField(field: entry.key, line: entry.line, reason: "字段值超过 8192 字节")
+            }
+            let value = FF.text(input.bytes, entry)
+            if entry.key == "Device type", !NFCRecordComparison.supportedTypes.contains(value.trimmingCharacters(in: .whitespaces)) {
+                // FeliCa Standard and DESFire contain scoped/multiline records;
+                // stop before treating their legal repeated keys as corruption.
+                throw RecordAnalysisError.invalidField(field: entry.key, line: entry.line,
+                    reason: "暂不支持此类型的结构化比较：\(TextFormat.display(value))")
+            }
+            let tokens = FF.tokens(input.bytes, entry)
+            let number = tokens.count == 1 ? FF.integer(input.bytes, tokens[0], allowNegative: false) : nil
+            fields.append(NFCComparisonField(key: entry.key, value: value, line: entry.line,
+                bytes: FF.hexBytes(input.bytes, entry, allowUnknown: true), number: number))
+        }
+        return NFCComparisonSource(version: parsed.header.version, fields: fields)
+    }
+
     /// 把文件字节解码为文本：先限制大小，再拒绝无效 UTF-8、空内容与二进制数据。
     /// 返回的字符串与原始字节一一对应（保留 BOM 与换行符），不做规范化。
     public static func decodeText(_ data: Data) throws -> String {

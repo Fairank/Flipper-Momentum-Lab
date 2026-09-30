@@ -28,7 +28,30 @@ enum PreviewRecords {
         Starting AP scan. Stop with stopscan
         RSSI: -54 Ch: 6 BSSID: 02:11:22:33:44:55 ESSID: Home
         RSSI: -71 Ch: 11 BSSID: 02:11:22:33:44:66 ESSID: Office Guest
-        """)
+        """),
+        CaptureRecord(name: "示例：NFC初次读取", kind: .nfc, tags: ["示例", "NFC"],
+                      notes: "合成界面样本，不是实体卡读取。", rawText: nfcSample(changed: false)),
+        CaptureRecord(name: "示例：NFC再次读取", kind: .nfc, tags: ["示例", "NFC"],
+                      notes: "合成界面样本，仅第2页第2字节不同。", rawText: nfcSample(changed: true)),
     ]
+
+    private static func nfcSample(changed: Bool) -> String {
+        """
+        Filetype: Flipper NFC device
+        Version: 4
+        Device type: NTAG/Ultralight
+        UID: 04 85 90 54 12 98 23
+        ATQA: 00 44
+        SAK: 00
+        Data format version: 2
+        NTAG/Ultralight type: NTAG213
+        Pages total: 4
+        Pages read: 4
+        Page 0: 04 85 92 9B
+        Page 1: 8A A0 61 81
+        Page 2: CA \(changed ? "49" : "48") 0F 00
+        Page 3: E1 10 6D 00
+        """
+    }
 }
 #endif

@@ -49,7 +49,7 @@ final class AppModel {
             }
             #endif
             libraryReady = true
-        } catch { self.error = "资料库加载失败，原文件已保留：" + error.localizedDescription }
+        } catch { self.error = "资料库加载失败，原文件已保留：" + PhoneErrorDescription.describe(error) }
     }
 
     private func perform(_ title: String, action: @escaping @MainActor () async throws -> String) {
@@ -66,8 +66,9 @@ final class AppModel {
                 updateTask(id, state: .completed, detail: detail)
             } catch {
                 let cancelled = Task.isCancelled || error is CancellationError || (error as? RPCError) == .cancelled
-                updateTask(id, state: cancelled ? .cancelled : .failed, detail: error.localizedDescription)
-                if !cancelled { self.error = error.localizedDescription }
+                let description = PhoneErrorDescription.describe(error)
+                updateTask(id, state: cancelled ? .cancelled : .failed, detail: description)
+                if !cancelled { self.error = description }
             }
         }
     }

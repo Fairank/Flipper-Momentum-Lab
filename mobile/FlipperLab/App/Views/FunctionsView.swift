@@ -326,15 +326,14 @@ import FlipperCore
                 loadedAt = nil
                 // A dropped connection already resets this section; only a failure while
                 // still connected is worth showing here.
-                installedState = device.ready ? .failed(error.localizedDescription) : .idle
+                installedState = device.ready ? .failed(PhoneErrorDescription.describe(error)) : .idle
             }
         }
     }
 }
 
-/// Function row: symbol tile, Chinese title with the name the Flipper menu shows, then the
-/// summary and the key condition. Installed apps show their device path instead, because the
-/// title is only the file name and nothing about the app is known. The row remains readable
+/// Function row: Chinese title, explanation, and a distinguishing path for SD apps.
+/// Technical RPC launch identifiers are not a second title. The row remains readable
 /// offline; the reason is stated at the top, on tap, and in the accessibility hint.
 private struct FunctionRow: View {
     let function: FlipperFunction
@@ -352,15 +351,13 @@ private struct FunctionRow: View {
                         .foregroundStyle(Color.secondary)
                         .lineLimit(2)
                         .truncationMode(.middle)
+                    Text(verbatim: function.summary)
+                        .font(.subheadline)
+                        .foregroundStyle(Color.secondary)
                 } else {
-                    AdaptiveStack(verticalAlignment: .firstTextBaseline, spacing: 8) {
-                        Text(verbatim: function.title)
-                            .font(.headline)
-                            .foregroundStyle(Color.primary)
-                        Text(verbatim: function.launchName)
-                            .font(.footnote)
-                            .foregroundStyle(Color.secondary)
-                    }
+                    Text(verbatim: function.title)
+                        .font(.headline)
+                        .foregroundStyle(Color.primary)
                     Text(verbatim: function.summary)
                         .font(.subheadline)
                         .foregroundStyle(Color.secondary)

@@ -26,22 +26,22 @@ public struct FlipperFunction: Identifiable, Equatable, Sendable {
         .init(id: "infrared", title: "红外遥控", summary: "读取、保存并发送红外信号。",
               category: "无线与识别", symbol: "dot.radiowaves.left.and.right", launchName: "Infrared",
               requirement: "让 Flipper 的红外发射端朝向目标设备。"),
-        .init(id: "subghz", title: "Sub-GHz", summary: "查看支持的频段、记录并管理无线信号。",
+        .init(id: "subghz", title: "Sub-GHz 无线", summary: "查看支持的频段、记录并管理无线信号。",
               category: "无线与识别", symbol: "antenna.radiowaves.left.and.right", launchName: "Sub-GHz",
               requirement: "由 Flipper 射频硬件执行；遵守当地频率规定。"),
-        .init(id: "nfc", title: "NFC", summary: "读取、保存并管理近场卡片。",
+        .init(id: "nfc", title: "NFC 卡片", summary: "读取、保存并管理近场卡片。",
               category: "无线与识别", symbol: "wave.3.right", launchName: "NFC",
               requirement: "将卡片贴近 Flipper 的 NFC 区域。"),
-        .init(id: "lfrfid", title: "125 kHz RFID", summary: "管理低频门禁卡记录。",
+        .init(id: "lfrfid", title: "低频 RFID", summary: "管理低频门禁卡记录。",
               category: "无线与识别", symbol: "radiowaves.right", launchName: "125 kHz RFID",
               requirement: "将卡片贴近 Flipper 的低频天线。"),
-        .init(id: "ibutton", title: "iButton", summary: "读取、保存并管理接触式钥匙。",
+        .init(id: "ibutton", title: "iButton 接触钥匙", summary: "读取、保存并管理接触式钥匙。",
               category: "无线与识别", symbol: "key.horizontal", launchName: "iButton",
               requirement: "需要钥匙与 Flipper 接点直接接触。"),
-        .init(id: "gpio", title: "GPIO", summary: "查看引脚与外部电路交互。",
+        .init(id: "gpio", title: "GPIO 扩展接口", summary: "查看引脚与外部电路交互。",
               category: "工具", symbol: "point.3.connected.trianglepath.dotted", launchName: "GPIO",
               requirement: "核对电压、接线和外接模块。"),
-        .init(id: "bad_kb", title: "Bad USB", summary: "在 Flipper 上运行已保存的键盘脚本。",
+        .init(id: "bad_kb", title: "键盘脚本", summary: "在 Flipper 上运行已保存的键盘脚本。",
               category: "工具", symbol: "keyboard", launchName: "Bad KB",
               requirement: "目标设备需要连接 Flipper 的 USB。"),
         .init(id: "u2f", title: "U2F 安全密钥", summary: "在 Flipper 上打开双因素认证功能。",
@@ -50,7 +50,7 @@ public struct FlipperFunction: Identifiable, Equatable, Sendable {
         .init(id: "archive", title: "文件归档", summary: "在设备上浏览已保存的记录。",
               category: "工具", symbol: "archivebox", launchName: "Archive",
               requirement: "保存的记录通常需要 SD 卡。"),
-        .init(id: "lab", title: "Flipper Lab 中文指南", summary: "在设备上阅读中文说明并进入功能。",
+        .init(id: "lab", title: "设备功能指南", summary: "打开设备上的英文功能指南；手机功能说明使用中文。",
               category: "系统", symbol: "book.closed", launchName: "Flipper Lab",
               requirement: "需要安装本仓库的 Flipper Lab 应用。"),
         .init(id: "apps", title: "设备应用列表", summary: "在 Flipper 上打开已安装应用列表。",
@@ -97,6 +97,9 @@ public struct FlipperFunction: Identifiable, Equatable, Sendable {
     /// Display metadata only. An entry appears after SD discovery confirms its path;
     /// its Chinese title never replaces the path sent to App.Start.
     private static let installedDescriptions: [String: (title: String, summary: String, symbol: String)] = [
+        "/ext/apps/Tools/calculator.fap": ("计算器", "在 Flipper 上输入并计算简单算式。", "plus.forwardslash.minus"),
+        "/ext/apps/Media/music_player.fap": ("音乐播放器", "在 Flipper 上播放 RTTL 音乐文件。", "music.note"),
+        "/ext/apps/Media/wav_player.fap": ("WAV 播放器", "在 Flipper 上选择并播放 WAV 音频文件。", "waveform"),
         "/ext/apps/Tools/clock.fap": ("床头时钟", "显示时间、设置闹钟并使用秒表。", "clock"),
         "/ext/apps/Tools/analog_clock.fap": ("指针时钟", "在 Flipper 屏幕上显示指针时钟。", "clock"),
         "/ext/apps/Tools/segment_clock.fap": ("数码管时钟", "显示数字时间，设置闹钟与屏幕亮度。", "clock"),
@@ -127,11 +130,29 @@ public struct FlipperFunction: Identifiable, Equatable, Sendable {
         "/ext/apps/USB/hid_usb.fap": ("USB 遥控器", "通过 Flipper 的 USB 连接控制电脑键盘、鼠标或演示。", "keyboard"),
     ]
 
+    /// Display aliases for SD categories; launch paths always retain their original spelling.
+    public static func displayCategory(for folder: String) -> String {
+        let labels = [
+            "Tools": "工具", "Games": "游戏", "Bluetooth": "蓝牙", "Infrared": "红外",
+            "Media": "媒体", "Misc": "其他应用", "USB": "USB 工具", "NFC": "NFC 工具",
+            "RFID": "低频 RFID", "Sub-GHz": "Sub-GHz 无线", "Sub-Ghz": "Sub-GHz 无线",
+            "GPIO": "扩展接口", "Settings": "设置", "Scripts": "脚本", "iButton": "接触钥匙",
+            "Debug": "调试", "ESP": "ESP 扩展板", "GPS": "GPS 定位",
+            "FlipBoard": "FlipBoard 扩展板", "FlipperHTTP": "FlipperHTTP 模块",
+            "Hardware": "硬件工具", "MALVEKE": "MALVEKE 模块", "MAYHEM": "MAYHEM 模块",
+            "NRF24": "NRF24 模块", "Sensors": "传感器", "VGM": "VGM 模块",
+            "其他应用": "其他应用",
+        ]
+        return folder.split(separator: "/", omittingEmptySubsequences: false)
+            .map { labels[String($0)] ?? "其他应用" }
+            .joined(separator: " / ")
+    }
+
     public static func installed(path: String) -> FlipperFunction? {
         guard path.hasPrefix("/ext/apps/"), path.utf8.count <= 240,
-              !path.contains("\\"), !path.contains("\0") else { return nil }
+              !path.contains("\\"), !path.unicodeScalars.contains(where: { $0.value < 32 || $0.value == 127 }) else { return nil }
         let parts = path.split(separator: "/", omittingEmptySubsequences: false)
-        guard (parts.count == 4 || parts.count == 5),
+        guard (4...8).contains(parts.count),
               parts[0].isEmpty, parts[1] == "ext", parts[2] == "apps",
               !parts.dropFirst().contains(where: { $0.isEmpty || $0 == "." || $0 == ".." }) else { return nil }
         let filename = String(parts[parts.count - 1])
@@ -140,9 +161,8 @@ public struct FlipperFunction: Identifiable, Equatable, Sendable {
         let title = stem.replacingOccurrences(of: "_", with: " ")
             .replacingOccurrences(of: "-", with: " ")
         guard !title.trimmingCharacters(in: .whitespaces).isEmpty else { return nil }
-        let folder = parts.count == 5 ? String(parts[3]) : "其他应用"
-        let category = ["Tools": "工具", "Games": "游戏", "Bluetooth": "蓝牙",
-                        "Infrared": "红外", "Media": "媒体", "Misc": "其他"][folder] ?? folder
+        let folder = parts.count > 4 ? parts[3..<(parts.count - 1)].joined(separator: "/") : "其他应用"
+        let category = displayCategory(for: folder)
         if let description = installedDescriptions[path] {
             return .init(id: path, title: description.title, summary: description.summary,
                          category: category,

@@ -1,13 +1,25 @@
 import SwiftUI
 import FlipperCore
 
-// Moved unchanged from the previous ToolsView.swift; only the presentation changed.
 private struct RecordComparison: Sendable {
     let left: AnalysisReport
     let right: AnalysisReport
     let differences: [String]
     let limited: Bool
+    let nfcReport: NFCComparisonReport?
     static func make(_ a: CaptureRecord, _ b: CaptureRecord) throws -> Self {
+        if a.kind == .nfc, b.kind == .nfc {
+            let comparison = try NFCRecordComparison.compare(a.rawText, b.rawText)
+            let left = try RecordAnalyzer.analyze(a.rawText, kind: .nfc)
+            let right = try RecordAnalyzer.analyze(b.rawText, kind: .nfc)
+            let differences = comparison.differences.map { change in
+                let offsets = change.changedByteOffsets.isEmpty ? "" : " · 字节 " + change.changedByteOffsets.map { String($0 + 1) }.joined(separator: ", ")
+                return "\(change.address.title)\(offsets)\nA: \(String((change.left ?? "[无此字段]").prefix(240)))\nB: \(String((change.right ?? "[无此字段]").prefix(240)))"
+            }
+            return Self(left: left, right: right, differences: differences,
+                        limited: comparison.limited || comparison.differences.contains { ($0.left?.count ?? 0) > 240 || ($0.right?.count ?? 0) > 240 },
+                        nfcReport: comparison)
+        }
         let left = try RecordAnalyzer.analyze(a.rawText, kind: a.kind)
         let right = try RecordAnalyzer.analyze(b.rawText, kind: b.kind)
         // Positional comparison is deliberately bounded; it is not a protocol decoder.
@@ -26,7 +38,7 @@ private struct RecordComparison: Sendable {
                 if (x?.count ?? 0) > 240 || (y?.count ?? 0) > 240 { limited = true }
             }
         }
-        return Self(left: left, right: right, differences: differences, limited: limited)
+        return Self(left: left, right: right, differences: differences, limited: limited, nfcReport: nil)
     }
 }
 
@@ -57,7 +69,7 @@ private struct RecordComparison: Sendable {
             } header: {
                 SectionHeader("选择记录")
             } footer: {
-                Text("同类型记录更容易比较。文本按相同行号对比；插入一行会影响后续行的对应关系。")
+                Text("两份 NFC 文件按字段、块号和页号比较，忽略行序及十六进制大小写。其他记录按相同行号比较。")
             }
             if comparing {
                 Section {
@@ -134,18 +146,25 @@ private struct RecordComparison: Sendable {
         }
         Section {
             // The caveat qualifies the list below it, so it leads the section.
+            if let nfc = result.nfcReport {
+                ReasonNote("比较已保存的卡片数据，未读字节 ?? 与 00 分开处理。A 有 \(nfc.leftUnknownByteCount) 个未知字节，B 有 \(nfc.rightUnknownByteCount) 个；不执行读卡或密钥计算。")
+            }
             if result.limited {
-                ReasonNote("内容较多，结果已截短。最多比较前 5,000 行、显示 200 处差异，每行预览 240 个字符；可导出完整原文进一步查看。")
+                if let nfc = result.nfcReport {
+                    ReasonNote("两份文件已完整检查，共 \(nfc.totalDifferenceCount) 处差异，最多显示前 200 处，每项预览 240 个字符。")
+                } else {
+                    ReasonNote("内容较多，结果已截短。最多比较前 5,000 行、显示 200 处差异，每行预览 240 个字符；可导出完整原文进一步查看。")
+                }
             }
             if result.differences.isEmpty {
-                Text(result.limited ? "已比较范围内没有差异。" : "两份文本内容相同。")
+                Text(result.nfcReport != nil ? "按字段与存储编号比较，没有差异。" : (result.limited ? "已比较范围内没有差异。" : "两份文本内容相同。"))
             } else {
                 ForEach(Array(result.differences.enumerated()), id: \.offset) { _, line in
                     DiffBlock(text: line)
                 }
             }
         } header: {
-            SectionHeader("按行对比", count: "\(result.differences.count) 处差异")
+            SectionHeader(result.nfcReport != nil ? "卡片数据对比" : "按行对比", count: "\(result.nfcReport?.totalDifferenceCount ?? result.differences.count) 处差异")
         }
     }
 }

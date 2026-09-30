@@ -198,15 +198,15 @@ import FlipperCore
         }
     }
 
-    /// Keys exactly as the device reports them, sorted; values are selectable.
+    /// Translate display labels only; the device's original keys and values stay in its report.
     private var infoSection: some View {
         Section {
             ForEach(device.info.keys.sorted(), id: \.self) { key in
                 VStack(alignment: .leading, spacing: 4) {
-                    Text(verbatim: key)
+                    Text(verbatim: DeviceInfoLabel.title(for: key))
                         .font(LabFont.mono)
                         .foregroundStyle(.secondary)
-                    Text(verbatim: device.info[key] ?? "")
+                    Text(verbatim: DeviceInfoLabel.value(for: device.info[key] ?? "", key: key))
                         .textSelection(.enabled)
                 }
             }

@@ -220,6 +220,32 @@ final class FlipperLabUITests: XCTestCase {
     }
 
     @MainActor
+    func testChineseNFCComparisonLocatesTheChangedPage() throws {
+        let app = launch(["-ui-testing-light", "-ui-testing-fixtures"])
+        app.tabBars.buttons["资料库"].tap()
+        let record = buttonContaining("示例：NFC初次读取", in: app)
+        XCTAssertTrue(scrollUntilHittable([record], in: app))
+        record.tap()
+        XCTAssertTrue(app.navigationBars["示例：NFC初次读取"].waitForExistence(timeout: 5))
+        moreMenu("record.more", in: app).tap()
+        menuItem("record.compare", title: "与其他记录比较", in: app).tap()
+        XCTAssertTrue(app.navigationBars["比较记录"].waitForExistence(timeout: 5))
+        let second = app.descendants(matching: .any).matching(identifier: "compare.pickerB").firstMatch
+        XCTAssertTrue(second.waitForExistence(timeout: 5))
+        second.tap()
+        let option = buttonContaining("示例：NFC再次读取", in: app)
+        XCTAssertTrue(option.waitForExistence(timeout: 5))
+        option.tap()
+        let difference = app.staticTexts["页 2 · 字节 2"]
+        XCTAssertTrue(scrollUntilHittable([difference], in: app))
+        XCTAssertTrue(app.staticTexts["CA 48 0F 00"].exists)
+        XCTAssertTrue(app.staticTexts["CA 49 0F 00"].exists)
+        XCTAssertFalse(app.staticTexts["无法比较"].exists)
+        capture(app, name: "25-手机中文NFC按页比较")
+        app.tabBars.buttons["任务"].tap()
+        XCTAssertTrue(app.navigationBars["任务"].waitForExistence(timeout: 5))
+    }
+
     func testDarkAppearanceAndAccessibilityTextNavigation() throws {
         continueAfterFailure = false
         let app = launch(["-ui-testing-fixtures", "-ui-testing-dark", "-ui-testing-large-text"])

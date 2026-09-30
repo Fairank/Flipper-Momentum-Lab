@@ -13,10 +13,13 @@ final class FlipperFunctionTests: XCTestCase {
             "/ext/infrared/remote.ir", "/ext/apps/../danger.fap", "/ext/apps/Tools/../../danger.fap",
             "/ext/apps/Tools/evil\\thing.fap", "/ext/apps/Tools/evil\0thing.fap",
             "/ext/apps/Tools/notes.txt", "/ext/apps/Tools/.fap", "/ext/apps//empty.fap",
-            "/ext/apps/Tools/nested/app.fap",
+            "/ext/apps/Tools/nested/a/b/c/app.fap",
+            "/ext/apps/Tools/new\nline.fap",
         ] {
             XCTAssertNil(FlipperFunction.installed(path: path), path)
         }
+        XCTAssertEqual(FlipperFunction.installed(path: "/ext/apps/GPIO/GPS/gps_tool.fap")?.launchName,
+                       "/ext/apps/GPIO/GPS/gps_tool.fap")
     }
 
     func testBuiltInLaunchNamesAreUnique() {
