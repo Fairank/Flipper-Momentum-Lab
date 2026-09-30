@@ -6,7 +6,11 @@
 
 最终本机152项Python／实际C回归全部通过（92.131秒、无跳过），`updater_package`、独立 `fap_dist`、`lint_all`、帮助／主字库／升级器／SD资源同步检查通过。新增23项含真实启动入口与队列消息、真实外部加载、真实GUI输入和真实浏览器完成通知；30位回绕与Apps队列回归在旧源码上复现失败，修复后通过。默认沙箱首跑隐藏编译器而环境性失败；完整工作区权限后验证。首轮格式检查要求整理新增Python，格式化后全通过；保留全部断言。Windows入口测试使用无缓冲stdout保留完成标记，不采用重试或仅exit0放行。
 
-本地更新包 `flipper-z-f7-update-mntm-codex-iphone-zh-architecture-c755bfa5.tgz`：13,008,016字节，SHA-256 `d08e87d50782e81520d251e8d134ba3d0057d496ddd124a3eab9d1e488f81caf`。这是c755基础上的本轮未提交工作树产物，不能归为旧提交的干净CI包。主固件869,000字节，保留区前余11,640字节，升级器120,245字节；DFU地址／CRC、295 FAP／121 FAL、28项指定应用、API89和资源通过。云端提交、运行及附件稍后另行补录，不能沿用下一节1db旧代码的通过结果。
+本地更新包 `flipper-z-f7-update-mntm-codex-iphone-zh-architecture-c755bfa5.tgz`：13,008,016字节，SHA-256 `d08e87d50782e81520d251e8d134ba3d0057d496ddd124a3eab9d1e488f81caf`。这是c755基础上的本轮未提交工作树产物，不能归为旧提交的干净CI包。主固件869,000字节，保留区前余11,640字节，升级器120,245字节；DFU地址／CRC、295 FAP／121 FAL、28项指定应用、API89和资源通过。
+
+上传代码 **`52f236fda19990e4587c4c82ea28cd2a63d40e46`**：[Lab validation 36712917909](https://github.com/Fairank/Flipper-Momentum-Lab/actions/runs/36712917909) 全部通过：152项主机（16.926秒、零跳过）、字库和73张布局、自建iPhone196项Swift核心（13.428秒）、10项UI（468.180秒、零失败）、准备模式及无签名模拟器构建。UI包含原7项（348.715秒）和目录3项（119.465秒）；环境为Xcode26.6／Swift6.3.3／iPhone17ProMax／iOS26.5模拟器。[Lab firmware 36712917791](https://github.com/Fairank/Flipper-Momentum-Lab/actions/runs/36712917791) 与 [Lint 36712917869](https://github.com/Fairank/Flipper-Momentum-Lab/actions/runs/36712917869) 通过。手机源码与1db相比仅说明文件改动，这不是官方App或实物蓝牙验证；后续文档补录不改变通过的代码。
+
+[固件附件11095483234](https://github.com/Fairank/Flipper-Momentum-Lab/actions/runs/36712917791/artifacts/11095483234) 已完整下载：ZIP13,021,894字节，SHA-256 `79d17087855e04ca81cfefc40b351f239153d53fdd3c7c021ac628d057ffcdfd`；TGZ `flipper-z-f7-update-mntm-HEAD-ee43b2c2.tgz` 13,006,148字节，SHA-256 `7cab7ff698a184528c67df0ae92607248ff12eb09a9e22c03a7c2c6274d43d24`。PR合并检出 `ee43b2c229ee33ba5d76f44aef32736c495c627b`；主固件868,976字节、无线栈前余11,664字节、升级器120,217字节。DFU地址／CRC、295FAP／121FAL、28项指定应用、API89、SD资源及两份独立伴侣FAP与包内一致性通过；附件保留到2026-10-14。逐应用资源哈希、Git源码对象哈希与本地工作树哈希分开保存在 [本轮JSON](OFFICIAL_APP_COMPATIBILITY_20260930.json)。
 
 硬件验收尚未完成；主机测试不覆盖完整RPC解码、loader／GUI服务线程或真实BLE。官方App目录的FIM／路径／UID线上校验限制仍存在，手机GPS／网络共享／NFC工作台等自建客户端功能无法仅改固件加入官方App。Momentum／Unleashed全部功能并集仍未完成。本轮由主助手和子代理完成，未调用Claude；历史Claude实际模型记录保留在对应历史轮次。
 

@@ -1,5 +1,7 @@
 # 中文手机应用目录与连接恢复
 
+**历史自建手机App记录：**本页手机代码与原图固定于 `1dbdd4a2`，英文设备原图固定于 `65c05a20`。用户随后决定暂停自建手机UI，当前优先适配官方App，见 [兼容说明](OFFICIAL_APP_COMPATIBILITY_20260930.md)。这里的独立中文页面、不自动进入镜像和手机能力处理只属于自建App；不能作为官方App界面或当前设备源码的截图证明。
+
 本轮按用户要求参考官方 Flipper iOS App 的应用浏览和 BLE／RPC 实现。Flipper 本机继续使用英文；手机保留自己的中文页面，选择条目直接让设备打开应用，手机不自动切换到屏幕镜像。
 
 ## 应用目录
@@ -64,7 +66,7 @@ DEBUG 参数 `-ui-testing-app-catalog` 只提供八项界面预览，状态和�
 
 [结束搜索后恢复设备功能的原图](previews/official-app-20260930/phone-search-ended.png) 保留键盘退出后的实际页面状态。
 
-Flipper图来自固定生产C代码与英文帮助资源的CI源码绘制，不是真机截图；源版本为`65c05a20`，后续提交未改对应设备源码。原图及哈希见 [设备预览清单](previews/official-app-20260930/flipper-manifest.json)。
+Flipper图来自固定生产C代码与英文帮助资源的CI源码绘制，不是真机截图；源版本为`65c05a20`，截至本页历史轮次`1dbdd4a2`未改变对应设备源码。新的官方App适配轮次已增加Phone Remote指南及加载器修复，这些旧图不展示新改动。原图及哈希见 [设备预览清单](previews/official-app-20260930/flipper-manifest.json)。
 
 <img src="previews/official-app-20260930/flipper-native-english.png" width="720" alt="设备英文原生菜单源码预览">
 

@@ -6,7 +6,7 @@
 
 此前已恢复2,252处C文案、27个名称、23份介绍、22份动画元数据；固定子模块APDU中文保留，SD字库及125字形无卡子集支持中文用户文件，265字形扫描参考子集不链接主固件。自建手机保留31项中文映射、嵌套发现、结构化NFC比较、中文错误、来源／分类／多词筛选、独立详情和有限前台恢复。已验证的旧手机源码及原图见 [手机优化](documentation/custom/OFFICIAL_APP_REFINEMENT_20260930.md)；未完成的下一轮风格稿备份在本机 `work/flipper-tools/paused-flipper-phone-style-20260930/`，未编译或发布。
 
-本轮对照官方固定源码实现应用浏览和连接恢复；点选直接在设备打开，手机不自动切到屏幕镜像。恢复会清理旧会话、重新握手和读取目录，具体操作不会重发；旧任务异常不能关闭新连接。目录预览明确标记样例，不改变真实连接或启动白名单。真实BLE／AIO、逐应用控制和完整功能并集仍未验收完成；未提供签名IPA。
+此前自建App轮次对照官方固定源码实现应用浏览和连接恢复；点选直接在设备打开，手机不自动切到屏幕镜像。该行为仅属于暂停的自建App；官方App打开目录应用后会进入屏幕遥控。自建App恢复会清理旧会话、重新握手和读取目录，具体操作不会重发；旧任务异常不能关闭新连接。目录预览明确标记样例，不改变真实连接或启动白名单。真实BLE／AIO、逐应用控制和完整功能并集仍未验收完成；未提供签名IPA。
 
 历史第四轮代码 `12b8c35f3` 增加四个中文应用、记事本数据保护和真实 WebSocket 回环测试，`6f94bdc9d` 补存储回归与手机比较入口导航修订，见 [第四轮实现与预览](documentation/custom/UNION_CHINESE_20260930.md)。该轮累计导入二十四个应用，手机中文映射当时为28项（现为31项）；正式包295个FAP／121个FAL，本地129项Python／C回归无跳过。下文第三轮的测试／包数量为历史记录，最新实际验收以 [VALIDATION.md](documentation/custom/VALIDATION.md) 首节为准。
 
@@ -40,7 +40,7 @@
 - 使用仓库工具链 39。完整打包先执行 `./fbt updater_package`，成功后**另一次**执行 `./fbt fap_dist`；同一 SCons 图同时请求两者可能因分发目录清理失败。Windows 用 `fbt.cmd`，必要时将工作区映射为 ASCII 路径再构建。
 - 运行 `python scripts/generate_lab_font.py --check`、`python scripts/generate_native_zh_font.py --check`、`python scripts/generate_native_zh_font.py --updater --check` 和 `python scripts/generate_zh_resource.py --check`；修改中文文案后重新生成对应字库。
 - 桌面检查：`python -m unittest discover -s scripts/tests -p "test*.py" -v`。必须有 C 编译器，跳过 C 测试不能算通过。Linux 的恢复与原生 GUI 回归启用 ASan/UBSan。
-- CI检查恢复升级器不超过131,072字节；另核验升级包内28项指定应用和SD字库。常规包包含295个正式FAP、121个FAL，完整开发分发另含开发示例。恢复英文后本地主固件到当前无线栈前余11,816字节，已核验的云端包余11,840字节；准确提交和附件见验证记录。新增内容仍必须通过打包边界检查，不能按链接器全部`.free_flash`估算；还需检查字库缓存的运行时RAM和线程栈。
+- CI检查恢复升级器不超过131,072字节；另核验升级包内28项指定应用和SD字库。常规包包含295个正式FAP、121个FAL，完整开发分发另含开发示例。本轮52f兼容包到无线栈前余11,664字节（云端）／11,640字节（本地）；此前英文恢复本地11,816字节、1db云端11,840字节为历史。准确提交和新云端附件见验证记录。新增内容仍必须通过打包边界检查，不能按链接器全部`.free_flash`估算；还需检查字库缓存的运行时RAM和线程栈。
 - UI 预览脚本为 `scripts/render_lab_preview.py`、`scripts/render_native_zh_preview.py`、`scripts/render_animation_zh_preview.py` 和 `scripts/render_union_zh_preview.py`。后三者需 `--output-dir`，动画和应用预览还需 Pillow 与主机 C 编译器。从源码绘制的图片不能替代刷机验收。
 
 ## 记录与分工

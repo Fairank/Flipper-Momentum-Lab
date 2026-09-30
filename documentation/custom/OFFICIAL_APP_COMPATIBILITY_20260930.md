@@ -63,7 +63,11 @@
 
 这些测试编译生产函数并替代平台依赖，未覆盖整条 RPC 解码、实际 loader 服务线程和 GUI／蓝牙端到端链路；不能把主机通过写成每个设备功能都已可用。SDK公开头文件和 `api_symbols.csv` 未改变，内部入口不改变 API89。
 
-本地包 `flipper-z-f7-update-mntm-codex-iphone-zh-architecture-c755bfa5.tgz` 为13,008,016字节，SHA-256 `d08e87d50782e81520d251e8d134ba3d0057d496ddd124a3eab9d1e488f81caf`；它是 **c755基础上的本轮未提交工作树构建**，不是该旧提交的干净包。DFU地址／CRC、295 FAP／121 FAL、28项指定应用、API89及资源核验通过。主固件869,000字节，距无线栈 `0x080D7000` 前余11,640字节；升级器120,245字节，低于131,072字节上限。73张帮助布局渲染无警告，仅为源码预览。云端提交、检查与附件将另行补录。
+本地包 `flipper-z-f7-update-mntm-codex-iphone-zh-architecture-c755bfa5.tgz` 为13,008,016字节，SHA-256 `d08e87d50782e81520d251e8d134ba3d0057d496ddd124a3eab9d1e488f81caf`；它是 **c755基础上的本轮未提交工作树构建**，不是该旧提交的干净包。DFU地址／CRC、295 FAP／121 FAL、28项指定应用、API89及资源核验通过。主固件869,000字节，距无线栈 `0x080D7000` 前余11,640字节；升级器120,245字节，低于131,072字节上限。73张帮助布局渲染无警告，仅为源码预览。
+
+代码 **`52f236fda19990e4587c4c82ea28cd2a63d40e46`** 已上传现有草稿PR。云端 [Lab validation](https://github.com/Fairank/Flipper-Momentum-Lab/actions/runs/36712917909) 全部通过：152项主机回归（16.926秒、无跳过）、字库与布局检查、自建iPhone的196项Swift核心（13.428秒）、10项UI（468.180秒、零失败）、Mac准备模式及无签名模拟器构建；[完整固件](https://github.com/Fairank/Flipper-Momentum-Lab/actions/runs/36712917791) 与 [Lint](https://github.com/Fairank/Flipper-Momentum-Lab/actions/runs/36712917869) 通过。手机环境为Xcode26.6／Swift6.3.3／iPhone17ProMax／iOS26.5模拟器，这些并非官方App或真实BLE测试。后续验收文档提交不改变该代码。
+
+[干净CI固件附件11095483234](https://github.com/Fairank/Flipper-Momentum-Lab/actions/runs/36712917791/artifacts/11095483234) 已下载核验：ZIP13,021,894字节，SHA-256 `79d17087855e04ca81cfefc40b351f239153d53fdd3c7c021ac628d057ffcdfd`；内部 `flipper-z-f7-update-mntm-HEAD-ee43b2c2.tgz` 为13,006,148字节，SHA-256 `7cab7ff698a184528c67df0ae92607248ff12eb09a9e22c03a7c2c6274d43d24`，PR合并检出 `ee43b2c229ee33ba5d76f44aef32736c495c627b`。主固件868,976字节、保留区前余11,664字节、升级器120,217字节；DFU地址／CRC、295FAP／121FAL、28项指定应用、API89、SD资源及两份独立伴侣FAP与包内一致性通过。附件保留至2026-10-14；源码和构建入口长期保留。
 
 该修改不会解除不匹配应用的 ABI 或缺失符号问题，也不会把未兼容的 FAP 宣布为可用。JSON证据见 [本轮核验摘要](OFFICIAL_APP_COMPATIBILITY_20260930.json)。
 
