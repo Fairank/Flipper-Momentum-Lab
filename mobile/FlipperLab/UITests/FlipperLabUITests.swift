@@ -246,6 +246,7 @@ final class FlipperLabUITests: XCTestCase {
         XCTAssertTrue(app.navigationBars["任务"].waitForExistence(timeout: 5))
     }
 
+    @MainActor
     func testDarkAppearanceAndAccessibilityTextNavigation() throws {
         continueAfterFailure = false
         let app = launch(["-ui-testing-fixtures", "-ui-testing-dark", "-ui-testing-large-text"])

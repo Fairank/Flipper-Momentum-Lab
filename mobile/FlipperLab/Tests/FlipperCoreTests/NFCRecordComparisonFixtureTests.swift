@@ -2,8 +2,8 @@ import Foundation
 import XCTest
 import FlipperCore
 
-/// Uses the repository's unmodified public saved-card fixtures. None is a live card read.
-/// Keep resources at their source location so protocol updates also exercise this consumer.
+/// Uses seven tracked public dumps and two explicitly synthetic protocol fixtures.
+/// No live card read or ignored external application tree is required.
 final class NFCRecordComparisonFixtureTests: XCTestCase {
     private struct Sample {
         let path: String
@@ -12,6 +12,7 @@ final class NFCRecordComparisonFixtureTests: XCTestCase {
     }
 
     private static let unitSamples = "applications/debug/unit_tests/resources/unit_tests/nfc/"
+    private static let syntheticSamples = "mobile/FlipperLab/Tests/Fixtures/NFCComparison/"
     private static let samples: [Sample] = [
         Sample(path: "applications/main/nfc/resources/nfc/RickRoll.nfc", storageKey: "Page 10", address: .page(10)),
         Sample(path: unitSamples + "Ntag213_locked.nfc", storageKey: "Page 10", address: .page(10)),
@@ -20,12 +21,12 @@ final class NFCRecordComparisonFixtureTests: XCTestCase {
         Sample(path: unitSamples + "Ultralight_11.nfc", storageKey: "Page 10", address: .page(10)),
         Sample(path: unitSamples + "Ultralight_21.nfc", storageKey: "Page 10", address: .page(10)),
         Sample(path: unitSamples + "Ultralight_C.nfc", storageKey: "Page 10", address: .page(10)),
-        Sample(path: "applications/external/metroflip/example_file/star_example2(intertic).nfc",
+        Sample(path: syntheticSamples + "st25tb-512at.nfc",
                storageKey: "Block 9", address: .block(9)),
-        Sample(path: "applications/external/seos/files/seos.nfc", storageKey: nil, address: nil),
+        Sample(path: syntheticSamples + "iso14443-4a.nfc", storageKey: nil, address: nil),
     ]
 
-    func testCompletePublicFilesIgnoreBodyOrderAndHexPresentation() throws {
+    func testCompleteFixturesIgnoreBodyOrderAndHexPresentation() throws {
         for sample in Self.samples {
             let original = try source(sample)
             let lines = original.components(separatedBy: "\n")
@@ -49,7 +50,7 @@ final class NFCRecordComparisonFixtureTests: XCTestCase {
         }
     }
 
-    func testOneStorageByteChangeHasTheExactPublicAddressAndOffset() throws {
+    func testOneStorageByteChangeHasTheExactAddressAndOffset() throws {
         for sample in Self.samples where sample.storageKey != nil {
             let original = try source(sample)
             let key = try XCTUnwrap(sample.storageKey)
@@ -81,7 +82,7 @@ final class NFCRecordComparisonFixtureTests: XCTestCase {
         }
     }
 
-    func testActualSEOSHeaderWithoutAnATSFieldComparesByFieldName() throws {
+    func testSyntheticISO4AHeaderWithoutAnATSFieldComparesByFieldName() throws {
         let sample = try XCTUnwrap(Self.samples.last)
         let original = try source(sample)
         XCTAssertFalse(original.components(separatedBy: "\n").contains { $0.hasPrefix("ATS:") })
@@ -120,17 +121,17 @@ final class NFCRecordComparisonFixtureTests: XCTestCase {
         }
     }
 
-    func testPublicMetadataRejectsMalformedBytesWithoutRequiringOptionalATSFields() throws {
-        let seos = try source(try XCTUnwrap(Self.samples.last))
+    func testFixtureMetadataRejectsMalformedBytesWithoutRequiringOptionalATSFields() throws {
+        let iso4a = try source(try XCTUnwrap(Self.samples.last))
         let ntag = try source(Self.samples[1])
         let signatureLine = try XCTUnwrap(ntag.components(separatedBy: "\n").first { $0.hasPrefix("Signature:") })
         let signature = signatureLine.dropFirst("Signature:".count).split(whereSeparator: \.isWhitespace)
         XCTAssertEqual(signature.count, 32)
         let cases: [(source: String, key: String, value: String)] = [
-            (seos, "ATQA", "GG FF"),
-            (seos, "SAK", "20 00"),
-            (seos, "T0", "ZZ"),
-            (seos, "T0", "??"),
+            (iso4a, "ATQA", "GG FF"),
+            (iso4a, "SAK", "20 00"),
+            (iso4a, "T0", "ZZ"),
+            (iso4a, "T0", "??"),
             (ntag, "Signature", signature.dropLast().joined(separator: " ")),
         ]
         for fixture in cases {
@@ -145,10 +146,10 @@ final class NFCRecordComparisonFixtureTests: XCTestCase {
             }
         }
 
-        // The actual SEOS sample has no ATS line. Firmware also omits these
+        // The synthetic ISO4A fixture has no ATS line. Firmware also omits
         // optional ATS component fields when no component is saved.
         let optionalKeys = ["T0", "TA(1)", "TB(1)", "TC(1)", "T1...Tk", "ATS"]
-        let withoutOptionalATS = seos.components(separatedBy: "\n").filter { line in
+        let withoutOptionalATS = iso4a.components(separatedBy: "\n").filter { line in
             !optionalKeys.contains { line.hasPrefix($0 + ":") }
         }.joined(separator: "\n")
         let report = try NFCRecordComparison.compare(withoutOptionalATS, withoutOptionalATS)
@@ -166,10 +167,10 @@ final class NFCRecordComparisonFixtureTests: XCTestCase {
 
     private func changingByte(in text: String, key: String, offset: Int) throws -> (text: String, before: String, after: String) {
         var lines = text.components(separatedBy: "\n")
-        let row = try XCTUnwrap(lines.firstIndex(where: { $0.hasPrefix(key + ":") }), "Missing public fixture field \(key)")
+        let row = try XCTUnwrap(lines.firstIndex(where: { $0.hasPrefix(key + ":") }), "Missing fixture field \(key)")
         let value = lines[row].dropFirst(key.count + 1)
         let tokens = value.split(whereSeparator: \.isWhitespace)
-        var bytes = try tokens.map { try XCTUnwrap(UInt8($0, radix: 16), "Public fixture contains a non-byte token") }
+        var bytes = try tokens.map { try XCTUnwrap(UInt8($0, radix: 16), "Fixture contains a non-byte token") }
         XCTAssertGreaterThan(bytes.count, offset)
         guard bytes.indices.contains(offset) else { throw NSError(domain: "NFCFixtureTests", code: 1) }
         let before = bytes.map { String(format: "%02X", $0) }.joined(separator: " ")
