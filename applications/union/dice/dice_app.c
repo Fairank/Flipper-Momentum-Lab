@@ -116,12 +116,15 @@ static void draw_main_menu(const State* state, Canvas* canvas) {
 
     // buttons
     if(isAnimState(state->app_state) == false) {
-        canvas_draw_icon(canvas, 92, 54, &I_ui_button_roll);
-        canvas_draw_icon(canvas, 0, 54, &I_ui_button_history);
+        canvas_draw_str_aligned(canvas, 128, 64, AlignRight, AlignBottom, "投掷");
+        canvas_draw_str_aligned(canvas, 0, 64, AlignLeft, AlignBottom, "记录");
     }
 
     if(state->app_state == AnimResultState || state->app_state == ResultState) {
-        canvas_draw_icon(canvas, 0, 54, &I_ui_button_back);
+        canvas_set_color(canvas, ColorWhite);
+        canvas_draw_box(canvas, 0, 52, 24, 12);
+        canvas_set_color(canvas, ColorBlack);
+        canvas_draw_str_aligned(canvas, 0, 64, AlignLeft, AlignBottom, "返回");
     }
 
     furi_string_free(count);
@@ -133,59 +136,42 @@ static void draw_history(const State* state, Canvas* canvas) {
 
     uint8_t x = HISTORY_START_POST_X;
     uint8_t y = HISTORY_START_POST_Y;
-    for(uint8_t i = 0; i < HISTORY_COL; i++) {
-        // left side
-        furi_string_printf(hist, "%01d.", i + 1);
-        canvas_draw_str_aligned(canvas, x, y, AlignLeft, AlignBottom, furi_string_get_cstr(hist));
-        if(state->history[i].index < 0) {
-            furi_string_printf(hist, "--------");
-        } else {
-            if(state->history[i].index == 0) {
-                furi_string_printf(hist, state->history[i].result == 1 ? "Heads" : "Tails");
+    for(uint8_t row = 0; row < HISTORY_COL; row++) {
+        for(uint8_t col = 0; col < 2; col++) {
+            uint8_t index = history_visible_index(state->history_page, col, row);
+            if(index >= HISTORY_SIZE) continue;
+            const History* entry = &state->history[index];
+            furi_string_printf(hist, "%u.", index + 1);
+            canvas_draw_str_aligned(
+                canvas,
+                x + col * HISTORY_STEP_X,
+                y,
+                AlignLeft,
+                AlignBottom,
+                furi_string_get_cstr(hist));
+            if(entry->index < 0 || entry->index >= DICE_TYPES) {
+                furi_string_set(hist, "--");
+            } else if(entry->index == 0) {
+                furi_string_set(hist, entry->result == 1 ? "正面" : "反面");
             } else {
                 furi_string_printf(
-                    hist,
-                    "%01d%s: %01d",
-                    state->history[i].count,
-                    dice_types[state->history[i].index].name,
-                    state->history[i].result);
+                    hist, "%ud%u:%u", entry->count, dice_types[entry->index].type, entry->result);
             }
+            canvas_draw_str_aligned(
+                canvas,
+                x + col * HISTORY_STEP_X + HISTORY_X_GAP,
+                y,
+                AlignLeft,
+                AlignBottom,
+                furi_string_get_cstr(hist));
         }
-        canvas_draw_str_aligned(
-            canvas, x + HISTORY_X_GAP, y, AlignLeft, AlignBottom, furi_string_get_cstr(hist));
-
-        // right side
-        uint8_t r_index = i + HISTORY_COL;
-        furi_string_printf(hist, "%01d.", r_index + 1);
-        canvas_draw_str_aligned(
-            canvas, x + HISTORY_STEP_X, y, AlignLeft, AlignBottom, furi_string_get_cstr(hist));
-        if(state->history[r_index].index < 0) {
-            furi_string_printf(hist, "--------");
-        } else {
-            if(state->history[r_index].index == 0) {
-                furi_string_printf(hist, state->history[r_index].result == 1 ? "Heads" : "Tails");
-            } else {
-                furi_string_printf(
-                    hist,
-                    "%01d%s: %01d",
-                    state->history[r_index].count,
-                    dice_types[state->history[r_index].index].name,
-                    state->history[r_index].result);
-            }
-        }
-        canvas_draw_str_aligned(
-            canvas,
-            x + HISTORY_STEP_X + HISTORY_X_GAP,
-            y,
-            AlignLeft,
-            AlignBottom,
-            furi_string_get_cstr(hist));
-
         y += HISTORY_STEP_Y;
     }
 
-    canvas_draw_icon(canvas, 0, 54, &I_ui_button_back);
-    canvas_draw_icon(canvas, 75, 54, &I_ui_button_exit);
+    canvas_draw_str_aligned(canvas, 0, 64, AlignLeft, AlignBottom, "返回");
+    furi_string_printf(hist, "%u/%u", state->history_page + 1, HISTORY_PAGES);
+    canvas_draw_str_aligned(canvas, 64, 64, AlignCenter, AlignBottom, furi_string_get_cstr(hist));
+    canvas_draw_str_aligned(canvas, 128, 64, AlignRight, AlignBottom, "上下翻页");
     furi_string_free(hist);
 }
 
@@ -345,6 +331,7 @@ int32_t dice_dnd_app(void* p) {
             // button events
             if(event.type == EventTypeKey) {
                 if(event.input.type == InputTypePress) {
+                    history_navigate(state, event.input.key);
                     // dice type
                     if(isDiceButtonsVisible(state->app_state)) {
                         if(event.input.key == InputKeyRight) {
@@ -390,6 +377,7 @@ int32_t dice_dnd_app(void* p) {
                     if(event.input.type == InputTypeShort) {
                         if(state->app_state == SelectState) {
                             state->app_state = HistoryState;
+                            state->history_page = 0;
                         } else if(state->app_state == HistoryState) {
                             state->app_state = SelectState;
                         } else if(

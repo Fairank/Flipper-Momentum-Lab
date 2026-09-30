@@ -6,12 +6,14 @@
 #define DICE_TYPES 8
 
 #define HISTORY_SIZE         10
-#define HISTORY_COL          HISTORY_SIZE / 2
+#define HISTORY_COL          4
 #define HISTORY_START_POST_X 2
-#define HISTORY_START_POST_Y 10
-#define HISTORY_STEP_X       66
-#define HISTORY_STEP_Y       10
-#define HISTORY_X_GAP        11
+#define HISTORY_START_POST_Y 12
+#define HISTORY_STEP_X       64
+#define HISTORY_STEP_Y       12
+#define HISTORY_X_GAP        16
+#define HISTORY_PAGE_SIZE    (HISTORY_COL * 2)
+#define HISTORY_PAGES        ((HISTORY_SIZE + HISTORY_PAGE_SIZE - 1) / HISTORY_PAGE_SIZE)
 
 #define MAX_DICE_COUNT  10
 #define MAX_COIN_FRAMES 9
@@ -110,6 +112,7 @@ typedef struct {
     int8_t result_pos;
     Dice dices[DICE_TYPES];
     History history[HISTORY_SIZE];
+    uint8_t history_page;
     FuriMutex* mutex;
 } State;
 
@@ -119,6 +122,7 @@ void init(State* const state) {
     state->dice_index = 0;
     state->anim_frame = 0;
     state->dice_count = 1;
+    state->history_page = 0;
 
     for(uint8_t i = 0; i < DICE_TYPES; i++) {
         state->dices[i] = dice_types[i];
@@ -152,6 +156,23 @@ void add_to_history(State* const state, uint8_t index, uint8_t count, uint8_t re
             return;
         }
     }
+}
+
+static uint8_t history_visible_index(uint8_t page, uint8_t column, uint8_t row) {
+    return page * HISTORY_PAGE_SIZE + column * HISTORY_COL + row;
+}
+
+static bool history_navigate(State* state, InputKey key) {
+    if(state->app_state != HistoryState) return false;
+    if(key == InputKeyUp) {
+        if(state->history_page > 0) state->history_page--;
+        return true;
+    }
+    if(key == InputKeyDown) {
+        if(state->history_page + 1 < HISTORY_PAGES) state->history_page++;
+        return true;
+    }
+    return false;
 }
 
 void coin_set_start(uint16_t type) {

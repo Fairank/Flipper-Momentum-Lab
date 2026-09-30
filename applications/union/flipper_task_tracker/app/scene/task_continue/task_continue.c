@@ -61,7 +61,7 @@ static void task_continue_update(App* app) {
                 total_time_formatted,
                 sizeof(total_time_formatted),
                 app->current_task->total_time_minutes);
-            snprintf(buffer_text, sizeof(buffer_text), "\n\n\n\n累计%s", total_time_formatted);
+            snprintf(buffer_text, sizeof(buffer_text), "累计%s", total_time_formatted);
             dialog_ex_set_icon(dialog_ex, -40, 1, &I_dolphinMafia_119x62);
         } else {
             if(app->current_task->total_time_minutes == 0) {
@@ -80,7 +80,8 @@ static void task_continue_update(App* app) {
         break;
     }
 
-    dialog_ex_set_text(dialog_ex, buffer_text, 64, 22, AlignLeft, AlignCenter);
+    dialog_ex_set_icon(dialog_ex, 0, 0, NULL);
+    dialog_ex_set_text(dialog_ex, buffer_text, 64, 22, AlignCenter, AlignCenter);
     dialog_ex_set_left_button_text(dialog_ex, "退出");
     dialog_ex_set_result_callback(dialog_ex, task_continue_scene_dialog_callback);
     dialog_ex_set_context(dialog_ex, app);

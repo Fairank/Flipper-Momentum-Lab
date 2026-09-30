@@ -36,7 +36,7 @@ static void view_stats_draw_callback(Canvas* canvas, void* _model) {
     }
 
     const char* fields[] = {
-        "ID",
+        "编号",
         "名称",
         "描述",
         "时薪",

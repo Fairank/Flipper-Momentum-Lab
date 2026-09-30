@@ -1518,6 +1518,116 @@
       "upstream_path": "apps_source_code/racegame/race.c",
       "path": "applications/union/racegame/race.c",
       "sha256": "4b79dcb15579e509765cb4ac268efd47c1d426e9f6fb26d799945dfd8bbac69c"
+    },
+    {
+      "upstream_path": "non_catalog_apps/bounce/LICENSE",
+      "path": "applications/union/bounce/LICENSE",
+      "sha256": "60bee27f5d9e2044a6bebd4aba7784a045e0dc8d0777ee062bc029fcb85a4a49"
+    },
+    {
+      "upstream_path": "non_catalog_apps/bounce/application.fam",
+      "path": "applications/union/bounce/application.fam",
+      "sha256": "587d2f48d66b74c9a306649ec0b68775249bbabb99709a6c3a4edfe352ef0711"
+    },
+    {
+      "upstream_path": "non_catalog_apps/bounce/bounce.c",
+      "path": "applications/union/bounce/bounce.c",
+      "sha256": "1a1d014594b3c973d06c6b19e4b848e7d0e4279ab2dd71440e76048468a75999"
+    },
+    {
+      "upstream_path": "non_catalog_apps/bounce/bounce_10px.png",
+      "path": "applications/union/bounce/bounce_10px.png",
+      "sha256": "ccb751b994bc295c8ec5931532bb1897c8432830004f08e9cd034714761613ad"
+    },
+    {
+      "upstream_path": "non_catalog_apps/bounce/levels.h",
+      "path": "applications/union/bounce/levels.h",
+      "sha256": "5c747229d520bb08c2dfac1261d0ee0f51126e93c14c4a26a435f2271c414e6b"
+    },
+    {
+      "upstream_path": "non_catalog_apps/stack_attack/LICENSE",
+      "path": "applications/union/stack_attack/LICENSE",
+      "sha256": "b037c26cb1e350369a49d5befae5e721017839d5721915b754501f9af96e03ac"
+    },
+    {
+      "upstream_path": "non_catalog_apps/stack_attack/application.fam",
+      "path": "applications/union/stack_attack/application.fam",
+      "sha256": "89c5ca570dee595730f49c28910f8c0f41a53f6134f44ac965c9e8d25ab04d53"
+    },
+    {
+      "upstream_path": "non_catalog_apps/stack_attack/game.c",
+      "path": "applications/union/stack_attack/game.c",
+      "sha256": "ebe0585afa9afebdf0ba8e473db41ac053d0e17cc7738ded1b8f83f47701ec18"
+    },
+    {
+      "upstream_path": "non_catalog_apps/stack_attack/game.h",
+      "path": "applications/union/stack_attack/game.h",
+      "sha256": "fbed16ba1c5404d66983bb824d84d744df33dfce3d25c1e6c52b3e2c7216e17b"
+    },
+    {
+      "upstream_path": "non_catalog_apps/stack_attack/icon.png",
+      "path": "applications/union/stack_attack/icon.png",
+      "sha256": "0c32f29e58791e28f8833719eb0237109d280c6fb05020b1b29324de29c34a37"
+    },
+    {
+      "upstream_path": "non_catalog_apps/stack_attack/render.c",
+      "path": "applications/union/stack_attack/render.c",
+      "sha256": "a00cb1408fda0cc0aee6c24bd408322045dd78f307ca18965d754c389088279f"
+    },
+    {
+      "upstream_path": "non_catalog_apps/stack_attack/render.h",
+      "path": "applications/union/stack_attack/render.h",
+      "sha256": "2b68d4139c7a15dcf82efce6953033401ee9b1c5d311c28844d7a72436d03b97"
+    },
+    {
+      "upstream_path": "non_catalog_apps/stack_attack/sprites.h",
+      "path": "applications/union/stack_attack/sprites.h",
+      "sha256": "76608d837ff6ab8994d160dd8b977a13248b205d5a55eba6b6712d9e6f62ea07"
+    },
+    {
+      "upstream_path": "non_catalog_apps/stack_attack/stack_attack.c",
+      "path": "applications/union/stack_attack/stack_attack.c",
+      "sha256": "4ef94ac4c5b6f6c7ab866186be938effa7518add3a4d5f2f631bd406e830abb7"
+    },
+    {
+      "upstream_path": "non_catalog_apps/sudoku/LICENSE",
+      "path": "applications/union/sudoku/LICENSE",
+      "sha256": "b65e22a506115b1466b23a0a5590406ff1360e6d93482b833bae57984de63758"
+    },
+    {
+      "upstream_path": "non_catalog_apps/sudoku/application.fam",
+      "path": "applications/union/sudoku/application.fam",
+      "sha256": "f02f962c3d9a20e2151481807ef5dc6a4cc126cb28e55019fcfb0aecfffe92f7"
+    },
+    {
+      "upstream_path": "non_catalog_apps/sudoku/sudoku.c",
+      "path": "applications/union/sudoku/sudoku.c",
+      "sha256": "226fdf0a5d25608d5276027edba0b326cb8d8785b758008954ba5e7e3dd9d235"
+    },
+    {
+      "upstream_path": "non_catalog_apps/sudoku/sudoku.png",
+      "path": "applications/union/sudoku/sudoku.png",
+      "sha256": "7c1995ecee61c07f36ee02aa61c3c85f84f9797c0c5d454a81edd6a6a94de96e"
+    },
+    {
+      "upstream_path": "non_catalog_apps/name-gen/LICENSE",
+      "path": "applications/union/nickname_generator/LICENSE",
+      "sha256": "3376acd6e9b9ad069f0c6ab59fc91e1e6447101af59be4f6465d54f5451d5e72"
+    },
+    {
+      "upstream_path": "non_catalog_apps/name-gen/application.fam",
+      "path": "applications/union/nickname_generator/application.fam",
+      "sha256": "5fbf38c7cd1c7188a5588415643e7dc70d3321580e91eb364781fd1205a1301a"
+    },
+    {
+      "upstream_path": "non_catalog_apps/name-gen/icon.png",
+      "path": "applications/union/nickname_generator/icon.png",
+      "sha256": "5f1e6b1415ac3d6dd904aaa24ca38bc17f62c7c439591891a0e76131b77b2a8f"
+    },
+    {
+      "upstream_path": "non_catalog_apps/name-gen/main.c",
+      "path": "applications/union/nickname_generator/main.c",
+      "sha256": "8ecfea6412686a20cb534153902305e68e4543252a28fc12c00dac0bcdeea8d3"
     }
   ]
 }

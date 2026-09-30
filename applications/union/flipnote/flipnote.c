@@ -7,6 +7,7 @@
 #include <gui/view.h>
 #include <gui/view_dispatcher.h>
 #include "fznote_text_input.h"
+#include "flipnote_utf8.h"
 #include <gui/modules/number_input.h>
 #include <input/input.h>
 #include <storage/storage.h>
@@ -22,9 +23,13 @@
 #define TOTAL_MAX_LINES 2000
 #define BUFFER_LINES    80
 #define MAX_LINE        128
-#define HEADER_H        9
-#define SEP_Y           9
-#define CONTENT_Y       10
+#define HEADER_H        14
+#define SEP_Y           14
+#define CONTENT_Y       15
+#define HEADER_BASE_CJK 12
+#define HEADER_BASE     12
+#define TAB_W           14 /* one ideograph plus a pixel on each side */
+#define TAB_SEP_X       48 /* line between the tabs and the file name */
 #define SCALE_COUNT     8
 #define DEFAULT_SCALE   3 /* 1.00x */
 #define MENU_TAB_COUNT  3
@@ -41,7 +46,8 @@ typedef enum {
 } AppViewId;
 typedef enum {
     EvOpenFile = 0,
-    EvPickFolder = 1
+    EvPickFolder = 1,
+    EvReadOnly = 2
 } CustomEv;
 typedef enum {
     PNone = 0,
@@ -60,7 +66,8 @@ typedef enum {
 
 /* ---- static data ---- */
 static const float SCALES[SCALE_COUNT] = {0.25f, 0.50f, 0.75f, 1.00f, 1.25f, 1.50f, 1.75f, 2.00f};
-static const char* TAB_NAMES[3] = {"F", "E", "V"};
+static const char* TAB_NAMES[3] = {"文", "编", "视"}; /* 文件 / 编辑 / 视图 */
+static const int TAB_X[3] = {1, 17, 33};
 static const char* FILE_ITEMS[4] = {"新建", "打开", "保存", "另存为"};
 static const char* EDIT_ITEMS[7] =
     {"查找", "查找替换", "复制行", "粘贴行", "删除行", "全部清空", "跳转到行"};
@@ -72,8 +79,11 @@ typedef struct {
     char filename[256];
     bool is_new;
     bool dirty;
+    bool read_only; /* a line or the file exceeds the fixed editor capacity */
+    bool save_failed;
     uint32_t offsets[TOTAL_MAX_LINES]; /* byte offset of each line in file */
     int total; /* total lines in file             */
+    int source_total; /* lines in the unmodified source file */
     int orig_end; /* first line after original buffer */
     int orig_buf_cnt; /* buf_count at load time           */
     /* active buffer */
@@ -119,7 +129,7 @@ typedef struct {
    ================================================================ */
 static int lh(int si) {
     int h = (int)(13.0f * SCALES[si]);
-    if(h < 7) h = 7;
+    if(h < 12) h = 12; /* Chinese glyphs occupy eleven pixel rows */
     if(h > 40) h = 40;
     return h;
 }
@@ -151,6 +161,13 @@ static const char* get_line(Model* m, int idx) {
     if(rel >= 0 && rel < m->buf_count) return m->buf[rel];
     return "";
 }
+/* header baseline: CJK text needs the full header height, ASCII text keeps
+   its descenders on the separator line */
+static int hdr_base(const char* s) {
+    for(const unsigned char* p = (const unsigned char*)s; *p; p++)
+        if(*p >= 0x80) return HEADER_BASE_CJK;
+    return HEADER_BASE;
+}
 
 /* ================================================================
    FILE INDEXING
@@ -159,9 +176,12 @@ static void index_file(Model* m, const char* path) {
     Storage* s = furi_record_open(RECORD_STORAGE);
     File* f = storage_file_alloc(s);
     m->total = 0;
+    m->read_only = false;
     m->offsets[0] = 0;
     if(storage_file_open(f, path, FSAM_READ, FSOM_OPEN_EXISTING)) {
         uint32_t off = 0;
+        size_t line_bytes = 0;
+        bool pending_line = false;
         uint8_t ch;
         while(storage_file_read(f, &ch, 1) == 1) {
             if(ch == '\r') {
@@ -169,19 +189,34 @@ static void index_file(Model* m, const char* path) {
                 continue;
             }
             off++;
-            if(ch == '\n' && m->total < TOTAL_MAX_LINES - 1) {
-                m->total++;
-                m->offsets[m->total] = off;
+            if(ch == '\n') {
+                if(m->total < TOTAL_MAX_LINES)
+                    m->total++;
+                else
+                    m->read_only = true;
+                if(m->total < TOTAL_MAX_LINES) m->offsets[m->total] = off;
+                line_bytes = 0;
+                pending_line = false;
+            } else {
+                pending_line = true;
+                if(ch == 0) m->read_only = true; /* text buffers cannot represent NUL */
+                if(++line_bytes >= MAX_LINE) m->read_only = true;
             }
         }
-        /* last line (no trailing newline): total already set correctly as
-           total = number of newlines = number of complete lines seen */
-        /* If file ended without newline and total==0, we still have 1 line */
+        if(pending_line) {
+            if(m->total < TOTAL_MAX_LINES)
+                m->total++;
+            else
+                m->read_only = true;
+        }
         if(m->total == 0) m->total = 1;
-        storage_file_close(f);
+        if(storage_file_get_error(f) != FSE_OK) m->read_only = true;
     } else {
         m->total = 1;
+        m->read_only = true;
     }
+    m->source_total = m->total;
+    storage_file_close(f);
     storage_file_free(f);
     furi_record_close(RECORD_STORAGE);
 }
@@ -197,24 +232,39 @@ static void load_buf(Model* m, const char* path, int start) {
 
     Storage* s = furi_record_open(RECORD_STORAGE);
     File* f = storage_file_alloc(s);
-    if(storage_file_open(f, path, FSAM_READ, FSOM_OPEN_EXISTING)) {
-        storage_file_seek(f, m->offsets[start], true);
+    if(storage_file_open(f, path, FSAM_READ, FSOM_OPEN_EXISTING) &&
+       storage_file_seek(f, m->offsets[start], true)) {
         int limit = BUFFER_LINES;
         if(start + limit > m->total) limit = m->total - start;
         for(int i = 0; i < limit; i++) {
             char* b = m->buf[i];
             int pos = 0;
             uint8_t ch;
-            while(pos < MAX_LINE - 1 && storage_file_read(f, &ch, 1) == 1) {
+            size_t partial_start = 0;
+            bool truncated = false;
+            while(storage_file_read(f, &ch, 1) == 1) {
                 if(ch == '\r') continue;
                 if(ch == '\n') break;
-                b[pos++] = (char)ch;
+                if(!truncated && pos < MAX_LINE - 1) {
+                    if((ch & 0xC0) != 0x80) partial_start = pos;
+                    b[pos++] = (char)ch;
+                } else if(!truncated) {
+                    if(!truncated && (ch & 0xC0) == 0x80) pos = partial_start;
+                    truncated = true;
+                }
             }
             b[pos] = '\0';
             m->buf_count++;
+            if(storage_file_get_error(f) != FSE_OK) {
+                m->read_only = true;
+                break;
+            }
         }
-        storage_file_close(f);
+        if(storage_file_get_error(f) != FSE_OK) m->read_only = true;
+    } else {
+        m->read_only = true;
     }
+    storage_file_close(f);
     if(m->buf_count == 0) {
         m->buf[0][0] = '\0';
         m->buf_count = 1;
@@ -228,77 +278,117 @@ static void load_buf(Model* m, const char* path, int start) {
 /* ================================================================
    SAVE (virtual buffer aware)
    ================================================================ */
-static void save_virtual(Model* m, const char* dst) {
+/* Keep the old file until the staged write is complete. A failed rollback
+   leaves the backup for recovery; an existing backup is never overwritten. */
+static bool commit_staged(Storage* stor, const char* dst) {
+    FileInfo info;
+    FS_Error status = storage_common_stat(stor, dst, &info);
+    if(status == FSE_NOT_EXIST) return storage_common_rename_safe(stor, TMP_FILE, dst) == FSE_OK;
+    if(status != FSE_OK || file_info_is_dir(&info)) return false;
+    char backup[280];
+    int length = snprintf(backup, sizeof(backup), "%s.flipnote.bak", dst);
+    if(length < 0 || (size_t)length >= sizeof(backup)) return false;
+    if(storage_common_rename_safe(stor, dst, backup) != FSE_OK) return false;
+    if(storage_common_rename_safe(stor, TMP_FILE, dst) != FSE_OK) {
+        storage_common_rename_safe(stor, backup, dst);
+        return false;
+    }
+    storage_common_remove(stor, backup);
+    return true;
+}
+
+static bool save_virtual(Model* m, const char* dst) {
+    if(m->read_only || strcmp(dst, TMP_FILE) == 0 ||
+       (!m->is_new && strcmp(m->filename, TMP_FILE) == 0))
+        return false;
     bool same = !m->is_new && (strcmp(dst, m->filename) == 0);
-    const char* wpath = same ? TMP_FILE : dst;
+    const char* wpath = TMP_FILE;
 
     Storage* stor = furi_record_open(RECORD_STORAGE);
     File* rf = storage_file_alloc(stor);
     File* wf = storage_file_alloc(stor);
 
     bool has_src = !m->is_new && storage_file_open(rf, m->filename, FSAM_READ, FSOM_OPEN_EXISTING);
-
-    if(storage_file_open(wf, wpath, FSAM_WRITE, FSOM_CREATE_ALWAYS)) {
+    bool ok = m->is_new || has_src;
+    if(ok) ok = storage_file_open(wf, wpath, FSAM_WRITE, FSOM_CREATE_ALWAYS);
+    if(ok) {
         uint8_t chunk[128];
         /* 1. Lines before buffer: copy raw from source */
         if(has_src && m->buf_start > 0) {
-            storage_file_seek(rf, 0, true);
+            ok = storage_file_seek(rf, 0, true);
             uint32_t remain = m->offsets[m->buf_start];
-            while(remain > 0) {
+            while(ok && remain > 0) {
                 uint16_t rd = remain > 128 ? 128 : (uint16_t)remain;
                 uint16_t got = storage_file_read(rf, chunk, rd);
-                if(!got) break;
-                storage_file_write(wf, chunk, got);
+                if(!got) {
+                    ok = false;
+                    break;
+                }
+                ok = storage_file_write(wf, chunk, got) == got;
                 remain -= got;
             }
         }
         /* 2. Buffer lines */
-        for(int i = 0; i < m->buf_count; i++) {
+        for(int i = 0; ok && i < m->buf_count; i++) {
             uint16_t len = (uint16_t)strlen(m->buf[i]);
-            if(len) storage_file_write(wf, m->buf[i], len);
-            storage_file_write(wf, "\n", 1);
+            if(len) ok = storage_file_write(wf, m->buf[i], len) == len;
+            if(ok) ok = storage_file_write(wf, "\n", 1) == 1;
         }
         /* 3. Lines after original buffer: copy raw from source */
-        if(has_src && m->orig_end < m->total) {
-            storage_file_seek(rf, m->offsets[m->orig_end], true);
+        if(ok && has_src && m->orig_end < m->source_total) {
+            ok = storage_file_seek(rf, m->offsets[m->orig_end], true);
             uint16_t got;
-            while((got = storage_file_read(rf, chunk, sizeof(chunk))) > 0)
-                storage_file_write(wf, chunk, got);
+            while(ok && (got = storage_file_read(rf, chunk, sizeof(chunk))) > 0)
+                ok = storage_file_write(wf, chunk, got) == got;
         }
-        storage_file_close(wf);
+        if(has_src && storage_file_get_error(rf) != FSE_OK) ok = false;
+        if(ok) ok = storage_file_sync(wf);
     }
-    if(has_src) storage_file_close(rf);
+    if(!storage_file_close(wf)) ok = false;
+    if(has_src) {
+        if(!storage_file_close(rf)) ok = false;
+    } else {
+        storage_file_close(rf);
+    }
     storage_file_free(rf);
     storage_file_free(wf);
 
-    if(same) {
-        storage_simply_remove(stor, m->filename);
-        storage_common_rename(stor, TMP_FILE, m->filename);
-    }
+    if(ok) ok = commit_staged(stor, dst);
     furi_record_close(RECORD_STORAGE);
+    m->save_failed = !ok;
+    if(!ok) return false;
 
-    strncpy(m->filename, dst, sizeof(m->filename) - 1);
+    if(!same) strncpy(m->filename, dst, sizeof(m->filename) - 1);
     m->is_new = false;
     m->dirty = false;
     index_file(m, m->filename);
     int ns = m->cursor - BUFFER_LINES / 2;
     if(ns < 0) ns = 0;
     load_buf(m, m->filename, ns);
+    return true;
 }
 
 /* Flush dirty buffer before reloading at new position */
-static void flush_and_reload(Model* m, int new_center) {
-    if(m->dirty) save_virtual(m, m->filename);
+static bool flush_and_reload(Model* m, int new_center) {
+    if(m->dirty && !save_virtual(m, m->filename)) {
+        if(m->buf_count > 0)
+            m->cursor = m->cursor < m->buf_start ? m->buf_start : m->buf_start + m->buf_count - 1;
+        else if(m->cursor < 0)
+            m->cursor = 0;
+        fix_scroll(m);
+        return false;
+    }
     int ns = new_center - BUFFER_LINES / 2;
     if(ns < 0) ns = 0;
     load_buf(m, m->filename, ns);
+    return true;
 }
 
 /* ================================================================
    INSERT / DELETE LINES (within buffer)
    ================================================================ */
 static void insert_line_below(Model* m) {
-    if(m->buf_count >= BUFFER_LINES) return;
+    if(m->read_only || m->total >= TOTAL_MAX_LINES || m->buf_count >= BUFFER_LINES) return;
     int rel = m->cursor - m->buf_start;
     if(rel < 0 || rel >= m->buf_count) return;
     /* shift buffer down */
@@ -315,6 +405,7 @@ static void insert_line_below(Model* m) {
 }
 
 static void delete_line(Model* m) {
+    if(m->read_only) return;
     int rel = m->cursor - m->buf_start;
     if(rel < 0 || rel >= m->buf_count) return;
     if(m->total <= 1) {
@@ -350,7 +441,10 @@ static int find_next(Model* m, const char* path, int from, bool forward) {
         if(rel >= 0 && rel < m->buf_count) {
             line = m->buf[rel];
         } else if(opened && cur < m->total) {
-            storage_file_seek(f, m->offsets[cur], true);
+            int source_line =
+                cur >= m->buf_start + m->buf_count ? cur - (m->buf_count - m->orig_buf_cnt) : cur;
+            if(source_line < 0 || source_line >= m->source_total) break;
+            storage_file_seek(f, m->offsets[source_line], true);
             int pos = 0;
             uint8_t ch;
             while(pos < MAX_LINE - 1 && storage_file_read(f, &ch, 1) == 1) {
@@ -379,22 +473,59 @@ static int find_next(Model* m, const char* path, int from, bool forward) {
     return found;
 }
 
+static bool replace_line(char out[MAX_LINE], const char* line, const char* q, const char* r) {
+    size_t qlen = strlen(q), rlen = strlen(r), used = 0;
+    if(!qlen) return false;
+    while(*line) {
+        bool match = strncmp(line, q, qlen) == 0;
+        size_t count = match ? rlen : 1;
+        if(count > MAX_LINE - 1 - used) return false;
+        memcpy(out + used, match ? r : line, count);
+        used += count;
+        line += match ? qlen : 1;
+    }
+    out[used] = '\0';
+    return true;
+}
+
 static void do_find_replace_virtual(Model* m, const char* path, const char* q, const char* r) {
-    if(!q[0]) return;
-    size_t qlen = strlen(q), rlen = strlen(r);
-    const char* wpath = TMP_FILE;
+    if(m->read_only || !q[0] || strcmp(path, TMP_FILE) == 0) return;
+    if(m->is_new) {
+        char(*changed)[MAX_LINE] = malloc((size_t)m->buf_count * MAX_LINE);
+        bool ok = changed != NULL;
+        for(int i = 0; ok && i < m->buf_count; i++)
+            ok = replace_line(changed[i], m->buf[i], q, r);
+        if(ok) {
+            memcpy(m->buf, changed, (size_t)m->buf_count * MAX_LINE);
+            m->dirty = true;
+        }
+        free(changed);
+        m->save_failed = !ok;
+        return;
+    }
     Storage* stor = furi_record_open(RECORD_STORAGE);
     File* rf = storage_file_alloc(stor);
     File* wf = storage_file_alloc(stor);
-    bool opened = !m->is_new && storage_file_open(rf, path, FSAM_READ, FSOM_OPEN_EXISTING);
-    if(storage_file_open(wf, wpath, FSAM_WRITE, FSOM_CREATE_ALWAYS)) {
-        for(int ln = 0; ln < m->total; ln++) {
+    bool opened = storage_file_open(rf, path, FSAM_READ, FSOM_OPEN_EXISTING);
+    bool ok = opened && storage_file_open(wf, TMP_FILE, FSAM_WRITE, FSOM_CREATE_ALWAYS);
+    if(ok) {
+        for(int ln = 0; ok && ln < m->total; ln++) {
             char line[MAX_LINE];
             int rel = ln - m->buf_start;
             if(rel >= 0 && rel < m->buf_count) {
                 strncpy(line, m->buf[rel], MAX_LINE - 1);
+                line[MAX_LINE - 1] = '\0';
             } else if(opened) {
-                storage_file_seek(rf, m->offsets[ln], true);
+                int source_line =
+                    ln >= m->buf_start + m->buf_count ? ln - (m->buf_count - m->orig_buf_cnt) : ln;
+                if(source_line < 0 || source_line >= m->source_total) {
+                    ok = false;
+                    break;
+                }
+                if(!storage_file_seek(rf, m->offsets[source_line], true)) {
+                    ok = false;
+                    break;
+                }
                 int pos = 0;
                 uint8_t ch;
                 while(pos < MAX_LINE - 1 && storage_file_read(rf, &ch, 1) == 1) {
@@ -407,51 +538,70 @@ static void do_find_replace_virtual(Model* m, const char* path, const char* q, c
                     line[pos++] = (char)ch;
                 }
                 line[pos] = '\0';
+                if(storage_file_get_error(rf) != FSE_OK) {
+                    ok = false;
+                    break;
+                }
             } else {
                 line[0] = '\0';
             }
-            /* do replacement in line */
             char out[MAX_LINE];
-            size_t oi = 0;
-            char* p = line;
-            while(*p && oi < MAX_LINE - 1) {
-                if(strncmp(p, q, qlen) == 0) {
-                    size_t rc = rlen < (MAX_LINE - 1 - oi) ? rlen : (MAX_LINE - 1 - oi);
-                    memcpy(out + oi, r, rc);
-                    oi += rc;
-                    p += qlen;
-                } else {
-                    out[oi++] = *p++;
-                }
+            if(!replace_line(out, line, q, r)) {
+                ok = false;
+                break;
             }
-            out[oi] = '\0';
             uint16_t len = (uint16_t)strlen(out);
-            if(len) storage_file_write(wf, out, len);
-            storage_file_write(wf, "\n", 1);
+            if(len) ok = storage_file_write(wf, out, len) == len;
+            if(ok) ok = storage_file_write(wf, "\n", 1) == 1;
         }
-        storage_file_close(wf);
+        if(storage_file_get_error(rf) != FSE_OK) ok = false;
+        if(ok) ok = storage_file_sync(wf);
     }
-    if(opened) storage_file_close(rf);
+    if(!storage_file_close(wf)) ok = false;
+    if(opened) {
+        if(!storage_file_close(rf)) ok = false;
+    } else {
+        storage_file_close(rf);
+    }
     storage_file_free(rf);
     storage_file_free(wf);
     bool is_self = !m->is_new && (strcmp(path, m->filename) == 0);
-    if(is_self) {
-        storage_simply_remove(stor, m->filename);
-        storage_common_rename(stor, TMP_FILE, m->filename);
-    }
+    if(ok && is_self) ok = commit_staged(stor, m->filename);
     furi_record_close(RECORD_STORAGE);
-    if(is_self) {
+    m->save_failed = !ok;
+    if(ok && is_self) {
         index_file(m, m->filename);
         int ns = m->cursor - BUFFER_LINES / 2;
         if(ns < 0) ns = 0;
         load_buf(m, m->filename, ns);
+        m->dirty = false;
     }
-    m->dirty = false;
 }
 
 /* ================================================================
    DRAW
    ================================================================ */
+/* The caller leaves three spare bytes for an ellipsis. Never split UTF-8. */
+static void header_fit(Canvas* canvas, char* text, int width) {
+    if(width <= 0) {
+        text[0] = '\0';
+        return;
+    }
+    size_t available = (size_t)width;
+    if(canvas_string_width(canvas, text) <= available) return;
+    size_t dots = canvas_string_width(canvas, "...");
+    if(dots > available) {
+        text[0] = '\0';
+        return;
+    }
+    size_t length = strlen(text);
+    while(length && canvas_string_width(canvas, text) + dots > available) {
+        length = flipnote_utf8_prev(text, length);
+        text[length] = '\0';
+    }
+    strcat(text, "...");
+}
+
 static void draw_cb(Canvas* canvas, void* ctx) {
     Model* m = (Model*)ctx;
     canvas_clear(canvas);
@@ -461,41 +611,52 @@ static void draw_cb(Canvas* canvas, void* ctx) {
     if(m->fmode) {
         char hdr[MAX_LINE + 4];
         snprintf(hdr, sizeof(hdr), "/%s", m->fq);
-        canvas_draw_str(canvas, 1, 7, hdr);
         char cnt[24];
         if(m->ftotal > 0)
             snprintf(cnt, sizeof(cnt), "%d/%d", m->fidx + 1, m->ftotal);
         else
-            snprintf(cnt, sizeof(cnt), "no match");
+            snprintf(cnt, sizeof(cnt), "无匹配");
         uint16_t w = canvas_string_width(canvas, cnt);
-        canvas_draw_str(canvas, (int32_t)(127 - w), 7, cnt);
+        header_fit(canvas, hdr, 127 - w - 3);
+        canvas_draw_str(canvas, 1, hdr_base(hdr), hdr);
+        canvas_draw_str(canvas, (int32_t)(127 - w), hdr_base(cnt), cnt);
     } else {
-        const int tx[3] = {1, 14, 27};
-        const int tw = 11;
         for(int t = 0; t < MENU_TAB_COUNT; t++) {
             bool act = (m->mode == ModeMenu && m->mtab == t);
             if(act) {
-                canvas_draw_box(canvas, tx[t], 0, tw, HEADER_H);
+                canvas_draw_box(canvas, TAB_X[t], 0, TAB_W, HEADER_H);
                 canvas_set_color(canvas, ColorWhite);
             }
-            canvas_draw_str(canvas, tx[t] + 2, 7, TAB_NAMES[t]);
+            canvas_draw_str(canvas, TAB_X[t] + 1, HEADER_BASE_CJK, TAB_NAMES[t]);
             if(act) canvas_set_color(canvas, ColorBlack);
         }
-        canvas_draw_line(canvas, 40, 0, 40, HEADER_H - 1);
+        canvas_draw_line(canvas, TAB_SEP_X, 0, TAB_SEP_X, HEADER_H - 1);
         char disp[48];
         if(m->is_new)
-            snprintf(disp, sizeof(disp), "%s(new)", m->dirty ? "*" : "");
+            snprintf(disp, sizeof(disp), "%s(新建)", m->dirty ? "*" : "");
         else {
             const char* fn = m->filename;
             const char* sl = strrchr(fn, '/');
             if(sl) fn = sl + 1;
-            snprintf(disp, sizeof(disp), "%s%.26s", m->dirty ? "*" : "", fn);
+            snprintf(
+                disp,
+                sizeof(disp),
+                "%s%.*s",
+                m->dirty ? "*" : "",
+                (int)flipnote_utf8_floor(fn, 26),
+                fn);
         }
-        canvas_draw_str(canvas, 42, 7, disp);
         char info[24];
-        snprintf(info, sizeof(info), "%dL", m->total);
+        if(m->read_only)
+            snprintf(info, sizeof(info), "只读");
+        else if(m->save_failed)
+            snprintf(info, sizeof(info), "保存失败");
+        else
+            snprintf(info, sizeof(info), "%d行", m->total);
         uint16_t w = canvas_string_width(canvas, info);
-        canvas_draw_str(canvas, (int32_t)(127 - w), 7, info);
+        header_fit(canvas, disp, 127 - w - (TAB_SEP_X + 2) - 2);
+        canvas_draw_str(canvas, TAB_SEP_X + 2, hdr_base(disp), disp);
+        canvas_draw_str(canvas, (int32_t)(127 - w), hdr_base(info), info);
     }
     canvas_draw_line(canvas, 0, SEP_Y, 127, SEP_Y);
     /* hscroll indicators */
@@ -556,8 +717,7 @@ static void draw_cb(Canvas* canvas, void* ctx) {
         int drawn = ic - scroll_off;
         if(drawn > max_vis) drawn = max_vis;
         int mh = drawn * ih + 3;
-        const int tabx[3] = {1, 14, 27};
-        int mx = tabx[tab];
+        int mx = TAB_X[tab];
         if(mx + mw > 127) mx = 127 - mw;
         canvas_set_color(canvas, ColorBlack);
         canvas_draw_rbox(canvas, mx, HEADER_H + 1, mw, mh, 2);
@@ -614,6 +774,23 @@ static void show_text(App* app, const char* hdr, const char* pre) {
    ================================================================ */
 static bool custom_ev(void* ctx, uint32_t ev) {
     App* app = (App*)ctx;
+    if(ev == EvReadOnly) {
+        DialogsApp* d = furi_record_open(RECORD_DIALOGS);
+        DialogMessage* message = dialog_message_alloc();
+        dialog_message_set_header(message, "只读预览", 64, 2, AlignCenter, AlignTop);
+        dialog_message_set_text(
+            message,
+            "文件无法安全编辑\n每行最多127字节\n最多2000行",
+            64,
+            17,
+            AlignCenter,
+            AlignTop);
+        dialog_message_set_buttons(message, NULL, "知道了", NULL);
+        dialog_message_show(d, message);
+        dialog_message_free(message);
+        furi_record_close(RECORD_DIALOGS);
+        return true;
+    }
     if(ev == EvOpenFile || ev == EvPickFolder) {
         DialogsApp* d = furi_record_open(RECORD_DIALOGS);
         FuriString* p = furi_string_alloc_set_str("/ext");
@@ -628,6 +805,7 @@ static bool custom_ev(void* ctx, uint32_t ev) {
                 m->dirty = false;
                 index_file(m, m->filename);
                 load_buf(m, m->filename, 0);
+                if(m->read_only) view_dispatcher_send_custom_event(app->vd, EvReadOnly);
                 m->cursor = 0;
                 m->scroll = 0;
                 m->hscroll = 0;
@@ -665,6 +843,13 @@ static void text_done(void* ctx) {
     Pending act = app->pending;
     app->pending = PNone;
     Model* m = (Model*)view_get_model(app->ev);
+    if(m->read_only &&
+       (act == PEditLine || act == PSavePath || act == PFindRepQ || act == PFindRepR)) {
+        view_commit_model(app->ev, false);
+        view_dispatcher_switch_to_view(app->vd, AppViewEditor);
+        view_dispatcher_send_custom_event(app->vd, EvReadOnly);
+        return;
+    }
     switch(act) {
     case PEditLine:
         strncpy(m->buf[m->cursor - m->buf_start], app->ebuf, MAX_LINE - 1);
@@ -693,11 +878,19 @@ static void text_done(void* ctx) {
         m->ftotal = 0;
         m->fidx = 0;
         if(found >= 0) {
-            m->fc = found;
-            m->fidx = 0;
-            m->ftotal = 1;
-            m->cursor = found;
-            fix_scroll(m);
+            bool ok = true;
+            if(found < m->buf_start || found >= m->buf_start + m->buf_count)
+                ok = flush_and_reload(m, found);
+            if(ok) {
+                m->fc = found;
+                m->fidx = 0;
+                m->ftotal = 1;
+                m->cursor = found;
+                fix_scroll(m);
+            } else {
+                m->fmode = false;
+                m->fc = -1;
+            }
         } else {
             m->fc = -1;
         }
@@ -737,8 +930,9 @@ static void num_done(void* ctx, int32_t n) {
         t = m->total - 1;
     }
     /* need to buffer-load for new cursor position */
-    if(t < m->buf_start || t >= m->buf_start + m->buf_count) flush_and_reload(m, t);
-    m->cursor = t;
+    bool ok = true;
+    if(t < m->buf_start || t >= m->buf_start + m->buf_count) ok = flush_and_reload(m, t);
+    if(ok) m->cursor = t;
     fix_scroll(m);
     view_commit_model(app->ev, true);
     view_dispatcher_switch_to_view(app->vd, AppViewEditor);
@@ -817,7 +1011,9 @@ static bool input_cb(InputEvent* ev, void* ctx) {
         } else if(ev->key == InputKeyRight) {
             m->hscroll += 6;
         } else if(ev->key == InputKeyOk) {
-            if(ev->type == InputTypeLong) {
+            if(m->read_only) {
+                view_dispatcher_send_custom_event(app->vd, EvReadOnly);
+            } else if(ev->type == InputTypeLong) {
                 int rel = m->cursor - m->buf_start;
                 if(rel >= 0 && rel < m->buf_count) {
                     app->edit_idx = m->cursor;
@@ -861,6 +1057,13 @@ static bool input_cb(InputEvent* ev, void* ctx) {
             } else if(ev->key == InputKeyOk) {
                 int tab = m->mtab, item = m->mitem;
                 m->mode = ModeNormal;
+                bool writes_file = (tab == 0 && item >= 2) ||
+                                   (tab == 1 && (item == 1 || (item >= 3 && item <= 5)));
+                if(m->read_only && writes_file) {
+                    view_commit_model(app->ev, true);
+                    view_dispatcher_send_custom_event(app->vd, EvReadOnly);
+                    return true;
+                }
                 if(tab == 0) {
                     if(item == 0) { /* New */
                         m->buf[0][0] = '\0';
@@ -871,6 +1074,8 @@ static bool input_cb(InputEvent* ev, void* ctx) {
                         m->scroll = 0;
                         m->dirty = false;
                         m->is_new = true;
+                        m->read_only = false;
+                        m->save_failed = false;
                         m->hscroll = 0;
                         strncpy(m->filename, "(new)", sizeof(m->filename) - 1);
                     } else if(item == 1) { /* Open */
@@ -897,7 +1102,7 @@ static bool input_cb(InputEvent* ev, void* ctx) {
                         }
                     } else if(item == 3) { /* Paste Line */
                         if(app->clip_ok) {
-                            if(m->buf_count < BUFFER_LINES) {
+                            if(m->total < TOTAL_MAX_LINES && m->buf_count < BUFFER_LINES) {
                                 int rel = m->cursor - m->buf_start;
                                 if(rel >= 0 && rel < m->buf_count) {
                                     for(int i = m->buf_count; i > rel + 1; i--)
@@ -913,9 +1118,17 @@ static bool input_cb(InputEvent* ev, void* ctx) {
                         }
                     } else if(item == 4) { /* Delete Row */
                         delete_line(m);
+                        if(m->cursor < m->buf_start || m->cursor >= m->buf_start + m->buf_count)
+                            need_reload = true;
                     } else if(item == 5) { /* Clear All */
-                        for(int i = 0; i < m->buf_count; i++)
-                            m->buf[i][0] = '\0';
+                        m->buf[0][0] = '\0';
+                        m->buf_start = 0;
+                        m->buf_count = 1;
+                        m->total = 1;
+                        m->orig_end = m->source_total;
+                        m->orig_buf_cnt = m->source_total;
+                        m->cursor = 0;
+                        m->scroll = 0;
                         m->dirty = true;
                     } else if(item == 6) { /* Goto Row */
                         app->goto_cnt = m->total;
@@ -929,17 +1142,23 @@ static bool input_cb(InputEvent* ev, void* ctx) {
                     } else if(item == 1) {
                         m->row_nums = !m->row_nums;
                     } else if(item == 2) { /* First Row */
-                        if(m->cursor != 0 || m->buf_start != 0) flush_and_reload(m, 0);
-                        m->cursor = 0;
-                        m->scroll = 0;
-                        m->hscroll = 0;
+                        bool ok = true;
+                        if(m->cursor != 0 || m->buf_start != 0) ok = flush_and_reload(m, 0);
+                        if(ok) {
+                            m->cursor = 0;
+                            m->scroll = 0;
+                            m->hscroll = 0;
+                        }
                     } else if(item == 3) { /* Last Row */
                         int last = m->total - 1;
+                        bool ok = true;
                         if(last < m->buf_start || last >= m->buf_start + m->buf_count)
-                            flush_and_reload(m, last);
-                        m->cursor = last;
-                        fix_scroll(m);
-                        m->hscroll = 0;
+                            ok = flush_and_reload(m, last);
+                        if(ok) {
+                            m->cursor = last;
+                            fix_scroll(m);
+                            m->hscroll = 0;
+                        }
                     }
                 }
             }

@@ -24,5 +24,9 @@ App(
         "montyhall",
         "ocarina",
         "racegame",
+        "bounce",
+        "stack_attack",
+        "sudoku",
+        "nickname_generator",
     ],
 )

@@ -336,7 +336,7 @@ static void format_alarm_time(char* buf, size_t n, uint8_t h24, uint8_t minute, 
         uint8_t h12;
         bool pm;
         to_12h(h24, &h12, &pm);
-        snprintf(buf, n, "%u:%.2u %s", h12, minute, pm ? "PM" : "AM");
+        snprintf(buf, n, "%u:%.2u %s", h12, minute, pm ? "下午" : "上午");
     } else {
         snprintf(buf, n, "%.2u:%.2u", h24, minute);
     }
@@ -412,7 +412,7 @@ static void draw_clock_face(Canvas* canvas, SegmentClock* clock) {
     if(clock->time_format == LocaleTimeFormat12h) {
         canvas_set_font(canvas, FontSecondary);
         canvas_draw_str_aligned(
-            canvas, 126, 62, AlignRight, AlignBottom, (hours >= 12) ? "PM" : "AM");
+            canvas, 126, 62, AlignRight, AlignBottom, (hours >= 12) ? "下午" : "上午");
     }
 
     // A small filled dot in the top-left corner marks the alarm as armed - kept
@@ -452,14 +452,14 @@ static void draw_alarm_menu(Canvas* canvas, SegmentClock* clock) {
     canvas_set_font(canvas, FontPrimary);
     canvas_draw_str_aligned(canvas, 64, 3, AlignCenter, AlignTop, "闹钟");
 
-    char timebuf[12];
+    char timebuf[20];
     format_alarm_time(
         timebuf,
         sizeof(timebuf),
         clock->settings.alarm_hour,
         clock->settings.alarm_minute,
         clock->time_format == LocaleTimeFormat12h);
-    char row0[24], row1[24];
+    char row0[24], row1[32];
     snprintf(row0, sizeof(row0), "闹钟: %s", clock->settings.alarm_enabled ? "开启" : "关闭");
     snprintf(row1, sizeof(row1), "时间: %s", timebuf);
     const char* rows[2] = {row0, row1};
@@ -503,7 +503,7 @@ static void draw_alarm_time(Canvas* canvas, SegmentClock* clock) {
     canvas_draw_str_aligned(canvas, mx, 32, AlignCenter, AlignCenter, mm);
     if(h12mode) {
         canvas_set_font(canvas, FontPrimary);
-        canvas_draw_str_aligned(canvas, 104, 32, AlignCenter, AlignCenter, pm ? "PM" : "AM");
+        canvas_draw_str_aligned(canvas, 104, 32, AlignCenter, AlignCenter, pm ? "下午" : "上午");
     }
 
     uint8_t ux, uw;
@@ -515,7 +515,7 @@ static void draw_alarm_time(Canvas* canvas, SegmentClock* clock) {
         uw = 20;
     } else {
         ux = 104;
-        uw = 18;
+        uw = 26;
     }
     canvas_draw_line(canvas, ux - uw / 2, 46, ux + uw / 2, 46);
 

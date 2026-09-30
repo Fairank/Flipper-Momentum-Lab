@@ -85,6 +85,32 @@ static void bf_dev_draw_button(Canvas* canvas, int x, int y, bool selected, cons
     }
 }
 
+// Bottom action row: four equal cells across the full width, right under the
+// operator keys. The labels are Chinese, drawn through the firmware's CJK
+// fallback (12 px glyphs, 11 rows above the baseline), so the baseline sits
+// 12 px below the cell top and the glyph rows end one row above the frame.
+#define ACT_X0       0
+#define ACT_Y        50
+#define ACT_W        32
+#define ACT_H        14
+#define ACT_BASELINE 12
+static void bf_dev_draw_action(Canvas* canvas, int cell, bool selected, const char* lbl) {
+    int x = ACT_X0 + cell * ACT_W;
+
+    canvas_set_font(canvas, FontSecondary);
+    if(selected) {
+        canvas_draw_rbox(canvas, x, ACT_Y, ACT_W, ACT_H, 3);
+        canvas_invert_color(canvas);
+        canvas_draw_str_aligned(
+            canvas, x + (ACT_W / 2), ACT_Y + ACT_BASELINE, AlignCenter, AlignBottom, lbl);
+        canvas_invert_color(canvas);
+    } else {
+        canvas_draw_rframe(canvas, x, ACT_Y, ACT_W, ACT_H, 3);
+        canvas_draw_str_aligned(
+            canvas, x + (ACT_W / 2), ACT_Y + ACT_BASELINE, AlignCenter, AlignBottom, lbl);
+    }
+}
+
 void bf_save_changes() {
     //remove old file
     Storage* storage = furi_record_open(RECORD_STORAGE);
@@ -118,17 +144,10 @@ static void bf_dev_draw_callback(Canvas* canvas, void* _model) {
     bf_dev_draw_button(canvas, 113, 36, (selectedButton == 7), ","); //B 3
 
     //backspace, input, run, save
-    canvas_draw_icon(
-        canvas,
-        1,
-        52,
-        (selectedButton == 8) ? &I_KeyBackspaceSelected_24x11 : &I_KeyBackspace_24x11);
-    canvas_draw_icon(
-        canvas, 45, 52, (selectedButton == 9) ? &I_KeyInputSelected_30x11 : &I_KeyInput_30x11);
-    canvas_draw_icon(
-        canvas, 77, 52, (selectedButton == 10) ? &I_KeyRunSelected_24x11 : &I_KeyRun_24x11);
-    canvas_draw_icon(
-        canvas, 103, 52, (selectedButton == 11) ? &I_KeySaveSelected_24x11 : &I_KeySave_24x11);
+    bf_dev_draw_action(canvas, 0, (selectedButton == 8), "删除");
+    bf_dev_draw_action(canvas, 1, (selectedButton == 9), "输入");
+    bf_dev_draw_action(canvas, 2, (selectedButton == 10), "运行");
+    bf_dev_draw_action(canvas, 3, (selectedButton == 11), "保存");
 
     if(saveNotifyCountdown > 0) {
         canvas_draw_icon(canvas, 98, 54, &I_ButtonRightSmall_3x5);

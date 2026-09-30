@@ -42,5 +42,16 @@ final class FlipperFunctionTests: XCTestCase {
         XCTAssertEqual(FlipperFunction.installed(path: "/ext/apps/Tools/example_network.fap")?.launchName, "/ext/apps/Tools/example_network.fap")
         XCTAssertEqual(FlipperFunction.installed(path: "/ext/apps/Games/chess_clock.fap")?.category, "游戏")
         XCTAssertEqual(FlipperFunction.installed(path: "/ext/apps/Infrared/pause_timer.fap")?.title, "红外暂停定时器")
+        for (path, title) in [
+            ("/ext/apps/Games/bounce.fap", "弹跳球"),
+            ("/ext/apps/Games/stack_attack.fap", "方块搬运"),
+            ("/ext/apps/Games/sudoku.fap", "数独"),
+            ("/ext/apps/Tools/nickname_generator.fap", "昵称生成器"),
+        ] {
+            let function = FlipperFunction.installed(path: path)
+            XCTAssertEqual(function?.title, title)
+            XCTAssertEqual(function?.launchName, path)
+            XCTAssertFalse(function?.summary.isEmpty ?? true)
+        }
     }
 }

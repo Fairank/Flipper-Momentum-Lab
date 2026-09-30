@@ -1,0 +1,15 @@
+App(
+    appid="stack_attack",
+    name="方块搬运",
+    apptype=FlipperAppType.EXTERNAL,
+    entry_point="stack_attack_app",
+    requires=["gui", "storage", "notification"],
+    stack_size=2 * 1024,
+    sources=["stack_attack.c", "game.c", "render.c"],
+    fap_category="Games",
+    fap_icon="icon.png",
+    fap_version="1.0",
+    fap_description="推箱子、填满整行、别被压扁。西门子手机经典游戏复刻版",
+    fap_author="@Negenii",
+    fap_weburl="https://github.com/Negenii/flipper-stack-attack",
+)

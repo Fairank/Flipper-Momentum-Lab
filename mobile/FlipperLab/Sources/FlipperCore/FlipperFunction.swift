@@ -119,6 +119,10 @@ public struct FlipperFunction: Identifiable, Equatable, Sendable {
         "/ext/apps/Games/racegame.fap": ("赛车", "在 Flipper 上玩赛车游戏。", "car"),
         "/ext/apps/Media/ocarina.fap": ("陶笛", "使用设备按键演奏音符。", "music.note"),
         "/ext/apps/Infrared/pause_timer.fap": ("红外暂停定时器", "学习暂停按键的红外信号，并在倒计时结束时发送。", "timer"),
+        "/ext/apps/Games/bounce.fap": ("弹跳球", "滚动与跳跃，收集圆环并到达关卡出口。", "circle"),
+        "/ext/apps/Games/stack_attack.fap": ("方块搬运", "推动箱子填满整行，避开落下的方块。", "square.stack"),
+        "/ext/apps/Games/sudoku.fap": ("数独", "选择难度，填写九宫格，并保存游戏进度。", "square.grid.3x3"),
+        "/ext/apps/Tools/nickname_generator.fap": ("昵称生成器", "按分类生成字母昵称，使用左右键切换类别。", "textformat"),
         "/ext/apps/Bluetooth/hid_ble.fap": ("蓝牙遥控器", "将 Flipper 用作键盘、鼠标或演示遥控器；切换连接可能断开当前 App。", "keyboard"),
         "/ext/apps/USB/hid_usb.fap": ("USB 遥控器", "通过 Flipper 的 USB 连接控制电脑键盘、鼠标或演示。", "keyboard"),
     ]

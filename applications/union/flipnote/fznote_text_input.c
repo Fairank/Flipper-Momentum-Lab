@@ -1,4 +1,5 @@
 #include "fznote_text_input.h"
+#include "flipnote_utf8.h"
 #include <gui/elements.h>
 #include <furi.h>
 
@@ -251,29 +252,55 @@ static void fznote_text_input_backspace_cb(FzNoteTextInputModel* model) {
         model->text_buffer[0] = 0;
         model->cursor_pos = 0;
     } else if(model->cursor_pos > 0) {
-        char* move = model->text_buffer + model->cursor_pos;
-        memmove(move - 1, move, strlen(move) + 1);
-        model->cursor_pos--;
+        size_t cursor = flipnote_utf8_floor(model->text_buffer, model->cursor_pos);
+        size_t previous = flipnote_utf8_prev(model->text_buffer, cursor);
+        char* move = model->text_buffer + cursor;
+        memmove(model->text_buffer + previous, move, strlen(move) + 1);
+        model->cursor_pos = previous;
     }
+}
+
+// The save key used to be a 24x11 icon at the key origin; it is now drawn in C
+// with a Chinese label. The 12 px CJK glyphs stand 11 rows tall, so the box is
+// that rectangle grown by one pixel on every side: the frame stays off the
+// glyphs without moving the key or reaching its neighbours.
+#define SAVE_KEY_W 24
+#define SAVE_KEY_H 11
+static void fznote_text_input_draw_save_key(Canvas* canvas, int32_t x, int32_t y, bool selected) {
+    canvas_set_font(canvas, FontSecondary);
+    if(selected) {
+        canvas_draw_rbox(canvas, x - 1, y - 1, SAVE_KEY_W + 2, SAVE_KEY_H + 2, 2);
+        canvas_set_color(canvas, ColorWhite);
+    } else {
+        canvas_draw_rframe(canvas, x - 1, y - 1, SAVE_KEY_W + 2, SAVE_KEY_H + 2, 2);
+    }
+    // Baseline on the last row of the icon rectangle: the glyph rows fill it exactly
+    canvas_draw_str_aligned(
+        canvas, x + SAVE_KEY_W / 2, y + SAVE_KEY_H - 1, AlignCenter, AlignBottom, "保存");
+    canvas_set_color(canvas, ColorBlack);
+    canvas_set_font(canvas, FontKeyboard);
 }
 
 static void fznote_text_input_view_draw_callback(Canvas* canvas, void* _model) {
     FzNoteTextInputModel* model = _model;
-    uint8_t text_length = model->text_buffer ? strlen(model->text_buffer) : 0;
     uint8_t needed_string_width = canvas_width(canvas) - 8;
     uint8_t start_pos = 4;
 
-    model->cursor_pos = model->cursor_pos > text_length ? text_length : model->cursor_pos;
+    model->cursor_pos =
+        model->text_buffer ? flipnote_utf8_floor(model->text_buffer, model->cursor_pos) : 0;
     size_t cursor_pos = model->cursor_pos;
+    size_t text_length = model->text_buffer ? strlen(model->text_buffer) : 0;
 
     canvas_clear(canvas);
     canvas_set_color(canvas, ColorBlack);
+    canvas_set_font(canvas, FontSecondary);
 
-    // Baseline 10 keeps the 11 rows of Chinese headers on screen above the frame
-    canvas_draw_str(canvas, 2, 10, model->header);
-    elements_slightly_rounded_frame(canvas, 1, 12, 126, 15);
+    canvas_draw_str(canvas, 2, 12, model->header);
+    elements_slightly_rounded_frame(canvas, 1, 14, 126, 15);
 
-    char buf[model->text_buffer_size + 1];
+    // Extra bytes hold the cursor marker and ellipsis without overflowing input.
+    char buf[model->text_buffer_size + 4];
+    buf[0] = '\0';
     if(model->text_buffer) {
         strlcpy(buf, model->text_buffer, sizeof(buf));
     }
@@ -281,7 +308,7 @@ static void fznote_text_input_view_draw_callback(Canvas* canvas, void* _model) {
 
     if(model->clear_default_text) {
         elements_slightly_rounded_box(
-            canvas, start_pos - 1, 14, canvas_string_width(canvas, str) + 2, 10);
+            canvas, start_pos - 1, 15, canvas_string_width(canvas, str) + 2, 13);
         canvas_set_color(canvas, ColorWhite);
     } else {
         char* move = str + cursor_pos;
@@ -290,27 +317,30 @@ static void fznote_text_input_view_draw_callback(Canvas* canvas, void* _model) {
     }
 
     if(cursor_pos > 0 && canvas_string_width(canvas, str) > needed_string_width) {
-        canvas_draw_str(canvas, start_pos, 22, "...");
-        start_pos += 6;
-        needed_string_width -= 8;
-        for(uint32_t off = 0;
-            strlen(str) && canvas_string_width(canvas, str) > needed_string_width &&
-            off < cursor_pos;
-            off++) {
-            str++;
+        canvas_draw_str(canvas, start_pos, 26, "...");
+        uint8_t ellipsis_width = canvas_string_width(canvas, "...") + 2;
+        start_pos += ellipsis_width;
+        needed_string_width -= ellipsis_width;
+        for(uint32_t off = 0; strlen(str) &&
+                              canvas_string_width(canvas, str) > needed_string_width &&
+                              off < cursor_pos;) {
+            size_t bytes = flipnote_utf8_next(str, 0);
+            str += bytes;
+            off += bytes;
         }
     }
 
     if(canvas_string_width(canvas, str) > needed_string_width) {
-        needed_string_width -= 4;
+        needed_string_width -= canvas_string_width(canvas, "...");
         size_t len = strlen(str);
         while(len && canvas_string_width(canvas, str) > needed_string_width) {
-            str[len--] = '\0';
+            len = flipnote_utf8_prev(str, len);
+            str[len] = '\0';
         }
         strcat(str, "...");
     }
 
-    canvas_draw_str(canvas, start_pos, 22, str);
+    canvas_draw_str(canvas, start_pos, 26, str);
 
     canvas_set_font(canvas, FontKeyboard);
 
@@ -322,15 +352,19 @@ static void fznote_text_input_view_draw_callback(Canvas* canvas, void* _model) {
             bool selected = !model->cursor_select && model->selected_row == row &&
                             model->selected_column == column;
             const Icon* icon = NULL;
-            if(keys[column].text == ENTER_KEY) {
-                icon = selected ? &I_KeySaveSelected_24x11 : &I_KeySave_24x11;
-            } else if(keys[column].text == SWITCH_KEYBOARD_KEY) {
+            if(keys[column].text == SWITCH_KEYBOARD_KEY) {
                 icon = selected ? &I_KeyKeyboardSelected_10x11 : &I_KeyKeyboard_10x11;
             } else if(keys[column].text == BACKSPACE_KEY) {
                 icon = selected ? &I_KeyBackspaceSelected_16x9 : &I_KeyBackspace_16x9;
             }
             canvas_set_color(canvas, ColorBlack);
-            if(icon != NULL) {
+            if(keys[column].text == ENTER_KEY) {
+                fznote_text_input_draw_save_key(
+                    canvas,
+                    keyboard_origin_x + keys[column].x,
+                    keyboard_origin_y + keys[column].y,
+                    selected);
+            } else if(icon != NULL) {
                 canvas_draw_icon(
                     canvas,
                     keyboard_origin_x + keys[column].x,
@@ -426,7 +460,7 @@ static void
     UNUSED(fznote_text_input);
     if(model->cursor_select) {
         if(model->cursor_pos > 0) {
-            model->cursor_pos = CLAMP(model->cursor_pos - 1, strlen(model->text_buffer), 0u);
+            model->cursor_pos = flipnote_utf8_prev(model->text_buffer, model->cursor_pos);
         }
     } else if(model->selected_column > 0) {
         model->selected_column--;
@@ -441,7 +475,7 @@ static void fznote_text_input_handle_right(
     FzNoteTextInputModel* model) {
     UNUSED(fznote_text_input);
     if(model->cursor_select) {
-        model->cursor_pos = CLAMP(model->cursor_pos + 1, strlen(model->text_buffer), 0u);
+        model->cursor_pos = flipnote_utf8_next(model->text_buffer, model->cursor_pos);
     } else if(
         model->selected_column <
         get_row_size(keyboards[model->selected_keyboard], model->selected_row) - 1) {
@@ -488,6 +522,7 @@ static void fznote_text_input_handle_ok(
                     model->text_buffer[1] = '\0';
                     model->cursor_pos = 1;
                 } else {
+                    model->cursor_pos = flipnote_utf8_floor(model->text_buffer, model->cursor_pos);
                     char* move = model->text_buffer + model->cursor_pos;
                     memmove(move + 1, move, strlen(move) + 1);
                     model->text_buffer[model->cursor_pos] = selected;
