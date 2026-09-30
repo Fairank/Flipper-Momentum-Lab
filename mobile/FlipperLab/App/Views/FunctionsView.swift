@@ -145,6 +145,9 @@ import FlipperCore
         }
         .sheet(item: $selectedFunction) { function in
             FunctionDetailsSheet(function: function, badge: badge(for: function),
+                                 requirement: isCataloguePreview
+                                     ? "应用目录样例，尚未读取设备；此处不会启动设备应用。"
+                                     : function.requirement,
                                  blockReason: blockReason) {
                 open(function)
             }
@@ -236,12 +239,26 @@ import FlipperCore
                       ? "暂无可显示应用" : "没有匹配的功能",
                       systemImage: "magnifyingglass")
             } description: {
-                Text(source == .installed && search.isEmpty
-                     ? "连接 Flipper 并读取应用目录，或切换到常用功能。"
-                     : "试试其他关键词，或清除当前分类。")
+                Text(noResultsDescription)
             }
             .listRowBackground(Color.clear)
             .accessibilityIdentifier("functions.noResults")
+        }
+    }
+
+    private var noResultsDescription: String {
+        if category != nil || !search.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
+            return "试试其他关键词，或清除当前分类。"
+        }
+        guard source == .installed else { return "试试其他关键词，或清除当前分类。" }
+        guard device.ready else { return "连接 Flipper 并读取应用目录，或切换到常用功能。" }
+        switch installedState {
+        case .idle, .loading:
+            return "正在等待或读取应用目录，请稍候。"
+        case .failed:
+            return "应用目录未能读取，请在下方重试。"
+        case .loaded:
+            return "设备目录中没有可显示的应用，可切换到常用功能。"
         }
     }
 
@@ -519,6 +536,7 @@ import FlipperCore
 @MainActor private struct FunctionDetailsSheet: View {
     let function: FlipperFunction
     let badge: String
+    let requirement: String
     let blockReason: String?
     let onOpen: () -> Void
     @Environment(\.dismiss) private var dismiss
@@ -533,7 +551,7 @@ import FlipperCore
                     Text(function.summary)
                 }
                 Section {
-                    Text(function.requirement)
+                    Text(requirement)
                     if let blockReason { ReasonNote(blockReason) }
                 } header: {
                     SectionHeader("使用条件")

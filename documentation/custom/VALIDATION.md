@@ -2,9 +2,13 @@
 
 ## 官方 App 参考后的手机优化（2026-09-30）
 
-实现和分工见 [手机优化说明](OFFICIAL_APP_REFINEMENT_20260930.md)。新增 12 项目录筛选、6 项有限重连策略测试，界面交互测试与新截图待 Mac CI 验收。旧的178项核心／7项UI通过不能当作新版界面通过。CLI 展示组件任务实际返回 `claude-fable-5-1`，退出0，841.2秒，主助手审核后采用；首次调用未见结束事件、不算完成。
+实现和分工见 [手机优化说明](OFFICIAL_APP_REFINEMENT_20260930.md)。`65c05a2020a5ea3f6f8f17a230573df3932226f9` 的 [Lab validation 36689632548](https://github.com/Fairank/Flipper-Momentum-Lab/actions/runs/36689632548)：129项主机／C测试通过（15.609秒），196项Swift核心测试通过（11.980秒），无签名模拟器构建通过；10项UI中9项通过、1项失败（总508.793秒）。失败为清空搜索后恢复红外入口的命中断言，保留全部断言并将空查询改为原生“取消”结束搜索、检查键盘消失，再重跑。新增12项目录和6项有限重连核心测试逐项通过；旧178项核心／7项UI不能替代本轮验收。CLI 展示组件实际返回 `claude-fable-5-1`，退出0，841.2秒，经主助手审核采用；首次调用未见结束事件、不算完成。
 
-英文固件修订 `85e08bc325fe5aef872fd99a59ab1c58feb59bf9` 的 [Lab firmware 36687764413](https://github.com/Fairank/Flipper-Momentum-Lab/actions/runs/36687764413) 与 [Lint 36687764319](https://github.com/Fairank/Flipper-Momentum-Lab/actions/runs/36687764319) 通过；[主机129项回归、三套字库同步及布局生成](https://github.com/Fairank/Flipper-Momentum-Lab/actions/runs/36687764696)通过。该运行的iPhone界面测试仍在执行，单独记录结果。
+失败运行 [原始界面附件11086635534](https://github.com/Fairank/Flipper-Momentum-Lab/actions/runs/36689632548/artifacts/11086635534) 已下载核验，20,788,146字节，SHA-256 `93d981211dfccf6c5affd3fc0fe18bfd0a5e433dfa91268e955bcd6a7d0142d4`；查看操作记录和原始附件作为诊断，不能当作修复后的全通过证据。环境为Xcode26.6／Swift6.3.3／iPhone17ProMax／iOS26.5模拟器。完整xcresult附件仅核对元数据，未下载。
+
+英文固件修订 `85e08bc325fe5aef872fd99a59ab1c58feb59bf9` 的 [Lab firmware 36687764413](https://github.com/Fairank/Flipper-Momentum-Lab/actions/runs/36687764413) 与 [Lint 36687764319](https://github.com/Fairank/Flipper-Momentum-Lab/actions/runs/36687764319) 通过；[主机129项回归、三套字库同步及布局生成](https://github.com/Fairank/Flipper-Momentum-Lab/actions/runs/36687764696)通过。该运行的iPhone任务被后续提交取消，不作为新版手机的验收。
+
+`65c05a2020a5ea3f6f8f17a230573df3932226f9` 的 [Lab firmware 36689632788](https://github.com/Fairank/Flipper-Momentum-Lab/actions/runs/36689632788) 与 [Lint 36689632463](https://github.com/Fairank/Flipper-Momentum-Lab/actions/runs/36689632463) 已通过。下载的 [固件附件11085596966](https://github.com/Fairank/Flipper-Momentum-Lab/actions/runs/36689632788/artifacts/11085596966) 为13,021,078字节，SHA-256 `9b0db09cc6b63623b8fb530c04c8612d36e552eec24ed8c37c8ab5e5b3ff9f5a`；内部升级包13,005,744字节，SHA-256 `4767c794d1b9c5adb425a12999ae7e31ca34b188fd4edb7c7d04337b9443d1f8`，PR合并检出 `4f1138870d5ff3e499aa6070746994066945eb4b`。DFU地址／CRC、295 FAP／121 FAL、28项指定应用、API89、资源及单独伴侣FAP核验通过；主固件868,800字节、保留区前余11,840字节，升级器120,217字节。附件保留到2026-10-14。
 
 - [云端英文固件附件11084623849](https://github.com/Fairank/Flipper-Momentum-Lab/actions/runs/36687764413/artifacts/11084623849)已下载核验：ZIP 13,021,008字节，SHA-256 `8fa469cb080c85266399367886024883e0d732de35e29ba55b1891bb53e99ba0`。包内TGZ 13,005,676字节，SHA-256 `edc2061cff09566f96da13c2a72ba6fd2ddf35163d4f29197001238ca88f0e7a`；PR合并检出 `e52bdda1479e7355bfa87b58d6bb455e477330d9`。
 - DFU CRC、地址、295个FAP／121个FAL、28项指定应用、API89、资源内容及两个单独伴侣FAP与包内一致性核验通过。主固件868,800字节，到无线栈 `0x080D7000` 前余11,840字节；升级器120,217字节。附件保留到2026-10-14，源码和构建入口长期保留。
@@ -14,7 +18,7 @@
 
 ## 本机英文、手机中文（2026-09-30，当前语言目标）
 
-用户已明确选择“本机恢复英文，保留功能升级”。本节和 [当前范围说明](DEVICE_ENGLISH_PHONE_CHINESE_20260930.md) 覆盖下方历史轮次中的设备中文目标。手机应用目录重设计及连接逻辑优化正在另行实现，不能将旧测试计作新界面的验收。
+用户已明确选择“本机恢复英文，保留功能升级”。本节和 [当前范围说明](DEVICE_ENGLISH_PHONE_CHINESE_20260930.md) 覆盖下方历史轮次中的设备中文目标。手机目录重设计及连接逻辑优化见首节，下面旧测试不能计作新界面的验收。
 
 - 本机英文工作树：129 项 Python／实际 C 回归全部通过，38.048 秒、无跳过；独立执行的 `updater_package`、`fap_dist` 与 `lint_all` 全部通过。352 个已发布非生成 C／头文件的非字符串 token 与恢复前一致，明确例外为两处显示别名返回值；27 份应用清单仅改变显示名称／说明，22 份动画元数据恢复固定上游文本与坐标。
 - 英文升级包为 `flipper-z-f7-update-mntm-codex-iphone-zh-architecture-7b6069e3.tgz`，13,006,763 字节，SHA-256 `a3ad9b8bf6927bc57871b97d100ace05064ac194f72b3416e315d29c3e98569f`。这是 `7b6069e3` 上的未提交英文工作树产物，不能声称为该提交的干净 CI 包。主固件 868,824 字节，距无线栈 `0x080D7000` 保留区余 11,816 字节；升级器 120,245 字节。DFU 地址、CRC、295 个 FAP／121 个 FAL、28 个指定应用、API 89 和资源字节核验通过。

@@ -89,6 +89,7 @@ final class FunctionCatalogUITests: XCTestCase {
         let introduction = app.staticTexts["滚动与跳跃，收集圆环并到达关卡出口。"].firstMatch
         XCTAssertTrue(introduction.exists)
         XCTAssertTrue(scrollUntilHittable(app.staticTexts["使用条件"], in: app))
+        XCTAssertTrue(app.staticTexts["应用目录样例，尚未读取设备；此处不会启动设备应用。"].exists)
         XCTAssertTrue(app.staticTexts["应用目录预览不会向 Flipper 发送命令。"].exists)
         let open = app.buttons["functions.details.open"]
         XCTAssertTrue(scrollUntilHittable(open, in: app))
@@ -170,7 +171,16 @@ final class FunctionCatalogUITests: XCTestCase {
             XCTAssertTrue(clear.waitForExistence(timeout: 2))
             clear.tap()
         }
-        field.typeText(query + "\n")
+        if query.isEmpty {
+            // An empty UISearchTextField disables its Search key. End native search
+            // explicitly so later list drags cannot land on the remaining keyboard.
+            let cancel = app.buttons["取消"].firstMatch
+            XCTAssertTrue(cancel.waitForExistence(timeout: 3))
+            cancel.tap()
+            XCTAssertFalse(app.keyboards.firstMatch.exists)
+        } else {
+            field.typeText(query + "\n")
+        }
     }
 
     @MainActor
