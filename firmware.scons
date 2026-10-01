@@ -29,6 +29,7 @@ env = ENV.Clone(
     TARGETS_ROOT=Dir("#/targets"),
     LINT_SOURCES=[
         Dir("applications"),
+        Dir("applications_user"),
         # Not C code
         Dir("!applications/system/js_app/packages"),
         # Avoid merge conflicts
@@ -51,6 +52,7 @@ env = ENV.Clone(
             "CPPDEFINES": [
                 "NDEBUG",
                 "FURI_DEBUG" if ENV["LIB_DEBUG"] else "FURI_NDEBUG",
+                "LOGS_DEBUG_BUILD" if ENV["LIB_DEBUG"] else "LOGS_RELEASE_BUILD",
             ],
             # You can add other entries named after libraries
             # If they are present, they have precedence over Default
@@ -63,6 +65,7 @@ env = ENV.Clone(
             "CPPDEFINES": [
                 "NDEBUG",
                 "FURI_DEBUG" if ENV["DEBUG"] else "FURI_NDEBUG",
+                "LOGS_DEBUG_BUILD" if ENV["LIB_DEBUG"] else "LOGS_RELEASE_BUILD",
             ],
         },
         "flipper_application": {
@@ -72,6 +75,7 @@ env = ENV.Clone(
             "CPPDEFINES": [
                 "NDEBUG",
                 "FURI_DEBUG" if ENV["DEBUG"] else "FURI_NDEBUG",
+                "LOGS_DEBUG_BUILD" if ENV["LIB_DEBUG"] else "LOGS_RELEASE_BUILD",
             ],
         },
     },
@@ -211,8 +215,8 @@ sources = [apps_c]
 # Gather sources only from app folders in current configuration
 sources.extend(
     itertools.chain.from_iterable(
-        fwenv.GatherSources([source_type, "!lib"], appdir.relpath)
-        for appdir, source_type in fwenv["APPBUILD"].get_builtin_app_folders()
+        fwenv.GatherSources([*app_sources, "!lib"], appdir.relpath)
+        for appdir, app_sources in fwenv["APPBUILD"].get_builtin_app_folders()
     )
 )
 

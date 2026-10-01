@@ -1,6 +1,7 @@
 #include "assets_icons.h"
 #include "toolbox/path.h"
 #include <furi.h>
+#include <locale/locale_ui.h>
 #include "../archive_i.h"
 #include "archive_browser_view.h"
 #include "../helpers/archive_browser.h"
@@ -167,7 +168,7 @@ static void render_item_menu(Canvas* canvas, ArchiveBrowserViewModel* model) {
                 }
                 archive_menu_add_item(
                     menu_array_push_raw(model->context_menu),
-                    (selected->fav || favorites) ? "Unfavorite" : "Favorite",
+                    (selected->fav || favorites) ? "Unfavorite" : "Pin",
                     ArchiveBrowserEventFileMenuFavorite);
             }
             if(!selected->is_app) {
@@ -191,17 +192,20 @@ static void render_item_menu(Canvas* canvas, ArchiveBrowserViewModel* model) {
         }
     }
     size_t size_menu = menu_array_size(model->context_menu);
-    const uint8_t menu_height = 48;
-    const uint8_t line_height = 10;
-    const uint8_t calc_height = menu_height - ((MENU_ITEMS - size_menu - 1) * line_height);
+    if(size_menu == 0) return;
+    const size_t selected = MIN((size_t)model->menu_idx, size_menu - 1);
+    const uint8_t line_height = 12;
+    const size_t first = (selected / 4) * 4;
+    const size_t visible = MIN(size_menu - first, (size_t)4);
+    const uint8_t menu_height = 16 + visible * line_height;
 
     canvas_set_color(canvas, ColorWhite);
-    canvas_draw_rbox(canvas, 72, 2, 56, calc_height + 4, 3);
+    canvas_draw_rbox(canvas, 72, 0, 56, menu_height, 3);
     canvas_set_color(canvas, ColorBlack);
-    canvas_draw_rframe(canvas, 71, 2, 57, calc_height + 4, 3);
+    canvas_draw_rframe(canvas, 71, 0, 57, menu_height, 3);
 
     canvas_draw_str_aligned(
-        canvas, 100, 11, AlignCenter, AlignBottom, model->menu_manage ? "Manage:" : "Actions:");
+        canvas, 100, 12, AlignCenter, AlignBottom, model->menu_manage ? "Manage:" : "Actions:");
     if(model->menu_can_switch) {
         if(model->menu_manage) {
             canvas_draw_icon(canvas, 74, 4, &I_ButtonLeft_4x7);
@@ -209,13 +213,12 @@ static void render_item_menu(Canvas* canvas, ArchiveBrowserViewModel* model) {
             canvas_draw_icon(canvas, 121, 4, &I_ButtonRight_4x7);
         }
     }
-    for(size_t i = 0; i < size_menu; i++) {
-        ArchiveContextMenuItem_t* current = menu_array_get(model->context_menu, i);
-        canvas_draw_str(
-            canvas, 82, 11 + (i + 1) * line_height, furi_string_get_cstr(current->text));
+    for(size_t i = 0; i < visible; i++) {
+        ArchiveContextMenuItem_t* current = menu_array_get(model->context_menu, first + i);
+        canvas_draw_str(canvas, 82, 24 + i * line_height, furi_string_get_cstr(current->text));
     }
 
-    canvas_draw_icon(canvas, 74, 4 + (model->menu_idx + 1) * line_height, &I_ButtonRight_4x7);
+    canvas_draw_icon(canvas, 74, 17 + (selected - first) * line_height, &I_ButtonRight_4x7);
 }
 
 static void archive_draw_frame(Canvas* canvas, uint16_t idx, bool scrollbar, bool moving) {
@@ -279,6 +282,12 @@ static void draw_list_item(
             }
         } else {
             path_extract_filename(file->path, str_buf, !ext);
+        }
+        if(file->is_app || file->type == ArchiveFileTypeApplication) {
+            const char* label = locale_ui_label(furi_string_get_cstr(str_buf));
+            // The alias is a static string. Avoid assigning a string to itself
+            // when no alias exists; paths and favorite keys stay canonical.
+            if(label != furi_string_get_cstr(str_buf)) furi_string_set(str_buf, label);
         }
     } else {
         furi_string_set(str_buf, "---");
@@ -373,12 +382,12 @@ static void archive_render_status_bar(Canvas* canvas, ArchiveBrowserViewModel* m
     canvas_draw_line(canvas, 49, 1, 49, 11); // shadow right
     canvas_draw_line(canvas, 1, 11, 49, 11); // shadow bottom
     if(tab_name) {
-        canvas_draw_str_aligned(canvas, 25, 9, AlignCenter, AlignBottom, tab_name);
+        canvas_draw_str_aligned(canvas, 25, 10, AlignCenter, AlignBottom, tab_name);
     } else {
         elements_scrollable_text_line_centered(
             canvas,
             25,
-            9,
+            10,
             45,
             model->archive->browser->formatted_path,
             model->menu ? 0 : model->scroll_counter,
@@ -391,7 +400,7 @@ static void archive_render_status_bar(Canvas* canvas, ArchiveBrowserViewModel* m
         canvas_draw_line(canvas, 92, 1, 92, 11);
         canvas_draw_line(canvas, 70, 11, 92, 11);
         canvas_draw_str_aligned(
-            canvas, 81, 9, AlignCenter, AlignBottom, model->clipboard_copy ? "Copy" : "Cut");
+            canvas, 81, 10, AlignCenter, AlignBottom, model->clipboard_copy ? "Copy" : "Cut");
     }
 
     canvas_draw_rframe(canvas, 107, 0, 21, 13, 1);

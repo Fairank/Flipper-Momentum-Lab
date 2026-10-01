@@ -4,6 +4,7 @@
 #include "../blocks/encoder.h"
 #include "../blocks/generic.h"
 #include "../blocks/math.h"
+#include "common.h"
 
 #include "../blocks/custom_btn_i.h"
 
@@ -22,6 +23,7 @@ struct SubGhzProtocolDecoderGangQi {
     SubGhzBlockDecoder decoder;
     SubGhzBlockGeneric generic;
 };
+SUBGHZ_ASSERT_DECODER_COMMON_LAYOUT(SubGhzProtocolDecoderGangQi);
 
 struct SubGhzProtocolEncoderGangQi {
     SubGhzProtocolEncoderBase base;
@@ -29,6 +31,7 @@ struct SubGhzProtocolEncoderGangQi {
     SubGhzProtocolBlockEncoder encoder;
     SubGhzBlockGeneric generic;
 };
+SUBGHZ_ASSERT_ENCODER_GENERIC_LAYOUT(SubGhzProtocolEncoderGangQi);
 
 typedef enum {
     GangQiDecoderStepReset = 0,
@@ -38,10 +41,10 @@ typedef enum {
 
 const SubGhzProtocolDecoder subghz_protocol_gangqi_decoder = {
     .alloc = subghz_protocol_decoder_gangqi_alloc,
-    .free = subghz_protocol_decoder_gangqi_free,
+    .free = subghz_protocol_decoder_common_free,
 
     .feed = subghz_protocol_decoder_gangqi_feed,
-    .reset = subghz_protocol_decoder_gangqi_reset,
+    .reset = subghz_protocol_decoder_common_reset,
 
     .get_hash_data = NULL,
     .get_hash_data_long = subghz_protocol_decoder_gangqi_get_hash_data,
@@ -53,11 +56,11 @@ const SubGhzProtocolDecoder subghz_protocol_gangqi_decoder = {
 
 const SubGhzProtocolEncoder subghz_protocol_gangqi_encoder = {
     .alloc = subghz_protocol_encoder_gangqi_alloc,
-    .free = subghz_protocol_encoder_gangqi_free,
+    .free = subghz_protocol_encoder_common_free,
 
     .deserialize = subghz_protocol_encoder_gangqi_deserialize,
-    .stop = subghz_protocol_encoder_gangqi_stop,
-    .yield = subghz_protocol_encoder_gangqi_yield,
+    .stop = subghz_protocol_encoder_common_stop,
+    .yield = subghz_protocol_encoder_common_yield,
 };
 
 const SubGhzProtocol subghz_protocol_gangqi = {
@@ -74,23 +77,8 @@ const SubGhzProtocol subghz_protocol_gangqi = {
 
 void* subghz_protocol_encoder_gangqi_alloc(SubGhzEnvironment* environment) {
     UNUSED(environment);
-    SubGhzProtocolEncoderGangQi* instance = malloc(sizeof(SubGhzProtocolEncoderGangQi));
-
-    instance->base.protocol = &subghz_protocol_gangqi;
-    instance->generic.protocol_name = instance->base.protocol->name;
-
-    instance->encoder.repeat = 3;
-    instance->encoder.size_upload = 256;
-    instance->encoder.upload = malloc(instance->encoder.size_upload * sizeof(LevelDuration));
-    instance->encoder.is_running = false;
-    return instance;
-}
-
-void subghz_protocol_encoder_gangqi_free(void* context) {
-    furi_assert(context);
-    SubGhzProtocolEncoderGangQi* instance = context;
-    free(instance->encoder.upload);
-    free(instance);
+    return subghz_protocol_encoder_common_alloc(
+        sizeof(SubGhzProtocolEncoderGangQi), &subghz_protocol_gangqi, 3, 256);
 }
 
 // Get custom button code
@@ -173,8 +161,9 @@ static void subghz_protocol_encoder_gangqi_get_upload(SubGhzProtocolEncoderGangQ
     instance->generic.btn = subghz_protocol_gangqi_get_btn_code();
 
     // override button if we change it with signal settings button editor
-    if(subghz_block_generic_global_button_override_get(&instance->generic.btn))
+    if(subghz_block_generic_global_button_override_get(&instance->generic.btn)) {
         FURI_LOG_D(TAG, "Button sucessfully changed to 0x%X", instance->generic.btn);
+    }
 
     uint16_t serial = (uint16_t)((instance->generic.data >> 18) & 0xFFFF);
     uint8_t const_and_button = (uint8_t)(0xD0 | instance->generic.btn);
@@ -286,47 +275,10 @@ SubGhzProtocolStatus
     return ret;
 }
 
-void subghz_protocol_encoder_gangqi_stop(void* context) {
-    SubGhzProtocolEncoderGangQi* instance = context;
-    instance->encoder.is_running = false;
-}
-
-LevelDuration subghz_protocol_encoder_gangqi_yield(void* context) {
-    SubGhzProtocolEncoderGangQi* instance = context;
-
-    if(instance->encoder.repeat == 0 || !instance->encoder.is_running) {
-        instance->encoder.is_running = false;
-        return level_duration_reset();
-    }
-
-    LevelDuration ret = instance->encoder.upload[instance->encoder.front];
-
-    if(++instance->encoder.front == instance->encoder.size_upload) {
-        if(!subghz_block_generic_global.endless_tx) instance->encoder.repeat--;
-        instance->encoder.front = 0;
-    }
-
-    return ret;
-}
-
 void* subghz_protocol_decoder_gangqi_alloc(SubGhzEnvironment* environment) {
     UNUSED(environment);
-    SubGhzProtocolDecoderGangQi* instance = malloc(sizeof(SubGhzProtocolDecoderGangQi));
-    instance->base.protocol = &subghz_protocol_gangqi;
-    instance->generic.protocol_name = instance->base.protocol->name;
-    return instance;
-}
-
-void subghz_protocol_decoder_gangqi_free(void* context) {
-    furi_assert(context);
-    SubGhzProtocolDecoderGangQi* instance = context;
-    free(instance);
-}
-
-void subghz_protocol_decoder_gangqi_reset(void* context) {
-    furi_assert(context);
-    SubGhzProtocolDecoderGangQi* instance = context;
-    instance->decoder.parser_step = GangQiDecoderStepReset;
+    return subghz_protocol_decoder_common_alloc(
+        sizeof(SubGhzProtocolDecoderGangQi), &subghz_protocol_gangqi);
 }
 
 void subghz_protocol_decoder_gangqi_feed(void* context, bool level, volatile uint32_t duration) {

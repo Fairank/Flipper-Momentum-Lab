@@ -10,6 +10,7 @@
 #include "loader_i.h"
 #include "loader_menu.h"
 #include "loader_menu_storage_i.h"
+#include <locale/locale_ui.h>
 
 #include <flipper_application/flipper_application.h>
 #include <toolbox/stream/file_stream.h>
@@ -224,7 +225,7 @@ static void loader_menu_add_app_entry(
     MenuAppList_push_back(app->apps_list, (MenuApp){name, icon, path});
     menu_add_item(
         app->primary_menu,
-        name,
+        locale_ui_label(name),
         icon,
         MenuAppList_size(app->apps_list) - 1,
         loader_menu_apps_callback,
@@ -294,7 +295,7 @@ static void loader_menu_find_add_app(LoaderMenuApp* app, Storage* storage, FuriS
 static void loader_menu_build_menu(LoaderMenuApp* app, LoaderMenu* menu) {
     menu_add_item(
         app->primary_menu,
-        LOADER_APPLICATIONS_NAME,
+        locale_ui_label(LOADER_APPLICATIONS_NAME),
         &A_Plugins_14,
         LoaderMenuIndexApplications,
         loader_menu_applications_callback,
@@ -340,7 +341,7 @@ static void loader_menu_build_menu(LoaderMenuApp* app, LoaderMenu* menu) {
         &FLIPPER_EXTERNAL_APPS[FLIPPER_EXTERNAL_APPS_COUNT - 1];
     menu_add_item(
         app->primary_menu,
-        last->name,
+        locale_ui_label(last->name),
         last->icon,
         LoaderMenuIndexLast,
         loader_menu_last_callback,
@@ -360,7 +361,7 @@ static void loader_menu_build_submenu(LoaderMenuApp* app, LoaderMenu* loader_men
     for(size_t i = 0; i < FLIPPER_SETTINGS_APPS_COUNT; i++) {
         submenu_add_item_ex(
             app->settings_menu,
-            FLIPPER_SETTINGS_APPS[i].name,
+            locale_ui_label(FLIPPER_SETTINGS_APPS[i].name),
             i,
             loader_menu_settings_menu_callback,
             NULL);

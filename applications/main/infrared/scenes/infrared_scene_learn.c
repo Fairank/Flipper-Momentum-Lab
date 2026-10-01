@@ -2,6 +2,7 @@
 #include <dolphin/dolphin.h>
 
 /* Button names for easy mode */
+/* Kept in English: these names are written into .ir files as signal names */
 const char* const easy_mode_button_names[] = {"Power", "Vol_up", "Vol_dn", "Mute",    "Ch_up",
                                               "Ch_dn", "Ok",     "Up",     "Down",    "Left",
                                               "Right", "Menu",   "Back",   "Play",    "Pause",

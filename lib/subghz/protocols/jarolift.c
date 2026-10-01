@@ -8,6 +8,7 @@
 #include "../blocks/encoder.h"
 #include "../blocks/generic.h"
 #include "../blocks/math.h"
+#include "common.h"
 
 #include "../blocks/custom_btn_i.h"
 
@@ -29,6 +30,7 @@ struct SubGhzProtocolDecoderJarolift {
     uint16_t header_count;
     SubGhzKeystore* keystore;
 };
+SUBGHZ_ASSERT_DECODER_COMMON_LAYOUT(SubGhzProtocolDecoderJarolift);
 
 struct SubGhzProtocolEncoderJarolift {
     SubGhzProtocolEncoderBase base;
@@ -37,6 +39,7 @@ struct SubGhzProtocolEncoderJarolift {
     SubGhzBlockGeneric generic;
     SubGhzKeystore* keystore;
 };
+SUBGHZ_ASSERT_ENCODER_GENERIC_LAYOUT(SubGhzProtocolEncoderJarolift);
 
 typedef enum {
     JaroliftDecoderStepReset = 0,
@@ -47,14 +50,14 @@ typedef enum {
 
 const SubGhzProtocolDecoder subghz_protocol_jarolift_decoder = {
     .alloc = subghz_protocol_decoder_jarolift_alloc,
-    .free = subghz_protocol_decoder_jarolift_free,
+    .free = subghz_protocol_decoder_common_free,
 
     .feed = subghz_protocol_decoder_jarolift_feed,
-    .reset = subghz_protocol_decoder_jarolift_reset,
+    .reset = subghz_protocol_decoder_common_reset,
 
     .get_hash_data = NULL,
     .get_hash_data_long = subghz_protocol_decoder_jarolift_get_hash_data,
-    .serialize = subghz_protocol_decoder_jarolift_serialize,
+    .serialize = subghz_protocol_decoder_common_serialize,
     .deserialize = subghz_protocol_decoder_jarolift_deserialize,
     .get_string = subghz_protocol_decoder_jarolift_get_string,
     .get_string_brief = NULL,
@@ -62,11 +65,11 @@ const SubGhzProtocolDecoder subghz_protocol_jarolift_decoder = {
 
 const SubGhzProtocolEncoder subghz_protocol_jarolift_encoder = {
     .alloc = subghz_protocol_encoder_jarolift_alloc,
-    .free = subghz_protocol_encoder_jarolift_free,
+    .free = subghz_protocol_encoder_common_free,
 
     .deserialize = subghz_protocol_encoder_jarolift_deserialize,
-    .stop = subghz_protocol_encoder_jarolift_stop,
-    .yield = subghz_protocol_encoder_jarolift_yield,
+    .stop = subghz_protocol_encoder_common_stop,
+    .yield = subghz_protocol_encoder_common_yield,
 };
 
 const SubGhzProtocol subghz_protocol_jarolift = {
@@ -96,48 +99,10 @@ static void subghz_protocol_jarolift_remote_controller(
 static uint8_t subghz_protocol_jarolift_get_btn_code(void);
 
 void* subghz_protocol_encoder_jarolift_alloc(SubGhzEnvironment* environment) {
-    SubGhzProtocolEncoderJarolift* instance = malloc(sizeof(SubGhzProtocolEncoderJarolift));
-
-    instance->base.protocol = &subghz_protocol_jarolift;
-    instance->generic.protocol_name = instance->base.protocol->name;
+    SubGhzProtocolEncoderJarolift* instance = subghz_protocol_encoder_common_alloc(
+        sizeof(SubGhzProtocolEncoderJarolift), &subghz_protocol_jarolift, 3, 256);
     instance->keystore = subghz_environment_get_keystore(environment);
-
-    instance->encoder.repeat = 3;
-    instance->encoder.size_upload = 256;
-    instance->encoder.upload = malloc(instance->encoder.size_upload * sizeof(LevelDuration));
-    instance->encoder.is_running = false;
-
     return instance;
-}
-
-void subghz_protocol_encoder_jarolift_free(void* context) {
-    furi_assert(context);
-    SubGhzProtocolEncoderJarolift* instance = context;
-    free(instance->encoder.upload);
-    free(instance);
-}
-
-void subghz_protocol_encoder_jarolift_stop(void* context) {
-    SubGhzProtocolEncoderJarolift* instance = context;
-    instance->encoder.is_running = false;
-}
-
-LevelDuration subghz_protocol_encoder_jarolift_yield(void* context) {
-    SubGhzProtocolEncoderJarolift* instance = context;
-
-    if(instance->encoder.repeat == 0 || !instance->encoder.is_running) {
-        instance->encoder.is_running = false;
-        return level_duration_reset();
-    }
-
-    LevelDuration ret = instance->encoder.upload[instance->encoder.front];
-
-    if(++instance->encoder.front == instance->encoder.size_upload) {
-        if(!subghz_block_generic_global.endless_tx) instance->encoder.repeat--;
-        instance->encoder.front = 0;
-    }
-
-    return ret;
 }
 
 /** 
@@ -155,8 +120,9 @@ static bool
     btn = subghz_protocol_jarolift_get_btn_code();
 
     // override button if we change it with signal settings button editor
-    if(subghz_block_generic_global_button_override_get(&btn))
+    if(subghz_block_generic_global_button_override_get(&btn)) {
         FURI_LOG_D(TAG, "Button sucessfully changed to 0x%X", btn);
+    }
 
     // Check for OFEX (overflow experimental) mode
     if(furi_hal_subghz_get_rolling_counter_mult() != -0x7FFFFFFF) {
@@ -257,21 +223,7 @@ bool subghz_protocol_jarolift_create_data(
     SubGhzProtocolStatus res =
         subghz_block_generic_serialize(&instance->generic, flipper_format, preset);
 
-    uint8_t key_data[sizeof(uint64_t)] = {0};
-    for(size_t i = 0; i < sizeof(uint64_t); i++) {
-        key_data[sizeof(uint64_t) - i - 1] = (instance->generic.data_2 >> (i * 8)) & 0xFF;
-    }
-
-    if(!flipper_format_rewind(flipper_format)) {
-        FURI_LOG_E(TAG, "Rewind error");
-        res = SubGhzProtocolStatusErrorParserOthers;
-    }
-
-    if((res == SubGhzProtocolStatusOk) &&
-       !flipper_format_insert_or_update_hex(flipper_format, "Data", key_data, sizeof(uint64_t))) {
-        FURI_LOG_E(TAG, "Unable to add Data2");
-        res = SubGhzProtocolStatusErrorParserOthers;
-    }
+    res = subghz_protocol_common_append_data_2(res, &instance->generic, flipper_format);
 
     return res == SubGhzProtocolStatusOk;
 }
@@ -279,7 +231,7 @@ bool subghz_protocol_jarolift_create_data(
 /**
  * Generating an upload from data.
  * @param instance Pointer to a SubGhzProtocolEncoderJarolift instance
- * @return true On success
+ * @return true Always; this encoder has no failure path
  */
 static bool subghz_protocol_encoder_jarolift_get_upload(
     SubGhzProtocolEncoderJarolift* instance,
@@ -417,27 +369,11 @@ SubGhzProtocolStatus
     return res;
 }
 
-//
-// Decoder
-//
 void* subghz_protocol_decoder_jarolift_alloc(SubGhzEnvironment* environment) {
-    SubGhzProtocolDecoderJarolift* instance = malloc(sizeof(SubGhzProtocolDecoderJarolift));
-    instance->base.protocol = &subghz_protocol_jarolift;
-    instance->generic.protocol_name = instance->base.protocol->name;
+    SubGhzProtocolDecoderJarolift* instance = subghz_protocol_decoder_common_alloc(
+        sizeof(SubGhzProtocolDecoderJarolift), &subghz_protocol_jarolift);
     instance->keystore = subghz_environment_get_keystore(environment);
     return instance;
-}
-
-void subghz_protocol_decoder_jarolift_free(void* context) {
-    furi_assert(context);
-    SubGhzProtocolDecoderJarolift* instance = context;
-    free(instance);
-}
-
-void subghz_protocol_decoder_jarolift_reset(void* context) {
-    furi_assert(context);
-    SubGhzProtocolDecoderJarolift* instance = context;
-    instance->decoder.parser_step = JaroliftDecoderStepReset;
 }
 
 void subghz_protocol_decoder_jarolift_feed(void* context, bool level, uint32_t duration) {
@@ -627,33 +563,6 @@ uint32_t subghz_protocol_decoder_jarolift_get_hash_data(void* context) {
         hash ^= p[i];
     }
     return hash;
-}
-
-SubGhzProtocolStatus subghz_protocol_decoder_jarolift_serialize(
-    void* context,
-    FlipperFormat* flipper_format,
-    SubGhzRadioPreset* preset) {
-    furi_assert(context);
-    SubGhzProtocolDecoderJarolift* instance = context;
-    SubGhzProtocolStatus ret =
-        subghz_block_generic_serialize(&instance->generic, flipper_format, preset);
-
-    uint8_t key_data[sizeof(uint64_t)] = {0};
-    for(size_t i = 0; i < sizeof(uint64_t); i++) {
-        key_data[sizeof(uint64_t) - i - 1] = (instance->generic.data_2 >> (i * 8)) & 0xFF;
-    }
-
-    if(!flipper_format_rewind(flipper_format)) {
-        FURI_LOG_E(TAG, "Rewind error");
-        ret = SubGhzProtocolStatusErrorParserOthers;
-    }
-
-    if((ret == SubGhzProtocolStatusOk) &&
-       !flipper_format_insert_or_update_hex(flipper_format, "Data", key_data, sizeof(uint64_t))) {
-        FURI_LOG_E(TAG, "Unable to add Data");
-        ret = SubGhzProtocolStatusErrorParserOthers;
-    }
-    return ret;
 }
 
 SubGhzProtocolStatus

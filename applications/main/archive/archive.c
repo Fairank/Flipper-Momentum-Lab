@@ -157,6 +157,7 @@ int32_t archive_app(void* p) {
             furi_string_get_cstr(path));
     }
 
+    view_dispatcher_show_loading(archive->view_dispatcher);
     scene_manager_next_scene(archive->scene_manager, ArchiveAppSceneBrowser);
     view_dispatcher_run(archive->view_dispatcher);
 

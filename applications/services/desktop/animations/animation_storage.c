@@ -207,6 +207,10 @@ StorageAnimation* animation_storage_find_animation(const char* name) {
     return storage_animation;
 }
 
+const char* animation_storage_get_builtin_name(const StorageAnimation* storage_animation) {
+    return storage_animation->external ? NULL : storage_animation->manifest_info.name;
+}
+
 StorageAnimationManifestInfo* animation_storage_get_meta(StorageAnimation* storage_animation) {
     furi_assert(storage_animation);
     return &storage_animation->manifest_info;

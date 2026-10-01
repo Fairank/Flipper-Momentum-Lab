@@ -19,12 +19,6 @@ extern const SubGhzProtocol subghz_protocol_clemsa;
 void* subghz_protocol_encoder_clemsa_alloc(SubGhzEnvironment* environment);
 
 /**
- * Free SubGhzProtocolEncoderClemsa.
- * @param context Pointer to a SubGhzProtocolEncoderClemsa instance
- */
-void subghz_protocol_encoder_clemsa_free(void* context);
-
-/**
  * Deserialize and generating an upload to send.
  * @param context Pointer to a SubGhzProtocolEncoderClemsa instance
  * @param flipper_format Pointer to a FlipperFormat instance
@@ -34,36 +28,11 @@ SubGhzProtocolStatus
     subghz_protocol_encoder_clemsa_deserialize(void* context, FlipperFormat* flipper_format);
 
 /**
- * Forced transmission stop.
- * @param context Pointer to a SubGhzProtocolEncoderClemsa instance
- */
-void subghz_protocol_encoder_clemsa_stop(void* context);
-
-/**
- * Getting the level and duration of the upload to be loaded into DMA.
- * @param context Pointer to a SubGhzProtocolEncoderClemsa instance
- * @return LevelDuration 
- */
-LevelDuration subghz_protocol_encoder_clemsa_yield(void* context);
-
-/**
  * Allocate SubGhzProtocolDecoderClemsa.
  * @param environment Pointer to a SubGhzEnvironment instance
  * @return SubGhzProtocolDecoderClemsa* pointer to a SubGhzProtocolDecoderClemsa instance
  */
 void* subghz_protocol_decoder_clemsa_alloc(SubGhzEnvironment* environment);
-
-/**
- * Free SubGhzProtocolDecoderClemsa.
- * @param context Pointer to a SubGhzProtocolDecoderClemsa instance
- */
-void subghz_protocol_decoder_clemsa_free(void* context);
-
-/**
- * Reset decoder SubGhzProtocolDecoderClemsa.
- * @param context Pointer to a SubGhzProtocolDecoderClemsa instance
- */
-void subghz_protocol_decoder_clemsa_reset(void* context);
 
 /**
  * Parse a raw sequence of levels and durations received from the air.

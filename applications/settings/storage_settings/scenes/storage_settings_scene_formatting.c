@@ -1,3 +1,4 @@
+#include <locale/locale_ui.h>
 #include "../storage_settings.h"
 #include <notification/notification.h>
 #include <notification/notification_messages.h>
@@ -50,7 +51,12 @@ void storage_settings_scene_formatting_on_enter(void* context) {
         dialog_ex_set_header(dialog_ex, "Cannot Format SD Card", 64, 10, AlignCenter, AlignCenter);
         dialog_ex_set_icon(dialog_ex, 0, 0, NULL);
         dialog_ex_set_text(
-            dialog_ex, storage_error_get_desc(error), 64, 32, AlignCenter, AlignCenter);
+            dialog_ex,
+            locale_ui_storage_error(storage_error_get_desc(error)),
+            64,
+            32,
+            AlignCenter,
+            AlignCenter);
     } else {
         if(scene_manager_get_scene_state(app->scene_manager, StorageSettingsFormatting)) {
             Power* power = furi_record_open(RECORD_POWER);

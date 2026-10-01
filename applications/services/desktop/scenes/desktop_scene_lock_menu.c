@@ -77,6 +77,11 @@ bool desktop_scene_lock_menu_on_event(void* context, SceneManagerEvent event) {
         }
     } else if(event.type == SceneManagerEventTypeCustom) {
         switch(event.event) {
+        case DesktopLockMenuEventQuickSettings:
+            desktop_scene_lock_menu_save_settings(desktop);
+            scene_manager_next_scene(desktop->scene_manager, DesktopSceneQuickSettings);
+            consumed = true;
+            break;
         case DesktopLockMenuEventSettings:
             desktop_scene_lock_menu_save_settings(desktop);
             loader_show_settings(furi_record_open(RECORD_LOADER));

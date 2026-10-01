@@ -1,0 +1,35 @@
+{
+  "commit": "7b6069e3b12686770a6ca9a98e63881031c123dd",
+  "run_id": 36680614661,
+  "artifact_id": 11082166883,
+  "zip_sha256": "9900889f8235881b2d2f28756e66558f0736ec843eab45613e9671b01d7d95a5",
+  "kind": "original iOS Simulator test screenshot; not hardware or BLE validation",
+  "screens": [
+    {
+      "file": "phone-nfc-comparison.png",
+      "attachment": {
+        "configurationName": "Test Scheme Action",
+        "deviceId": "841190F6-F927-4F0D-B152-62A06B4040CA",
+        "deviceName": "iPhone 17 Pro Max",
+        "exportedFileName": "438394CA-50CE-4090-874B-560157C02782.png",
+        "isAssociatedWithFailure": false,
+        "suggestedHumanReadableName": "25-手机中文NFC按页比较_0_F763E00A-AE28-4413-AE4B-74A4075A4E86.png",
+        "timestamp": 1790751473.813
+      },
+      "sha256": "fd322840cb0140ea82e2551bb9f4a48159c85e2cbacafc631917a54c5fdfdc6a"
+    },
+    {
+      "file": "phone-functions.png",
+      "attachment": {
+        "configurationName": "Test Scheme Action",
+        "deviceId": "841190F6-F927-4F0D-B152-62A06B4040CA",
+        "deviceName": "iPhone 17 Pro Max",
+        "exportedFileName": "EE572397-57FF-484E-8028-6B21E7E7F811.png",
+        "isAssociatedWithFailure": false,
+        "suggestedHumanReadableName": "01b-功能中心离线预览_0_BE406CEF-2F33-4B9E-9DDE-CAE67B6A4364.png",
+        "timestamp": 1790751601.652
+      },
+      "sha256": "65c5fdf325599e1b7764c8f1dabfe35e059bff62ce16b6d6383800f08f5f5752"
+    }
+  ]
+}

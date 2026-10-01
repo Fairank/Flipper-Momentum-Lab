@@ -491,56 +491,89 @@ static void hid_ptt_trigger_mute_linux_gather(HidPushToTalk* hid_ptt) {
 
 static void hid_ptt_populate_help(HidPushToTalk* hid_ptt, uint32_t appIndex) {
     widget_reset(hid_ptt->help);
+    // Explicit breaks keep setup instructions readable on the small display.
+    // The shared scroll widget also wraps UTF-8 and uses the CJK line metrics.
     char* app_specific_help = "";
     switch(appIndex) {
     case HidPushToTalkAppIndexGoogleMeet:
         app_specific_help =
-            "Google Meet:\n"
-            "This feature is off by default in your audio settings "
-            "and may not work for Windows users who use their screen "
-            "reader. In this situation, the spacebar performs a different action.\n\n";
+            "Google Meet:\nThis feature is off by default in your audio settings and may not work for Windows users who use their screen reader. In this situation, the spacebar performs a different action.\n\n"
+            ""
+            ""
+            ""
+            ""
+            ""
+            "";
         break;
     case HidPushToTalkAppIndexGoogleMeetGlobal:
-        app_specific_help = "Google Meet (Global):\n"
-                            "1. Install \"Google Meet - Global Shortcuts\" extension.\n"
-                            "2. Open chrome://extensions/shortcuts.\n"
-                            "3. Set 'Toggle microphone' to Cmd+Ctrl+7 and enable Global.\n"
-                            "4. Set 'Toggle camera' to Cmd+Ctrl+8 and enable Global.\n"
-                            "5. Set 'Raise hand' to Cmd+Ctrl+9 and enable Global.\n\n";
+        app_specific_help =
+            "Google Meet (Global):\n1. Install \"Google Meet - Global Shortcuts\" extension.\n2. Open chrome://extensions/shortcuts.\n3. Set 'Toggle microphone' to Cmd+Ctrl+7 and enable Global.\n4. Set 'Toggle camera' to Cmd+Ctrl+8 and enable Global.\n5. Set 'Raise hand' to Cmd+Ctrl+9 and enable Global.\n\n"
+            ""
+            ""
+            ""
+            ""
+            ""
+            ""
+            ""
+            ""
+            ""
+            ""
+            ""
+            ""
+            "";
         break;
     case HidPushToTalkAppIndexDiscord:
-        app_specific_help = "Discord:\n"
-                            "1. Under App Settings, click Voice & Video. Under Input Mode, "
-                            "check the box next to Push to Talk.\n"
-                            "2. Scroll down to SHORTCUT, click Record Keybinder.\n"
-                            "3. Press PTT in the app to bind it."
-                            "4. Go to Keybinds and assign mute button.\n\n";
+        app_specific_help =
+            "Discord:\n1. Under App Settings, click Voice & Video. Under Input Mode, check the box next to Push to Talk.\n2. Scroll down to SHORTCUT, click Record Keybinder.\n3. Press PTT in the app to bind it.4. Go to Keybinds and assign mute button.\n\n"
+            ""
+            ""
+            ""
+            ""
+            ""
+            ""
+            ""
+            ""
+            ""
+            "";
         break;
     case HidPushToTalkAppIndexTeamSpeak:
-        app_specific_help = "TeamSpeak:\n"
-                            "To make keys working bind them in TeamSpeak settings.\n\n";
+        app_specific_help = "TeamSpeak:\nTo make keys working bind them in TeamSpeak settings.\n\n"
+                            ""
+                            "";
         break;
     case HidPushToTalkAppIndexTeams:
         app_specific_help =
-            "Teams:\n"
-            "Go to Settings > Privacy. Make sure Keyboard shortcut to unmute is toggled on.\n\n";
+            "Teams:\nGo to Settings > Privacy. Make sure Keyboard shortcut to unmute is toggled on.\n\n"
+            ""
+            ""
+            "";
         break;
     case HidPushToTalkAppIndexZoomGlobal:
-        app_specific_help = "Zoom (Global):\n"
-                            "1. Go to Settings > Keyboard Shortcuts.\n"
-                            "2. Find the 'Mute/Unmute' shortcut and click 'Edit'.\n"
-                            "3. Press the Mute button in the app to bind it.\n"
-                            "4. Check global checkbox.\n"
-                            "5. Repeat for video and hand shortcuts.\n"
-                            "6. Long-press < to send Enter key.\n\n";
+        app_specific_help =
+            "Zoom (Global):\n1. Go to Settings > Keyboard Shortcuts.\n2. Find the 'Mute/Unmute' shortcut and click 'Edit'.\n3. Press the Mute button in the app to bind it.\n4. Check global checkbox.\n5. Repeat for video and hand shortcuts.\n6. Long-press < to send Enter key.\n\n"
+            ""
+            ""
+            ""
+            ""
+            ""
+            ""
+            ""
+            ""
+            ""
+            "";
         break;
     case HidPushToTalkAppIndexZoom:
-        app_specific_help = "Zoom:\n"
-                            "1. Go to Settings > Keyboard Shortcuts.\n"
-                            "2. Find the 'Mute/Unmute' shortcut and click 'Edit'.\n"
-                            "3. Press the Mute button in the app to bind it.\n"
-                            "4. Repeat for video and hand shortcuts.\n"
-                            "5. Long-press < to send Enter key.\n\n";
+        app_specific_help =
+            "Zoom:\n1. Go to Settings > Keyboard Shortcuts.\n2. Find the 'Mute/Unmute' shortcut and click 'Edit'.\n3. Press the Mute button in the app to bind it.\n4. Repeat for video and hand shortcuts.\n5. Long-press < to send Enter key.\n\n"
+            ""
+            ""
+            ""
+            ""
+            ""
+            ""
+            ""
+            ""
+            "";
         break;
     }
     char* left_button_help = "";
@@ -550,15 +583,19 @@ static void hid_ptt_populate_help(HidPushToTalk* hid_ptt, uint32_t appIndex) {
     FuriString* msg = furi_string_alloc();
     furi_string_cat_printf(
         msg,
-        "%sGeneral:\n"
-        "To operate properly flipper microphone "
-        "status must be in sync with your computer.\n"
-        "Hold > to change mic status.\n"
-        "%s"
-        "Long-press OK in menu to open this help.\n"
-        "Press BACK to switch mic on/off.\n"
-        "Hold 'o' for PTT mode (mic will be off once you release 'o')\n"
-        "Hold BACK to exit.",
+        "%sGeneral:\nTo operate properly flipper microphone status must be in sync with your computer.\nHold > to change mic status.\n%sLong-press OK in menu to open this help.\nPress BACK to switch mic on/off.\nHold 'o' for PTT mode (mic will be off once you release 'o')\nHold BACK to exit."
+        ""
+        ""
+        ""
+        ""
+        ""
+        ""
+        ""
+        ""
+        ""
+        ""
+        ""
+        "",
         app_specific_help,
         left_button_help);
     widget_add_text_scroll_element(hid_ptt->help, 0, 0, 128, 64, furi_string_get_cstr(msg));

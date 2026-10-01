@@ -97,7 +97,8 @@ int32_t findmy_main(void* p) {
 }
 
 void findmy_change_broadcast_interval(FindMy* app, uint8_t value) {
-    if(value > 10 || value < 1) {
+    const uint8_t maximum = app->state.tag_type == FindMyTypeGoogle ? 2 : 10;
+    if(value > maximum || value < 1) {
         return;
     }
     app->state.broadcast_interval = value;
@@ -127,6 +128,10 @@ void findmy_toggle_beacon(FindMy* app) {
 
 void findmy_set_tag_type(FindMy* app, FindMyType type) {
     app->state.tag_type = type;
+    if(type == FindMyTypeGoogle && app->state.broadcast_interval > 2) {
+        app->state.broadcast_interval = 2;
+        findmy_main_update_interval(app->findmy_main, app->state.broadcast_interval);
+    }
     findmy_state_save_and_apply(&app->state);
     findmy_main_update_type(app->findmy_main, type);
 }

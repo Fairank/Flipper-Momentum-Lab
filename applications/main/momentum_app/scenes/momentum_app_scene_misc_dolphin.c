@@ -153,12 +153,7 @@ void momentum_app_scene_misc_dolphin_on_enter(void* context) {
     variable_item_set_current_value_index(item, app->dolphin_angry);
     variable_item_set_current_value_text(item, angry_str);
     variable_item_set_locked(
-        item,
-        settings.happy_mode,
-        "Settings >\n"
-        "Desktop >\n"
-        "Happy Mode\n"
-        "is enabled!");
+        item, settings.happy_mode, "Settings >\nDesktop >\nHappy Mode\nis enabled!");
 
     item = variable_item_list_add(
         var_item_list,
@@ -171,12 +166,7 @@ void momentum_app_scene_misc_dolphin_on_enter(void* context) {
     variable_item_set_current_value_index(item, value_index);
     variable_item_set_current_value_text(item, butthurt_timer_names[value_index]);
     variable_item_set_locked(
-        item,
-        settings.happy_mode,
-        "Settings >\n"
-        "Desktop >\n"
-        "Happy Mode\n"
-        "is enabled!");
+        item, settings.happy_mode, "Settings >\nDesktop >\nHappy Mode\nis enabled!");
 
     variable_item_list_set_enter_callback(
         var_item_list, momentum_app_scene_misc_dolphin_var_item_list_callback, app);

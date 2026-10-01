@@ -2,6 +2,10 @@
 
 以 Momentum 的界面、主题包和应用体系为基础，逐项适配 Unleashed 中有价值的改进。
 
+最新第三轮：[手机能力共享、中文 SD 资源与第三方并集](documentation/custom/COMPANION_AND_CHINESE_20260929.md)。已补 iPhone GPS/网络处理端、九类中文动画提示、68 条对白和第二批十个应用；空间与测试结果见 [验证记录](documentation/custom/VALIDATION.md)。以下各节保留此前改动的历史。
+
+**2026-09-29 前轮变化见 [第二轮中文与功能并集](documentation/custom/UNION_CHINESE_CONTINUATION.md)**：快捷设置、床头时钟、菜单过渡、十个工具、中文排版和 iPhone 应用说明；此前的固定提交、协议更新与 API 89.0 兼容边界见 [上游融合记录](documentation/custom/UPSTREAM_FUSION.md)。代码 `6017530b` 的本地和云端结果见 [验证记录](documentation/custom/VALIDATION.md)。下面的“第一批改进”及 87.2 / macOS 构建描述保留为历史记录，不能用作本轮状态。
+
 ## 来源
 
 - Momentum 基线：`d3f89dfe2ef6b01839201598e9be1590cba80322`，2026-08-18。

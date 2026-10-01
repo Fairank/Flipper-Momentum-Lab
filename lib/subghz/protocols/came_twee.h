@@ -19,12 +19,6 @@ extern const SubGhzProtocol subghz_protocol_came_twee;
 void* subghz_protocol_encoder_came_twee_alloc(SubGhzEnvironment* environment);
 
 /**
- * Free SubGhzProtocolEncoderCameTwee.
- * @param context Pointer to a SubGhzProtocolEncoderCameTwee instance
- */
-void subghz_protocol_encoder_came_twee_free(void* context);
-
-/**
  * Deserialize and generating an upload to send.
  * @param context Pointer to a SubGhzProtocolEncoderCameTwee instance
  * @param flipper_format Pointer to a FlipperFormat instance
@@ -40,24 +34,11 @@ SubGhzProtocolStatus
 void subghz_protocol_encoder_came_twee_stop(void* context);
 
 /**
- * Getting the level and duration of the upload to be loaded into DMA.
- * @param context Pointer to a SubGhzProtocolEncoderCameTwee instance
- * @return LevelDuration 
- */
-LevelDuration subghz_protocol_encoder_came_twee_yield(void* context);
-
-/**
  * Allocate SubGhzProtocolDecoderCameTwee.
  * @param environment Pointer to a SubGhzEnvironment instance
  * @return SubGhzProtocolDecoderCameTwee* pointer to a SubGhzProtocolDecoderCameTwee instance
  */
 void* subghz_protocol_decoder_came_twee_alloc(SubGhzEnvironment* environment);
-
-/**
- * Free SubGhzProtocolDecoderCameTwee.
- * @param context Pointer to a SubGhzProtocolDecoderCameTwee instance
- */
-void subghz_protocol_decoder_came_twee_free(void* context);
 
 /**
  * Reset decoder SubGhzProtocolDecoderCameTwee.

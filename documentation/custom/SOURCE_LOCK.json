@@ -1,11 +1,11 @@
 {
-  "recorded_at": "2026-09-24",
+  "recorded_at": "2026-09-29",
   "momentum": {
     "url": "https://github.com/Next-Flip/Momentum-Firmware.git",
     "branch": "dev",
     "commit": "d3f89dfe2ef6b01839201598e9be1590cba80322"
   },
-  "development_branch": "codex/momentum-unleashed",
+  "development_branch": "codex/iphone-zh-architecture",
   "xtreme_reference": {
     "url": "https://github.com/Flipper-XFW/Xtreme-Firmware.git",
     "commit": "54619d013a120897eeade491decf4d1e95217c06",
@@ -26,7 +26,10 @@
         "commit": "83fbee38f1399e65833835a256f0c5b0501f54e7",
         "scope": "GatherSources stable deduplication only"
       }
-    ]
+    ],
+    "branch": "dev",
+    "reviewed_head": "15bca58e644c8e75fcac42a1929b3d37cbea208f",
+    "adaptation_record": "UPSTREAM_FUSION.md"
   },
   "toolchain": {
     "version": 39,
@@ -39,7 +42,7 @@
     },
     {
       "path": "assets/protobuf",
-      "commit": "ea4f185f5eaa265955c520eae2832887ee6aa5e4"
+      "commit": "05d4dc1e11dc3d22c453e13edebf82ff5ead5bd2"
     },
     {
       "path": "documentation/doxygen/doxygen-awesome-css",

@@ -19,6 +19,24 @@ void nfc_render_iso14443_4a_brief(const Iso14443_4aData* data, FuriString* str) 
 }
 
 void nfc_render_iso14443_4a_extra(const Iso14443_4aData* data, FuriString* str) {
+    uint32_t hist_bytes_count;
+    const uint8_t* hist_bytes = iso14443_4a_get_historical_bytes(data, &hist_bytes_count);
+
+    // Full raw ATS as received (TL T0 [TA1] [TB1] [TC1] + historical bytes), before the decoded
+    // fields below, so every screen using this renderer also exposes the exact ATS. T0 bits 4/5/6
+    // flag the presence of TA1/TB1/TC1.
+    const Iso14443_4aAtsData* ats = &data->ats_data;
+    if(ats->tl > 1) {
+        furi_string_cat_printf(str, "\n:::::::::::::::::::::[ATS]:::::::::::::::::::::\nRaw:");
+        furi_string_cat_printf(str, " %02X %02X", ats->tl, ats->t0);
+        if(ats->t0 & 0x10) furi_string_cat_printf(str, " %02X", ats->ta_1);
+        if(ats->t0 & 0x20) furi_string_cat_printf(str, " %02X", ats->tb_1);
+        if(ats->t0 & 0x40) furi_string_cat_printf(str, " %02X", ats->tc_1);
+        for(size_t i = 0; i < hist_bytes_count; ++i) {
+            furi_string_cat_printf(str, " %02X", hist_bytes[i]);
+        }
+    }
+
     furi_string_cat_printf(str, "\n::::::::::::::::[Protocol info]:::::::::::::::\n");
 
     if(iso14443_4a_supports_bit_rate(data, Iso14443_4aBitRateBoth106Kbit)) {
@@ -58,7 +76,12 @@ void nfc_render_iso14443_4a_extra(const Iso14443_4aData* data, FuriString* str) 
 
     const uint32_t fwt_fc = iso14443_4a_get_fwt_fc_max(data);
     if(fwt_fc != 0) {
-        furi_string_cat_printf(str, "Max waiting time: %4.2g s\n", (double)(fwt_fc / 13.56e6));
+        // fc -> us is fc * 25 / 339 (1/13.56 exactly), truncating to whole microseconds. fwi is
+        // capped at 14, so fc <= 4096 << 14 and the multiply fits uint32_t. Integer rather than
+        // double to keep the soft-float calls out of the render path.
+        const uint32_t fwt_us = fwt_fc * 25 / 339;
+        furi_string_cat_printf(
+            str, "Max waiting time: %lu.%06lu s\n", fwt_us / 1000000UL, fwt_us % 1000000UL);
     }
 
     const char* nad_support_str =
@@ -68,9 +91,6 @@ void nfc_render_iso14443_4a_extra(const Iso14443_4aData* data, FuriString* str) 
     const char* cid_support_str =
         iso14443_4a_supports_frame_option(data, Iso14443_4aFrameOptionCid) ? "" : "not ";
     furi_string_cat_printf(str, "CID: %ssupported", cid_support_str);
-
-    uint32_t hist_bytes_count;
-    const uint8_t* hist_bytes = iso14443_4a_get_historical_bytes(data, &hist_bytes_count);
 
     if(hist_bytes_count > 0) {
         furi_string_cat_printf(str, "\n:::::::::::::[Historical bytes]:::::::::::::\nRaw:");

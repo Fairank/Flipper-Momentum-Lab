@@ -107,14 +107,15 @@ bool momentum_app_scene_protocols_on_event(void* context, SceneManagerEvent even
                 dialog_message_set_buttons(msg, "No", NULL, "Yes");
                 dialog_message_set_text(
                     msg,
-                    (event.event == VarItemListIndexSubghzBypass) ? "Unlocks TX to 300-350,\n"
-                                                                    "387-467, 779-928 MHz\n"
-                                                                    "Use responsibly, check\n"
-                                                                    "local laws" :
-                                                                    "Extends TX to 281-361,\n"
-                                                                    "378-481, 749-962 MHz\n"
-                                                                    "Use at own risk, may\n"
-                                                                    "damage Flipper",
+                    (event.event == VarItemListIndexSubghzBypass) ?
+                        "Unlocks TX to 300-350,\n387-467, 779-928 MHz\nUse responsibly, check\nlocal laws"
+                        ""
+                        ""
+                        "" :
+                        "Extends TX to 281-361,\n378-481, 749-962 MHz\nUse at own risk, may\ndamage Flipper"
+                        ""
+                        ""
+                        "",
                     64,
                     36,
                     AlignCenter,

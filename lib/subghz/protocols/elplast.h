@@ -19,12 +19,6 @@ extern const SubGhzProtocol subghz_protocol_elplast;
 void* subghz_protocol_encoder_elplast_alloc(SubGhzEnvironment* environment);
 
 /**
- * Free SubGhzProtocolEncoderElplast.
- * @param context Pointer to a SubGhzProtocolEncoderElplast instance
- */
-void subghz_protocol_encoder_elplast_free(void* context);
-
-/**
  * Deserialize and generating an upload to send.
  * @param context Pointer to a SubGhzProtocolEncoderElplast instance
  * @param flipper_format Pointer to a FlipperFormat instance
@@ -34,36 +28,11 @@ SubGhzProtocolStatus
     subghz_protocol_encoder_elplast_deserialize(void* context, FlipperFormat* flipper_format);
 
 /**
- * Forced transmission stop.
- * @param context Pointer to a SubGhzProtocolEncoderElplast instance
- */
-void subghz_protocol_encoder_elplast_stop(void* context);
-
-/**
- * Getting the level and duration of the upload to be loaded into DMA.
- * @param context Pointer to a SubGhzProtocolEncoderElplast instance
- * @return LevelDuration 
- */
-LevelDuration subghz_protocol_encoder_elplast_yield(void* context);
-
-/**
  * Allocate SubGhzProtocolDecoderElplast.
  * @param environment Pointer to a SubGhzEnvironment instance
  * @return SubGhzProtocolDecoderElplast* pointer to a SubGhzProtocolDecoderElplast instance
  */
 void* subghz_protocol_decoder_elplast_alloc(SubGhzEnvironment* environment);
-
-/**
- * Free SubGhzProtocolDecoderElplast.
- * @param context Pointer to a SubGhzProtocolDecoderElplast instance
- */
-void subghz_protocol_decoder_elplast_free(void* context);
-
-/**
- * Reset decoder SubGhzProtocolDecoderElplast.
- * @param context Pointer to a SubGhzProtocolDecoderElplast instance
- */
-void subghz_protocol_decoder_elplast_reset(void* context);
 
 /**
  * Parse a raw sequence of levels and durations received from the air.

@@ -23,7 +23,7 @@ void bad_usb_scene_confirm_unpair_on_enter(void* context) {
         context);
 
     widget_add_text_box_element(
-        widget, 0, 0, 128, 64, AlignCenter, AlignTop, "\e#Unpair the Device?\e#\n", false);
+        widget, 0, 0, 128, 64, AlignCenter, AlignTop, "\033#Unpair the Device?\033#\n", false);
 
     view_dispatcher_switch_to_view(bad_usb->view_dispatcher, BadUsbAppViewWidget);
 }

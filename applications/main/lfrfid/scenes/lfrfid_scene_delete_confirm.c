@@ -7,8 +7,8 @@ void lfrfid_scene_delete_confirm_on_enter(void* context) {
     Widget* widget = app->widget;
 
     FuriString* display_text = furi_string_alloc_printf(
-        "\e#Delete %s?\e#\n"
-        "Hex: ",
+        "\033#Delete %s?\033#\nHex: "
+        "",
         furi_string_get_cstr(app->file_name));
 
     const size_t data_size = protocol_dict_get_data_size(app->dict, app->protocol_id);

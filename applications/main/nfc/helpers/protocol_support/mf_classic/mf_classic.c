@@ -1,4 +1,5 @@
 #include "mf_classic.h"
+#include "mf_classic_extra_scenes.h"
 #include "mf_classic_render.h"
 
 #include <nfc/protocols/mf_classic/mf_classic_poller.h>
@@ -16,7 +17,30 @@ enum {
     SubmenuIndexCrackNonces,
     SubmenuIndexUpdate,
     SubmenuIndexShowKeys,
+    SubmenuIndexSaveKeys,
 };
+
+// The keys the card gave up are only reachable from this card until they reach the shared user
+// dictionary - the CUID dictionary in particular is per-UID and invisible to everything else.
+static void nfc_scene_menu_add_save_keys_mf_classic(NfcApp* instance, const MfClassicData* data) {
+    if((data->key_a_mask | data->key_b_mask) == 0) return;
+
+    submenu_add_item(
+        instance->submenu,
+        "Save Keys to Dictionary",
+        SubmenuIndexSaveKeys,
+        nfc_protocol_support_common_submenu_callback,
+        instance);
+}
+
+static bool nfc_scene_menu_on_event_save_keys_mf_classic(NfcApp* instance, uint32_t event) {
+    if(event != SubmenuIndexSaveKeys) return false;
+
+    instance->key_dict_type = NfcKeyDictTypeMfClassic;
+    scene_manager_next_scene(instance->scene_manager, NfcSceneKeyDictImport);
+
+    return true;
+}
 
 static void nfc_scene_info_on_enter_mf_classic(NfcApp* instance) {
     const NfcDevice* device = instance->nfc_device;
@@ -147,6 +171,8 @@ static void nfc_scene_read_menu_on_enter_mf_classic(NfcApp* instance) {
         SubmenuIndexShowKeys,
         nfc_protocol_support_common_submenu_callback,
         instance);
+
+    nfc_scene_menu_add_save_keys_mf_classic(instance, data);
 }
 
 static void nfc_scene_read_success_on_enter_mf_classic(NfcApp* instance) { //-V524
@@ -201,6 +227,8 @@ static void nfc_scene_saved_menu_on_enter_mf_classic(NfcApp* instance) {
         SubmenuIndexShowKeys,
         nfc_protocol_support_common_submenu_callback,
         instance);
+
+    nfc_scene_menu_add_save_keys_mf_classic(instance, data);
 }
 
 static void nfc_scene_emulate_on_enter_mf_classic(NfcApp* instance) {
@@ -236,6 +264,8 @@ static bool nfc_scene_read_menu_on_event_mf_classic(NfcApp* instance, SceneManag
         } else if(event.event == SubmenuIndexShowKeys) {
             scene_manager_next_scene(instance->scene_manager, NfcSceneMfClassicShowKeys);
             consumed = true;
+        } else {
+            consumed = nfc_scene_menu_on_event_save_keys_mf_classic(instance, event.event);
         }
     }
 
@@ -261,6 +291,8 @@ static bool nfc_scene_saved_menu_on_event_mf_classic(NfcApp* instance, SceneMana
         } else if(event.event == SubmenuIndexShowKeys) {
             scene_manager_next_scene(instance->scene_manager, NfcSceneMfClassicShowKeys);
             consumed = true;
+        } else {
+            consumed = nfc_scene_menu_on_event_save_keys_mf_classic(instance, event.event);
         }
     }
 
@@ -391,6 +423,9 @@ const NfcProtocolSupportBase nfc_protocol_support_mf_classic = {
             .on_enter = nfc_scene_write_on_enter_mf_classic,
             .on_event = nfc_protocol_support_common_on_event_empty,
         },
+
+    .extra_scenes = mf_classic_extra_scenes,
+    .extra_scenes_count = MfClassicExtraSceneNum,
 };
 
 NFC_PROTOCOL_SUPPORT_PLUGIN(mf_classic, NfcProtocolMfClassic);

@@ -34,14 +34,17 @@ static void findmy_main_draw_callback(Canvas* canvas, void* _model) {
     case FindMyTypeTile:
         network_text = "Tile Network";
         break;
+    case FindMyTypeGoogle:
+        network_text = "Google Network";
+        break;
     default:
         break;
     }
 
     if(model->show_mac == false) {
         canvas_set_font(canvas, FontPrimary);
-        canvas_draw_str(canvas, 4, 31, network_text);
-        canvas_draw_icon(canvas, 6 + canvas_string_width(canvas, network_text), 24, &I_Lock_7x8);
+        canvas_draw_str(canvas, 4, 34, network_text);
+        canvas_draw_icon(canvas, 6 + canvas_string_width(canvas, network_text), 27, &I_Lock_7x8);
     } else if(model->show_mac == true) {
         canvas_set_font(canvas, FontSecondary);
         char mac_str[23];
@@ -55,26 +58,28 @@ static void findmy_main_draw_callback(Canvas* canvas, void* _model) {
             model->mac[3],
             model->mac[4],
             model->mac[5]);
-        canvas_draw_str(canvas, 4, 40, mac_str);
-        canvas_draw_str(canvas, 4, 30, network_text);
-        canvas_draw_icon(canvas, 6 + canvas_string_width(canvas, network_text), 23, &I_Lock_7x8);
+        canvas_draw_str(canvas, 4, 43, mac_str);
+        canvas_draw_str(canvas, 4, 34, network_text);
+        canvas_draw_icon(canvas, 6 + canvas_string_width(canvas, network_text), 27, &I_Lock_7x8);
     }
     canvas_set_font(canvas, FontSecondary);
-    if(model->active) {
+    if(model->show_mac) {
+        canvas_draw_str(canvas, 107, 11, model->active ? "ON" : "OFF");
+    } else if(model->active) {
         canvas_draw_str(canvas, 4, 49, "Broadcast Active");
         canvas_draw_icon(canvas, 78, 41, &I_Ok_btn_9x9);
     } else {
         canvas_draw_str(canvas, 4, 49, "Broadcast Inactive");
     }
     canvas_set_font(canvas, FontSecondary);
-    canvas_draw_str(canvas, 4, 21, "Press <- to run in background");
+    canvas_draw_str(canvas, 4, 24, "Press <- to run in background");
     canvas_set_font(canvas, FontSecondary);
     char interval_str[20];
     snprintf(interval_str, sizeof(interval_str), "Ping Interval: %ds", model->interval);
     canvas_draw_str(canvas, 4, 62, interval_str);
 
     canvas_set_font(canvas, FontSecondary);
-    canvas_draw_str(canvas, 100, 61, "Config");
+    canvas_draw_str(canvas, 101, 63, "Config");
     canvas_draw_line(canvas, 100, 51, 127, 51);
     canvas_draw_line(canvas, 97, 53, 97, 63);
     canvas_draw_line(canvas, 97, 53, 99, 51);

@@ -19,12 +19,6 @@ extern const SubGhzProtocol subghz_protocol_magellan;
 void* subghz_protocol_encoder_magellan_alloc(SubGhzEnvironment* environment);
 
 /**
- * Free SubGhzProtocolEncoderMagellan.
- * @param context Pointer to a SubGhzProtocolEncoderMagellan instance
- */
-void subghz_protocol_encoder_magellan_free(void* context);
-
-/**
  * Deserialize and generating an upload to send.
  * @param context Pointer to a SubGhzProtocolEncoderMagellan instance
  * @param flipper_format Pointer to a FlipperFormat instance
@@ -40,30 +34,11 @@ SubGhzProtocolStatus
 void subghz_protocol_encoder_magellan_stop(void* context);
 
 /**
- * Getting the level and duration of the upload to be loaded into DMA.
- * @param context Pointer to a SubGhzProtocolEncoderMagellan instance
- * @return LevelDuration 
- */
-LevelDuration subghz_protocol_encoder_magellan_yield(void* context);
-
-/**
  * Allocate SubGhzProtocolDecoderMagellan.
  * @param environment Pointer to a SubGhzEnvironment instance
  * @return SubGhzProtocolDecoderMagellan* pointer to a SubGhzProtocolDecoderMagellan instance
  */
 void* subghz_protocol_decoder_magellan_alloc(SubGhzEnvironment* environment);
-
-/**
- * Free SubGhzProtocolDecoderMagellan.
- * @param context Pointer to a SubGhzProtocolDecoderMagellan instance
- */
-void subghz_protocol_decoder_magellan_free(void* context);
-
-/**
- * Reset decoder SubGhzProtocolDecoderMagellan.
- * @param context Pointer to a SubGhzProtocolDecoderMagellan instance
- */
-void subghz_protocol_decoder_magellan_reset(void* context);
 
 /**
  * Parse a raw sequence of levels and durations received from the air.

@@ -1,0 +1,64 @@
+name: Lab firmware
+
+on:
+  push:
+    branches: ["codex/**"]
+    paths-ignore: ["mobile/**", "**.md", "documentation/custom/**"]
+  pull_request:
+    paths-ignore: ["mobile/**", "**.md", "documentation/custom/**"]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.head_ref || github.ref_name }}
+  cancel-in-progress: true
+
+jobs:
+  firmware:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+          submodules: recursive
+      - name: Build pinned firmware and external apps
+        env:
+          FBT_NO_SYNC: "1"
+        # Packaging cleans dist; a fresh SCons graph must create fap directories afterward.
+        run: |
+          ./fbt updater_package
+          ./fbt fap_dist
+      - name: Verify build did not modify tracked sources
+        run: git diff --exit-code
+      - name: Verify updater size and companion applications
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          output = Path("dist/f7-C")
+          updaters = list(output.glob("*updater-*.bin"))
+          assert updaters, "Updater binary missing"
+          for updater in updaters:
+              size = updater.stat().st_size
+              assert 0 < size <= 131072, f"Legacy updater load limit exceeded: {size}"
+              print(f"{updater.name}: {size} bytes")
+          for app in ("lab", "lab_bridge", "clock", "pomodoro_timer", "analog_clock", "segment_clock", "calendar", "net_calculator", "multi_counter", "sd_info", "flipper_chronometer", "trackerflipx", "flipnote"):
+              matches = list((output / "apps").rglob(app + ".fap"))
+              assert len(matches) == 1, f"Missing or duplicate {app}: {matches}"
+              path = matches[0]
+              assert path.is_file() and path.stat().st_size > 0, f"Missing {path}"
+          PY
+      - name: Package checksums
+        run: sha256sum dist/f7-C/*update-*.tgz > dist/f7-C/SHA256SUMS.txt
+      - uses: actions/upload-artifact@v4
+        with:
+          name: flipper-lab-firmware-${{ github.sha }}
+          path: |
+            dist/f7-C/*update-*.tgz
+            dist/f7-C/SHA256SUMS.txt
+            dist/f7-C/apps/Tools/lab.fap
+            dist/f7-C/apps/Tools/lab_bridge.fap
+          retention-days: 14
+          if-no-files-found: error

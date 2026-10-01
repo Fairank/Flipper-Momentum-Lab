@@ -5,6 +5,8 @@ App(
     provides=[
         "cli_vcp",
         "rpc_start",
+        "gps_start",
+        "network_start",
         "expansion_start",
         "bt",
         "desktop",

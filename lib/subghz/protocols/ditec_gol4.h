@@ -19,12 +19,6 @@ extern const SubGhzProtocol subghz_protocol_ditec_gol4;
 void* subghz_protocol_encoder_ditec_gol4_alloc(SubGhzEnvironment* environment);
 
 /**
- * Free SubGhzProtocolEncoderDitecGOL4.
- * @param context Pointer to a SubGhzProtocolEncoderDitecGOL4 instance
- */
-void subghz_protocol_encoder_ditec_gol4_free(void* context);
-
-/**
  * Deserialize and generating an upload to send.
  * @param context Pointer to a SubGhzProtocolEncoderDitecGOL4 instance
  * @param flipper_format Pointer to a FlipperFormat instance
@@ -34,36 +28,11 @@ SubGhzProtocolStatus
     subghz_protocol_encoder_ditec_gol4_deserialize(void* context, FlipperFormat* flipper_format);
 
 /**
- * Forced transmission stop.
- * @param context Pointer to a SubGhzProtocolEncoderDitecGOL4 instance
- */
-void subghz_protocol_encoder_ditec_gol4_stop(void* context);
-
-/**
- * Getting the level and duration of the upload to be loaded into DMA.
- * @param context Pointer to a SubGhzProtocolEncoderDitecGOL4 instance
- * @return LevelDuration 
- */
-LevelDuration subghz_protocol_encoder_ditec_gol4_yield(void* context);
-
-/**
  * Allocate SubGhzProtocolDecoderDitecGOL4.
  * @param environment Pointer to a SubGhzEnvironment instance
  * @return SubGhzProtocolDecoderDitecGOL4* pointer to a SubGhzProtocolDecoderDitecGOL4 instance
  */
 void* subghz_protocol_decoder_ditec_gol4_alloc(SubGhzEnvironment* environment);
-
-/**
- * Free SubGhzProtocolDecoderDitecGOL4.
- * @param context Pointer to a SubGhzProtocolDecoderDitecGOL4 instance
- */
-void subghz_protocol_decoder_ditec_gol4_free(void* context);
-
-/**
- * Reset decoder SubGhzProtocolDecoderDitecGOL4.
- * @param context Pointer to a SubGhzProtocolDecoderDitecGOL4 instance
- */
-void subghz_protocol_decoder_ditec_gol4_reset(void* context);
 
 /**
  * Parse a raw sequence of levels and durations received from the air.

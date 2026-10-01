@@ -16,14 +16,14 @@ void ibutton_scene_info_on_enter(void* context) {
        (strcmp(ibutton_protocols_get_manufacturer(ibutton->protocols, protocol_id), "N/A") != 0)) {
         furi_string_printf(
             tmp,
-            "Name:%s\n\e#%s %s\e#\n",
+            "Name:%s\n\033#%s %s\033#\n",
             ibutton->key_name,
             ibutton_protocols_get_manufacturer(ibutton->protocols, protocol_id),
             ibutton_protocols_get_name(ibutton->protocols, protocol_id));
     } else {
         furi_string_printf(
             tmp,
-            "Name:%s\n\e#%s\e#\n",
+            "Name:%s\n\033#%s\033#\n",
             ibutton->key_name,
             ibutton_protocols_get_name(ibutton->protocols, protocol_id));
     }
