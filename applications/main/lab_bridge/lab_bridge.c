@@ -5,12 +5,14 @@
 #include <gui/view_dispatcher.h>
 #include <rpc/rpc_app.h>
 #include <expansion/expansion.h>
+#include <momentum/momentum.h>
 #include <stdio.h>
 
 typedef struct {
     uint32_t received;
     uint32_t dropped;
     uint32_t baud;
+    uint8_t port;
     bool opened;
     bool remote;
     bool busy;
@@ -28,6 +30,7 @@ typedef struct {
     volatile uint32_t dropped;
     uint32_t received;
     uint32_t baud;
+    uint8_t port;
 } LabBridge;
 
 static void lab_bridge_rx(FuriHalSerialHandle* serial, FuriHalSerialRxEvent event, void* context) {
@@ -54,6 +57,7 @@ static void lab_bridge_close(LabBridge* app) {
 
 static uint8_t lab_bridge_open(LabBridge* app, uint8_t port, uint32_t baud) {
     lab_bridge_close(app);
+    app->port = port;
     app->serial =
         furi_hal_serial_control_acquire(port == 0 ? FuriHalSerialIdUsart : FuriHalSerialIdLpuart);
     if(!app->serial) return 2;
@@ -79,6 +83,7 @@ static void lab_bridge_update(LabBridge* app, bool busy) {
             model->received = app->received;
             model->dropped = app->dropped;
             model->baud = app->baud;
+            model->port = app->port;
             model->opened = app->serial != NULL;
             model->remote = app->rpc != NULL;
             model->busy = busy;
@@ -175,24 +180,43 @@ static void lab_bridge_draw(Canvas* canvas, void* context) {
         model->busy   ? "Serial port busy" :
         model->opened ? "Receiving" :
                         "Serial port closed");
-    snprintf(line, sizeof(line), "%lu baud  RX %lu", model->baud, model->received);
+    snprintf(
+        line,
+        sizeof(line),
+        "%s %lu RX %lu",
+        model->port == 0 ? "USART" : "LPUART",
+        model->baud,
+        model->received);
     canvas_draw_str(canvas, 2, 37, line);
     snprintf(line, sizeof(line), "Dropped: %lu", model->dropped);
     canvas_draw_str(canvas, 2, 49, line);
-    canvas_draw_str(canvas, 2, 62, model->remote ? "Stop RX on phone" : "OK:Receive Back:Exit");
+    canvas_draw_str(
+        canvas,
+        2,
+        62,
+        model->remote  ? "Stop RX on phone" :
+        model->opened ? "OK:Stop Back:Exit" :
+                        "L/R:Port OK:Receive");
 }
 
 static bool lab_bridge_input(InputEvent* event, void* context) {
     LabBridge* app = context;
-    if(event->type != InputTypeShort || event->key != InputKeyOk) return false;
+    if(event->type != InputTypeShort ||
+       (event->key != InputKeyOk && event->key != InputKeyLeft && event->key != InputKeyRight))
+        return false;
     furi_mutex_acquire(app->mutex, FuriWaitForever);
     if(!app->rpc) {
         uint8_t status = 0;
-        if(app->serial)
-            lab_bridge_close(app);
-        else
-            status = lab_bridge_open(app, 0, 115200);
-        lab_bridge_update(app, status == 2);
+        if(event->key == InputKeyOk) {
+            if(app->serial)
+                lab_bridge_close(app);
+            else
+                status = lab_bridge_open(app, app->port, 115200);
+            lab_bridge_update(app, status == 2);
+        } else if(!app->serial) {
+            app->port = app->port == 0 ? 1 : 0;
+            lab_bridge_update(app, false);
+        }
     }
     furi_mutex_release(app->mutex);
     return true;
@@ -225,6 +249,7 @@ int32_t lab_bridge_app(void* args) {
     app->mutex = furi_mutex_alloc(FuriMutexTypeNormal);
     app->stream = furi_stream_buffer_alloc(8192, 1);
     app->baud = 115200;
+    app->port = momentum_settings.uart_esp_channel == FuriHalSerialIdLpuart ? 1 : 0;
     app->expansion = furi_record_open(RECORD_EXPANSION);
     expansion_disable(app->expansion);
     app->gui = furi_record_open(RECORD_GUI);
