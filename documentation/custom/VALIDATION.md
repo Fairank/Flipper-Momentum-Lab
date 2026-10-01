@@ -2,7 +2,7 @@
 
 ## 无线连接诊断增量（2026-10-01）
 
-`Lab Bridge` 本机接收现在默认使用 Momentum 配置的 ESP UART，并允许在串口关闭时用左右键切换 USART/LPUART；屏幕显示端口。蓝牙 RPC 帧、手机端代码和核心固件均未改动。`fbt.cmd -j1 fap_lab_bridge` 使用固定工具链 39 编译、SDK 检查与 APPCHK 全部通过。新 FAP 为 7,388 字节，MD5 `bf2e5e3fa478038c3e12672e6583b6ce`；已在先前识别的设备上单文件安装至 `/ext/apps/Tools/lab_bridge.fap`，USB 读回 MD5 一致。`loader open`、左右键输入及退出测试通过。安装时核心固件仍报告 `ee43b2c2`，未重刷主固件；没有接入 AIO 板或 iPhone，不计为 Wi-Fi 扫描或 BLE 端到端通过。
+`Lab Bridge` 本机接收现在默认使用 Momentum 配置的 ESP UART，并允许在串口关闭时用左右键切换 USART/LPUART；屏幕显示端口。蓝牙 RPC 帧、手机端代码和核心固件均未改动。`fbt.cmd -j1 fap_lab_bridge` 使用固定工具链 39 编译、SDK 检查与 APPCHK 全部通过。最终 FAP 为 7,388 字节，MD5 `f1fd3142c8e2cf31101696055a48a2fa`；已在先前识别的设备上单文件安装至 `/ext/apps/Tools/lab_bridge.fap`，USB 读回 MD5 一致。`loader open`、左右键输入及退出测试通过。安装时核心固件仍报告 `ee43b2c2`，未重刷主固件；没有接入 AIO 板或 iPhone，不计为 Wi-Fi 扫描或 BLE 端到端通过。
 
 `scripts.tests.test_serial_bridge` 在当前 Windows 主机因缺少宿主 C 编译器被跳过，**不计通过**；FAP 交叉编译与实机 USB 启动提供了本次新增 C 代码的验证。本地 Claude CLI 按 `claude-fable-5-1 --effort max` 发起只读源码整理，初始化报告请求模型，但最终返回 `<synthetic>`、退出码 1、`ECONNREFUSED`，没有可采用的内容或代码。BLE Spam 属于固定的上游 `applications/external` 子模块，此轮仅审核未改动；后续可控性与兼容性问题见 [无线增强清单](WIRELESS_ENHANCEMENTS_20261001.md)。
 

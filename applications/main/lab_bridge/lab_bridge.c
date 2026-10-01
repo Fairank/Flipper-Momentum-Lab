@@ -194,7 +194,7 @@ static void lab_bridge_draw(Canvas* canvas, void* context) {
         canvas,
         2,
         62,
-        model->remote  ? "Stop RX on phone" :
+        model->remote ? "Stop RX on phone" :
         model->opened ? "OK:Stop Back:Exit" :
                         "L/R:Port OK:Receive");
 }
