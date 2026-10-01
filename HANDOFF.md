@@ -1,6 +1,8 @@
 # 换电脑接续：Flipper 英文固件与中文 iPhone 工作台
 
-更新：2026-09-30。工作分支 `codex/iphone-zh-architecture`，草稿 PR [#1](https://github.com/Fairank/Flipper-Momentum-Lab/pull/1)，目标分支 `codex/momentum-unleashed`。尚未合并，也没有上架或已签名 IPA。
+更新：2026-10-01。工作分支 `codex/iphone-zh-architecture`，草稿 PR [#1](https://github.com/Fairank/Flipper-Momentum-Lab/pull/1)，目标分支 `codex/momentum-unleashed`。尚未合并，也没有上架或已签名 IPA。
+
+**2026-10-01 实机与说明书：** 已通过 USB 安装构建 `ee43b2c2`（源码 `52f236fd`），295 个应用与 121 个插件逐项读回核验；Clock、Flipper Lab、SD Info 启动退出通过。音量 0% 已在重启后验证，exFAT 卡识别正常。新增 [中文手册网页版](documentation/custom/manual/index.html) 与 [离线 PDF](output/pdf/flipper-fusion-manual.zh-CN.pdf)，包含 12 章操作说明、全部 295 个应用的中文用途／路径／硬件条件和后续增强建议。全局语言切换未实现，真实 BLE／AIO及逐应用控制仍待验收；公开证据见 [USB 验收摘要](documentation/custom/USB_INSTALL_20261001.json)。
 
 **当前目标：暂停自建手机 UI，优先适配官方 Flipper 手机 App；本机英文和功能升级保留。** 先读 [官方 App 兼容范围](documentation/custom/OFFICIAL_APP_COMPATIBILITY_20260930.md)：标准屏幕遥控、应用启动和文件管理有源码兼容路径，官方目录及未实现的手机能力仍有客户端限制。当前英文帮助扩至11主题／62页，新增“Phone Remote”链接 Apps 浏览器；固件修复 RPC 启动 API 不匹配的阻塞弹窗、遥控输入边界和非线程 Apps 的队列收尾。逐提交实际结果见 [验证记录](documentation/custom/VALIDATION.md)。真实 BLE／AIO、逐应用控制和完整功能并集仍未完成。
 
@@ -25,7 +27,7 @@
 | 固件功能说明 | Flipper Lab 为英文帮助，11个主题／62页；新增 Phone Remote 可打开 Apps。73张菜单及帮助源码布局预览，均不是真机截图 |
 | Wi-Fi | 已保存扫描日志的离线多网络分析可用；没有新增定向断链控制。通用串口接收不能等同于 Wi-Fi 控制或实物板卡已适配 |
 
-用户的手机为 iPhone 17 Pro Max，普通 Apple ID，可借用或使用 Mac。当前 Windows 工作环境没有 Xcode，用户暂时不连接 Flipper/AIO，要求先完成代码与自动测试。AIO Board 1.4 的厂商、芯片丝印、现装固件、端口和供电仍未知。
+用户的手机为 iPhone 17 Pro Max，普通 Apple ID，可借用或使用 Mac。当前 Windows 工作环境没有 Xcode；2026-10-01 用户连接 Flipper 并完成 USB 安装与上述设备检查，真实 iPhone／AIO 链路仍未验收。AIO Board 1.4 的厂商、芯片丝印、现装固件、端口和供电仍未知。
 
 ## 在 Mac 上接续
 
@@ -48,3 +50,7 @@
 [需求与未完成项](documentation/custom/REQUIREMENTS.md)、[实际验证](documentation/custom/VALIDATION.md)、[中文覆盖范围](documentation/custom/NATIVE_ZH_PROGRESS.md)、[Classic 格式与限制](mobile/FlipperLab/CLASSIC_OFFLINE.zh-CN.md)、[串口桥条件](mobile/FlipperLab/SERIAL_BRIDGE.zh-CN.md)是接续依据。两份 FeatureCatalog JSON 必须逐字节相同。
 
 用户已明确授权 AI 修改本个人仓库、测试并推送现有草稿 PR，覆盖继承的上游反 AI 贡献限制；未授权向上游投稿。最新默认仅通过 CLI 使用 `claude-fable-5-1 --effort max` 处理边界清楚的基础工作；前段按当时指定执行的 Opus 任务和本轮 Fable 任务分别记录实际返回模型、退出状态。主助手负责关键逻辑、审核和真实验收，不静默切换。App 不调用 Claude 或其他云端 AI。
+
+## 中文使用手册的维护
+
+文稿和应用索引在 `documentation/custom/manual/`。生成器为 `scripts/generate_chinese_manual.py`，需要 Python 的 ReportLab 和可嵌入的中文 TrueType 字体；运行 `python scripts/generate_chinese_manual.py --root .` 生成网页版与 `output/pdf/flipper-fusion-manual.zh-CN.pdf`。默认读取 Windows 微软雅黑；其他系统用 `--font` 和 `--bold-font` 指定合适的字体，不将系统字体文件提交仓库。此手册的 12 章／44 页、295 应用覆盖、字体与浏览器检查见 `documentation/custom/manual/validation.json`。源清单依据已安装 CI 包冻结，升级固件后要先重新核对增删、API 与验收范围。
