@@ -180,7 +180,6 @@ void network_on_event(Network* network, const NetworkEvent* event, void* bridge_
     furi_mutex_release(network->mutex);
 }
 
-void network_on_system_start(void* p) {
-    UNUSED(p);
+void network_on_system_start(void) {
     furi_record_create(RECORD_NETWORK, network_alloc());
 }

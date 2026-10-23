@@ -109,6 +109,36 @@ if env.subst("$FIRMWARE_APP_SET").startswith("unit_tests"):
 
 env.ConfigureForTarget(env.subst("${TARGET_HW}"))
 
+# Full BLE observation leaves less internal flash. Whole-program optimization
+# retains the merged applications and SDK (rooted by elf_api_table), rather than
+# removing features. The RAM updater and relocatable external FAPs do not use LTO.
+if env["IS_BASE_FIRMWARE"] and env["COMPACT"] and not env["DEBUG"]:
+    env.AppendUnique(
+        # Fat objects retain ordinary symbols for the existing ar response-file
+        # builder (gcc-ar treats its @file as an operation on Windows).
+        CCFLAGS=["-flto", "-ffat-lto-objects"],
+        LINKFLAGS=[
+            "-flto",
+            "-Oz",
+            "-Wl,--undefined=reset_vector",
+            # libc wrapper references are introduced by ld, after LTO analysis.
+            "-Wl,--undefined=__wrap__malloc_r",
+            "-Wl,--undefined=__wrap__free_r",
+            "-Wl,--undefined=__wrap__calloc_r",
+            "-Wl,--undefined=__wrap__realloc_r",
+        ],
+    )
+
+if env["IS_BASE_FIRMWARE"]:
+    from flipper.assets.coprobin import CoproBinary
+
+    stack_path = env.File("#/" + env.subst("${COPRO_STACK_BIN_DIR}/${COPRO_STACK_BIN}"))
+    radio_start = (
+        int(env.subst("${COPRO_STACK_ADDR}"), 0)
+        or CoproBinary(stack_path.abspath).get_flash_load_addr()
+    )
+    env.AppendUnique(LINKFLAGS=[f"-Wl,--defsym=__radio_start__={radio_start}"])
+
 Export("env")
 
 # Invoke child SCopscripts to populate global `env` + build their own part of the code

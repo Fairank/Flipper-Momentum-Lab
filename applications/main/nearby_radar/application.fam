@@ -3,13 +3,13 @@ App(
     name="BLE Radar",
     apptype=FlipperAppType.MENUEXTERNAL,
     entry_point="nearby_radar_app",
-    requires=["gui", "expansion_start", "rpc_start"],
+    requires=["gui", "bt", "rpc_start"],
     stack_size=4 * 1024,
     icon="A_GPIO_14",
     order=7,
     fap_category="Bluetooth",
-    fap_description="Passive BLE discovery, name filter and RSSI target tracking",
-    fap_version="1.1",
+    fap_description="Onboard passive BLE discovery, name filter and RSSI target tracking",
+    fap_version="1.2",
 )
 
 App(
@@ -24,5 +24,5 @@ App(
     cflags=["-DRADAR_WIFI_ONLY=1"],
     fap_category="WiFi",
     fap_description="Passive WiFi access point discovery and RSSI target tracking",
-    fap_version="1.1",
+    fap_version="1.2",
 )

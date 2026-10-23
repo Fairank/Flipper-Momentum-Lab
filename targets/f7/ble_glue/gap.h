@@ -40,6 +40,24 @@ typedef struct {
 
 typedef bool (*GapEventCallback)(GapEvent event, void* context);
 
+/** One legacy BLE advertising report. Address bytes are in controller order.
+ * Callback runs on the BLE event thread: copy to a queue, never block or issue
+ * Bluetooth commands here. Data is borrowed only for the duration of the call.
+ */
+typedef struct {
+    uint8_t address[6];
+    uint8_t address_type;
+    int8_t rssi;
+    uint8_t data_size;
+    uint8_t data[31];
+} GapScanReport;
+
+typedef void (*GapScanCallback)(const GapScanReport* report, void* context);
+
+bool gap_scan_start(GapScanCallback callback, void* context);
+bool gap_scan_stop(void* context);
+bool gap_scan_is_active(void* context);
+
 typedef enum {
     GapStateUninitialized,
     GapStateIdle,

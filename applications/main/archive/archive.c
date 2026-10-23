@@ -136,7 +136,7 @@ void archive_show_loading_popup(ArchiveApp* context, bool show) {
     }
 }
 
-int32_t archive_app(void* p) {
+int32_t archive_ui_app(void* p) {
     FuriString* path = (FuriString*)p;
 
     ArchiveApp* archive = archive_alloc();

@@ -50,6 +50,14 @@ bool furi_hal_bt_start_radio_stack(void);
  */
 FuriHalBtStack furi_hal_bt_get_radio_stack(void);
 
+/** Passive observation alongside the existing peripheral profile, Full stack
+ * only. The callback must not block or call Bluetooth APIs. No pairing or
+ * connection is made to observed devices. Stop synchronizes callback lifetime.
+ */
+bool furi_hal_bt_start_scan(GapScanCallback callback, void* context);
+bool furi_hal_bt_stop_scan(void* context);
+bool furi_hal_bt_is_scan_active(void* context);
+
 /** Check if radio stack supports BLE GAT/GAP
  *
  * @return  true if supported

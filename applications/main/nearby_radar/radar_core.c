@@ -101,15 +101,42 @@ static bool frame(RadarCore* core, char* line, uint32_t now) {
         if(a < 0 || b < 0) return false;
         raw_name[i] = (unsigned char)(a * 16 + b);
     }
-    display_name(next.name, raw_name, size / 2);
+    return radar_observe(
+        core, next.kind, next.id, UINT8_MAX, rssi, channel, raw_name, size / 2, now);
+}
+bool radar_observe(
+    RadarCore* core,
+    char kind,
+    const char* id,
+    uint8_t address_type,
+    int rssi,
+    uint8_t channel,
+    const uint8_t* name,
+    size_t name_size,
+    uint32_t now) {
+    if((kind != 'B' && kind != 'W') || !id || strlen(id) != 12 || name_size > 32 ||
+       (name_size && !name) || rssi < -127 || rssi > 20 || channel > 14 ||
+       (kind == 'B' && channel) || (address_type != UINT8_MAX && address_type > 1))
+        return false;
+    RadarDevice next = {.kind = kind, .address_type = address_type};
+    for(size_t i = 0; i < 12; i++) {
+        int value = hex(id[i]);
+        if(value < 0) return false;
+        next.id[i] = "0123456789ABCDEF"[value];
+    }
+    display_name(next.name, name, name_size);
     int slot = -1;
     uint32_t oldest = 0;
     for(size_t i = 0; i < RADAR_CAPACITY; i++)
         if(core->devices[i].used && core->devices[i].kind == next.kind &&
+           core->devices[i].address_type == next.address_type &&
            !strcmp(core->devices[i].id, next.id)) {
             slot = (int)i;
             break;
         }
+    if(!contains(next.name, core->accept_filter) && !contains(next.id, core->accept_filter) &&
+       !(slot >= 0 && contains(core->devices[slot].name, core->accept_filter)))
+        return true;
     if(slot < 0) {
         for(size_t i = 0; i < RADAR_CAPACITY; i++)
             if(!core->devices[i].used) {
@@ -124,6 +151,18 @@ static bool frame(RadarCore* core, char* line, uint32_t now) {
                     slot = (int)i;
                 }
             }
+        /* In a dense environment retain strong nearby observations instead of
+         * permanently filling with the first 32 devices. Never replace a pin.
+         */
+        if(slot < 0) {
+            int weakest = rssi * 4 - 12;
+            for(size_t i = 0; i < RADAR_CAPACITY; i++) {
+                if((int)i != core->pinned && core->devices[i].average_q4 < weakest) {
+                    weakest = core->devices[i].average_q4;
+                    slot = (int)i;
+                }
+            }
+        }
         if(slot < 0) {
             core->full++;
             return true;

@@ -7,6 +7,9 @@ on:
     paths:
       - "mobile/**"
       - "scripts/tests/**"
+      - "targets/f7/ble_glue/**"
+      - "targets/f7/furi_hal/furi_hal_bt.c"
+      - "targets/furi_hal_include/furi_hal_bt.h"
       - "applications/**"
       - "companion/nearby_radar/**"
       - "lib/fatfs/**"
@@ -27,6 +30,9 @@ on:
     paths:
       - "mobile/**"
       - "scripts/tests/**"
+      - "targets/f7/ble_glue/**"
+      - "targets/f7/furi_hal/furi_hal_bt.c"
+      - "targets/furi_hal_include/furi_hal_bt.h"
       - "applications/**"
       - "companion/nearby_radar/**"
       - "lib/fatfs/**"

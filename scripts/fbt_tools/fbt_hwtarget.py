@@ -129,9 +129,27 @@ def ApplyLibFlags(env):
     env.MergeFlags(flags_to_apply)
 
 
+def KeepAssemblyUnits(env, sources, names):
+    # Do not merge literal pools or register-capture/context-switch assembly
+    # across translation units. Ordinary C in these libraries still uses LTO.
+    if "-flto" not in env["CCFLAGS"]:
+        return sources
+    flags = [
+        flag for flag in env["CCFLAGS"] if flag not in ("-flto", "-ffat-lto-objects")
+    ]
+    result = []
+    for source in sources:
+        if env.File(source).name in names:
+            result.extend(env.Object(source, CCFLAGS=flags))
+        else:
+            result.append(source)
+    return result
+
+
 def generate(env):
     env.AddMethod(ConfigureForTarget)
     env.AddMethod(ApplyLibFlags)
+    env.AddMethod(KeepAssemblyUnits)
 
 
 def exists(env):

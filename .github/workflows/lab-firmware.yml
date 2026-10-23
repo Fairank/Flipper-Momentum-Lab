@@ -33,6 +33,11 @@ jobs:
           ./fbt fap_dist
       - name: Verify build did not modify tracked sources
         run: git diff --exit-code
+      - name: Verify native BLE layout, SDK and resource inventory
+        run: |
+          for bundle in dist/f7-C/*update-*.tgz; do
+            python3 scripts/verify_native_ble_build.py --package "$bundle"
+          done
       - name: Verify updater size and companion applications
         run: |
           python3 - <<'PY'

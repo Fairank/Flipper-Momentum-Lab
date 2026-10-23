@@ -1,4 +1,5 @@
 #include "radar_core.h"
+#include "radar_ble.h"
 #include <furi.h>
 #include <furi_hal.h>
 #include <gui/gui.h>
@@ -20,7 +21,6 @@
 #else
 #define RADAR_KIND  'B'
 #define RADAR_TITLE "BLE Radar"
-#define RADAR_SCAN  "NR1,SCAN,B\n"
 #endif
 
 typedef struct {
@@ -53,10 +53,17 @@ typedef struct {
     uint32_t start_at;
     volatile uint32_t dropped;
     bool scan_sent;
+    FuriMessageQueue* observations;
+    bool scan_open;
 } RadarApp;
+typedef struct {
+    GapScanReport report;
+    uint32_t time;
+} RadarObservation;
 static uint32_t now_ms(void) {
     return (uint32_t)((uint64_t)furi_get_tick() * 1000u / furi_kernel_get_tick_frequency());
 }
+#if RADAR_WIFI_ONLY
 static void command(RadarApp* app, const char* text) {
     if(!app->serial) return;
     furi_hal_serial_tx(app->serial, (const uint8_t*)text, strlen(text));
@@ -83,7 +90,7 @@ static void rx(FuriHalSerialHandle* handle, FuriHalSerialRxEvent event, void* co
     }
     if((event & FuriHalSerialRxEventOverrunError) && app->dropped != UINT32_MAX) app->dropped++;
 }
-static void open_serial(RadarApp* app) {
+static void open_backend(RadarApp* app) {
     app->serial =
         furi_hal_serial_control_acquire(app->port ? FuriHalSerialIdLpuart : FuriHalSerialIdUsart);
     with_view_model(
@@ -114,7 +121,7 @@ static void open_serial(RadarApp* app) {
     app->opened_at = app->ping = now_ms();
     command(app, "NR1,HELLO\n");
 }
-static void close_serial(RadarApp* app) {
+static void close_backend(RadarApp* app) {
     if(!app->serial) return;
     command(app, "NR1,STOP\n");
     furi_hal_serial_async_rx_stop(app->serial);
@@ -122,6 +129,67 @@ static void close_serial(RadarApp* app) {
     furi_hal_serial_control_release(app->serial);
     app->serial = NULL;
 }
+static bool backend_opened(const RadarApp* app) {
+    return app->serial != NULL;
+}
+static void stop_scan(RadarApp* app) {
+    command(app, "NR1,STOP\n");
+}
+#else
+static void observation(const GapScanReport* report, void* context) {
+    RadarApp* app = context;
+    RadarObservation next = {.report = *report, .time = now_ms()};
+    if(furi_message_queue_put(app->observations, &next, 0) != FuriStatusOk &&
+       app->dropped != UINT32_MAX)
+        app->dropped++;
+}
+static void scan_command(RadarApp* app) {
+    bool success = furi_hal_bt_start_scan(observation, app);
+    app->start_at = now_ms();
+    app->scan_open = success;
+    with_view_model(
+        app->view,
+        RadarModel * m,
+        {
+            m->opened = m->core.ready = success;
+            m->core.running = success;
+            snprintf(
+                m->status,
+                sizeof(m->status),
+                "%s",
+                furi_hal_bt_get_radio_stack() != FuriHalBtStackFull ? "Full BLE stack required" :
+                                                                      "Bluetooth busy / retry");
+        },
+        true);
+}
+static void open_backend(RadarApp* app) {
+    with_view_model(
+        app->view,
+        RadarModel * m,
+        {
+            radar_init(&m->core);
+            m->kind = RADAR_KIND;
+            m->focus = UINT8_MAX;
+            m->detail = m->info = m->paused = false;
+        },
+        false);
+    scan_command(app);
+}
+static void close_backend(RadarApp* app) {
+    furi_hal_bt_stop_scan(app);
+    app->scan_open = false;
+}
+static bool backend_opened(const RadarApp* app) {
+    return app->scan_open;
+}
+static void stop_scan(RadarApp* app) {
+    furi_hal_bt_stop_scan(app);
+    /* The producer has stopped before the queue is drained. */
+    RadarObservation pending;
+    while(furi_message_queue_get(app->observations, &pending, 0) == FuriStatusOk) {
+    }
+}
+#endif
 static void label(Canvas* canvas, int x, int y, const char* text, unsigned width) {
     char cut[40];
     snprintf(cut, sizeof(cut), "%s", text);
@@ -134,7 +202,10 @@ static void label(Canvas* canvas, int x, int y, const char* text, unsigned width
     canvas_draw_str(canvas, x, y, cut);
 }
 static const char* device_name(const RadarDevice* d) {
-    return d->name[0] ? d->name : d->kind == 'B' ? "Unnamed BLE" : "Unnamed WiFi";
+    if(d->name[0]) return d->name;
+    static char unnamed[24];
+    snprintf(unnamed, sizeof(unnamed), "%s %s", d->kind == 'B' ? "BLE" : "WiFi", d->id + 6);
+    return unnamed;
 }
 static void draw(Canvas* canvas, void* context) {
     RadarModel* m = context;
@@ -145,8 +216,12 @@ static void draw(Canvas* canvas, void* context) {
         canvas_draw_str(canvas, 3, 12, RADAR_TITLE);
         canvas_set_font(canvas, FontSecondary);
         label(canvas, 3, 35, m->status, 123);
+#if RADAR_WIFI_ONLY
         snprintf(text, sizeof(text), "%s | Hold R:Port", m->port ? "LPUART" : "USART");
         canvas_draw_str(canvas, 3, 63, m->opened ? text : "OK:Retry  R:Port");
+#else
+        canvas_draw_str(canvas, 3, 63, "Onboard BLE | OK:Retry");
+#endif
         return;
     }
     if(m->detail && m->core.pinned >= 0) {
@@ -222,7 +297,7 @@ static void draw(Canvas* canvas, void* context) {
             m->filter[0] ? "No matching devices" :
             m->paused    ? "Scan paused" :
                            "Scanning...");
-    canvas_draw_str(canvas, 3, 63, "OK:Find");
+    canvas_draw_str(canvas, 3, 63, "OK:Find  Hold:Filter");
 }
 static void filter_done(void* context) {
     RadarApp* app = context;
@@ -238,9 +313,12 @@ static void filter_done(void* context) {
             m->core.ready = ready;
             m->core.running = running;
             m->core.last_frame = now_ms();
+            memcpy(m->core.accept_filter, m->filter, sizeof(m->core.accept_filter));
         },
         true);
+#if RADAR_WIFI_ONLY
     filter_command(app);
+#endif
     view_dispatcher_switch_to_view(app->dispatcher, 0);
 }
 static uint32_t filter_back(void* context) {
@@ -249,17 +327,19 @@ static uint32_t filter_back(void* context) {
 }
 static bool input(InputEvent* event, void* context) {
     RadarApp* app = context;
+#if RADAR_WIFI_ONLY
     if(event->type == InputTypeLong && event->key == InputKeyRight) {
         bool ready = false;
         with_view_model(app->view, RadarModel * m, { ready = m->core.ready; }, false);
         if(!ready) {
-            close_serial(app);
+            close_backend(app);
             app->port ^= 1;
-            open_serial(app);
+            open_backend(app);
             return true;
         }
     }
-    if(event->type == InputTypeLong && event->key == InputKeyOk && app->serial) {
+#endif
+    if(event->type == InputTypeLong && event->key == InputKeyOk && backend_opened(app)) {
         bool detail = false;
         with_view_model(app->view, RadarModel * m, { detail = m->detail; }, false);
         if(!detail) {
@@ -272,8 +352,8 @@ static bool input(InputEvent* event, void* context) {
         return true;
     }
     if(event->type != InputTypeShort && event->type != InputTypeRepeat) return false;
-    if(!app->serial && event->key == InputKeyOk) {
-        open_serial(app);
+    if(!backend_opened(app) && event->key == InputKeyOk) {
+        open_backend(app);
         return true;
     }
     bool quit = false, toggle = false;
@@ -295,9 +375,11 @@ static bool input(InputEvent* event, void* context) {
                     m->core.pinned = -1;
                 } else
                     quit = true;
+#if RADAR_WIFI_ONLY
             } else if(!app->serial && (event->key == InputKeyLeft || event->key == InputKeyRight)) {
                 app->port ^= 1;
                 m->port = app->port;
+#endif
             } else if(event->key == InputKeyLeft && m->core.ready) {
                 m->paused = !m->paused;
                 paused = m->paused;
@@ -318,7 +400,7 @@ static bool input(InputEvent* event, void* context) {
         true);
     if(toggle) {
         if(paused)
-            command(app, "NR1,STOP\n");
+            stop_scan(app);
         else
             scan_command(app);
     }
@@ -328,6 +410,7 @@ static bool input(InputEvent* event, void* context) {
 static void tick(void* context) {
     RadarApp* app = context;
     uint32_t now = now_ms();
+#if RADAR_WIFI_ONLY
     uint8_t bytes[1024];
     size_t size = furi_stream_buffer_receive(app->stream, bytes, sizeof(bytes), 0);
     bool start = false, ready = false;
@@ -365,6 +448,34 @@ static void tick(void* context) {
         command(app, ready ? "NR1,PING\n" : "NR1,HELLO\n");
         app->ping = now;
     }
+#else
+    bool paused = false;
+    bool active = furi_hal_bt_is_scan_active(app);
+    with_view_model(
+        app->view,
+        RadarModel * m,
+        {
+            m->now = now;
+            m->core.running = active;
+            paused = m->paused;
+            RadarObservation next;
+            for(unsigned i = 0;
+                i < 32 && furi_message_queue_get(app->observations, &next, 0) == FuriStatusOk;
+                i++) {
+                if(!paused && !radar_ble_observe(
+                                  &m->core,
+                                  next.report.address,
+                                  next.report.address_type,
+                                  next.report.rssi,
+                                  next.report.data,
+                                  next.report.data_size,
+                                  next.time))
+                    m->core.malformed++;
+            }
+        },
+        true);
+    if(!paused && !active && (uint32_t)(now - app->start_at) > 1000) scan_command(app);
+#endif
 }
 static bool custom(void* context, uint32_t event) {
     RadarApp* app = context;
@@ -391,11 +502,15 @@ static void rpc_event(const RpcAppSystemEvent* event, void* context) {
 }
 int32_t nearby_radar_app(void* args) {
     RadarApp* app = calloc(1, sizeof(RadarApp));
+#if RADAR_WIFI_ONLY
     app->port = momentum_settings.uart_esp_channel == FuriHalSerialIdLpuart;
-    app->rpc_mutex = furi_mutex_alloc(FuriMutexTypeNormal);
     app->stream = furi_stream_buffer_alloc(4096, 1);
     app->expansion = furi_record_open(RECORD_EXPANSION);
     expansion_disable(app->expansion);
+#else
+    app->observations = furi_message_queue_alloc(32, sizeof(RadarObservation));
+#endif
+    app->rpc_mutex = furi_mutex_alloc(FuriMutexTypeNormal);
     app->gui = furi_record_open(RECORD_GUI);
     app->dispatcher = view_dispatcher_alloc();
     app->view = view_alloc();
@@ -407,7 +522,7 @@ int32_t nearby_radar_app(void* args) {
         {
             radar_init(&m->core);
             m->port = app->port;
-            snprintf(m->status, sizeof(m->status), "Connect a compatible ESP32");
+            snprintf(m->status, sizeof(m->status), "Starting scan");
         },
         false);
     view_set_context(app->view, app);
@@ -427,7 +542,7 @@ int32_t nearby_radar_app(void* args) {
         rpc_system_app_send_started(app->rpc);
     }
     view_dispatcher_switch_to_view(app->dispatcher, 0);
-    open_serial(app);
+    open_backend(app);
     view_dispatcher_run(app->dispatcher);
     furi_mutex_acquire(app->rpc_mutex, FuriWaitForever);
     if(app->rpc) {
@@ -436,16 +551,20 @@ int32_t nearby_radar_app(void* args) {
         app->rpc = NULL;
     }
     furi_mutex_release(app->rpc_mutex);
-    close_serial(app);
+    close_backend(app);
     view_dispatcher_remove_view(app->dispatcher, 1);
     view_dispatcher_remove_view(app->dispatcher, 0);
     text_input_free(app->input);
     view_free(app->view);
     view_dispatcher_free(app->dispatcher);
     furi_record_close(RECORD_GUI);
+#if RADAR_WIFI_ONLY
     expansion_enable(app->expansion);
     furi_record_close(RECORD_EXPANSION);
     furi_stream_buffer_free(app->stream);
+#else
+    furi_message_queue_free(app->observations);
+#endif
     furi_mutex_free(app->rpc_mutex);
     free(app);
     return 0;

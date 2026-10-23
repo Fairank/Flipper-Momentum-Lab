@@ -79,6 +79,7 @@ class FlipperApplication:
     # table at load time instead. Used to stop every .fal from carrying its own
     # copy of the double-precision soft-float helpers ("gcc").
     fap_exclude_libs: List[str] = field(default_factory=list)
+    fap_strict_imports: Optional[bool] = None
     fap_category: str = ""
     fap_description: str = ""
     fap_author: str = ""
@@ -111,6 +112,8 @@ class FlipperApplication:
 
     @property
     def do_strict_import_checks(self):
+        if self.fap_strict_imports is not None:
+            return self.fap_strict_imports
         return self.apptype != FlipperAppType.PLUGIN
 
     def __post_init__(self):
