@@ -78,13 +78,17 @@ static void open_serial(RadarApp* app) {
         RadarModel * m,
         {
             radar_init(&m->core);
+            m->focus = UINT8_MAX;
+            m->paused = false;
+            m->detail = false;
+            m->info = false;
             m->opened = app->serial != NULL;
             m->port = app->port;
             snprintf(
                 m->status,
                 sizeof(m->status),
                 "%s",
-                app->serial ? "Waiting for NR1 companion" : "UART busy");
+                app->serial ? "Waiting for ESP32" : "UART busy");
         },
         true);
     if(!app->serial) return;
@@ -116,7 +120,7 @@ static void label(Canvas* canvas, int x, int y, const char* text, unsigned width
     canvas_draw_str(canvas, x, y, cut);
 }
 static const char* device_name(const RadarDevice* d) {
-    return d->name[0] ? d->name : d->id;
+    return d->name[0] ? d->name : d->kind == 'B' ? "Unnamed BLE" : "Unnamed WiFi";
 }
 static void draw(Canvas* canvas, void* context) {
     RadarModel* m = context;
@@ -124,14 +128,11 @@ static void draw(Canvas* canvas, void* context) {
     canvas_set_font(canvas, FontSecondary);
     if(!m->opened || !m->core.ready) {
         canvas_set_font(canvas, FontPrimary);
-        canvas_draw_str(canvas, 3, 12, "Nearby Radar");
+        canvas_draw_str(canvas, 3, 12, "Nearby");
         canvas_set_font(canvas, FontSecondary);
-        label(canvas, 3, 27, m->status, 123);
-        snprintf(text, sizeof(text), "%s / 115200", m->port ? "LPUART" : "USART");
-        canvas_draw_str(canvas, 3, 40, text);
-        canvas_draw_str(canvas, 3, 51, "Needs ESP32 NR1 firmware");
-        canvas_draw_str(
-            canvas, 3, 63, m->opened ? "Back:Exit (no radio data)" : "L/R:Port  OK:Connect");
+        label(canvas, 3, 35, m->status, 123);
+        snprintf(text, sizeof(text), "%s | Hold R:Port", m->port ? "LPUART" : "USART");
+        canvas_draw_str(canvas, 3, 63, m->opened ? text : "OK:Retry  R:Port");
         return;
     }
     if(m->detail && m->core.pinned >= 0) {
@@ -205,8 +206,13 @@ static void draw(Canvas* canvas, void* context) {
     }
     if(!n)
         canvas_draw_str(
-            canvas, 3, 30, m->filter[0] ? "No matching name/address" : "No observations yet");
-    canvas_draw_str(canvas, 3, 63, "Hold OK:Search");
+            canvas,
+            3,
+            35,
+            m->filter[0] ? "No matching devices" :
+            m->paused    ? "Scan paused" :
+                           "Scanning...");
+    canvas_draw_str(canvas, 3, 63, "OK:Find");
 }
 static void filter_done(void* context) {
     RadarApp* app = context;
@@ -218,6 +224,7 @@ static void filter_done(void* context) {
             bool ready = m->core.ready;
             bool running = m->core.running;
             radar_init(&m->core);
+            m->focus = UINT8_MAX;
             m->core.ready = ready;
             m->core.running = running;
             m->core.last_frame = now_ms();
@@ -232,6 +239,16 @@ static uint32_t filter_back(void* context) {
 }
 static bool input(InputEvent* event, void* context) {
     RadarApp* app = context;
+    if(event->type == InputTypeLong && event->key == InputKeyRight) {
+        bool ready = false;
+        with_view_model(app->view, RadarModel * m, { ready = m->core.ready; }, false);
+        if(!ready) {
+            close_serial(app);
+            app->port ^= 1;
+            open_serial(app);
+            return true;
+        }
+    }
     if(event->type == InputTypeLong && event->key == InputKeyOk && app->serial) {
         bool detail = false;
         with_view_model(app->view, RadarModel * m, { detail = m->detail; }, false);
@@ -336,7 +353,7 @@ static void tick(void* context) {
                 app->scan_sent = true;
             }
             if(app->serial && !ready && (uint32_t)(now - app->opened_at) > 4000)
-                snprintf(m->status, sizeof(m->status), "No NR1 board response");
+                snprintf(m->status, sizeof(m->status), "No ESP32 response");
         },
         true);
     if(start) {
@@ -409,6 +426,7 @@ int32_t nearby_radar_app(void* args) {
         rpc_system_app_send_started(app->rpc);
     }
     view_dispatcher_switch_to_view(app->dispatcher, 0);
+    open_serial(app);
     view_dispatcher_run(app->dispatcher);
     furi_mutex_acquire(app->rpc_mutex, FuriWaitForever);
     if(app->rpc) {

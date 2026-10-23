@@ -77,11 +77,11 @@ int main(int argc,char**argv){
     setvbuf(stdout,NULL,_IONBF,0);RadarModel m={0};Canvas c={FontSecondary,1};
     radar_init(&m.core);m.opened=true;m.now=5000;
     feed(&m.core,"NR1,R,ESP32,BW\nNR1,S,RUN\n",1000);
-    feed(&m.core,"NR1,D,B,010203040506,-76,0,4B65792046696E646572\n",1000);
-    feed(&m.core,"NR1,D,B,010203040506,-52,0,4B65792046696E646572\n",4000);
+    feed(&m.core,"NR1,D,B,010203040506,-60,0,4B65792046696E646572\n",1000);
+    feed(&m.core,"NR1,D,B,010203040506,-36,0,4B65792046696E646572\n",4000);
     feed(&m.core,"NR1,D,B,020304050607,-63,0,4465736B20537065616B6572\n",4000);
-    feed(&m.core,"NR1,D,W,030405060708,-48,6,486F6D652057694669\n",4000);
-    m.focus=0;int state=argc>1?atoi(argv[1]):0;
+    feed(&m.core,"NR1,D,W,030405060708,-68,6,486F6D652057694669\n",4000);
+    m.focus=UINT8_MAX;int state=argc>1?atoi(argv[1]):0;
     if(state==1 || state==2){m.detail=true;m.core.pinned=0;}
     if(state==2)m.now=18000;
     if(state==3)strcpy(m.filter,"Key");
@@ -176,7 +176,7 @@ int main(int argc,char**argv){
         sheet.paste(pic, (x, y))
         d.text(
             (x, y + 262),
-            ("① 选择附近设备", "② 看信号变化，边走边找")[i],
+            ("① 自动扫描，选中设备名字", "② 按 OK 进入雷达，边走边找")[i],
             fill="#222222",
             font=title_font.font_variant(size=18) if font_path.exists() else title_font,
         )

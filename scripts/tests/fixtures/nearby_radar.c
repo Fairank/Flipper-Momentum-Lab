@@ -28,6 +28,8 @@ int main(void) {
     assert(radar_visible(&c, "AABB", 0, 3000, indices) == 1);
     assert(!radar_stale(&c.devices[slot], 3000) && radar_stale(&c.devices[slot], 16001));
     feed(&c, "NR1,D,W,AABBCCDDEEFF,-55,6,E6B58BE8AF95\n", 3100);
+    assert(radar_visible(&c, "", 0, 3100, indices) == 2);
+    assert(c.devices[indices[0]].kind == 'W'); /* Strongest observation appears first. */
     assert(
         radar_visible(&c, "", 0, 3100, indices) == 2 &&
         radar_visible(&c, "", 'W', 3100, indices) == 1);
