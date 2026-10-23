@@ -8,6 +8,9 @@ on:
       - "mobile/**"
       - "scripts/tests/**"
       - "applications/**"
+      - "companion/nearby_radar/**"
+      - "lib/fatfs/**"
+      - "assets/protobuf"
       - "scripts/fbt/elfmanifest.py"
       - "scripts/fbt/appmanifest.py"
       - "scripts/fbt_tools/fbt_apps.py"
@@ -24,6 +27,9 @@ on:
       - "mobile/**"
       - "scripts/tests/**"
       - "applications/**"
+      - "companion/nearby_radar/**"
+      - "lib/fatfs/**"
+      - "assets/protobuf"
       - "scripts/fbt/elfmanifest.py"
       - "scripts/fbt/appmanifest.py"
       - "scripts/fbt_tools/fbt_apps.py"
@@ -49,6 +55,27 @@ defaults:
     shell: bash
 
 jobs:
+  radar-companion:
+    name: "Passive radar ESP32 reference build"
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - run: pip install platformio==6.1.18
+      - run: python -m platformio run -d companion/nearby_radar -e esp32-reference
+      - uses: actions/upload-artifact@v4
+        with:
+          name: nearby-radar-esp32-reference-${{ github.sha }}
+          path: |
+            companion/nearby_radar/.pio/build/esp32-reference/firmware.bin
+            companion/nearby_radar/.pio/build/esp32-reference/bootloader.bin
+            companion/nearby_radar/.pio/build/esp32-reference/partitions.bin
+          retention-days: 14
+          if-no-files-found: error
+
   ios:
     name: "iOS package tests and simulator build"
     runs-on: macos-26

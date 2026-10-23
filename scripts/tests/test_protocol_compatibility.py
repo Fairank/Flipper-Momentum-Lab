@@ -39,6 +39,22 @@ class ProtocolCompatibilityTests(unittest.TestCase):
             r"\.PB_Gui\.SendAsciiEventRequest\s+gui_send_ascii_event_request\s*=\s*100;",
         )
 
+    def test_ranged_storage_adds_fields_without_reusing_legacy_tags(self):
+        text = (ROOT / "assets/protobuf/storage.proto").read_text()
+        expected = {
+            "ReadRequest": [
+                ("string", "path", "1"),
+                ("uint32", "offset", "2"),
+                ("uint32", "size", "3"),
+            ],
+            "ReadResponse": [("File", "file", "1"), ("bool", "ranged", "2")],
+        }
+        for name, fields in expected.items():
+            body = re.search(r"message\s+" + name + r"\s*\{([^}]+)\}", text)
+            self.assertIsNotNone(body)
+            self.assertEqual(re.findall(r"(\w+)\s+(\w+)\s*=\s*(\d+);", body[1]), fields)
+        self.assertIn("## [0.30]", (ROOT / "assets/protobuf/Changelog").read_text())
+
 
 if __name__ == "__main__":
     unittest.main()

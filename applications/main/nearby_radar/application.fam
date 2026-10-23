@@ -1,0 +1,13 @@
+App(
+    appid="nearby_radar",
+    name="Nearby Radar",
+    apptype=FlipperAppType.MENUEXTERNAL,
+    entry_point="nearby_radar_app",
+    requires=["gui", "expansion_start", "rpc_start"],
+    stack_size=4 * 1024,
+    icon="A_GPIO_14",
+    order=7,
+    fap_category="Bluetooth",
+    fap_description="Passive ESP32 discovery, name filter and RSSI target tracking",
+    fap_version="1.0",
+)

@@ -5,6 +5,7 @@ App(
     provides=[
         "lab",
         "lab_bridge",
+        "nearby_radar",
         "clock",
         "gpio",
         "ibutton",

@@ -325,6 +325,7 @@ static void out_of_sequence_compatibility(void) {
 }
 
 int main(int argc, char** argv) {
+    assert(setvbuf(stdout, NULL, _IONBF, 0) == 0);
     assert(argc == 2);
     if(strcmp(argv[1], "legal") == 0) legal_matrix();
     else if(strcmp(argv[1], "invalid") == 0) invalid_boundaries();

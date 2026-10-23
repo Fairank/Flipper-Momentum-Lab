@@ -73,6 +73,9 @@ node_modules/
 /block.bin
 /return_block.bin
 
+# ESP32 companion build products
+.pio/
+
 # Native mobile build products
 .build/
 DerivedData/
