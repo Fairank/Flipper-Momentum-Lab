@@ -10,6 +10,19 @@
 #include <stdio.h>
 #include <string.h>
 
+#ifndef RADAR_WIFI_ONLY
+#define RADAR_WIFI_ONLY 0
+#endif
+#if RADAR_WIFI_ONLY
+#define RADAR_KIND  'W'
+#define RADAR_TITLE "WiFi Radar"
+#define RADAR_SCAN  "NR1,SCAN,W\n"
+#else
+#define RADAR_KIND  'B'
+#define RADAR_TITLE "BLE Radar"
+#define RADAR_SCAN  "NR1,SCAN,B\n"
+#endif
+
 typedef struct {
     RadarCore core;
     char filter[33];
@@ -49,8 +62,8 @@ static void command(RadarApp* app, const char* text) {
     furi_hal_serial_tx(app->serial, (const uint8_t*)text, strlen(text));
     furi_hal_serial_tx_wait_complete(app->serial);
 }
-static void scan_command(RadarApp* app, char kind) {
-    command(app, kind == 'B' ? "NR1,SCAN,B\n" : kind == 'W' ? "NR1,SCAN,W\n" : "NR1,SCAN,A\n");
+static void scan_command(RadarApp* app) {
+    command(app, RADAR_SCAN);
     app->start_at = now_ms();
 }
 static void filter_command(RadarApp* app) {
@@ -79,6 +92,7 @@ static void open_serial(RadarApp* app) {
         {
             radar_init(&m->core);
             m->focus = UINT8_MAX;
+            m->kind = RADAR_KIND;
             m->paused = false;
             m->detail = false;
             m->info = false;
@@ -128,7 +142,7 @@ static void draw(Canvas* canvas, void* context) {
     canvas_set_font(canvas, FontSecondary);
     if(!m->opened || !m->core.ready) {
         canvas_set_font(canvas, FontPrimary);
-        canvas_draw_str(canvas, 3, 12, "Nearby");
+        canvas_draw_str(canvas, 3, 12, RADAR_TITLE);
         canvas_set_font(canvas, FontSecondary);
         label(canvas, 3, 35, m->status, 123);
         snprintf(text, sizeof(text), "%s | Hold R:Port", m->port ? "LPUART" : "USART");
@@ -182,9 +196,8 @@ static void draw(Canvas* canvas, void* context) {
     uint8_t indices[RADAR_CAPACITY];
     size_t n = radar_visible(&m->core, m->filter, m->kind, m->now, indices);
     canvas_set_font(canvas, FontPrimary);
-    canvas_draw_str(canvas, 2, 11, m->paused ? "Paused" : "Nearby");
+    canvas_draw_str(canvas, 2, 11, m->paused ? "Paused" : RADAR_TITLE);
     canvas_set_font(canvas, FontSecondary);
-    canvas_draw_str(canvas, 99, 10, m->kind == 'B' ? "BLE>" : m->kind == 'W' ? "WiFi>" : "All>");
     size_t selected = 0;
     for(size_t i = 0; i < n; i++)
         if(indices[i] == m->focus) selected = i;
@@ -196,10 +209,7 @@ static void draw(Canvas* canvas, void* context) {
             canvas_draw_box(canvas, 0, y - 9, 128, 11);
             canvas_invert_color(canvas);
         }
-        text[0] = d->kind;
-        text[1] = 0;
-        canvas_draw_str(canvas, 2, y, text);
-        label(canvas, 11, y, device_name(d), 82);
+        label(canvas, 3, y, device_name(d), 90);
         snprintf(text, sizeof(text), "%d%s", d->average_q4 / 4, radar_stale(d, m->now) ? "?" : "");
         canvas_draw_str(canvas, 99, y, text);
         if(i == selected) canvas_invert_color(canvas);
@@ -266,8 +276,7 @@ static bool input(InputEvent* event, void* context) {
         open_serial(app);
         return true;
     }
-    bool quit = false, toggle = false, changed = false;
-    char kind = 0;
+    bool quit = false, toggle = false;
     bool paused = false;
     with_view_model(
         app->view,
@@ -293,11 +302,6 @@ static bool input(InputEvent* event, void* context) {
                 m->paused = !m->paused;
                 paused = m->paused;
                 toggle = true;
-                kind = m->kind;
-            } else if(event->key == InputKeyRight && !m->detail && m->core.ready) {
-                m->kind = m->kind == 0 ? 'B' : m->kind == 'B' ? 'W' : 0;
-                kind = m->kind;
-                changed = !m->paused;
             } else if(m->detail && event->key == InputKeyOk) {
                 m->info = !m->info;
             } else if(!m->detail && n) {
@@ -316,9 +320,8 @@ static bool input(InputEvent* event, void* context) {
         if(paused)
             command(app, "NR1,STOP\n");
         else
-            scan_command(app, kind);
+            scan_command(app);
     }
-    if(changed) scan_command(app, kind);
     if(quit) view_dispatcher_stop(app->dispatcher);
     return true;
 }
@@ -328,7 +331,6 @@ static void tick(void* context) {
     uint8_t bytes[1024];
     size_t size = furi_stream_buffer_receive(app->stream, bytes, sizeof(bytes), 0);
     bool start = false, ready = false;
-    char kind = 0;
     with_view_model(
         app->view,
         RadarModel * m,
@@ -346,7 +348,6 @@ static void tick(void* context) {
                 app->scan_sent = false;
             }
             ready = m->core.ready;
-            kind = m->kind;
             if(ready && !m->paused &&
                (!app->scan_sent || (!m->core.running && (uint32_t)(now - app->start_at) > 5000))) {
                 start = true;
@@ -358,7 +359,7 @@ static void tick(void* context) {
         true);
     if(start) {
         filter_command(app);
-        scan_command(app, kind);
+        scan_command(app);
     }
     if(app->serial && (uint32_t)(now - app->ping) > 2000) {
         command(app, ready ? "NR1,PING\n" : "NR1,HELLO\n");

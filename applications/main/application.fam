@@ -6,6 +6,7 @@ App(
         "lab",
         "lab_bridge",
         "nearby_radar",
+        "wifi_radar",
         "clock",
         "gpio",
         "ibutton",

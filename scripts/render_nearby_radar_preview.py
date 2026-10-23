@@ -22,9 +22,13 @@ ROOT = Path(__file__).resolve().parents[1]
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--output-dir", required=True, type=Path)
+    parser.add_argument("--kind", choices=("ble", "wifi"), default="ble")
     args = parser.parse_args()
     args.output_dir.mkdir(parents=True, exist_ok=True)
     source = (ROOT / "applications/main/nearby_radar/nearby_radar.c").read_text()
+    configuration = source[
+        source.index("#ifndef RADAR_WIFI_ONLY") : source.index("typedef struct")
+    ]
     model = re.search(r"typedef struct \{.*?\} RadarModel;", source, re.S)[0]
     drawing = source[
         source.index("static void label(") : source.index("static void filter_done(")
@@ -70,28 +74,29 @@ static void canvas_draw_circle(Canvas*c,int x,int y,int r){printf("c %d %d %d %d
 static void canvas_draw_disc(Canvas*c,int x,int y,int r){printf("d %d %d %d %d\n",c->color,x,y,r);}
 static void canvas_draw_dot(Canvas*c,int x,int y){printf("p %d %d %d\n",c->color,x,y);}
 static void canvas_invert_color(Canvas*c){c->color^=1;}
+CONFIGURATION
 MODEL
 DRAWING
 static void feed(RadarCore*c,const char*s,unsigned now){while(*s)radar_feed(c,*s++,now);}
 int main(int argc,char**argv){
     setvbuf(stdout,NULL,_IONBF,0);RadarModel m={0};Canvas c={FontSecondary,1};
-    radar_init(&m.core);m.opened=true;m.now=5000;
+    radar_init(&m.core);m.opened=true;m.now=5000;m.kind=RADAR_KIND;
     feed(&m.core,"NR1,R,ESP32,BW\nNR1,S,RUN\n",1000);
     feed(&m.core,"NR1,D,B,010203040506,-60,0,4B65792046696E646572\n",1000);
     feed(&m.core,"NR1,D,B,010203040506,-36,0,4B65792046696E646572\n",4000);
     feed(&m.core,"NR1,D,B,020304050607,-63,0,4465736B20537065616B6572\n",4000);
     feed(&m.core,"NR1,D,W,030405060708,-68,6,486F6D652057694669\n",4000);
     m.focus=UINT8_MAX;int state=argc>1?atoi(argv[1]):0;
-    if(state==1 || state==2){m.detail=true;m.core.pinned=0;}
+    if(state==1 || state==2){m.detail=true;m.core.pinned=RADAR_WIFI_ONLY?2:0;}
     if(state==2)m.now=18000;
-    if(state==3)strcpy(m.filter,"Key");
-    if(state==4)m.kind='B';
+    if(state==3)strcpy(m.filter,RADAR_WIFI_ONLY?"Home":"Key");
     draw(&c,&m);return 0;
 }
 """.replace(
             "TABLES", "{" + ",".join(tables) + "}"
         )
         .replace("MODEL", model)
+        .replace("CONFIGURATION", configuration)
         .replace("DRAWING", drawing)
     )
     pictures = []
@@ -108,7 +113,10 @@ int main(int argc,char**argv){
         stub.write_text(harness)
         core = ROOT / "applications/main/nearby_radar"
         exe = build(
-            folder, [stub, core / "radar_core.c"], "radar_draw", ["-I" + str(core)]
+            folder,
+            [stub, core / "radar_core.c"],
+            "radar_draw",
+            ["-I" + str(core), "-DRADAR_WIFI_ONLY=" + str(int(args.kind == "wifi"))],
         )
         for state, caption in enumerate(captions):
             result = subprocess.run(
@@ -161,7 +169,7 @@ int main(int argc,char**argv){
     )
     d.text(
         (36, 20),
-        "附近设备雷达 · 简化版页面预览",
+        ("Wi-Fi 雷达" if args.kind == "wifi" else "蓝牙雷达") + " · 页面预览",
         fill="#202020",
         font=title_font,
     )
