@@ -19,6 +19,7 @@ typedef struct {
     uint8_t port;
     uint32_t now;
     bool detail;
+    bool info;
     bool paused;
     bool opened;
 } RadarModel;
@@ -135,60 +136,61 @@ static void draw(Canvas* canvas, void* context) {
     }
     if(m->detail && m->core.pinned >= 0) {
         const RadarDevice* d = &m->core.devices[m->core.pinned];
-        label(canvas, 2, 9, device_name(d), 124);
-        for(int r = 8; r <= 24; r += 8)
-            canvas_draw_circle(canvas, 30, 36, r);
-        canvas_draw_dot(canvas, 30, 36);
+        canvas_set_font(canvas, FontPrimary);
+        label(canvas, 2, 11, device_name(d), 124);
+        canvas_set_font(canvas, FontSecondary);
+        if(m->info) {
+            canvas_draw_str(canvas, 3, 25, d->kind == 'B' ? "Bluetooth LE" : "WiFi access point");
+            canvas_draw_str(canvas, 3, 37, d->id);
+            if(d->kind == 'W')
+                snprintf(text, sizeof(text), "CH%u  %d dBm", d->channel, d->average_q4 / 4);
+            else
+                snprintf(text, sizeof(text), "%d dBm", d->average_q4 / 4);
+            canvas_draw_str(canvas, 3, 49, text);
+            snprintf(text, sizeof(text), "%lus ago", (unsigned long)((m->now - d->seen) / 1000));
+            label(canvas, 83, 49, text, 42);
+            canvas_draw_str(canvas, 3, 63, "Back:Radar");
+            return;
+        }
+        canvas_draw_circle(canvas, 27, 35, 9);
+        canvas_draw_circle(canvas, 27, 35, 18);
+        canvas_draw_dot(canvas, 27, 35);
         bool stale = radar_stale(d, m->now);
         if(!stale && !m->paused && m->core.running)
-            canvas_draw_disc(canvas, 30, 36 - (int)radar_radius(d) * 24 / 28, 2);
-        snprintf(text, sizeof(text), "%d dBm", d->average_q4 / 4);
-        canvas_draw_str(canvas, 64, 25, text);
+            canvas_draw_disc(canvas, 27, 35 - (int)radar_radius(d) * 17 / 28, 2);
+        canvas_set_font(canvas, FontPrimary);
+        if(stale)
+            snprintf(text, sizeof(text), "-- dBm");
+        else
+            snprintf(text, sizeof(text), "%d dBm", d->average_q4 / 4);
+        canvas_draw_str(canvas, 59, 30, text);
+        canvas_set_font(canvas, FontSecondary);
         canvas_draw_str(
             canvas,
-            64,
-            37,
-            m->paused    ? "Paused" :
-            stale        ? "No signal" :
-            d->trend > 0 ? "Stronger" :
-            d->trend < 0 ? "Weaker" :
-                           "Steady");
-        if(d->kind == 'W')
-            snprintf(
-                text,
-                sizeof(text),
-                "CH%u %lus ago",
-                d->channel,
-                (unsigned long)((m->now - d->seen) / 1000));
-        else
-            snprintf(text, sizeof(text), "Seen %lus", (unsigned long)((m->now - d->seen) / 1000));
-        canvas_draw_str(canvas, 64, 49, text);
-        snprintf(text, sizeof(text), "%c %s RSSI only", d->kind, d->id);
-        canvas_draw_str(canvas, 2, 63, text);
+            59,
+            45,
+            m->paused        ? "Paused" :
+            stale            ? "Lost signal" :
+            !m->core.running ? "Starting" :
+            d->trend > 0     ? "Stronger" :
+            d->trend < 0     ? "Weaker" :
+                               "Steady");
+        canvas_draw_str(canvas, 3, 63, "OK:Info");
         return;
     }
     uint8_t indices[RADAR_CAPACITY];
     size_t n = radar_visible(&m->core, m->filter, m->kind, m->now, indices);
-    snprintf(
-        text,
-        sizeof(text),
-        "%s %u %s",
-        m->kind == 'B' ? "BLE" :
-        m->kind == 'W' ? "WiFi AP" :
-                         "BLE+WiFi",
-        (unsigned)n,
-        m->paused       ? (m->core.running ? "STOP..." : "PAUSED") :
-        m->core.running ? "SCAN" :
-                          "STARTING");
-    canvas_draw_str(canvas, 2, 9, text);
-    if(m->core.malformed || m->core.full) canvas_draw_str(canvas, 121, 9, "!");
+    canvas_set_font(canvas, FontPrimary);
+    canvas_draw_str(canvas, 2, 11, m->paused ? "Paused" : "Nearby");
+    canvas_set_font(canvas, FontSecondary);
+    canvas_draw_str(canvas, 99, 10, m->kind == 'B' ? "BLE>" : m->kind == 'W' ? "WiFi>" : "All>");
     size_t selected = 0;
     for(size_t i = 0; i < n; i++)
         if(indices[i] == m->focus) selected = i;
     size_t start = selected / 3 * 3;
     for(size_t i = start; i < n && i < start + 3; i++) {
         const RadarDevice* d = &m->core.devices[indices[i]];
-        int y = 23 + (int)(i - start) * 12;
+        int y = 25 + (int)(i - start) * 13;
         if(i == selected) {
             canvas_draw_box(canvas, 0, y - 9, 128, 11);
             canvas_invert_color(canvas);
@@ -204,7 +206,7 @@ static void draw(Canvas* canvas, void* context) {
     if(!n)
         canvas_draw_str(
             canvas, 3, 30, m->filter[0] ? "No matching name/address" : "No observations yet");
-    canvas_draw_str(canvas, 2, 63, "OK:Track Hold:Find L:Pause");
+    canvas_draw_str(canvas, 3, 63, "Hold OK:Search");
 }
 static void filter_done(void* context) {
     RadarApp* app = context;
@@ -260,7 +262,9 @@ static bool input(InputEvent* event, void* context) {
             for(size_t i = 0; i < n; i++)
                 if(indices[i] == m->focus) selected = i;
             if(event->key == InputKeyBack) {
-                if(m->detail) {
+                if(m->info) {
+                    m->info = false;
+                } else if(m->detail) {
                     m->detail = false;
                     m->core.pinned = -1;
                 } else
@@ -277,6 +281,8 @@ static bool input(InputEvent* event, void* context) {
                 m->kind = m->kind == 0 ? 'B' : m->kind == 'B' ? 'W' : 0;
                 kind = m->kind;
                 changed = !m->paused;
+            } else if(m->detail && event->key == InputKeyOk) {
+                m->info = !m->info;
             } else if(!m->detail && n) {
                 if(event->key == InputKeyUp) selected = selected ? selected - 1 : n - 1;
                 if(event->key == InputKeyDown) selected = (selected + 1) % n;
@@ -284,6 +290,7 @@ static bool input(InputEvent* event, void* context) {
                 if(event->key == InputKeyOk) {
                     m->core.pinned = (int8_t)m->focus;
                     m->detail = true;
+                    m->info = false;
                 }
             }
         },
