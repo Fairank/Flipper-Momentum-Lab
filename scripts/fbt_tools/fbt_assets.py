@@ -1,7 +1,5 @@
 import os
-import subprocess
-
-from ansi.color import fg
+import re
 from SCons.Action import Action
 from SCons.Builder import Builder
 from SCons.Errors import StopError
@@ -127,54 +125,23 @@ def _packs_emitter(target, source, env):
     return target, source
 
 
-def __invoke_git(args, source_dir):
-    cmd = ["git"]
-    cmd.extend(args)
-    return (
-        subprocess.check_output(cmd, cwd=source_dir, stderr=subprocess.STDOUT)
-        .strip()
-        .decode()
-    )
-
-
 def _proto_ver_generator(target, source, env):
     target_file = target[0]
-    src_dir = source[0].dir.abspath
-
-    def fetch(unshallow=False):
-        git_args = ["fetch", "--tags"]
-        if unshallow:
-            git_args.append("--unshallow")
-
-        try:
-            __invoke_git(git_args, source_dir=src_dir)
-        except (subprocess.CalledProcessError, EnvironmentError):
-            # Not great, not terrible
-            print(fg.boldred("Git: fetch failed"))
-
-    def describe():
-        try:
-            return __invoke_git(
-                ["describe", "--tags", "--abbrev=0"],
-                source_dir=src_dir,
-            )
-        except (subprocess.CalledProcessError, EnvironmentError):
-            return None
-
-    fetch()
-    git_describe = describe()
-    if not git_describe:
-        fetch(unshallow=True)
-        git_describe = describe()
-
-    if not git_describe:
-        raise StopError("Failed to process git tags for protobuf versioning")
-
-    git_major, git_minor = git_describe.split(".")
+    # The checked-out schema may contain an untagged release. Nearest Git tags
+    # can then advertise an older protocol even when new fields are compiled.
+    # Changelog is already a tracked builder input; do not fetch mutable tags.
+    with open(str(source[0]), encoding="utf-8") as changelog:
+        header = next(
+            (line.strip() for line in changelog if line.startswith("## ")), ""
+        )
+    version = re.fullmatch(r"## \[(\d+)\.(\d+)\]", header)
+    if not version:
+        raise StopError("Missing or invalid protobuf release header in Changelog")
+    major, minor = map(int, version.groups())
     version_file_data = (
         "#pragma once",
-        f"#define PROTOBUF_MAJOR_VERSION {git_major}",
-        f"#define PROTOBUF_MINOR_VERSION {git_minor}",
+        f"#define PROTOBUF_MAJOR_VERSION {major}",
+        f"#define PROTOBUF_MINOR_VERSION {minor}",
         "",
     )
     with open(str(target_file), "wt") as file:

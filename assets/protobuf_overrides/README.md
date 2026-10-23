@@ -1,7 +1,11 @@
 # Companion schema compatibility
 
 The `assets/protobuf` submodule follows DarkFlippers' public schema at
-`05d4dc1e11dc3d22c453e13edebf82ff5ead5bd2` (protocol 0.29).
+`d827357e8bc3dc68d73158998e9fa52509f30836` (protocol 0.30).
+
+Protocol version metadata comes from the first release header in the pinned
+Changelog, including untagged releases. The build does not fetch tags or report
+the nearest older Git tag. Malformed or missing release headers stop the build.
 
 These two source overlays preserve Momentum's ASCII keyboard extension while
 adding the upstream GPS and network message families:
