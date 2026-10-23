@@ -10,7 +10,7 @@
 
 ## 文件传输
 
-参考 [Unleashed 51045761](https://github.com/DarkFlippers/unleashed-firmware/commit/51045761d3ff6862f3999141c5c2eb4288c6b319)，将 protobuf 固定到 [d827357e（0.30）](https://github.com/flipperdevices/flipperzero-protobuf/commit/d827357e8bc3dc68d73158998e9fa52509f30836)。增加 Storage.Read 的 `offset`、`size` 和响应 `ranged` 字段，原有只给路径的完整文件读取继续有效；保留本仓库 GUI、GPS 和网络代理的协议扩展。
+参考 [Unleashed 51045761](https://github.com/DarkFlippers/unleashed-firmware/commit/51045761d3ff6862f3999141c5c2eb4288c6b319)，将 protobuf 固定到 [DarkFlippers d827357e（0.30）](https://github.com/DarkFlippers/flipperzero-protobuf/commit/d827357e8bc3dc68d73158998e9fa52509f30836)。增加 Storage.Read 的 `offset`、`size` 和响应 `ranged` 字段，原有只给路径的完整文件读取继续有效；保留本仓库 GUI、GPS 和网络代理的协议扩展。上游 `ranged=true` 表示服务支持范围读取，完整文件响应也带此能力标志；旧协议解码器忽略未知字段。
 
 这让客户端可以请求部分文件、按自己的恢复策略继续下载，**不会让尚未实现这些请求的官方手机 App 自动具备断点续传**。同时释放短读等错误路径上尚未发送的响应数据，避免分配泄漏。
 
@@ -18,15 +18,20 @@
 
 ## 附近设备雷达
 
-新增 `Apps → Bluetooth → Nearby Radar`，以及被动扫描 BLE 广播和 Wi-Fi 接入点的 ESP32 参考配套程序。支持名称/地址筛选、选中目标、RSSI 平滑、趋势和过期提示。设备名的无效 UTF-8 与控制字节会显示为问号。
+新增两个独立入口：`Apps → Bluetooth → BLE Radar` 和 `Apps → WiFi → WiFi Radar`。打开后自动连接配套 ESP32、扫描、按信号强弱列出名称，再选中名称进入目标雷达页。两份生产应用分别只发送 BLE / Wi-Fi 扫描命令，不混用模式。地址和信道收进详情页；没有名称时明确显示 Unnamed，设备名的无效 UTF-8 与控制字节会显示为问号。
 
 使用说明、板卡限制和串口协议见 [附近设备雷达](NEARBY_RADAR.zh-CN.md)。信号强弱不等于精确距离或方位；Wi-Fi 接入点列表不是所有联网客户端清单。
 
 ## 验证记录
 
-- Windows 主机测试：159 项通过；之后对设备名异常字节处理补充回归，通过。
+- 最终 Windows 主机整套测试：**164 项通过**。包含实际 FatFs、实际 RPC 处理函数、雷达解析/排序/目标保留，以及两份应用清单编译参数对应的扫描命令测试。
 - USB 验收发现上游版本生成器按最近 Git 标签生成声明，未打标签的 0.30 源码被声明为 0.29。已改为读取固定源码的 Changelog 首个发布版本，无需联网获取标签；新增四项回归覆盖当前版本、多个历史版本、缺失和错误版本头。版本不一致不算最终安装验收通过。
-- Nearby Radar：Flipper API 89.0 应用构建通过；最终整包及安装验收另行记录，不能以此代替真机验收。
+- 最终固件源码：`e8f62a8de1b8a9d34bd9c34700bfd80b90fa0ca5`。`updater_package`、独立 `fap_dist` 和 `lint_all` 通过。主固件 869,240 字节，距无线栈保留区 11,400 字节；更新器 120,245 字节，低于 131,072 字节限制。
+- 已通过 USB 写入并读回确认：固件 `e8f62a8d`、协议 0.30、API 89.0、无线栈 1.20.0 LIGHT。297 个 FAP、121 个 FAL 均逐个校验长度与 MD5；设备资源 Manifest 与最终完整包一致。六项原有设置的备份保持本地，静音及关键设置逐字节保留。
+- 真机 USB RPC：11 种正常读取边界加 1 种缺失文件错误通过；覆盖完整读、范围读、空文件、EOF 和最大参数，另验证写入及旧版响应解码器兼容。
+- BLE / Wi-Fi 两版均通过真机自动启动、等待未接开发板、切换串口重试、原生搜索键盘、RPC 退出及 Back 退出检查。界面预览使用实际绘制函数和明确标注的示例数据，不能冒充扫描结果。
 - ESP32 参考环境构建通过：应用 1,513,089 字节，占 3 MB 应用分区的 48.1%；静态 RAM 57,636 字节。Windows 构建使用临时 ASCII 盘符，避开 Xtensa 工具链对中文路径的限制。
 - 用户确认 AIO Board 1.4 尚未连接。参考 ESP32 环境不代表已识别该板芯片及引脚，不能直接据此刷写 AIO 板。当前没有真实扫描、接收距离和手机蓝牙遥控的验收结论。
 - 既有 `.cli_gui` 与 `.f0_mtp` 应用清单警告仍存在，本轮不把它们计作新增可用功能。
+
+机器可读摘要见 [验证记录](validation/STORAGE_RADAR_20261023.json)。原始设备身份、蓝牙密钥备份、USB 日志和个人文件未上传。

@@ -1,0 +1,105 @@
+{
+  "schema_version": 1,
+  "date": "2026-10-23",
+  "source_commit": "e8f62a8de1b8a9d34bd9c34700bfd80b90fa0ca5",
+  "host_tests": {
+    "passed": true,
+    "count": 164,
+    "seconds": 335.717
+  },
+  "builds": {
+    "updater_package": true,
+    "fap_dist": true,
+    "lint_all": true,
+    "esp32_reference": true
+  },
+  "package": {
+    "passed": true,
+    "commit": "e8f62a8d",
+    "archive": "flipper-z-f7-update-mntm-codex-iphone-zh-architecture-e8f62a8d.tgz",
+    "sha256": "ccfeaa68c989b1707eb6cba2f3646ec31f20885166e6864c5e90878fce70817d",
+    "firmware_bytes": 869240,
+    "radio_gap_bytes": 11400,
+    "updater_bytes": 120245,
+    "fap_count": 297,
+    "fal_count": 121,
+    "resource_files": 2147,
+    "added": [
+      "apps/WiFi/wifi_radar.fap"
+    ],
+    "changed": [
+      "apps/Bluetooth/nearby_radar.fap"
+    ],
+    "removed": []
+  },
+  "installed": {
+    "passed": true,
+    "commit": "e8f62a8d",
+    "protobuf": "0.30",
+    "api": "89.0",
+    "fap_verified": 297,
+    "fal_verified": 121,
+    "resource_manifest_matches_full_package": true,
+    "mute_and_original_settings_preserved": true,
+    "radio_stack": "1.20.0 LIGHT",
+    "radar_apps": [
+      "apps/Bluetooth/nearby_radar.fap",
+      "apps/WiFi/wifi_radar.fap"
+    ],
+    "physical_radio_scan_verified": false,
+    "iphone_ble_verified": false
+  },
+  "usb": {
+    "passed": true,
+    "transport": "USB RPC",
+    "storage_read_cases": 12,
+    "legacy_decoder_compatible": true,
+    "apps": [
+      {
+        "variant": "ble",
+        "path": "/ext/apps/Bluetooth/nearby_radar.fap",
+        "automatic_start": true,
+        "port_switch": true,
+        "native_search": true,
+        "no_board_state": true,
+        "rpc_exit": true,
+        "back_exit": true
+      },
+      {
+        "variant": "wifi",
+        "path": "/ext/apps/WiFi/wifi_radar.fap",
+        "automatic_start": true,
+        "port_switch": true,
+        "native_search": true,
+        "no_board_state": true,
+        "rpc_exit": true,
+        "back_exit": true
+      }
+    ],
+    "mute_preserved": true
+  },
+  "radar_binary_audit": {
+    "passed": true,
+    "apps": [
+      {
+        "file": "nearby_radar.fap",
+        "kind": "B",
+        "bytes": 14932,
+        "sha256": "4bfc6474fe54c9b4d5001c9dee3ae5d23c75267e1d04e39b5547d04e4fd41c66",
+        "only_own_radio_scan_command": true
+      },
+      {
+        "file": "wifi_radar.fap",
+        "kind": "W",
+        "bytes": 14932,
+        "sha256": "dfa0d3912ef0870d859af3a0a035930484723678a94511c171f14012f32040a4",
+        "only_own_radio_scan_command": true
+      }
+    ]
+  },
+  "not_verified": [
+    "AIO Board 1.4 exact chip, UART wiring and power profile",
+    "Physical BLE and WiFi scanning, reception and distance",
+    "iPhone Bluetooth end-to-end control and file transfer"
+  ]
+}
