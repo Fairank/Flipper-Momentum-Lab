@@ -19,12 +19,6 @@ extern const SubGhzProtocol subghz_protocol_power_smart;
 void* subghz_protocol_encoder_power_smart_alloc(SubGhzEnvironment* environment);
 
 /**
- * Free SubGhzProtocolEncoderPowerSmart.
- * @param context Pointer to a SubGhzProtocolEncoderPowerSmart instance
- */
-void subghz_protocol_encoder_power_smart_free(void* context);
-
-/**
  * Deserialize and generating an upload to send.
  * @param context Pointer to a SubGhzProtocolEncoderPowerSmart instance
  * @param flipper_format Pointer to a FlipperFormat instance
@@ -40,24 +34,11 @@ SubGhzProtocolStatus
 void subghz_protocol_encoder_power_smart_stop(void* context);
 
 /**
- * Getting the level and duration of the upload to be loaded into DMA.
- * @param context Pointer to a SubGhzProtocolEncoderPowerSmart instance
- * @return LevelDuration 
- */
-LevelDuration subghz_protocol_encoder_power_smart_yield(void* context);
-
-/**
  * Allocate SubGhzProtocolDecoderPowerSmart.
  * @param environment Pointer to a SubGhzEnvironment instance
  * @return SubGhzProtocolDecoderPowerSmart* pointer to a SubGhzProtocolDecoderPowerSmart instance
  */
 void* subghz_protocol_decoder_power_smart_alloc(SubGhzEnvironment* environment);
-
-/**
- * Free SubGhzProtocolDecoderPowerSmart.
- * @param context Pointer to a SubGhzProtocolDecoderPowerSmart instance
- */
-void subghz_protocol_decoder_power_smart_free(void* context);
 
 /**
  * Reset decoder SubGhzProtocolDecoderPowerSmart.

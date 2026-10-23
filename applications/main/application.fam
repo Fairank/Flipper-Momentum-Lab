@@ -3,6 +3,11 @@ App(
     name="Basic applications for main menu",
     apptype=FlipperAppType.METAPACKAGE,
     provides=[
+        "lab",
+        "lab_bridge",
+        "nearby_radar",
+        "wifi_radar",
+        "clock",
         "gpio",
         "ibutton",
         "infrared",

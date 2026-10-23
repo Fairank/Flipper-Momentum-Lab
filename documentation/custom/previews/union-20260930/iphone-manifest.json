@@ -1,0 +1,35 @@
+{
+  "source_commit": "6f94bdc9dda35db4d3cbb6105c73f753190525a3",
+  "run_id": 36665403336,
+  "artifact_id": 11075984428,
+  "zip_sha256": "6b3949037d011eaa2b21e27446ab34c27e8a40fd1652b37596fd73ba0a5ba951",
+  "device": "iPhone 17 Pro Max",
+  "os": "iOS 26.5",
+  "xcode": "26.6",
+  "kind": "original offline iOS Simulator captures, not a connected device or BLE acceptance",
+  "original_pixels_unchanged": true,
+  "images": [
+    {
+      "file": "iphone-functions-20260930.png",
+      "original_exported_filename": "12BAFDBD-797C-4EA9-BC93-3CB0816F0890.png",
+      "title": "功能中心离线预览",
+      "bytes": 403035,
+      "sha256": "32aea5bffc957712856a233d1d93147bec25990528eb3e0870b0b4d6382930b9",
+      "pixels": [
+        1320,
+        2868
+      ]
+    },
+    {
+      "file": "iphone-tasks-dark-20260930.png",
+      "original_exported_filename": "F9F4C0FD-1347-442B-A144-8BF2C11DB73A.png",
+      "title": "深色大字任务页",
+      "bytes": 268370,
+      "sha256": "3e7c5b4f2a901d9695012f7c14fa7d234e35e0368c074329152976963ddbd815",
+      "pixels": [
+        1320,
+        2868
+      ]
+    }
+  ]
+}

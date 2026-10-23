@@ -90,9 +90,9 @@ static void hid_mouse_clicker_draw_callback(Canvas* canvas, void* context) {
     canvas_draw_icon(canvas, 69, 29, &I_Ok_btn_9x9);
 
     if(model->running) {
-        elements_multiline_text_aligned(canvas, 86, 37, AlignLeft, AlignBottom, "Stop");
+        elements_multiline_text_aligned(canvas, 86, 38, AlignLeft, AlignBottom, "Stop");
     } else {
-        elements_multiline_text_aligned(canvas, 86, 37, AlignLeft, AlignBottom, "Start");
+        elements_multiline_text_aligned(canvas, 86, 38, AlignLeft, AlignBottom, "Start");
     }
     canvas_set_color(canvas, ColorBlack);
 

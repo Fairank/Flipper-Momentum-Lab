@@ -39,7 +39,7 @@ static void gpio_i2c_sfp_draw_callback(Canvas* canvas, void* _model) {
     canvas_draw_str(canvas, 92, 63, "P16 SDA");
 
     snprintf(temp_str, 280, "Vendor: %s", model->vendor);
-    canvas_draw_str(canvas, 2, 9, temp_str);
+    canvas_draw_str(canvas, 2, 11, temp_str);
 
     snprintf(temp_str, 280, "PN: %s", model->pn);
     canvas_draw_str(canvas, 2, 19, temp_str);

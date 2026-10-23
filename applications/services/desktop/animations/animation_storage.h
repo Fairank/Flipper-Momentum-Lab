@@ -75,6 +75,9 @@ StorageAnimation* animation_storage_find_animation(const char* name);
  */
 StorageAnimationManifestInfo* animation_storage_get_meta(StorageAnimation* storage_animation);
 
+/** Returns NULL for user/SD animations, whose artwork must not be overwritten. */
+const char* animation_storage_get_builtin_name(const StorageAnimation* storage_animation);
+
 /**
  * Free storage_animation, which previously acquired
  * by Animation Storage.

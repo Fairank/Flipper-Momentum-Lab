@@ -160,6 +160,26 @@ bool furi_log_level_from_string(const char* str, FuriLogLevel* level);
 #define FURI_LOG_RAW_T(format, ...) \
     furi_log_print_raw_format(FuriLogLevelTrace, format, ##__VA_ARGS__)
 
+#if defined(LOGS_RELEASE_BUILD) && !defined(LOGS_DEBUG_BUILD)
+#undef FURI_LOG_D
+#undef FURI_LOG_T
+#undef FURI_LOG_RAW_T
+// Keep argument type checking and references to debug-only helpers without
+// evaluating arguments or emitting debug strings in the release image.
+#define FURI_LOG_D(tag, format, ...)                                                    \
+    do {                                                                                \
+        if(false) furi_log_print_format(FuriLogLevelDebug, tag, format, ##__VA_ARGS__); \
+    } while(false)
+#define FURI_LOG_T(tag, format, ...)                                                    \
+    do {                                                                                \
+        if(false) furi_log_print_format(FuriLogLevelTrace, tag, format, ##__VA_ARGS__); \
+    } while(false)
+#define FURI_LOG_RAW_T(format, ...)                                                    \
+    do {                                                                               \
+        if(false) furi_log_print_raw_format(FuriLogLevelTrace, format, ##__VA_ARGS__); \
+    } while(false)
+#endif
+
 #ifdef __cplusplus
 }
 #endif

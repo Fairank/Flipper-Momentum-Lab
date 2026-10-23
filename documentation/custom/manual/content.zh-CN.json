@@ -1,0 +1,1054 @@
+{
+  "title": "Flipper 融合版中文使用手册",
+  "subtitle": "看懂英文菜单 · 找到功能 · 确认使用条件",
+  "edition": "2026-10-01 · 已安装版本 ee43b2c2 · API 89.0",
+  "scope": "对应刚通过 USB 安装并核验的版本。主要功能与设置提供中文操作说明；附录覆盖包内全部 295 个应用的用途、路径和依赖。第三方应用不是全部逐项操作教程，也没有全部完成真机验收。",
+  "chapters": [
+    {
+      "id": "start",
+      "title": "01 先读这一页",
+      "intro": "设备保持英文，手册用中文解释同名菜单。先按目标找入口，再确认硬件和文件条件。",
+      "sections": [
+        {
+          "title": "当前实际状态",
+          "paragraphs": [
+            "2026-10-01 已安装构建 ee43b2c2，对应源码 52f236fd。API 89.0，RPC 0.29，蓝牙栈 LIGHT 1.20.0。",
+            "295 个 FAP 应用和 121 个 FAL 插件的文件大小与 MD5 已在设备上逐项核对。Clock、Flipper Lab、SD Info 已通过 USB 启动和退出验收。其他应用仅确认文件在设备上，不能据此宣布全部功能可用。",
+            "声音已设为 0%，保存并在重启后验证；约 119GiB exFAT SD 卡识别正常。官方手机 App 的真实蓝牙操作与 AIO Board 1.4 通信仍待验收；Momentum 与 Unleashed 全部功能的完整并集仍未完成。"
+          ]
+        },
+        {
+          "title": "最容易混淆的词",
+          "table": {
+            "headers": [
+              "英文",
+              "中文解释"
+            ],
+            "rows": [
+              [
+                "Apps / FAP",
+                "SD 卡上可加载的应用，不是都放在主固件里。"
+              ],
+              [
+                "FAL / Plugin",
+                "供应用调用的后台插件，不是额外的 121 个菜单功能。"
+              ],
+              [
+                "API / RPC",
+                "API 决定应用文件能否兼容加载；RPC 用于手机或电脑与设备通信。"
+              ],
+              [
+                "Read / Emulate",
+                "读取 / 模拟。读到 UID 不等于已经拿到全部卡数据。"
+              ],
+              [
+                "Installed / Compatible",
+                "已安装只证明文件存在；可用还要版本、附件、协议与实测满足条件。"
+              ]
+            ]
+          }
+        },
+        {
+          "title": "按目标选入口",
+          "table": {
+            "headers": [
+              "你想做什么",
+              "入口"
+            ],
+            "rows": [
+              [
+                "学会家电遥控按键",
+                "Infrared → Learn New Remote"
+              ],
+              [
+                "确认自己的卡种类",
+                "NFC → Read；再检查是否属于 125 kHz RFID"
+              ],
+              [
+                "查看已保存文件",
+                "Archive；默认桌面短按 Down"
+              ],
+              [
+                "找扩展应用",
+                "Apps → 分类；用手册索引查英文名与路径"
+              ],
+              [
+                "静音或调亮度",
+                "Settings → LCD and Notifications"
+              ],
+              [
+                "设置常用快捷键",
+                "Settings → Desktop → Keybinds Setup"
+              ],
+              [
+                "手机遥控设备界面",
+                "Bluetooth 开启；官方 App 的 Remote Control，真机链路待验收"
+              ]
+            ]
+          }
+        }
+      ],
+      "sources": [
+        "applications/services/locale/locale_ui.h",
+        "documentation/custom/OFFICIAL_APP_COMPATIBILITY_20260930.md"
+      ]
+    },
+    {
+      "id": "buttons",
+      "title": "02 按键、快捷键与文件",
+      "intro": "屏幕底部提示通常对应按键；同一个键在桌面与应用里可能有不同作用。",
+      "sections": [
+        {
+          "title": "基本按键",
+          "table": {
+            "headers": [
+              "按键",
+              "作用"
+            ],
+            "rows": [
+              [
+                "Up / Down",
+                "上下选择，或按提示调整数值。"
+              ],
+              [
+                "Left / Right",
+                "切换页面、选择字段或修改值。"
+              ],
+              [
+                "OK 短按",
+                "桌面打开主菜单；列表中确认。"
+              ],
+              [
+                "OK 长按（桌面）",
+                "切换待机动画，不是切换语言。"
+              ],
+              [
+                "Back 短按",
+                "通常返回；具体应用按其提示操作。"
+              ],
+              [
+                "Back 长按（桌面）",
+                "打开关机操作；应用内部行为可能不同。"
+              ]
+            ]
+          }
+        },
+        {
+          "title": "默认桌面快捷键",
+          "table": {
+            "headers": [
+              "方向",
+              "短按 Press",
+              "长按 Hold"
+            ],
+            "rows": [
+              [
+                "Up",
+                "Lock Menu：锁定菜单",
+                "无默认动作"
+              ],
+              [
+                "Down",
+                "Archive：文件管理",
+                "无默认动作"
+              ],
+              [
+                "Left",
+                "Clock：床头时钟入口",
+                "Lock with PIN：PIN 锁定"
+              ],
+              [
+                "Right",
+                "Passport：海豚档案",
+                "Device Info：电池信息"
+              ]
+            ]
+          },
+          "paragraphs": [
+            "这是源码默认值，已有设置会改变它们。桌面 Left 的 Clock 默认动作实际打开 Nightstand Clock，与主菜单中的 Clock 应用不同。"
+          ]
+        },
+        {
+          "title": "现有帮助快捷键的设置方法",
+          "steps": [
+            "打开 Settings → Desktop → Keybinds Setup。",
+            "选择 Press（短按）或 Hold（长按），再选方向键，例如 Hold → Down。",
+            "选择 Main App → Flipper Lab，或 External App 并选 apps/Tools/lab.fap。",
+            "回到桌面，用该按键验证。Flipper Lab 目前仍是英文，可与本手册对照。"
+          ],
+          "paragraphs": [
+            "现有快捷键可以打开主应用、外部应用、文件或目录及其他动作。没有全局中英文切换动作。本次仅说明设置方法，没有替你改变设备快捷键。"
+          ]
+        },
+        {
+          "title": "Archive 和 SD 目录",
+          "paragraphs": [
+            "默认桌面短按 Down 进入 Archive。选中文件后按 OK 打开；查看、收藏、重命名和删除以当前菜单为准。",
+            "infrared 保存 .ir；nfc 保存 .nfc；lfrfid 保存 .rfid；subghz 保存 .sub；ibutton 保存钥匙；apps 保存 .fap；apps_data 保存应用资源和插件。",
+            "手册路径 apps/Tools/clock.fap 是 SD 卡相对路径；电脑或 RPC 中是 /ext/apps/Tools/clock.fap。大量文件整理可用 qFlipper 或读卡器。删除、覆盖或写入前先确认对象。"
+          ]
+        }
+      ],
+      "sources": [
+        "applications/services/desktop/views/desktop_view_main.c",
+        "applications/services/desktop/desktop_keybinds.c",
+        "applications/settings/desktop_settings/scenes/desktop_settings_scene_keybinds_action_type.c"
+      ]
+    },
+    {
+      "id": "ir",
+      "title": "03 Infrared：红外遥控",
+      "intro": "适用于支持红外的家电、相机等设备。顶部是 Flipper 的红外收发区域。",
+      "sections": [
+        {
+          "title": "菜单对照",
+          "table": {
+            "headers": [
+              "英文",
+              "中文用途"
+            ],
+            "rows": [
+              [
+                "Universal Remotes",
+                "通用遥控库，按设备类别选择。"
+              ],
+              [
+                "Learn New Remote",
+                "学习实体遥控器的按键。"
+              ],
+              [
+                "Saved Remotes",
+                "打开已保存的遥控器。"
+              ],
+              [
+                "GPIO Settings",
+                "外接红外电路的引脚设置。"
+              ],
+              [
+                "Debug RX",
+                "查看调试接收信息。"
+              ]
+            ]
+          }
+        },
+        {
+          "title": "学习自己的遥控器",
+          "steps": [
+            "打开 Infrared → Learn New Remote。",
+            "原遥控器对准 Flipper 顶部，按一下要学习的按键。",
+            "识别后按提示保存，为按键命名；继续添加其他按键。",
+            "从 Saved Remotes 打开记录，对准自己的家电并选按键测试。"
+          ],
+          "paragraphs": [
+            "可识别协议会保存结构化信息，未知协议可能保存 RAW 脉冲。保存成功仍需要实际验证家电响应。",
+            "空调通常把温度、模式和风速一起编码，普通按键复制不一定表达全部状态。索引列出了美的、三菱和日立等专用遥控器。"
+          ]
+        },
+        {
+          "title": "遇到问题",
+          "paragraphs": [
+            "学不到时检查原遥控器电池、是否使用红外、方向与强光干扰。响应不对时检查品牌、协议与状态。蓝牙遥控器和无线射频遥控器不是红外。",
+            "手机不会提高红外发射功率。官方屏幕遥控可以尝试操作同一设备界面；独立中文遥控页不会自动出现在官方 App。"
+          ]
+        }
+      ],
+      "sources": [
+        "applications/main/infrared/scenes/infrared_scene_start.c",
+        "applications/main/lab/lab_content.json"
+      ]
+    },
+    {
+      "id": "cards",
+      "title": "04 NFC、RFID 与 iButton",
+      "intro": "先识别卡型。高频 NFC、低频 RFID、UHF RFID 和接触式钥匙使用不同硬件与协议。",
+      "sections": [
+        {
+          "title": "对象与条件",
+          "table": {
+            "headers": [
+              "入口",
+              "对象与硬件"
+            ],
+            "rows": [
+              [
+                "NFC",
+                "13.56MHz 高频卡；本机 NFC，读取能力受协议与认证限制。"
+              ],
+              [
+                "125 kHz RFID",
+                "125kHz 低频卡；本机低频天线，不是 NFC。"
+              ],
+              [
+                "UHF RFID 应用",
+                "超高频标签；需要应用指定的外部 UHF 读头。"
+              ],
+              [
+                "iButton",
+                "接触式电子钥匙；与设备背部触点可靠接触。"
+              ]
+            ]
+          }
+        },
+        {
+          "title": "读取自己的 NFC 测试卡",
+          "steps": [
+            "打开 NFC → Read，把卡贴近设备背部，保持稳定。",
+            "查看卡型、UID、协议和未读取区域；记下实际结果。",
+            "按提示 Save 保存，从 Saved 打开文件查看。",
+            "只有 UID 时，不要解释成完整复制；进一步分析需要卡型和实际获得的数据。"
+          ],
+          "paragraphs": [
+            "Read 是读取，Saved 是保存记录，Add Manually 是手工创建，Extra Actions 是额外工具。Extract MFC Keys 是 MIFARE Classic 认证样本相关功能，不是通用一键解密。",
+            "Emulate 是设备模拟，Write 是写入支持且可写的标签。模拟 UID、模拟完整数据和通过实际读卡器验证是不同结果。",
+            "手机离线分析代码针对有必要认证样本的 MIFARE Classic 流程，任意 .nfc 文件不自动具备足够信息；官方手机端没有自动获得这套工作台。",
+            "当前没有把任意门禁卡导入 iPhone NFC 并直接当门禁使用的功能。蓝牙传文件不等于手机能模拟该卡。"
+          ]
+        },
+        {
+          "title": "低频卡和接触钥匙",
+          "paragraphs": [
+            "125 kHz RFID → Read：自己的测试卡靠近背部，识别后保存；Saved 查看记录。写入前确认空白标签与协议。T5577 应用不是所有低频卡的通用写卡工具。",
+            "iButton → Read：钥匙与背部触点接触，读到后保存。接触不稳定会失败。索引还列出了格式转换工具。",
+            "NFC/RFID Detector 用于区分读头产生的场，不代表读出了卡内容。Metroflip、Passport Reader 等只解析各自支持的格式。"
+          ]
+        }
+      ],
+      "sources": [
+        "applications/main/nfc/scenes/nfc_scene_start.c",
+        "applications/main/lfrfid/scenes/lfrfid_scene_start.c",
+        "applications/main/lab/lab_content.json",
+        "mobile/FlipperLab/CLASSIC_OFFLINE.zh-CN.md"
+      ]
+    },
+    {
+      "id": "radio",
+      "title": "05 Sub-GHz：无线信号",
+      "intro": "低于 1GHz 的无线功能不能代替 ESP 的 Wi-Fi，也不能代替 NRF24 的 2.4GHz 接口。",
+      "sections": [
+        {
+          "title": "菜单对照",
+          "table": {
+            "headers": [
+              "英文",
+              "中文解释"
+            ],
+            "rows": [
+              [
+                "Read",
+                "尝试识别支持协议的信号。"
+              ],
+              [
+                "Read RAW",
+                "保存脉冲波形用于查看。"
+              ],
+              [
+                "Saved",
+                "已保存的无线记录。"
+              ],
+              [
+                "Add Manually",
+                "手工创建支持格式的记录。"
+              ],
+              [
+                "Frequency Analyzer",
+                "观察信号频率。"
+              ],
+              [
+                "Radio Settings",
+                "射频模块与参数设置。"
+              ]
+            ]
+          }
+        },
+        {
+          "title": "观察自己的遥控器",
+          "steps": [
+            "查看自己遥控器标注的频率，或用 Frequency Analyzer 观察。",
+            "回到 Read，按界面设置匹配频率，按自己遥控器的按键观察协议和数据。",
+            "无法识别时可保存 Read RAW 波形，用 Sub Analyzer / ProtoView 离线查看结构。",
+            "保存并记录型号、频率和结果；接收成功不代表完整复制或稳定控制。"
+          ],
+          "paragraphs": [
+            "帮助列出的常见频段为 300-348、387-464、779-928MHz；实际能力还受模块、协议、地区与配置限制。外接 CC1101 需要正确供电、引脚与模块选择。",
+            "滚动码每次发送可能变化，保存一次不保证重放有效。频谱图只是支持频段的能量信息，不能直接列出 Wi-Fi 终端或确认某个设备是摄像机。",
+            "本手册不提供滚动码绕过、批量触发设备或解除发射限制的操作步骤。"
+          ]
+        }
+      ],
+      "sources": [
+        "applications/main/subghz/scenes/subghz_scene_start.c",
+        "applications/main/lab/lab_content.json"
+      ]
+    },
+    {
+      "id": "board",
+      "title": "06 GPIO 与 AIO 三合一板",
+      "intro": "当前 AIO Board 1.4 的厂商、芯片、切换方式与板端固件未确认，不能只凭板名宣布全兼容。",
+      "sections": [
+        {
+          "title": "模块分别负责什么",
+          "table": {
+            "headers": [
+              "模块",
+              "作用与条件"
+            ],
+            "rows": [
+              [
+                "ESP32 / ESP8266",
+                "Wi-Fi 等由芯片与板端固件提供；Flipper 应用通常是串口控制界面。"
+              ],
+              [
+                "CC1101",
+                "相应 Sub-GHz 信号，不负责 Wi-Fi。"
+              ],
+              [
+                "NRF24（需确认）",
+                "相应 2.4GHz 协议；之前写的 nrf244 尚未核实，不直接认定型号。"
+              ],
+              [
+                "各类传感器",
+                "需要应用指定硬件；无线三合一板不自动具备照度、温度、盖革管或相机。"
+              ]
+            ]
+          }
+        },
+        {
+          "title": "串口和 GPIO",
+          "paragraphs": [
+            "GPIO → USB-UART Bridge 让电脑经 Flipper 与串口外设通信；GPIO Manual Control 是引脚手动控制。UART Terminal 是扩展串口终端。",
+            "接线以板卡资料为准。常规 USART 示例为 TX13、RX14，TX 接对方 RX，地线相连，使用兼容逻辑电平。插头可插入不证明供电与引脚正确。",
+            "波特率与板端一致；Expansion Modules 的 Listen UART、系统日志和板卡应用可能占用同一串口，需要核对。"
+          ]
+        },
+        {
+          "title": "Lab Bridge 的范围",
+          "paragraphs": [
+            "通用 UART 数据通道有缓冲上限、序号和状态检查，配套自建手机端能接收与导出原始数据，并报告丢失或截断。它不是未知 AIO 固件的 Wi-Fi、CC1101 或 NRF24 专用驱动。",
+            "官方 App 不会自动出现实时数据页。板卡不输出数据时，空白界面也不能证明周围没有网络。AIO 真实链路未验收，后续应先用已知字节和校验值做端到端验证。"
+          ]
+        },
+        {
+          "title": "Wi-Fi 和摄像机能判断到哪一步",
+          "paragraphs": [
+            "WiFi Scanner 等应用显示兼容 ESP 模块给出的接入点扫描结果，不等于路由器全部已连接设备。自己的网络终端清单优先在路由器管理页面查看。",
+            "摄像机可能用网线、本地存储或休眠；厂商标识与流量只能提供线索，不能确定是否录像。没有本机能统一识别的“录像专属辐射”。",
+            "第三方 ESP 工具已有各自测试模式；本手册仅说明用途与硬件条件，不含定向或多网络断链、干扰、钓鱼和凭据采集步骤。"
+          ]
+        }
+      ],
+      "sources": [
+        "applications/main/gpio/scenes/gpio_scene_start.c",
+        "applications/main/lab_bridge/bridge_protocol.h",
+        "mobile/FlipperLab/SERIAL_BRIDGE.zh-CN.md",
+        "applications/settings/expansion_settings_app/expansion_settings_app.c"
+      ]
+    },
+    {
+      "id": "phone",
+      "title": "07 官方手机 App 控制",
+      "intro": "目前优先适配官方 Flipper App；自建中文 iPhone App 代码保留，界面开发暂停。",
+      "sections": [
+        {
+          "title": "标准配对与遥控路径",
+          "steps": [
+            "设备 Settings → Bluetooth 设为 ON；手机开启蓝牙并允许官方 App 使用。",
+            "在 App 内选择设备，按两端提示确认配对验证码。",
+            "打开 Remote Control，用方向键、OK、Back 操作普通界面。",
+            "进入设备 Apps / Archive 找实际文件。USB、GPIO 和切换蓝牙模式的应用单独验收。"
+          ],
+          "paragraphs": [
+            "这是标准路径说明，兼容结论来自固定官方源码检查；这台设备与官方 iPhone App 的真实配对、传文件、遥控和断连恢复尚未验收。",
+            "Remote Control 显示设备英文屏幕；官方 App 自身语言由其版本决定。手机浏览器可以打开本手册搜索中文。"
+          ]
+        },
+        {
+          "title": "为什么手机目录不是全部应用",
+          "paragraphs": [
+            "官方应用目录依赖安装清单和线上条目，不递归扫描所有 .fap。私有应用与多层分类可能不出现在列表，随意补清单也不保证可用。",
+            "通用入口是 Remote Control → 设备 Apps / Archive → 实际文件；需要 API 匹配、资源完整和正常按键处理。切换 HID 等蓝牙 profile 的应用可能中断当前遥控。",
+            "USB Remote、U2F 和 USB 存储仍需 Flipper 连接目标 USB 主机；手机蓝牙不能替代数据线。"
+          ]
+        },
+        {
+          "title": "还需要手机处理端的功能",
+          "table": {
+            "headers": [
+              "功能",
+              "目前状态"
+            ],
+            "rows": [
+              [
+                "自定义中文功能页",
+                "保存于自建 App，不自动进入官方 App。"
+              ],
+              [
+                "手机 GPS / 网络代理",
+                "扩展接口与示例存在，官方处理端未验收。"
+              ],
+              [
+                "MIFARE Classic 离线分析",
+                "自建 App 的样本代码与测试，非官方 App 新增能力。"
+              ],
+              [
+                "AIO 实时数据",
+                "通用桥与自建接收端存在，未知板卡协议和官方界面待适配。"
+              ]
+            ]
+          }
+        },
+        {
+          "title": "选对更新包",
+          "paragraphs": [
+            "官方 App 的固件更新入口可能安装另一套固件。保留融合版需使用本仓库同批完整更新包与资源，不混用不同 API 的应用。"
+          ]
+        }
+      ],
+      "sources": [
+        "documentation/custom/OFFICIAL_APP_COMPATIBILITY_20260930.md",
+        "mobile/FlipperLab/SERIAL_BRIDGE.zh-CN.md"
+      ]
+    },
+    {
+      "id": "settings",
+      "title": "08 Settings：设置中文对照",
+      "intro": "Settings 是系统设置；Momentum 是额外定制选项。当前没有切换全局界面语言的选项。",
+      "sections": [
+        {
+          "title": "全部设置入口",
+          "table": {
+            "headers": [
+              "英文入口",
+              "中文用途"
+            ],
+            "rows": [
+              [
+                "Bluetooth",
+                "开关与配对管理。"
+              ],
+              [
+                "LCD and Notifications",
+                "显示、灯光、音量与振动。"
+              ],
+              [
+                "Desktop",
+                "快捷键、PIN、自动锁定、桌面时钟。"
+              ],
+              [
+                "Clock & Alarm",
+                "日期、时间、闹钟。"
+              ],
+              [
+                "Input",
+                "按键振动反馈。"
+              ],
+              [
+                "Storage",
+                "内部存储与 SD 卡维护。"
+              ],
+              [
+                "Power",
+                "电池、重启、关机和充电。"
+              ],
+              [
+                "Expansion Modules",
+                "扩展模块监听串口。"
+              ],
+              [
+                "System",
+                "惯用手、单位、格式、日志与睡眠。"
+              ],
+              [
+                "About / Passport",
+                "设备信息 / 海豚状态。"
+              ]
+            ]
+          }
+        },
+        {
+          "title": "屏幕、声音与振动",
+          "table": {
+            "headers": [
+              "项目",
+              "中文解释"
+            ],
+            "rows": [
+              [
+                "LCD Contrast",
+                "对比度。"
+              ],
+              [
+                "LCD Backlight / Backlight Time",
+                "背光亮度 / 背光持续时间。"
+              ],
+              [
+                "LED Brightness",
+                "彩色指示灯亮度。"
+              ],
+              [
+                "Volume",
+                "扬声器音量，你的设备已为 0%。"
+              ],
+              [
+                "Vibro",
+                "通知振动开关。"
+              ],
+              [
+                "Buttons Vibro（Input）",
+                "按键振动强度。"
+              ],
+              [
+                "Vibro Trigger（Input）",
+                "Press / Release / Both：按下 / 松开 / 两者都触发。"
+              ]
+            ]
+          },
+          "paragraphs": [
+            "Volume 0% 不会自动关闭 LED 和振动。闹铃、节拍器、WAV Player 等依赖声音的功能当前听不到声音。Stealth 表示另有隐蔽模式影响该项。"
+          ]
+        },
+        {
+          "title": "桌面 Desktop",
+          "table": {
+            "headers": [
+              "项目",
+              "中文解释"
+            ],
+            "rows": [
+              [
+                "PIN Setup",
+                "设置、修改或取消锁定 PIN。"
+              ],
+              [
+                "Keybinds Setup",
+                "方向键的短按与长按动作。"
+              ],
+              [
+                "Reset Keybinds to Default",
+                "恢复默认快捷键。"
+              ],
+              [
+                "Auto Lock Time / Auto Lock Pin",
+                "自动锁定时间 / 自动锁定是否要求 PIN。"
+              ],
+              [
+                "Prevent Auto Lock with USB/RPC session",
+                "USB 或 RPC 会话中避免自动锁定。"
+              ],
+              [
+                "Show Clock",
+                "桌面时钟。"
+              ],
+              [
+                "Happy Mode",
+                "海豚相关模式；以界面提示为准。"
+              ]
+            ]
+          }
+        },
+        {
+          "title": "时钟、电源与扩展模块",
+          "paragraphs": [
+            "Clock & Alarm：Time 是时间，Date 是日期，Alarm 是闹钟；On / Off 是开 / 关。方向键选择字段，OK 进入编辑，按屏幕箭头调整；静音下不要把它当作已验收的有声提醒。",
+            "Power：Battery Info 电池信息，Reboot 重启，Power OFF 关机，Auto PowerOff 自动关机，Limit Charge 充电上限。",
+            "Expansion Modules → Listen UART：USART / LPUART 选择监听串口，None 关闭监听。与日志或其他应用争用时需要检查占用。"
+          ]
+        },
+        {
+          "title": "系统 System",
+          "table": {
+            "headers": [
+              "项目",
+              "中文解释"
+            ],
+            "rows": [
+              [
+                "Hand Orient",
+                "Righty / Lefty：惯用右手 / 左手的显示方向。"
+              ],
+              [
+                "Units",
+                "Metric / Imperial：公制 / 英制。"
+              ],
+              [
+                "Time Format",
+                "24h / 12h：二十四 / 十二小时制。"
+              ],
+              [
+                "Date Format",
+                "D/M/Y、M/D/Y、Y/M/D：日月年、月日年、年月日。"
+              ],
+              [
+                "Log Level",
+                "None、Error、Warning、Info、Debug、Trace：从关闭到详细跟踪。"
+              ],
+              [
+                "Log Device / Log Baud Rate",
+                "日志串口 / 波特率，可能与板卡占用冲突。"
+              ],
+              [
+                "Debug / Heap Trace",
+                "调试 / 内存跟踪，日常保留默认。"
+              ],
+              [
+                "Sleep Method",
+                "睡眠策略，影响续航。"
+              ],
+              [
+                "File Naming",
+                "Default / Legacy / Time / Random：默认 / 旧版 / 时间 / 随机命名。"
+              ]
+            ]
+          }
+        },
+        {
+          "title": "存储 Storage",
+          "table": {
+            "headers": [
+              "项目",
+              "中文含义"
+            ],
+            "rows": [
+              [
+                "About Internal Storage / About SD Card",
+                "内部存储 / SD 信息。"
+              ],
+              [
+                "Unmount SD Card / Mount SD Card",
+                "卸载 / 挂载；拔卡前退出应用并卸载。"
+              ],
+              [
+                "Benchmark SD Card",
+                "SD 测速。"
+              ],
+              [
+                "Format SD Card",
+                "格式化，会删除卡内容。"
+              ],
+              [
+                "Factory Reset",
+                "恢复设置；删除范围以确认页为准。"
+              ],
+              [
+                "Wipe Device",
+                "清除设备数据，先读确认页。"
+              ]
+            ]
+          }
+        }
+      ],
+      "sources": [
+        "applications/settings/notification_settings/notification_settings_app.c",
+        "applications/settings/desktop_settings/scenes/desktop_settings_scene_start.c",
+        "applications/settings/system/system_settings.c",
+        "applications/settings/input_settings_app/input_settings_app.c",
+        "applications/settings/clock_settings/views/clock_settings_module.c",
+        "applications/settings/power_settings_app/scenes/power_settings_scene_start.c",
+        "applications/settings/storage_settings/storage_settings.c"
+      ]
+    },
+    {
+      "id": "momentum",
+      "title": "09 Momentum：附加设置",
+      "intro": "外观和行为调整不会增加射频硬件，或修复应用 API 不兼容。",
+      "sections": [
+        {
+          "title": "入口与子菜单",
+          "table": {
+            "headers": [
+              "菜单",
+              "中文解释"
+            ],
+            "rows": [
+              [
+                "Interface",
+                "界面设置。"
+              ],
+              [
+                "Graphics",
+                "图形包、动画与图形显示。"
+              ],
+              [
+                "Mainmenu",
+                "主菜单样式、顺序与应用入口。"
+              ],
+              [
+                "Lockscreen / Statusbar",
+                "锁屏 / 状态栏。"
+              ],
+              [
+                "File Browser",
+                "文件浏览器样式。"
+              ],
+              [
+                "General",
+                "文字滚动、午夜格式和弹出覆盖层。"
+              ],
+              [
+                "Protocols",
+                "频率、引脚与文件命名前缀。"
+              ],
+              [
+                "Misc",
+                "海豚、屏幕、VGM 等其他选项。"
+              ]
+            ]
+          }
+        },
+        {
+          "title": "常见选项",
+          "paragraphs": [
+            "Text Scroll 的 Standard / Marquee 为普通文字 / 跑马灯。Popup Overlay 是弹出覆盖层。更改主菜单后仍可在 Apps 中找到对应应用文件。",
+            "SubGHz Freqs 管理频率列表，GPIO Pins 管理外接模块引脚，File Naming Prefix 管理文件前缀。频率选项不改变芯片物理能力，本手册不含解除发射限制的操作教程。",
+            "Misc 中 Dolphin 是海豚选项，Screen 是屏幕，VGM 是 Video Game Module；Spoof 改变部分展示标识，不能代替真实 API 和硬件信息。普通使用先保留协议默认值，优先整理主菜单、快捷键与收藏。"
+          ]
+        }
+      ],
+      "sources": [
+        "applications/main/momentum_app/scenes/momentum_app_scene_start.c",
+        "applications/main/momentum_app/scenes/momentum_app_scene_interface.c",
+        "applications/main/momentum_app/scenes/momentum_app_scene_interface_general.c",
+        "applications/main/momentum_app/scenes/momentum_app_scene_protocols.c",
+        "applications/main/momentum_app/scenes/momentum_app_scene_misc.c"
+      ]
+    },
+    {
+      "id": "apps",
+      "title": "10 扩展应用怎么找",
+      "intro": "附录逐项列出当前包内全部 295 个 FAP。先按中文用途搜索，再按英文名与路径寻找。",
+      "sections": [
+        {
+          "title": "统一查找方法",
+          "steps": [
+            "在网页版搜索“时钟”“温度”“红外”“ESP32”等词，或应用英文名。",
+            "查看用途、路径、所需硬件与验收状态；多层目录继续进入子文件夹。",
+            "设备 Apps 沿路径打开应用；系统组件一般通过 Settings 等菜单进入。",
+            "按应用内部提示操作；需要更详细说明时打开它的来源 README。不同第三方应用没有统一操作方式。"
+          ],
+          "paragraphs": [
+            "应用资源包括协议、图形和数据库，不能只复制 .fap 就保证工作。API 不匹配要换成 f7 / API89 对应构建；RPC 拒绝不匹配启动。设备本地出现继续按钮也不能证明兼容。"
+          ]
+        },
+        {
+          "title": "实用应用推荐入口",
+          "table": {
+            "headers": [
+              "用途",
+              "英文应用名"
+            ],
+            "rows": [
+              [
+                "记事与文本",
+                "FlipNote / Text Viewer"
+              ],
+              [
+                "计时与日程",
+                "Clock / Chronometer / Pomodoro Timer / Tasks"
+              ],
+              [
+                "换算与电路计算",
+                "Multi Converter / Resistance Calculator / Voltage Calculator"
+              ],
+              [
+                "数值与网络计算",
+                "Programmer Calculator / Net Calculator"
+              ],
+              [
+                "文件十六进制",
+                "HEX Viewer / HEX Editor"
+              ],
+              [
+                "信号查看",
+                "Sub Analyzer / ProtoView / IR Scope"
+              ],
+              [
+                "游戏与绘图",
+                "Sudoku / Stack Attack / Paint / Etch a Sketch"
+              ],
+              [
+                "SD 状态与帮助",
+                "SD Info / Flipper Lab"
+              ]
+            ]
+          }
+        },
+        {
+          "title": "声音和 USB 的特殊情况",
+          "paragraphs": [
+            "当前音量 0%，音乐、音调和部分游戏没有声音不一定是故障。如需临时使用声音，在 Volume 调整后测试，用完再静音。",
+            "Mass Storage 提供选定磁盘镜像，不自动把整张 SD 卡变成 U 盘。USB 控制器、U2F 和键鼠功能需要对应主机。",
+            "TOTP 需要正确时间。密码生成、钱包和验证码工具的安装不代表已经配置个人数据或完成安全审计。"
+          ]
+        },
+        {
+          "title": "USB、键盘和身份验证",
+          "table": {
+            "headers": [
+              "入口",
+              "中文用途与条件"
+            ],
+            "rows": [
+              [
+                "Bad KB",
+                "在自己的电脑上运行键盘自动化脚本；脚本会产生实际输入，先查看内容。"
+              ],
+              [
+                "USB Remote / Bluetooth Remote",
+                "作为键盘、鼠标或媒体遥控器；对应主机需要允许该连接。"
+              ],
+              [
+                "U2F Token / U2F",
+                "USB 第二因素验证令牌；依网站支持并在自己的账户中先注册。"
+              ],
+              [
+                "Passport",
+                "海豚等级与状态，不是电子护照读取；证件读取应用叫 Passport Reader。"
+              ],
+              [
+                "Clock / Flipper Lab",
+                "时钟与计时 / 英文功能指南；帮助页可以打开对应应用。"
+              ]
+            ]
+          },
+          "paragraphs": [
+            "USB 应用可能切换 USB 工作模式，电脑端通信可能随之变化。蓝牙 HID 应用也可能中断当前官方手机遥控；不要把打开界面误认为整个外设流程已验收。"
+          ]
+        }
+      ],
+      "sources": [
+        "scripts/fbt/elfmanifest.py",
+        "documentation/custom/OFFICIAL_APP_COMPATIBILITY_20260930.md",
+        "applications/main/clock_app/application.fam",
+        "applications/main/bad_usb/application.fam",
+        "applications/main/u2f/application.fam"
+      ]
+    },
+    {
+      "id": "trouble",
+      "title": "11 常见问题",
+      "intro": "先区分文件、版本、连接和硬件问题，再决定是否重装。",
+      "sections": [
+        {
+          "title": "按现象检查",
+          "table": {
+            "headers": [
+              "现象",
+              "先检查"
+            ],
+            "rows": [
+              [
+                "手机目录没有某个应用",
+                "私有或多层应用不一定被列出；用遥控进入设备 Apps / Archive。"
+              ],
+              [
+                "API mismatch / 无法加载",
+                "是否 f7 / API89，同批资源和插件是否齐全。"
+              ],
+              [
+                "Missing database / file",
+                "apps_data、数据库与固件是否同批。"
+              ],
+              [
+                "filesystem not ready",
+                "退出应用，检查插卡和挂载；不要第一步就格式化。"
+              ],
+              [
+                "没有声音",
+                "Volume 已按要求设为 0%。"
+              ],
+              [
+                "蓝牙连不上",
+                "设备开关、手机权限、App 配对；必要时两端清除旧配对。"
+              ],
+              [
+                "启动蓝牙应用后断开",
+                "可能切换 profile；退出后重新连接。"
+              ],
+              [
+                "ESP 应用无数据",
+                "板端芯片、固件、开关、引脚、供电、波特率与串口占用。"
+              ],
+              [
+                "NFC 只有 UID",
+                "协议或认证限制，不是完整卡数据。"
+              ],
+              [
+                "没有发现摄像机",
+                "扫描不是全部终端；有线、休眠或本地录像可能无 Wi-Fi 活动。"
+              ]
+            ]
+          }
+        },
+        {
+          "title": "反馈问题需要什么",
+          "paragraphs": [
+            "记录应用英文名、路径、构建号、API、错误原文和附件型号 / 固件。卡片密钥、个人身份数据与账号凭据不要放在公开反馈中。",
+            "重装用完整更新包，不把主固件、无线栈与资源从不同版本混用。本次手册没有再次烧录或修改设备配置。"
+          ]
+        }
+      ],
+      "sources": [
+        "documentation/custom/OFFICIAL_APP_COMPATIBILITY_20260930.md",
+        "applications/services/locale/locale_ui.h"
+      ]
+    },
+    {
+      "id": "roadmap",
+      "title": "12 中文快捷键与下一步增强",
+      "intro": "先解决看不懂和找不到，再扩大硬件与手机联动。以下是后续建议，不是已实现功能。",
+      "sections": [
+        {
+          "title": "语言切换还缺什么",
+          "paragraphs": [
+            "locale_ui_label 当前返回英文，locale 服务只处理单位、日期和时间格式，没有全局界面语言状态。一个快捷键不能自动翻译所有现有应用。",
+            "已有 SD 中文字形资源约 925KB、7097 字，有字形不代表完整文案。当前主固件距无线栈保留区剩 11664 字节，扩充需把大量文字放 SD 并评估加载内存。",
+            "全局切换还需语言设置、持久化、快捷键动作，以及原生页、第三方应用、动态文案和图片内文字逐项接入。部分中文入口不能称为全覆盖。"
+          ]
+        },
+        {
+          "title": "建议实施顺序",
+          "table": {
+            "headers": [
+              "阶段",
+              "改进与完成判据"
+            ],
+            "rows": [
+              [
+                "中文帮助入口",
+                "方向键快捷打开 SD 中文指南；主要菜单都能查到用途、依赖与操作。"
+              ],
+              [
+                "常用功能整理",
+                "主菜单、收藏和遥控流程更易找到；保留真实文件路径。"
+              ],
+              [
+                "官方手机实测",
+                "iPhone 配对、传文件、启动、按键与断连恢复有真实记录。"
+              ],
+              [
+                "AIO 识别与联调",
+                "确认芯片、板端固件、开关和协议；已知数据端到端一致。"
+              ],
+              [
+                "完整双语界面",
+                "分批翻译原生与外部应用，逐页检查动态文字、图片和错误提示。"
+              ]
+            ]
+          }
+        },
+        {
+          "title": "手册依据与维护",
+          "paragraphs": [
+            "依据为项目源码、实际安装包元数据和 2026-10-01 USB 验收。没有充分说明的应用已注明需核对项目介绍；没有编造兼容功能。",
+            "固件更新后应重新核对清单与验收状态，不能沿用旧的应用数量。网页版提供每项声明与 README 的来源链接；PDF 可离线检索中英文。"
+          ]
+        }
+      ],
+      "sources": [
+        "applications/services/locale/locale_ui.h",
+        "applications/services/locale/locale.c",
+        "applications/services/desktop/desktop_keybinds.c",
+        "documentation/custom/OFFICIAL_APP_COMPATIBILITY_20260930.json"
+      ]
+    }
+  ]
+}

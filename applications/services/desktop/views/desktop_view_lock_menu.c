@@ -279,6 +279,9 @@ bool desktop_lock_menu_input_callback(InputEvent* event, void* context) {
     } else {
         if(event->key == InputKeyBack) {
             consumed = false;
+        } else if(event->key == InputKeyOk && event->type == InputTypeLong) {
+            // Keep Momentum's directional shortcuts; hold OK to open the text controls.
+            desktop_event = DesktopLockMenuEventQuickSettings;
         } else if(event->key == InputKeyOk && event->type == InputTypeShort) {
             switch(idx) {
             case DesktopLockMenuIndexLefthandedMode:

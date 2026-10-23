@@ -1,4 +1,5 @@
 #include "elements.h"
+#include "utf8_internal.h"
 #include <m-core.h>
 #include <assets_icons.h>
 #include <furi_hal_resources.h>
@@ -26,6 +27,10 @@ typedef struct {
     size_t descender;
     size_t len;
     const char* text;
+    // Used by the UTF-8 layout only: advance of the line and the extra row that
+    // inverted glyphs need above and below
+    size_t width;
+    int32_t pad;
 } ElementTextBoxLine;
 
 void elements_progress_bar(Canvas* canvas, int32_t x, int32_t y, size_t width, float progress) {
@@ -160,7 +165,8 @@ void elements_frame(Canvas* canvas, int32_t x, int32_t y, size_t width, size_t h
 void elements_button_left(Canvas* canvas, const char* str) {
     furi_check(canvas);
 
-    const size_t button_height = 12;
+    // CJK reaches 11 px above the baseline; leave one pixel of padding.
+    const size_t button_height = gui_utf8_has_cjk(str) ? GUI_CJK_GLYPH_ASCENT + 4 : 12;
     const size_t vertical_offset = 3;
     const size_t horizontal_offset = 3;
     const size_t string_width = canvas_string_width(canvas, str);
@@ -188,7 +194,8 @@ void elements_button_left(Canvas* canvas, const char* str) {
 void elements_button_right(Canvas* canvas, const char* str) {
     furi_check(canvas);
 
-    const size_t button_height = 12;
+    // CJK reaches 11 px above the baseline; leave one pixel of padding.
+    const size_t button_height = gui_utf8_has_cjk(str) ? GUI_CJK_GLYPH_ASCENT + 4 : 12;
     const size_t vertical_offset = 3;
     const size_t horizontal_offset = 3;
     const size_t string_width = canvas_string_width(canvas, str);
@@ -218,7 +225,8 @@ void elements_button_up(Canvas* canvas, const char* str) {
 
     const Icon* icon = &I_ButtonUp_7x4;
 
-    const size_t button_height = 12;
+    // CJK reaches 11 px above the baseline; leave one pixel of padding.
+    const size_t button_height = gui_utf8_has_cjk(str) ? GUI_CJK_GLYPH_ASCENT + 4 : 12;
     const size_t vertical_offset = 3;
     const size_t horizontal_offset = 3;
     const size_t string_width = canvas_string_width(canvas, str);
@@ -250,7 +258,8 @@ void elements_button_down(Canvas* canvas, const char* str) {
 
     const Icon* icon = &I_ButtonDown_7x4;
 
-    const size_t button_height = 12;
+    // CJK reaches 11 px above the baseline; leave one pixel of padding.
+    const size_t button_height = gui_utf8_has_cjk(str) ? GUI_CJK_GLYPH_ASCENT + 4 : 12;
     const size_t vertical_offset = 3;
     const size_t horizontal_offset = 3;
     const size_t string_width = canvas_string_width(canvas, str);
@@ -280,7 +289,8 @@ void elements_button_down(Canvas* canvas, const char* str) {
 void elements_button_center(Canvas* canvas, const char* str) {
     furi_check(canvas);
 
-    const size_t button_height = 12;
+    // CJK reaches 11 px above the baseline; leave one pixel of padding.
+    const size_t button_height = gui_utf8_has_cjk(str) ? GUI_CJK_GLYPH_ASCENT + 4 : 12;
     const size_t vertical_offset = 3;
     const size_t horizontal_offset = 1;
     const size_t string_width = canvas_string_width(canvas, str);
@@ -344,12 +354,25 @@ static size_t
         // reduce to 5 to be sure dash fit, and next line will be at least 5 symbols long
         if(excess_symbols_approximately > 0) {
             excess_symbols_approximately = MAX(excess_symbols_approximately, 5u);
-            result = text_size - excess_symbols_approximately - 1;
+            // Keep at least one symbol so the caller always advances
+            if(excess_symbols_approximately + 1 < text_size) {
+                result = text_size - excess_symbols_approximately - 1;
+            } else {
+                result = 1;
+            }
         } else {
             result = text_size;
         }
     } else {
         result = text_size;
+    }
+
+    // Byte counts must not end inside a UTF-8 sequence; a line keeps its first
+    // codepoint whole when even that is too wide
+    result = gui_utf8_floor(text, result);
+    if(result == 0 && text_size > 0) {
+        uint32_t codepoint;
+        result = gui_utf8_decode(text, &codepoint);
     }
 
     furi_string_free(str);
@@ -367,7 +390,7 @@ void elements_multiline_text_aligned(
     furi_check(text);
 
     size_t lines_count = 0;
-    size_t font_height = canvas_current_font_height(canvas);
+    size_t font_height = gui_utf8_line_height(canvas_current_font_height(canvas), text);
     FuriString* line;
 
     /* go through text line by line and count lines */
@@ -389,12 +412,23 @@ void elements_multiline_text_aligned(
         size_t chars_fit = elements_get_max_chars_to_fit(canvas, horizontal, start, x);
 
         if((start[chars_fit] == '\n') || (start[chars_fit] == 0)) {
-            line = furi_string_alloc_printf("%.*s", chars_fit, start);
+            line = furi_string_alloc_printf("%.*s", (int)chars_fit, start);
         } else if((y + font_height) > canvas_height(canvas)) {
-            line = furi_string_alloc_printf("%.*s...\n", chars_fit, start);
+            line = furi_string_alloc_printf("%.*s...\n", (int)chars_fit, start);
         } else {
-            chars_fit -= 1; // account for the dash
-            line = furi_string_alloc_printf("%.*s-\n", chars_fit, start);
+            // A Latin word broken here gets a dash; a break next to a CJK character
+            // needs none, and a single character is never traded for the dash
+            size_t dash_fit = gui_utf8_prev_start(start, chars_fit);
+            uint32_t before;
+            uint32_t after;
+            gui_utf8_decode(&start[dash_fit], &before);
+            gui_utf8_decode(&start[chars_fit], &after);
+            if(dash_fit && !gui_utf8_is_cjk(before) && !gui_utf8_is_cjk(after)) {
+                chars_fit = dash_fit; // account for the dash
+                line = furi_string_alloc_printf("%.*s-\n", (int)chars_fit, start);
+            } else {
+                line = furi_string_alloc_printf("%.*s\n", (int)chars_fit, start);
+            }
         }
         canvas_draw_str_aligned(canvas, x, y, horizontal, vertical, furi_string_get_cstr(line));
         furi_string_free(line);
@@ -412,7 +446,7 @@ void elements_multiline_text(Canvas* canvas, int32_t x, int32_t y, const char* t
     furi_check(canvas);
     furi_check(text);
 
-    size_t font_height = canvas_current_font_height(canvas);
+    size_t font_height = gui_utf8_line_height(canvas_current_font_height(canvas), text);
     FuriString* str;
     str = furi_string_alloc();
     const char* start = text;
@@ -435,7 +469,7 @@ void elements_multiline_text_framed(Canvas* canvas, int32_t x, int32_t y, const 
     furi_check(canvas);
     furi_check(text);
 
-    size_t font_height = canvas_current_font_height(canvas);
+    size_t font_height = gui_utf8_line_height(canvas_current_font_height(canvas), text);
     size_t str_width = canvas_string_width(canvas, text);
 
     // count \n's
@@ -534,7 +568,7 @@ void elements_bubble_str(
     furi_check(canvas);
     furi_check(text);
 
-    size_t font_height = canvas_current_font_height(canvas);
+    size_t font_height = gui_utf8_line_height(canvas_current_font_height(canvas), text);
     size_t str_width = canvas_string_width(canvas, text);
 
     // count \n's
@@ -665,11 +699,14 @@ void elements_string_fit_width(Canvas* canvas, FuriString* string, size_t width)
 
     size_t len_px = canvas_string_width(canvas, furi_string_get_cstr(string));
     if(len_px > width) {
-        width -= canvas_string_width(canvas, "...");
-        do {
-            furi_string_left(string, furi_string_size(string) - 1);
+        size_t dots_px = canvas_string_width(canvas, "...");
+        width = width > dots_px ? width - dots_px : 0;
+        // Drop whole UTF-8 characters from the end until the rest leaves room for the dots
+        while(len_px > width && furi_string_size(string)) {
+            const char* text = furi_string_get_cstr(string);
+            furi_string_left(string, gui_utf8_prev_start(text, furi_string_size(string)));
             len_px = canvas_string_width(canvas, furi_string_get_cstr(string));
-        } while(len_px > width);
+        }
         furi_string_cat(string, "...");
     }
 }
@@ -708,48 +745,65 @@ void elements_scrollable_text_line_centered(
         }
 
         if(ellipsis) {
-            width -= canvas_string_width(canvas, "...");
+            size_t dots_px = canvas_string_width(canvas, "...");
+            width = width > dots_px ? width - dots_px : 0;
         }
 
-        // Calculate scroll size
-        size_t scroll_size = furi_string_size(line);
-        size_t right_width = 0;
-        for(size_t i = scroll_size - 1; i > 0; i--) {
-            right_width += canvas_glyph_width(canvas, furi_string_get_char(line, i));
-            if(right_width > width) break;
-            scroll_size--;
-            if(!scroll_size) break;
+        // Calculate scroll size: the number of leading characters (whole UTF-8
+        // codepoints, so a scroll position never starts inside a sequence) that must
+        // scroll away before the rest of the line fits. Same result as counting
+        // glyph widths from the right, one byte per glyph, for ASCII.
+        const char* text = furi_string_get_cstr(line);
+        size_t symbols = 0;
+        size_t total_width = 0;
+        uint32_t codepoint;
+        size_t size;
+        for(const char* p = text; (size = gui_utf8_decode(p, &codepoint)) > 0; p += size) {
+            symbols++;
+            total_width += canvas_glyph_width(canvas, (uint16_t)codepoint);
+        }
+        size_t scroll_size = symbols;
+        size_t left_width = 0;
+        size_t index = 0;
+        for(const char* p = text; (size = gui_utf8_decode(p, &codepoint)) > 0; p += size) {
+            if(index > 0 && total_width - left_width <= width) {
+                scroll_size = index;
+                break;
+            }
+            left_width += canvas_glyph_width(canvas, (uint16_t)codepoint);
+            index++;
         }
 
         // Ensure that we have something to scroll
         if(scroll_size) {
+            size_t position;
             if(marquee) {
                 const size_t delay = 3; // positions before/after scroll to delay
                 size_t total_scroll = (scroll_size * 2) + (delay * 2);
                 size_t use_scroll = scroll % total_scroll;
 
                 if(use_scroll < scroll_size) {
-                    furi_string_right(line, use_scroll);
+                    position = use_scroll;
                 } else if(use_scroll < (scroll_size + delay)) {
                     // Delay right
-                    furi_string_right(line, scroll_size);
+                    position = scroll_size;
                 } else if(use_scroll < (scroll_size * 2 + delay)) {
-                    size_t reverse_pos = scroll_size - (use_scroll - (scroll_size + delay));
-                    furi_string_right(line, reverse_pos);
+                    position = scroll_size - (use_scroll - (scroll_size + delay));
                 } else {
                     // Delay left
-                    furi_string_right(line, 0);
+                    position = 0;
                 }
             } else {
                 scroll_size += 3;
-                scroll = scroll % scroll_size;
-                furi_string_right(line, scroll);
+                position = scroll % scroll_size;
             }
+            furi_string_right(line, gui_utf8_offset(text, position));
         }
 
         len_px = canvas_string_width(canvas, furi_string_get_cstr(line));
-        while(len_px > width) {
-            furi_string_left(line, furi_string_size(line) - 1);
+        while(len_px > width && furi_string_size(line)) {
+            text = furi_string_get_cstr(line);
+            furi_string_left(line, gui_utf8_prev_start(text, furi_string_size(line)));
             len_px = canvas_string_width(canvas, furi_string_get_cstr(line));
         }
 
@@ -767,6 +821,250 @@ void elements_scrollable_text_line_centered(
     furi_string_free(line);
 }
 
+typedef struct {
+    bool bold;
+    bool mono;
+    bool inverse;
+    Font font;
+} ElementTextBoxStyle;
+
+// Applies the byte that follows an ESC marker; returns true when the font changed
+static bool elements_text_box_style_apply(ElementTextBoxStyle* style, char marker) {
+    if(marker == ELEMENTS_BOLD_MARKER) {
+        style->bold = !style->bold;
+        style->font = style->bold ? FontPrimary : FontSecondary;
+        return true;
+    }
+    if(marker == ELEMENTS_MONO_MARKER) {
+        style->mono = !style->mono;
+        style->font = style->mono ? FontKeyboard : FontSecondary;
+        return true;
+    }
+    if(marker == ELEMENTS_INVERSE_MARKER) {
+        style->inverse = !style->inverse;
+    }
+    return false;
+}
+
+// Widens a line's metrics to those of a font
+static void
+    elements_text_box_merge_font(ElementTextBoxLine* line, const CanvasFontParameters* params) {
+    line->leading_min = MAX(line->leading_min, (int32_t)params->leading_min);
+    line->leading_default = MAX(line->leading_default, (int32_t)params->leading_default);
+    line->height = MAX(line->height, (size_t)params->height);
+    line->descender = MAX(line->descender, (size_t)params->descender);
+}
+
+// Rows from the previous baseline to the baseline of `current`: the previous line's
+// leading, and never less than the glyph rows that meet between the two lines (plus
+// one blank row for the default spacing). Without a previous line, the rows from
+// the top of the box to the first baseline.
+static int32_t elements_text_box_step(
+    const ElementTextBoxLine* prev,
+    const ElementTextBoxLine* current,
+    bool default_spacing) {
+    int32_t ascent = (int32_t)current->height + current->pad;
+    if(!prev) return ascent;
+    int32_t meet = (int32_t)prev->descender + prev->pad + ascent;
+    if(default_spacing) {
+        return MAX(prev->leading_default, meet + 1);
+    }
+    return MAX(prev->leading_min, meet);
+}
+
+// elements_text_box() for text with bytes outside ASCII: the same markers, alignment
+// and strip_to_dots, laid out codepoint by codepoint so UTF-8 sequences are never
+// split, with rows tall enough for the glyphs of the native Chinese font
+static void elements_text_box_utf8(
+    Canvas* canvas,
+    int32_t x,
+    int32_t y,
+    size_t width,
+    size_t height,
+    Align horizontal,
+    Align vertical,
+    const char* text,
+    bool strip_to_dots) {
+    ElementTextBoxLine line[ELEMENTS_MAX_LINES_NUM];
+    ElementTextBoxStyle style = {.font = FontSecondary};
+    size_t line_num = 0;
+    bool truncated = false;
+    // Baseline of the last stored line, counted from the top of the box, with the
+    // smallest and with the default spacing
+    int32_t baseline_min = 0;
+    int32_t baseline_default = 0;
+
+    canvas_set_font(canvas, FontSecondary);
+    const CanvasFontParameters* params = canvas_get_font_params(canvas, style.font);
+    size_t dots_width = canvas_string_width(canvas, "...");
+
+    // Fill all lines
+    const char* cursor = text;
+    while(true) {
+        // Metrics grow with the glyphs placed on the line: the selected font's for
+        // ASCII, the native Chinese font's for CJK
+        ElementTextBoxLine current = {.x = x, .text = cursor};
+        bool inverse_present = style.inverse;
+        bool has_glyph = false;
+        const char* p = cursor;
+        const char* next = NULL;
+
+        while(true) {
+            uint32_t codepoint;
+            size_t size = gui_utf8_decode(p, &codepoint);
+            if(size == 0) break;
+            if(codepoint == '\e' && p[1]) {
+                if(elements_text_box_style_apply(&style, p[1])) {
+                    canvas_set_font(canvas, style.font);
+                    params = canvas_get_font_params(canvas, style.font);
+                }
+                inverse_present = inverse_present || style.inverse;
+                p += 2;
+                continue;
+            }
+            if(codepoint == '\n') {
+                next = p + 1;
+                break;
+            }
+            size_t glyph_width = canvas_glyph_width(canvas, (uint16_t)codepoint);
+            // The first glyph of a line stays on it even when wider than the box, so a
+            // narrow box cannot stall the layout
+            if(has_glyph && current.width + glyph_width > width) {
+                next = p;
+                break;
+            }
+            has_glyph = true;
+            current.width += glyph_width;
+            if(gui_utf8_is_cjk(codepoint)) {
+                current.leading_min = MAX(current.leading_min, (int32_t)GUI_CJK_LINE_HEIGHT);
+                current.leading_default =
+                    MAX(current.leading_default, (int32_t)GUI_CJK_LINE_LEADING);
+                current.height = MAX(current.height, (size_t)GUI_CJK_GLYPH_ASCENT);
+                current.descender = MAX(current.descender, (size_t)GUI_CJK_GLYPH_DESCENT);
+            } else {
+                elements_text_box_merge_font(&current, params);
+            }
+            p += size;
+        }
+        current.len = (size_t)(p - cursor);
+        if(!has_glyph) {
+            // An empty line is as tall as the current font
+            elements_text_box_merge_font(&current, params);
+        }
+        if(inverse_present) {
+            // Room for the frame around inverted glyphs
+            current.leading_min += 1;
+            current.leading_default += 1;
+            current.pad = 1;
+        }
+
+        // Keep the line only when its lowest row is still inside the box
+        const ElementTextBoxLine* prev = line_num ? &line[line_num - 1] : NULL;
+        int32_t step_min = elements_text_box_step(prev, &current, false);
+        int32_t bottom = baseline_min + step_min + (int32_t)current.descender + current.pad;
+        if(line_num == ELEMENTS_MAX_LINES_NUM || bottom > (int32_t)height) {
+            truncated = has_glyph || next != NULL;
+            break;
+        }
+        baseline_min += step_min;
+        baseline_default += elements_text_box_step(prev, &current, true);
+
+        int32_t spare = (int32_t)width - (int32_t)current.width;
+        if(horizontal == AlignCenter && spare > 0) {
+            current.x = x + spare / 2;
+        } else if(horizontal == AlignRight && spare > 0) {
+            current.x = x + spare;
+        }
+        line[line_num++] = current;
+
+        if(next == NULL) break;
+        cursor = next;
+    }
+
+    // Set vertical alignment for all lines
+    if(line_num) {
+        const ElementTextBoxLine* last = &line[line_num - 1];
+        int32_t extent_default = baseline_default + (int32_t)last->descender + last->pad;
+        if(extent_default <= (int32_t)height) {
+            int32_t shift = 0;
+            if(vertical == AlignCenter) {
+                shift = ((int32_t)height - extent_default) / 2;
+            } else if(vertical == AlignBottom) {
+                shift = (int32_t)height - extent_default;
+            }
+            line[0].y = y + shift + elements_text_box_step(NULL, &line[0], true);
+            for(size_t i = 1; i < line_num; i++) {
+                line[i].y = line[i - 1].y + elements_text_box_step(&line[i - 1], &line[i], true);
+            }
+        } else {
+            // The default spacing does not fit: start at the top with the smallest
+            // spacing and spread the spare rows over the gaps, like the ASCII layout
+            int32_t extent_min = baseline_min + (int32_t)last->descender + last->pad;
+            int32_t spare = (int32_t)height - extent_min;
+            int32_t gaps = (int32_t)line_num - 1;
+            line[0].y = y + elements_text_box_step(NULL, &line[0], false);
+            for(int32_t i = 1; i <= gaps; i++) {
+                int32_t extra = spare / gaps + ((i - 1) < spare % gaps ? 1 : 0);
+                line[i].y =
+                    line[i - 1].y + elements_text_box_step(&line[i - 1], &line[i], false) + extra;
+            }
+        }
+    }
+
+    // Draw line by line
+    canvas_set_font(canvas, FontSecondary);
+    style = (ElementTextBoxStyle){.font = FontSecondary};
+    int32_t right = x + (int32_t)width;
+    for(size_t i = 0; i < line_num; i++) {
+        const char* p = line[i].text;
+        const char* end = p + line[i].len;
+        int32_t pen = line[i].x;
+        bool dots = strip_to_dots && truncated && (i == line_num - 1);
+        while(p < end) {
+            uint32_t codepoint;
+            size_t size = gui_utf8_decode(p, &codepoint);
+            if(size == 0) break;
+            // Process format symbols
+            if(codepoint == '\e' && p + 1 < end) {
+                if(elements_text_box_style_apply(&style, p[1])) {
+                    canvas_set_font(canvas, style.font);
+                }
+                p += 2;
+                continue;
+            }
+            uint16_t symbol = (uint16_t)codepoint;
+            int32_t glyph_width = (int32_t)canvas_glyph_width(canvas, symbol);
+            if(dots && pen + glyph_width + (int32_t)dots_width > right) {
+                break; // the dots below stand for this glyph and the rest of the text
+            }
+            // Nothing is drawn past the right edge of the box: a glyph wider than the
+            // box is skipped, its line stays empty
+            if(pen + glyph_width <= right) {
+                if(style.inverse) {
+                    canvas_draw_box(
+                        canvas,
+                        pen - 1,
+                        line[i].y - (int32_t)line[i].height - 1,
+                        (size_t)glyph_width + 1,
+                        line[i].height + line[i].descender + 2);
+                    canvas_invert_color(canvas);
+                    canvas_draw_glyph(canvas, pen, line[i].y, symbol);
+                    canvas_invert_color(canvas);
+                } else {
+                    canvas_draw_glyph(canvas, pen, line[i].y, symbol);
+                }
+            }
+            pen += glyph_width;
+            p += size;
+        }
+        // Text was cut off: say so at the end of the last line when the dots fit
+        if(dots && pen + (int32_t)dots_width <= right) {
+            canvas_draw_str(canvas, pen, line[i].y, "...");
+        }
+    }
+    canvas_set_font(canvas, FontSecondary);
+}
+
 void elements_text_box(
     Canvas* canvas,
     int32_t x,
@@ -778,6 +1076,14 @@ void elements_text_box(
     const char* text,
     bool strip_to_dots) {
     furi_check(canvas);
+
+    // Text the stock fonts cannot draw byte by byte takes the UTF-8 layout; ASCII
+    // text keeps the original one below
+    if(!gui_utf8_is_ascii(text)) {
+        elements_text_box_utf8(
+            canvas, x, y, width, height, horizontal, vertical, text, strip_to_dots);
+        return;
+    }
 
     ElementTextBoxLine line[ELEMENTS_MAX_LINES_NUM];
     bool bold = false;
@@ -801,6 +1107,16 @@ void elements_text_box(
     size_t i = 0;
     bool full_text_processed = false;
     size_t dots_width = canvas_string_width(canvas, "...");
+    // Word-wrap bookkeeping: the last space on the current line, so an overflow can push the whole
+    // word to the next line instead of breaking mid-word. Falls back to character wrap when a single
+    // word is itself wider than the box, or when the trailing word contains an inline font marker
+    // (\e#, \e*, \e!) -- rewinding across a marker would re-toggle the already-applied emphasis and
+    // corrupt the measurement, so those words char-wrap as before.
+    int last_space_i = -1;
+    size_t line_start_i = 0;
+    size_t line_width_at_space = 0;
+    size_t line_len_at_space = 0;
+    bool marker_since_space = false;
 
     canvas_set_font(canvas, FontSecondary);
 
@@ -821,6 +1137,7 @@ void elements_text_box(
         if(text[i] == '\e' && text[i + 1]) {
             i++;
             line_len++;
+            marker_since_space = true; // a marker in the current word blocks word wrap (see above)
             if(text[i] == ELEMENTS_BOLD_MARKER) {
                 if(bold) {
                     current_font = FontSecondary;
@@ -847,11 +1164,26 @@ void elements_text_box(
         if(text[i] != '\n') {
             line_width += canvas_glyph_width(canvas, text[i]);
         }
+        // Remember the last space so an overflow can wrap the whole trailing word.
+        if(text[i] == ' ') {
+            last_space_i = (int)i;
+            line_width_at_space = line_width - canvas_glyph_width(canvas, ' ');
+            line_len_at_space = line_len - 1;
+            marker_since_space = false;
+        }
         // Process new line
         if(text[i] == '\n' || text[i] == '\0' || line_width > width) {
             if(line_width > width) {
-                line_width -= canvas_glyph_width(canvas, text[i--]);
-                line_len--;
+                if(last_space_i > (int)line_start_i && !marker_since_space) {
+                    // Word wrap: break at the last space; its word moves to the next line.
+                    i = (size_t)last_space_i;
+                    line_width = line_width_at_space;
+                    line_len = line_len_at_space;
+                } else {
+                    // A single word wider than the box: fall back to character wrap.
+                    line_width -= canvas_glyph_width(canvas, text[i--]);
+                    line_len--;
+                }
             }
             if(text[i] == '\0') {
                 full_text_processed = true;
@@ -880,8 +1212,16 @@ void elements_text_box(
             }
             line[line_num].y = total_height_min;
             line_num++;
+            // Never index past line[]: a near-full-height box can fit the last slot's leading yet
+            // still have text left, which would write line[ELEMENTS_MAX_LINES_NUM] otherwise.
+            if(line_num >= ELEMENTS_MAX_LINES_NUM) {
+                break;
+            }
             if(!full_text_processed) {
                 line[line_num].text = &text[i + 1];
+                line_start_i = i + 1;
+                last_space_i = -1;
+                marker_since_space = false;
             }
             line_leading_min = font_params->leading_min;
             line_height = font_params->height;

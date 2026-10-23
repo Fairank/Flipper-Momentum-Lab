@@ -1,5 +1,6 @@
 #include "widget_element_i.h"
 #include <gui/elements.h>
+#include <gui/utf8_internal.h>
 #include <m-array.h>
 
 #define WIDGET_ELEMENT_TEXT_SCROLL_BAR_OFFSET (4)
@@ -8,6 +9,8 @@ typedef struct {
     Font font;
     Align horizontal;
     FuriString* text;
+    uint8_t height;
+    uint8_t leading;
 } TextScrollLineArray;
 
 ARRAY_DEF(TextScrollLineArray, TextScrollLineArray, M_POD_OPLIST) //-V658
@@ -53,23 +56,22 @@ void widget_element_text_scroll_add_line(WidgetElement* element, TextScrollLineA
     new_line.font = line->font;
     new_line.horizontal = line->horizontal;
     new_line.text = furi_string_alloc_set(line->text);
+    new_line.height = line->height;
+    new_line.leading = line->leading;
     TextScrollLineArray_push_back(model->line_array, new_line);
 }
 
 static void widget_element_text_scroll_fill_lines(Canvas* canvas, WidgetElement* element) {
     WidgetElementTextScrollModel* model = element->model;
     TextScrollLineArray line_tmp;
-    bool all_text_processed = false;
     line_tmp.text = furi_string_alloc();
     bool reached_new_line = true;
-    uint16_t total_height = 0;
 
-    while(!all_text_processed) {
+    while(true) {
         if(reached_new_line) {
             // Set default line properties
             line_tmp.font = FontSecondary;
             line_tmp.horizontal = AlignLeft;
-            furi_string_reset(line_tmp.text);
             // Process control symbols
             while(widget_element_text_scroll_process_ctrl_symbols(&line_tmp, model->text))
                 ;
@@ -77,45 +79,57 @@ static void widget_element_text_scroll_fill_lines(Canvas* canvas, WidgetElement*
         // Set canvas font
         canvas_set_font(canvas, line_tmp.font);
         const CanvasFontParameters* params = canvas_get_font_params(canvas, line_tmp.font);
-        total_height += params->height;
-        if(total_height > model->height) {
-            model->scroll_pos_total++;
-        }
-
-        uint8_t line_width = 0;
-        uint16_t char_i = 0;
+        furi_string_reset(line_tmp.text);
+        size_t line_width = 0;
+        size_t char_i = 0;
+        const char* remaining = furi_string_get_cstr(model->text);
+        bool finished = false;
         while(true) {
-            char next_char = furi_string_get_char(model->text, char_i++);
-            if(next_char == '\0') {
-                furi_string_push_back(line_tmp.text, '\0');
-                widget_element_text_scroll_add_line(element, &line_tmp);
-                total_height += params->leading_default - params->height;
-                all_text_processed = true;
+            uint32_t codepoint;
+            size_t bytes = gui_utf8_decode(remaining + char_i, &codepoint);
+            if(!bytes) {
+                finished = true;
                 break;
-            } else if(next_char == '\n') {
-                furi_string_push_back(line_tmp.text, '\0');
-                widget_element_text_scroll_add_line(element, &line_tmp);
-                furi_string_right(model->text, char_i);
-                total_height += params->leading_default - params->height;
+            } else if(codepoint == '\n') {
+                char_i += bytes;
                 reached_new_line = true;
                 break;
             } else {
-                line_width += canvas_glyph_width(canvas, next_char);
-                if(line_width > model->width) {
-                    furi_string_push_back(line_tmp.text, '\0');
-                    widget_element_text_scroll_add_line(element, &line_tmp);
-                    furi_string_right(model->text, char_i - 1);
-                    furi_string_reset(line_tmp.text);
-                    total_height += params->leading_default - params->height;
+                // Keep whole UTF-8 sequences. An oversized first glyph must still
+                // advance, otherwise a narrow widget would loop forever.
+                char glyph[5] = {0};
+                memcpy(glyph, remaining + char_i, bytes);
+                size_t advance = canvas_glyph_width(canvas, (uint16_t)codepoint);
+                if(line_width + advance > model->width && char_i > 0) {
                     reached_new_line = false;
                     break;
-                } else {
-                    furi_string_push_back(line_tmp.text, next_char);
                 }
+                furi_string_cat_str(line_tmp.text, glyph);
+                line_width += advance;
+                char_i += bytes;
             }
         }
+        bool cjk = gui_utf8_has_cjk(furi_string_get_cstr(line_tmp.text));
+        uint8_t glyph_height = params->height + params->descender;
+        line_tmp.height = cjk ? MAX(glyph_height, GUI_CJK_LINE_HEIGHT) : glyph_height;
+        line_tmp.leading = cjk ? MAX(params->leading_default, GUI_CJK_LINE_LEADING) :
+                                 params->leading_default;
+        widget_element_text_scroll_add_line(element, &line_tmp);
+        if(finished) break;
+        furi_string_right(model->text, char_i);
     }
 
+    // The last scroll position is the earliest suffix that completely fits.
+    // Count actual heights, including mixed Chinese and ASCII rows.
+    size_t last = TextScrollLineArray_size(model->line_array) - 1;
+    size_t height = TextScrollLineArray_get(model->line_array, last)->height;
+    while(last > 0) {
+        TextScrollLineArray* previous = TextScrollLineArray_get(model->line_array, last - 1);
+        if(height + previous->leading > model->height) break;
+        height += previous->leading;
+        last--;
+    }
+    model->scroll_pos_total = last + 1;
     furi_string_free(line_tmp.text);
 }
 
@@ -131,8 +145,8 @@ static void widget_element_text_scroll_draw(Canvas* canvas, WidgetElement* eleme
         model->text_formatted = true;
     }
 
-    uint8_t y = model->y;
-    uint8_t x = model->x;
+    uint16_t y = model->y;
+    uint16_t x = model->x;
     uint16_t curr_line = 0;
     if(TextScrollLineArray_size(model->line_array)) {
         TextScrollLineArray_it_t it;
@@ -140,19 +154,18 @@ static void widget_element_text_scroll_draw(Canvas* canvas, WidgetElement* eleme
             TextScrollLineArray_next(it), curr_line++) {
             if(curr_line < model->scroll_pos_current) continue;
             TextScrollLineArray* line = TextScrollLineArray_ref(it);
-            const CanvasFontParameters* params = canvas_get_font_params(canvas, line->font);
-            if(y + params->descender > model->y + model->height) break;
+            if(y + line->height > model->y + model->height) break;
             canvas_set_font(canvas, line->font);
             if(line->horizontal == AlignLeft) {
                 x = model->x;
             } else if(line->horizontal == AlignCenter) {
-                x = (model->x + model->width) / 2;
+                x = model->x + model->width / 2;
             } else if(line->horizontal == AlignRight) {
                 x = model->x + model->width;
             }
             canvas_draw_str_aligned(
                 canvas, x, y, line->horizontal, AlignTop, furi_string_get_cstr(line->text));
-            y += params->leading_default;
+            y += line->leading;
         }
         // Draw scroll bar
         if(model->scroll_pos_total > 1) {
@@ -227,10 +240,13 @@ WidgetElement* widget_element_text_scroll_create(
     WidgetElementTextScrollModel* model = malloc(sizeof(WidgetElementTextScrollModel));
     model->x = x;
     model->y = y;
-    model->width = width - WIDGET_ELEMENT_TEXT_SCROLL_BAR_OFFSET;
+    model->width = width > WIDGET_ELEMENT_TEXT_SCROLL_BAR_OFFSET ?
+                       width - WIDGET_ELEMENT_TEXT_SCROLL_BAR_OFFSET :
+                       1;
     model->height = height;
     model->scroll_pos_current = 0;
     model->scroll_pos_total = 1;
+    model->text_formatted = false;
     TextScrollLineArray_init(model->line_array);
     model->text = furi_string_alloc_set(text);
 

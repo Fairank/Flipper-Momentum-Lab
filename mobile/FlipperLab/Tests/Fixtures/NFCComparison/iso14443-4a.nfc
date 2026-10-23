@@ -1,0 +1,13 @@
+Filetype: Flipper NFC device
+Version: 4
+# Synthetic parser fixture, not captured from a card.
+# Format source: lib/nfc/protocols/iso14443_3a/iso14443_3a.c and iso14443_4a/iso14443_4a.c
+# Source revision and attribution are in README.md alongside this file.
+Device type: ISO14443-4A
+UID: 01 02 03 04
+ATQA: 00 04
+SAK: 20
+T0: 78
+TA(1): 77
+TB(1): 94
+TC(1): 02

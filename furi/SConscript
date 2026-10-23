@@ -11,6 +11,7 @@ libenv = env.Clone(FW_LIB_NAME="furi")
 libenv.ApplyLibFlags()
 
 sources = libenv.GlobRecursive("*.c")
+sources = libenv.KeepAssemblyUnits(sources, ["check.c"])
 
 lib = libenv.StaticLibrary("${FW_LIB_NAME}", sources)
 libenv.Install("${LIB_DIST_DIR}", lib)

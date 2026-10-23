@@ -19,12 +19,6 @@ extern const SubGhzProtocol subghz_protocol_nero_sketch;
 void* subghz_protocol_encoder_nero_sketch_alloc(SubGhzEnvironment* environment);
 
 /**
- * Free SubGhzProtocolEncoderNeroSketch.
- * @param context Pointer to a SubGhzProtocolEncoderNeroSketch instance
- */
-void subghz_protocol_encoder_nero_sketch_free(void* context);
-
-/**
  * Deserialize and generating an upload to send.
  * @param context Pointer to a SubGhzProtocolEncoderNeroSketch instance
  * @param flipper_format Pointer to a FlipperFormat instance
@@ -34,36 +28,11 @@ SubGhzProtocolStatus
     subghz_protocol_encoder_nero_sketch_deserialize(void* context, FlipperFormat* flipper_format);
 
 /**
- * Forced transmission stop.
- * @param context Pointer to a SubGhzProtocolEncoderNeroSketch instance
- */
-void subghz_protocol_encoder_nero_sketch_stop(void* context);
-
-/**
- * Getting the level and duration of the upload to be loaded into DMA.
- * @param context Pointer to a SubGhzProtocolEncoderNeroSketch instance
- * @return LevelDuration 
- */
-LevelDuration subghz_protocol_encoder_nero_sketch_yield(void* context);
-
-/**
  * Allocate SubGhzProtocolDecoderNeroSketch.
  * @param environment Pointer to a SubGhzEnvironment instance
  * @return SubGhzProtocolDecoderNeroSketch* pointer to a SubGhzProtocolDecoderNeroSketch instance
  */
 void* subghz_protocol_decoder_nero_sketch_alloc(SubGhzEnvironment* environment);
-
-/**
- * Free SubGhzProtocolDecoderNeroSketch.
- * @param context Pointer to a SubGhzProtocolDecoderNeroSketch instance
- */
-void subghz_protocol_decoder_nero_sketch_free(void* context);
-
-/**
- * Reset decoder SubGhzProtocolDecoderNeroSketch.
- * @param context Pointer to a SubGhzProtocolDecoderNeroSketch instance
- */
-void subghz_protocol_decoder_nero_sketch_reset(void* context);
 
 /**
  * Parse a raw sequence of levels and durations received from the air.

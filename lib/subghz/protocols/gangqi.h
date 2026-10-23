@@ -19,12 +19,6 @@ extern const SubGhzProtocol subghz_protocol_gangqi;
 void* subghz_protocol_encoder_gangqi_alloc(SubGhzEnvironment* environment);
 
 /**
- * Free SubGhzProtocolEncoderGangQi.
- * @param context Pointer to a SubGhzProtocolEncoderGangQi instance
- */
-void subghz_protocol_encoder_gangqi_free(void* context);
-
-/**
  * Deserialize and generating an upload to send.
  * @param context Pointer to a SubGhzProtocolEncoderGangQi instance
  * @param flipper_format Pointer to a FlipperFormat instance
@@ -34,36 +28,11 @@ SubGhzProtocolStatus
     subghz_protocol_encoder_gangqi_deserialize(void* context, FlipperFormat* flipper_format);
 
 /**
- * Forced transmission stop.
- * @param context Pointer to a SubGhzProtocolEncoderGangQi instance
- */
-void subghz_protocol_encoder_gangqi_stop(void* context);
-
-/**
- * Getting the level and duration of the upload to be loaded into DMA.
- * @param context Pointer to a SubGhzProtocolEncoderGangQi instance
- * @return LevelDuration 
- */
-LevelDuration subghz_protocol_encoder_gangqi_yield(void* context);
-
-/**
  * Allocate SubGhzProtocolDecoderGangQi.
  * @param environment Pointer to a SubGhzEnvironment instance
  * @return SubGhzProtocolDecoderGangQi* pointer to a SubGhzProtocolDecoderGangQi instance
  */
 void* subghz_protocol_decoder_gangqi_alloc(SubGhzEnvironment* environment);
-
-/**
- * Free SubGhzProtocolDecoderGangQi.
- * @param context Pointer to a SubGhzProtocolDecoderGangQi instance
- */
-void subghz_protocol_decoder_gangqi_free(void* context);
-
-/**
- * Reset decoder SubGhzProtocolDecoderGangQi.
- * @param context Pointer to a SubGhzProtocolDecoderGangQi instance
- */
-void subghz_protocol_decoder_gangqi_reset(void* context);
 
 /**
  * Parse a raw sequence of levels and durations received from the air.

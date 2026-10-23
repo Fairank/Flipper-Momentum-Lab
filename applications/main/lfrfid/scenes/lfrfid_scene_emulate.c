@@ -13,7 +13,7 @@ void lfrfid_scene_emulate_on_enter(void* context) {
     LfRfid* app = context;
     Widget* widget = app->widget;
 
-    FuriString* display_text = furi_string_alloc_set("\e#Emulating\e#\n");
+    FuriString* display_text = furi_string_alloc_set("\033#Emulating\033#\n");
 
     furi_string_cat_printf(
         display_text,

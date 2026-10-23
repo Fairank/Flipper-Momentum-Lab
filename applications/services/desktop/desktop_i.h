@@ -12,6 +12,7 @@
 #include "views/desktop_view_lock_menu.h"
 #include "views/desktop_view_debug.h"
 #include "views/desktop_view_slideshow.h"
+#include "views/desktop_view_quick_settings.h"
 
 #include <gui/gui.h>
 #include <gui/view_stack.h>
@@ -33,6 +34,7 @@ typedef enum {
     DesktopViewIdPinInput,
     DesktopViewIdPinTimeout,
     DesktopViewIdSlideshow,
+    DesktopViewIdQuickSettings,
     DesktopViewIdTotal,
 } DesktopViewId;
 
@@ -91,10 +93,10 @@ struct Desktop {
     FuriPubSubSubscription* ascii_events_subscription;
 
     FuriString* archive_dir;
+    DesktopQuickSettingsView* quick_settings;
 };
 
 void desktop_lock(Desktop* desktop, bool pin_lock);
 void desktop_unlock(Desktop* desktop);
 int32_t desktop_shutdown(void* context);
 void desktop_set_stealth_mode_state(Desktop* desktop, bool enabled);
-void desktop_launch_archive(Desktop* desktop, const char* open_dir);

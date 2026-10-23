@@ -19,12 +19,6 @@ extern const SubGhzProtocol subghz_protocol_chamb_code;
 void* subghz_protocol_encoder_chamb_code_alloc(SubGhzEnvironment* environment);
 
 /**
- * Free SubGhzProtocolEncoderChamb_Code.
- * @param context Pointer to a SubGhzProtocolEncoderChamb_Code instance
- */
-void subghz_protocol_encoder_chamb_code_free(void* context);
-
-/**
  * Deserialize and generating an upload to send.
  * @param context Pointer to a SubGhzProtocolEncoderChamb_Code instance
  * @param flipper_format Pointer to a FlipperFormat instance
@@ -34,36 +28,11 @@ SubGhzProtocolStatus
     subghz_protocol_encoder_chamb_code_deserialize(void* context, FlipperFormat* flipper_format);
 
 /**
- * Forced transmission stop.
- * @param context Pointer to a SubGhzProtocolEncoderChamb_Code instance
- */
-void subghz_protocol_encoder_chamb_code_stop(void* context);
-
-/**
- * Getting the level and duration of the upload to be loaded into DMA.
- * @param context Pointer to a SubGhzProtocolEncoderChamb_Code instance
- * @return LevelDuration 
- */
-LevelDuration subghz_protocol_encoder_chamb_code_yield(void* context);
-
-/**
  * Allocate SubGhzProtocolDecoderChamb_Code.
  * @param environment Pointer to a SubGhzEnvironment instance
  * @return SubGhzProtocolDecoderChamb_Code* pointer to a SubGhzProtocolDecoderChamb_Code instance
  */
 void* subghz_protocol_decoder_chamb_code_alloc(SubGhzEnvironment* environment);
-
-/**
- * Free SubGhzProtocolDecoderChamb_Code.
- * @param context Pointer to a SubGhzProtocolDecoderChamb_Code instance
- */
-void subghz_protocol_decoder_chamb_code_free(void* context);
-
-/**
- * Reset decoder SubGhzProtocolDecoderChamb_Code.
- * @param context Pointer to a SubGhzProtocolDecoderChamb_Code instance
- */
-void subghz_protocol_decoder_chamb_code_reset(void* context);
 
 /**
  * Parse a raw sequence of levels and durations received from the air.

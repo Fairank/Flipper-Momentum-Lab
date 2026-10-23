@@ -2,6 +2,8 @@
 
 #include <furi.h>
 
+#define TAG "MfDesfire"
+
 #define MF_DESFIRE_PROTOCOL_NAME "Mifare DESFire"
 
 #define MF_DESFIRE_HW_MINOR_TYPE          (0x00)
@@ -135,7 +137,13 @@ bool mf_desfire_load(MfDesfireData* data, FlipperFormat* ff, uint32_t version) {
             break;
 
         const uint32_t master_key_version_count = data->master_key_settings.max_keys;
-        simple_array_init(data->master_key_versions, master_key_version_count);
+        // A card may report zero keys, in which case nothing was saved and the
+        // array stays empty - same as the per-application path does on load
+        if(master_key_version_count) {
+            simple_array_init(data->master_key_versions, master_key_version_count);
+        } else {
+            FURI_LOG_W(TAG, "PICC reports zero master keys, key versions skipped");
+        }
 
         uint32_t i;
         for(i = 0; i < master_key_version_count; ++i) {
@@ -266,7 +274,7 @@ bool mf_desfire_is_equal(const MfDesfireData* data, const MfDesfireData* other) 
                sizeof(MfDesfireKeySettings)) == 0 &&
            simple_array_is_equal(data->master_key_versions, other->master_key_versions) &&
            simple_array_is_equal(data->application_ids, other->application_ids) &&
-           simple_array_is_equal(data->applications, other->applications);
+           mf_desfire_application_array_is_equal(data->applications, other->applications);
 }
 
 static MfDesfireType mf_desfire_get_type_from_version(const MfDesfireVersion* const version) {

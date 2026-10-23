@@ -1,10 +1,20 @@
 # Flipper Momentum 个人定制与换机交接
 
-以 Momentum 保留 Xtreme 风格，逐项适配 Unleashed。当前已完成资源加载进度、插件扫描容错及构建源文件顺序修复；三个桌面回归通过。**完整安装包尚未构建成功，尚未刷写真机。**
+**2026-10-01 实机与说明书：** 已通过 USB 安装构建 `ee43b2c2`（源码 `52f236fd`），295 个应用与 121 个插件逐项读回核验；Clock、Flipper Lab、SD Info 启动退出通过。音量 0% 已在重启后验证，exFAT 卡识别正常。新增 [中文手册网页版](documentation/custom/manual/index.html) 与 [离线 PDF](output/pdf/flipper-fusion-manual.zh-CN.pdf)，包含 12 章操作说明、全部 295 个应用的中文用途／路径／硬件条件和后续增强建议。全局语言切换未实现，真实 BLE／AIO及逐应用控制仍待验收；公开证据见 [USB 验收摘要](documentation/custom/USB_INSTALL_20261001.json)。
 
-**换电脑继续请先读 [HANDOFF.md](HANDOFF.md)**。其他入口：[已完成改动](LOCAL_CHANGES.md) · [全部需求与待办](documentation/custom/REQUIREMENTS.md) · [验证及编译卡点](documentation/custom/VALIDATION.md) · [初步评估](documentation/custom/INITIAL_ASSESSMENT.md) · [固定源码版本](documentation/custom/SOURCE_LOCK.json)。
+**当前优先事项（2026-09-30）：暂停自建手机界面，适配官方 Flipper 手机 App；本机保留英文和功能升级。** 官方屏幕遥控可作为融合应用的通用入口，新增英文“Phone Remote”指南链接设备 Apps 浏览器。本轮修复远程启动 API 不匹配应用时的弹窗等待、遥控枚举／序号边界及 Apps 延迟启动队列收尾；测试与固件状态见 [官方 App 兼容说明](documentation/custom/OFFICIAL_APP_COMPATIBILITY_20260930.md) 和 [验证记录](documentation/custom/VALIDATION.md)。官方应用目录有自己的清单、路径和在线 UID 限制，不能仅改固件就增加全部独立按钮或手机算力处理。真实 BLE／AIO及逐应用控制尚未验收，完整 Momentum／Unleashed 功能并集仍未完成。
 
-ESP32 和“WiFi 终结者”升级仅列入待办，尚未确认型号或实现。此仓库为 AI 辅助的个人定制，非 Momentum 上游发布；原作者、许可证和上游贡献政策文件保留。以下为上游项目原说明，其中安装链接指向上游发行版，不是本定制版的安装包。
+此前自建中文 iPhone App 的筛选目录、独立详情、连接恢复、31项中文映射及 NFC 比较保留；未完成的新一轮风格改版已备份，未发布。历史页面及验收见 [手机优化与原图](documentation/custom/OFFICIAL_APP_REFINEMENT_20260930.md)，语言范围见 [设备英文／手机中文](documentation/custom/DEVICE_ENGLISH_PHONE_CHINESE_20260930.md)。以下分轮记录为历史；没有已签名 IPA。
+
+**2026-09-30 第四轮更新：**增加弹跳球、方块搬运、数独、昵称生成器，累计导入二十四个应用；补掷骰分页、Brainfuck/记事本中文按钮、任务时长与上午/下午显示。修复记事本 UTF-8 编辑、末行/长行处理及保存故障保护，数独改用明确字段存档并兼容旧 ARM 格式。应用代码 `12b8c35f3` 与存储回归、手机比较入口修订 `6f94bdc9d` 已推送到现有草稿 PR，本地完整构建、129 项 Python/C 回归及格式检查通过；云端 129 项主机、151 项 Swift、6 项界面测试、iOS 与固件构建均通过。准确云端验收以 [本轮说明与预览](documentation/custom/UNION_CHINESE_20260930.md) 和 [验证记录](documentation/custom/VALIDATION.md) 为准。固定参考仍有 232 项匹配源码差异、134 项未匹配应用和 19 项未匹配插件，**完整并集、全界面中文及真机联调仍未完成**。下方 9 月 29 日数字保留为历史证据。
+
+**2026-09-29 第三轮更新：**补上 iPhone GPS/网络共享处理端，中文改用含 7,097 字形的 SD 资源和有界缓存，主固件到无线栈前余量从 944 增至 9,136 字节；增加 68 条中文动画对白、九类默认动画文字层、第二批十个应用及手机入口。累计导入二十个工具/应用，并建立逐项源码差异表。代码 `41fd31347` 的 112 项 Python/C、148 项 Swift、6 项 iPhone 界面测试、完整固件与外置应用构建及 Lint 全部通过。详见 [本轮实现及页面预览](documentation/custom/COMPANION_AND_CHINESE_20260929.md)、[手机共享使用说明](documentation/custom/PHONE_COMPANION_GUIDE.zh-CN.md) 和 [云端验证与固件附件](documentation/custom/VALIDATION.md)。**仍不是全部功能的完整并集或全界面中文覆盖，尚未刷机和真机联调。**
+
+以 Momentum 保留 Xtreme 风格，逐项适配 Unleashed，并新增 iPhone 中文 App（`mobile/FlipperLab`）与设备端英文功能入口 Flipper Lab（`applications/main/lab`）。当前分支 `codex/iphone-zh-architecture` 已推送，草稿 PR [#1](https://github.com/Fairank/Flipper-Momentum-Lab/pull/1) 指向 `codex/momentum-unleashed`。资源加载进度、插件扫描容错、构建源文件顺序修复与 UTF-8 换行修复保留；完整构建、桌面回归和手机模拟器检查见对应提交的验证记录。**2026-10-01 已通过 USB 刷写上述版本；真实蓝牙链路仍待验收。**
+
+**换电脑继续请先读 [HANDOFF.md](HANDOFF.md)**。其他入口：[已完成改动](LOCAL_CHANGES.md) · [全部需求与待办](documentation/custom/REQUIREMENTS.md) · [验证记录](documentation/custom/VALIDATION.md) · [iPhone App 说明](mobile/FlipperLab/README.zh-CN.md) · [初步评估](documentation/custom/INITIAL_ASSESSMENT.md) · [固定源码版本](documentation/custom/SOURCE_LOCK.json)。
+
+构建本定制的固件：依次运行 `./fbt updater_package`、`./fbt fap_dist`（分两次调用；Windows 用 `fbt.cmd -j1 …`，步骤见 HANDOFF.md），产物在 `dist/f7-C/`。CI 工作流 `lab-firmware.yml` 上传 `flipper-lab-firmware-<提交>` 产物（更新包、`SHA256SUMS.txt`、`apps/Tools/lab.fap`），`lab-validation.yml` 运行 iPhone 测试并上传模拟器截图；两者的运行结果以 PR 检查为准。ESP32 和“WiFi 终结者”升级仅列入待办，尚未确认型号或实现。此仓库为 AI 辅助的个人定制，非 Momentum 上游发布；原作者、许可证和上游贡献政策文件保留。以下为上游项目原说明，其中安装链接指向上游发行版，不是本定制版的安装包。
 
 ---
 

@@ -5,6 +5,7 @@ typedef enum {
     SubmenuIndexASK,
     SubmenuIndexPSK,
     SubmenuIndexClearT5577,
+    SubmenuIndexWipeT5577,
     SubmenuIndexRAW,
     SubmenuIndexRAWEmulate,
 } SubmenuIndex;
@@ -37,6 +38,12 @@ void lfrfid_scene_extra_actions_on_enter(void* context) {
         SubmenuIndexClearT5577,
         lfrfid_scene_extra_actions_submenu_callback,
         app);
+    submenu_add_item(
+        submenu,
+        "Wipe T5577",
+        SubmenuIndexWipeT5577,
+        lfrfid_scene_extra_actions_submenu_callback,
+        app);
 
     submenu_add_lockable_item(
         submenu,
@@ -45,10 +52,10 @@ void lfrfid_scene_extra_actions_on_enter(void* context) {
         lfrfid_scene_extra_actions_submenu_callback,
         app,
         !furi_hal_rtc_is_flag_set(FuriHalRtcFlagDebug),
-        "Enable\n"
-        "Settings >\n"
-        "System >\n"
-        "Debug");
+        "Enable\nSettings >\nSystem >\nDebug"
+        ""
+        ""
+        "");
     submenu_add_lockable_item(
         submenu,
         "Emulate RAW RFID data",
@@ -56,10 +63,10 @@ void lfrfid_scene_extra_actions_on_enter(void* context) {
         lfrfid_scene_extra_actions_submenu_callback,
         app,
         !furi_hal_rtc_is_flag_set(FuriHalRtcFlagDebug),
-        "Enable\n"
-        "Settings >\n"
-        "System >\n"
-        "Debug");
+        "Enable\nSettings >\nSystem >\nDebug"
+        ""
+        ""
+        "");
 
     submenu_set_selected_item(
         submenu, scene_manager_get_scene_state(app->scene_manager, LfRfidSceneExtraActions));
@@ -91,6 +98,9 @@ bool lfrfid_scene_extra_actions_on_event(void* context, SceneManagerEvent event)
             scene_manager_set_scene_state(
                 app->scene_manager, LfRfidSceneEnterPassword, LfRfidSceneClearT5577Confirm);
             scene_manager_next_scene(app->scene_manager, LfRfidSceneEnterPassword);
+            consumed = true;
+        } else if(event.event == SubmenuIndexWipeT5577) {
+            scene_manager_next_scene(app->scene_manager, LfRfidSceneWipeT5577Confirm);
             consumed = true;
         } else if(event.event == SubmenuIndexRAW) {
             scene_manager_next_scene(app->scene_manager, LfRfidSceneRawName);

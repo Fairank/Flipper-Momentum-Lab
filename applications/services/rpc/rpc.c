@@ -65,6 +65,14 @@ static RpcSystemCallbacks rpc_systems[] = {
         .alloc = rpc_desktop_alloc,
         .free = rpc_desktop_free,
     },
+    {
+        .alloc = rpc_gps_alloc,
+        .free = rpc_gps_free,
+    },
+    {
+        .alloc = rpc_network_alloc,
+        .free = rpc_network_free,
+    },
 };
 
 struct RpcSession {
@@ -442,8 +450,7 @@ void rpc_session_close(RpcSession* session) {
     furi_thread_flags_set(furi_thread_get_id(session->thread), RpcEvtDisconnect);
 }
 
-void rpc_on_system_start(void* p) {
-    UNUSED(p);
+void rpc_on_system_start(void) {
     Rpc* rpc = malloc(sizeof(Rpc));
 
     rpc->busy_mutex = furi_mutex_alloc(FuriMutexTypeNormal);

@@ -1,0 +1,87 @@
+{
+  "source_commit": "1dbdd4a2fe1e8212c46ce42e71ec5ee3fc28a111",
+  "workflow_run": 36703025197,
+  "artifact_id": 11091557340,
+  "archive_sha256": "31a79d1d0518729422b694c0994d0c92d907a0b1e3b005a1ee61adb002e739c5",
+  "source": "Original unedited iPhone Simulator xcresult attachments",
+  "not_hardware_validation": true,
+  "screenshots": [
+    {
+      "file": "phone-functions-offline.png",
+      "source_file": "69381400-EE77-47AB-B688-C703B4AA35D5.png",
+      "attachment": "01b-功能中心离线预览_0_1E6E067A-7E3C-4EB9-BDA7-0041729D1EEB.png",
+      "test": "FlipperLabUITests/testOfflineNavigationAndChineseGuide()",
+      "device": "iPhone 17 Pro Max",
+      "timestamp": 1790765114.568,
+      "bytes": 372483,
+      "sha256": "215c421e5aad6d011599d44b2a9bb55e0c91aaa85b7bfad4af9e6518f3c4208b",
+      "is_preview": false
+    },
+    {
+      "file": "phone-catalog-preview.png",
+      "source_file": "BEC1769F-5BEB-493E-85F8-814D97573988.png",
+      "attachment": "28-中文应用目录预览_0_F2FBA918-A0E0-49C4-9213-23083F20F9DB.png",
+      "test": "FunctionCatalogUITests/testPreviewInstalledGamesHaveChineseDetailsAndCannotLaunch()",
+      "device": "iPhone 17 Pro Max",
+      "timestamp": 1790765487.512,
+      "bytes": 369703,
+      "sha256": "6cc6f04fe2d53fcc4ecc7f8d83c5697097e4901074ffb1db14645fa5cb071a59",
+      "is_preview": true
+    },
+    {
+      "file": "phone-games-filter-preview.png",
+      "source_file": "295EC6F3-ACA9-42C1-AC0C-EC3CAECB56A4.png",
+      "attachment": "28b-已安装游戏分类预览_0_1AE9EEC0-E261-42DE-93C1-7A9647EF118D.png",
+      "test": "FunctionCatalogUITests/testPreviewInstalledGamesHaveChineseDetailsAndCannotLaunch()",
+      "device": "iPhone 17 Pro Max",
+      "timestamp": 1790765497.436,
+      "bytes": 484694,
+      "sha256": "934577e6ed1020443b79d92aae02e4325cda91aa0adaadda529c65c990aeb58c",
+      "is_preview": true
+    },
+    {
+      "file": "phone-nfc-details.png",
+      "source_file": "E9AADC47-42D2-4B48-A29A-07A150F4D833.png",
+      "attachment": "29-功能搜索与中文详情_0_E5845856-EAA1-41AA-A2B6-47907F5F000E.png",
+      "test": "FunctionCatalogUITests/testOfflineSearchFindsDeviceFunctionAndPhoneWorkbench()",
+      "device": "iPhone 17 Pro Max",
+      "timestamp": 1790765422.956,
+      "bytes": 200492,
+      "sha256": "335ba7d1b30180fe583431608d97b54f53934a3207fbefa90544880a4a57eed5",
+      "is_preview": false
+    },
+    {
+      "file": "phone-search-ended.png",
+      "source_file": "6F0FBC86-7338-4150-8A39-F83D12271328.png",
+      "attachment": "29b-结束搜索后恢复设备功能_0_D3DC2C97-59F7-48B3-9A3C-EBFD561CA2AC.png",
+      "test": "FunctionCatalogUITests/testOfflineSearchFindsDeviceFunctionAndPhoneWorkbench()",
+      "device": "iPhone 17 Pro Max",
+      "timestamp": 1790765447.799,
+      "bytes": 532896,
+      "sha256": "74fce8f5c046d596e2b8f923b828e9c69cd6d5021216c9ae49bfeca4b659b7f9",
+      "is_preview": false
+    },
+    {
+      "file": "phone-game-details-preview.png",
+      "source_file": "C005C1D7-4C66-4324-8843-3D68EBFE2B95.png",
+      "attachment": "30-应用分类预览与中文介绍_0_70CC7515-27CF-4AD0-A31E-DB31C4B4DDED.png",
+      "test": "FunctionCatalogUITests/testPreviewInstalledGamesHaveChineseDetailsAndCannotLaunch()",
+      "device": "iPhone 17 Pro Max",
+      "timestamp": 1790765505.189,
+      "bytes": 243371,
+      "sha256": "4ee611d7354e58e18f34e8b099c2f106b6217b9320407522e246aafc4604e266",
+      "is_preview": true
+    },
+    {
+      "file": "phone-dark-large-categories.png",
+      "source_file": "C1366066-6CDF-4794-B113-A72854DE1F15.png",
+      "attachment": "31-深色大字-功能分类_0_190621C3-C7F8-4988-89D7-B458E1300B70.png",
+      "test": "FunctionCatalogUITests/testDarkAccessibilityCategoriesAndWorkbenchRemainOperable()",
+      "device": "iPhone 17 Pro Max",
+      "timestamp": 1790765360.508,
+      "bytes": 506111,
+      "sha256": "dad92ba04782ad7b4348343f09a4fd665b639f9230ddaf235254793191caec2b",
+      "is_preview": false
+    }
+  ]
+}

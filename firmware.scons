@@ -29,6 +29,7 @@ env = ENV.Clone(
     TARGETS_ROOT=Dir("#/targets"),
     LINT_SOURCES=[
         Dir("applications"),
+        Dir("applications_user"),
         # Not C code
         Dir("!applications/system/js_app/packages"),
         # Avoid merge conflicts
@@ -51,6 +52,7 @@ env = ENV.Clone(
             "CPPDEFINES": [
                 "NDEBUG",
                 "FURI_DEBUG" if ENV["LIB_DEBUG"] else "FURI_NDEBUG",
+                "LOGS_DEBUG_BUILD" if ENV["LIB_DEBUG"] else "LOGS_RELEASE_BUILD",
             ],
             # You can add other entries named after libraries
             # If they are present, they have precedence over Default
@@ -63,6 +65,7 @@ env = ENV.Clone(
             "CPPDEFINES": [
                 "NDEBUG",
                 "FURI_DEBUG" if ENV["DEBUG"] else "FURI_NDEBUG",
+                "LOGS_DEBUG_BUILD" if ENV["LIB_DEBUG"] else "LOGS_RELEASE_BUILD",
             ],
         },
         "flipper_application": {
@@ -72,6 +75,7 @@ env = ENV.Clone(
             "CPPDEFINES": [
                 "NDEBUG",
                 "FURI_DEBUG" if ENV["DEBUG"] else "FURI_NDEBUG",
+                "LOGS_DEBUG_BUILD" if ENV["LIB_DEBUG"] else "LOGS_RELEASE_BUILD",
             ],
         },
     },
@@ -104,6 +108,36 @@ if env.subst("$FIRMWARE_APP_SET").startswith("unit_tests"):
     env.Replace(SKIP_EXTERNAL=True)
 
 env.ConfigureForTarget(env.subst("${TARGET_HW}"))
+
+# Full BLE observation leaves less internal flash. Whole-program optimization
+# retains the merged applications and SDK (rooted by elf_api_table), rather than
+# removing features. The RAM updater and relocatable external FAPs do not use LTO.
+if env["IS_BASE_FIRMWARE"] and env["COMPACT"] and not env["DEBUG"]:
+    env.AppendUnique(
+        # Fat objects retain ordinary symbols for the existing ar response-file
+        # builder (gcc-ar treats its @file as an operation on Windows).
+        CCFLAGS=["-flto", "-ffat-lto-objects"],
+        LINKFLAGS=[
+            "-flto",
+            "-Oz",
+            "-Wl,--undefined=reset_vector",
+            # libc wrapper references are introduced by ld, after LTO analysis.
+            "-Wl,--undefined=__wrap__malloc_r",
+            "-Wl,--undefined=__wrap__free_r",
+            "-Wl,--undefined=__wrap__calloc_r",
+            "-Wl,--undefined=__wrap__realloc_r",
+        ],
+    )
+
+if env["IS_BASE_FIRMWARE"]:
+    from flipper.assets.coprobin import CoproBinary
+
+    stack_path = env.File("#/" + env.subst("${COPRO_STACK_BIN_DIR}/${COPRO_STACK_BIN}"))
+    radio_start = (
+        int(env.subst("${COPRO_STACK_ADDR}"), 0)
+        or CoproBinary(stack_path.abspath).get_flash_load_addr()
+    )
+    env.AppendUnique(LINKFLAGS=[f"-Wl,--defsym=__radio_start__={radio_start}"])
 
 Export("env")
 
@@ -211,8 +245,8 @@ sources = [apps_c]
 # Gather sources only from app folders in current configuration
 sources.extend(
     itertools.chain.from_iterable(
-        fwenv.GatherSources([source_type, "!lib"], appdir.relpath)
-        for appdir, source_type in fwenv["APPBUILD"].get_builtin_app_folders()
+        fwenv.GatherSources([*app_sources, "!lib"], appdir.relpath)
+        for appdir, app_sources in fwenv["APPBUILD"].get_builtin_app_folders()
     )
 )
 

@@ -288,7 +288,10 @@ static void animation_manager_replace_current_animation(
     StorageAnimation* previous_animation = animation_manager->current_animation;
 
     const BubbleAnimation* animation = animation_storage_get_bubble_animation(storage_animation);
-    bubble_animation_view_set_animation(animation_manager->animation_view, animation);
+    bubble_animation_view_set_animation(
+        animation_manager->animation_view,
+        animation,
+        animation_storage_get_builtin_name(storage_animation));
     const char* new_name = animation_storage_get_meta(storage_animation)->name;
     FURI_LOG_I(TAG, "Select \'%s\' animation", new_name);
     animation_manager->current_animation = storage_animation;

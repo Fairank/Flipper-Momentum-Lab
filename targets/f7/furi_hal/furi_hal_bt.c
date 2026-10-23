@@ -136,6 +136,27 @@ FuriHalBtStack furi_hal_bt_get_radio_stack(void) {
     return furi_hal_bt.stack;
 }
 
+bool furi_hal_bt_start_scan(GapScanCallback callback, void* context) {
+    furi_hal_bt_lock_core2();
+    bool success = furi_hal_bt.stack == FuriHalBtStackFull && gap_scan_start(callback, context);
+    furi_hal_bt_unlock_core2();
+    return success;
+}
+
+bool furi_hal_bt_stop_scan(void* context) {
+    furi_hal_bt_lock_core2();
+    bool success = gap_scan_stop(context);
+    furi_hal_bt_unlock_core2();
+    return success;
+}
+
+bool furi_hal_bt_is_scan_active(void* context) {
+    furi_hal_bt_lock_core2();
+    bool active = gap_scan_is_active(context);
+    furi_hal_bt_unlock_core2();
+    return active;
+}
+
 bool furi_hal_bt_is_gatt_gap_supported(void) {
     if(furi_hal_bt.stack == FuriHalBtStackLight || furi_hal_bt.stack == FuriHalBtStackFull) {
         return true;

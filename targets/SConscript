@@ -15,7 +15,9 @@ libenv.ApplyLibFlags()
 
 lib = libenv.StaticLibrary(
     "${FW_LIB_NAME}",
-    env.get("TARGET_CFG").gatherSources(),
+    libenv.KeepAssemblyUnits(
+        env.get("TARGET_CFG").gatherSources(), ["stm32wb55_startup.c"]
+    ),
 )
 libenv.Install("${LIB_DIST_DIR}", lib)
 Return("lib")

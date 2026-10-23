@@ -3,6 +3,7 @@
 #include "rpc_i.h"
 #include <furi.h>
 #include <loader/loader.h>
+#include <loader/loader_rpc.h>
 #include "rpc_app.h"
 
 #define TAG "RpcSystemApp"
@@ -31,7 +32,11 @@ static void rpc_system_app_send_state_response(
     response->which_content = PB_Main_app_state_response_tag;
     response->content.app_state_response.state = state;
 
+#ifndef LOGS_RELEASE_BUILD
     FURI_LOG_D(TAG, "%s", name);
+#else
+    UNUSED(name);
+#endif
     rpc_send(rpc_app->session, response);
 
     free(response);
@@ -88,17 +93,22 @@ static void rpc_system_app_start_process(const PB_Main* request, void* context) 
             app_args = app_args_temp;
         }
 
-        const LoaderStatus status = loader_start(loader, app_name, app_args, NULL);
-        if(status == LoaderStatusErrorAppStarted) {
-            result = PB_CommandStatus_ERROR_APP_SYSTEM_LOCKED;
-        } else if(status == LoaderStatusErrorInternal) {
-            result = PB_CommandStatus_ERROR_APP_CANT_START;
-        } else if(status == LoaderStatusErrorUnknownApp) {
-            result = PB_CommandStatus_ERROR_INVALID_PARAMETERS;
-        } else if(status == LoaderStatusOk) {
+        result = PB_CommandStatus_ERROR_APP_CANT_START;
+
+        switch(loader_start_from_rpc(loader, app_name, app_args, NULL)) {
+        case LoaderStatusOk:
             result = PB_CommandStatus_OK;
-        } else {
-            furi_crash();
+            break;
+        case LoaderStatusErrorAppStarted:
+            result = PB_CommandStatus_ERROR_APP_SYSTEM_LOCKED;
+            break;
+        case LoaderStatusErrorUnknownApp:
+            result = PB_CommandStatus_ERROR_INVALID_PARAMETERS;
+            break;
+        case LoaderStatusErrorInternal:
+        case LoaderStatusErrorApiMismatchCanceled:
+            result = PB_CommandStatus_ERROR_APP_CANT_START;
+            break;
         }
     } else {
         result = PB_CommandStatus_ERROR_INVALID_PARAMETERS;

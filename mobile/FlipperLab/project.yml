@@ -1,0 +1,72 @@
+# XcodeGen spec for the Flipper Lab iPhone app.
+# Relative paths resolve against this file's directory (mobile/FlipperLab), which is
+# also the root of the local Swift package in Package.swift. FlipperLab.xcodeproj is
+# generated into the same directory; regenerate it instead of editing it by hand.
+name: FlipperLab
+
+options:
+  deploymentTarget:
+    iOS: "17.0"
+  developmentLanguage: zh-Hans
+
+packages:
+  # Local package only: no remote package references, nothing to download.
+  FlipperLab:
+    path: "."
+
+targets:
+  FlipperLab:
+    type: application
+    platform: iOS
+    deploymentTarget: "17.0"
+    sources:
+      # App code only; package code in Sources/ is linked through FlipperCore.
+      - path: App
+        excludes:
+          - Info.plist
+    dependencies:
+      - package: FlipperLab
+        product: FlipperCore
+    settings:
+      base:
+        PRODUCT_NAME: FlipperLab
+        PRODUCT_BUNDLE_IDENTIFIER: org.fairank.FlipperLab
+        MARKETING_VERSION: "0.1.0"
+        CURRENT_PROJECT_VERSION: "1"
+        # Swift 5 language mode; Package.swift uses swift-tools-version 5.9.
+        SWIFT_VERSION: "5.0"
+        TARGETED_DEVICE_FAMILY: "1,2"
+        INFOPLIST_FILE: App/Info.plist
+        GENERATE_INFOPLIST_FILE: "NO"
+        # Pick your own team in Xcode; no team is assumed here.
+        CODE_SIGN_STYLE: Automatic
+        DEVELOPMENT_TEAM: ""
+        # There is no asset catalog, so no app icon set is referenced.
+        ASSETCATALOG_COMPILER_APPICON_NAME: ""
+
+  FlipperLabUITests:
+    type: bundle.ui-testing
+    platform: iOS
+    deploymentTarget: "17.0"
+    sources: [UITests]
+    dependencies:
+      - target: FlipperLab
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: org.fairank.FlipperLab.UITests
+        GENERATE_INFOPLIST_FILE: "YES"
+        SWIFT_VERSION: "5.0"
+
+schemes:
+  FlipperLab:
+    build:
+      targets:
+        FlipperLab: all
+        FlipperLabUITests: [test]
+    test:
+      config: Debug
+      targets: [FlipperLabUITests]
+    run:
+      config: Debug
+    archive:
+      config: Release

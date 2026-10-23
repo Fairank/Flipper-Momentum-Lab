@@ -1,13 +1,31 @@
+from __future__ import annotations
+
 import os
 import struct
 from enum import IntFlag
 from dataclasses import dataclass, field
+from typing import TYPE_CHECKING
 
 from flipper.assets.icon import file2image
 
-from .appmanifest import FlipperApplication
+if TYPE_CHECKING:
+    from .appmanifest import FlipperApplication
 
 _MANIFEST_MAGIC = 0x52474448
+
+
+def encode_app_name(name: str) -> bytes:
+    """Pack Chinese names without truncating a glyph or its terminator.
+
+    The on-device manifest is still the same 32-byte char array. ASCII names
+    remain byte-identical; paths, app IDs and exported symbols do not change.
+    """
+    encoded = name.encode("utf-8")
+    # Legacy ASCII manifests rely on struct.pack's fixed-width truncation,
+    # including upstream example apps. Preserve those bytes exactly.
+    if b"\0" in encoded or (not name.isascii() and len(encoded) > 31):
+        raise ValueError("FAP display name must fit 31 UTF-8 bytes without NUL")
+    return encoded
 
 
 class ElfManifestFlag(IntFlag):
@@ -47,7 +65,7 @@ class ElfManifestV1:
             "<hI32s?32s",
             self.stack_size,
             self.app_version,
-            bytes(self.name.encode("ascii")),
+            encode_app_name(self.name),
             bool(self.icon),
             self.icon,
         )
@@ -66,7 +84,7 @@ class ElfManifestV1Ext:
             "<hI32s?32sB",
             self.stack_size,
             self.app_version,
-            bytes(self.name.encode("ascii")),
+            encode_app_name(self.name),
             bool(self.icon),
             self.icon,
             self.flags,

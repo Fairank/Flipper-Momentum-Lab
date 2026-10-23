@@ -1,5 +1,6 @@
 #include "text_input.h"
 #include <gui/elements.h>
+#include <gui/utf8_internal.h>
 #include <assets_icons.h>
 #include <furi.h>
 
@@ -290,7 +291,7 @@ static void text_input_view_draw_callback(Canvas* canvas, void* _model) {
     canvas_clear(canvas);
     canvas_set_color(canvas, ColorBlack);
 
-    canvas_draw_str(canvas, 2, 8, model->header);
+    canvas_draw_str(canvas, 2, gui_utf8_has_cjk(model->header) ? 11 : 8, model->header);
     elements_slightly_rounded_frame(canvas, 1, 12, 126, 15);
 
     char buf[text_length + 1];

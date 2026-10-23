@@ -131,7 +131,14 @@ static void notification_reset_notification_layer(
         if(!float_is_equal(display_brightness_set, app->settings.display_brightness)) {
             furi_hal_light_set(LightBacklight, app->settings.display_brightness * 0xFF);
         }
-        furi_timer_start(app->display_timer, notification_settings_display_off_delay_ticks(app));
+        uint32_t delay = notification_settings_display_off_delay_ticks(app);
+        if(delay) {
+            furi_timer_start(app->display_timer, delay);
+        } else {
+            // Zero means always on. FreeRTOS does not accept zero-period timers;
+            // cancel a previously armed timeout when switching to this setting.
+            furi_timer_stop(app->display_timer);
+        }
     }
 }
 

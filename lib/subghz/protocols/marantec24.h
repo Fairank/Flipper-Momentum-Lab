@@ -19,12 +19,6 @@ extern const SubGhzProtocol subghz_protocol_marantec24;
 void* subghz_protocol_encoder_marantec24_alloc(SubGhzEnvironment* environment);
 
 /**
- * Free SubGhzProtocolEncoderMarantec24.
- * @param context Pointer to a SubGhzProtocolEncoderMarantec24 instance
- */
-void subghz_protocol_encoder_marantec24_free(void* context);
-
-/**
  * Deserialize and generating an upload to send.
  * @param context Pointer to a SubGhzProtocolEncoderMarantec24 instance
  * @param flipper_format Pointer to a FlipperFormat instance
@@ -34,36 +28,11 @@ SubGhzProtocolStatus
     subghz_protocol_encoder_marantec24_deserialize(void* context, FlipperFormat* flipper_format);
 
 /**
- * Forced transmission stop.
- * @param context Pointer to a SubGhzProtocolEncoderMarantec24 instance
- */
-void subghz_protocol_encoder_marantec24_stop(void* context);
-
-/**
- * Getting the level and duration of the upload to be loaded into DMA.
- * @param context Pointer to a SubGhzProtocolEncoderMarantec24 instance
- * @return LevelDuration 
- */
-LevelDuration subghz_protocol_encoder_marantec24_yield(void* context);
-
-/**
  * Allocate SubGhzProtocolDecoderMarantec24.
  * @param environment Pointer to a SubGhzEnvironment instance
  * @return SubGhzProtocolDecoderMarantec24* pointer to a SubGhzProtocolDecoderMarantec24 instance
  */
 void* subghz_protocol_decoder_marantec24_alloc(SubGhzEnvironment* environment);
-
-/**
- * Free SubGhzProtocolDecoderMarantec24.
- * @param context Pointer to a SubGhzProtocolDecoderMarantec24 instance
- */
-void subghz_protocol_decoder_marantec24_free(void* context);
-
-/**
- * Reset decoder SubGhzProtocolDecoderMarantec24.
- * @param context Pointer to a SubGhzProtocolDecoderMarantec24 instance
- */
-void subghz_protocol_decoder_marantec24_reset(void* context);
 
 /**
  * Parse a raw sequence of levels and durations received from the air.

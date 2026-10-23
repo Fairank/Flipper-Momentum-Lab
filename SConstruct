@@ -346,6 +346,12 @@ firmware_env.Append(
         "assets",
         # Avoid merge conflicts
         "!applications/external",
+        # Upstream README screenshots are documentation, not compiled icons.
+        "!applications/union/flipnote/screenshots",
+        "!applications/union/flipper_analog_clock/img",
+        "!applications/union/pomodoro/img",
+        "!applications/union/pomodoro/misc",
+        "!applications/union/segment_clock/catalog/screenshots",
     ],
 )
 

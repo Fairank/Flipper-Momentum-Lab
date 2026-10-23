@@ -1,0 +1,1023 @@
+{
+  "date": "2026-09-30",
+  "base_commit": "e3c8cfafc13190aae15dd368721ec367df98fd98",
+  "firmware_code_commit": "12b8c35f3da5c89d48efe3836591b197c2a0c48e",
+  "code_commit": "6f94bdc9dda35db4d3cbb6105c73f753190525a3",
+  "status": "Reviewed fourth batch; local builds and latest GitHub host, Swift, UI, firmware and lint checks passed. Complete union, complete Chinese coverage and hardware acceptance remain incomplete.",
+  "upstreams": {
+    "momentum": "d3f89dfe2ef6b01839201598e9be1590cba80322",
+    "unleashed": "15bca58e644c8e75fcac42a1929b3d37cbea208f",
+    "all_the_plugins": "eb87c158c7dbc930d74c3ae3ccb6b59cad5fc833"
+  },
+  "claude_tasks": [
+    {
+      "name": "fable-ui-literals-20260930",
+      "requested_model": "claude-fable-5-1",
+      "requested_effort": "max",
+      "returned_models": [
+        "claude-fable-5-1"
+      ],
+      "exit_code": 0,
+      "seconds": 634.2,
+      "adopted_after_primary_review": true,
+      "status_note": "Bounded Chinese UI or basic regression work only; primary assistant reviewed, corrected and tested before adoption."
+    },
+    {
+      "name": "fable-dice-tests-20260930",
+      "requested_model": "claude-fable-5-1",
+      "requested_effort": "max",
+      "returned_models": [
+        "claude-fable-5-1"
+      ],
+      "exit_code": 0,
+      "seconds": 778.4,
+      "adopted_after_primary_review": true,
+      "status_note": "Bounded Chinese UI or basic regression work only; primary assistant reviewed, corrected and tested before adoption."
+    },
+    {
+      "name": "fable-new-app-ui-20260930",
+      "requested_model": "claude-fable-5-1",
+      "requested_effort": "max",
+      "returned_models": [
+        "claude-fable-5-1"
+      ],
+      "exit_code": 0,
+      "seconds": 963.7,
+      "adopted_after_primary_review": true,
+      "status_note": "Bounded Chinese UI or basic regression work only; primary assistant reviewed, corrected and tested before adoption."
+    },
+    {
+      "name": "fable-websocket-tests-20260930",
+      "requested_model": "claude-fable-5-1",
+      "requested_effort": "max",
+      "returned_models": [
+        "<synthetic>",
+        "claude-fable-5-1"
+      ],
+      "exit_code": 1,
+      "seconds": 3018.5,
+      "adopted_after_primary_review": false,
+      "status_note": "Failed at the 64000 output-token limit, no code produced. <synthetic> is a service marker, not a different model. A collaborating assistant wrote the tests, reviewed by the primary assistant."
+    },
+    {
+      "name": "fable-flipnote-tests-20260930",
+      "requested_model": "claude-fable-5-1",
+      "requested_effort": "max",
+      "returned_models": [
+        "claude-fable-5-1"
+      ],
+      "exit_code": 130,
+      "seconds": 2704.8,
+      "adopted_after_primary_review": false,
+      "status_note": "Primary assistant cancelled only this exact invocation after 45.1 minutes with no Write/Edit or test file. Exit 130. A collaborating assistant wrote the tests, reviewed by the primary assistant. Not counted as Claude completion."
+    }
+  ],
+  "local_tests": {
+    "python_and_actual_c": {
+      "name": "flipnote-full-host-20260930",
+      "tests": 129,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "seconds": 39.218,
+      "success": true
+    },
+    "flipnote_storage": {
+      "name": "flipnote-storage-adopted-20260930",
+      "tests": 9,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "seconds": 5.094,
+      "success": true
+    },
+    "firmware_package": "passed after correcting clock format truncation",
+    "all_faps": "passed",
+    "lint_all": "passed after formatting the new preview script",
+    "icons_checked": 2176,
+    "python_build_files_checked": 338,
+    "source_preview_scenes": 4,
+    "firmware_build_head_note": "Built working tree based on e3c8cfaf, not a clean old-commit artifact."
+  },
+  "intermediate_failures": [
+    "Clock Chinese AM/PM expansion initially caused GCC format-truncation for a 24-byte alarm row; primary assistant expanded to 32 bytes and the full firmware build passed.",
+    "New preview script initially needed Black formatting; formatted and lint_all passed.",
+    "12b8c35f: 120 host tests, 151 Swift tests and unsigned simulator build passed, but one of six UI tests failed at line 263. Actual tap was inside Tasks; Library remained selected, no alert/menu covered it. Root cause is not proven by source alone. Two comparison menu entries now use native NavigationLink instead of synchronous boolean navigation. Original single-tap and selected-state assertions remain.",
+    "Optional preview-workflow enhancement push rejected by GitHub for missing OAuth workflow scope. Only that assistant-created enhancement was removed from the unpublished commit. Existing workflow remains intact; code/tests successfully pushed as 6f94bdc9d. Static previews are included in documentation."
+  ],
+  "local_package": {
+    "source_commit": "working tree based on e3c8cfaf; not a clean commit artifact",
+    "workflow_run": null,
+    "artifact_id": null,
+    "input_sha256": "d14f442cafd7fa8ade003db7c1eb81d2152753d516ee0037f614512a6cbf33ee",
+    "package_name": "flipper-z-f7-update-mntm-codex-iphone-zh-architecture-e3c8cfaf.tgz",
+    "package_bytes": 13027578,
+    "package_sha256": "d14f442cafd7fa8ade003db7c1eb81d2152753d516ee0037f614512a6cbf33ee",
+    "updater_bytes": 123857,
+    "firmware_bytes": 871528,
+    "radio_address": "0x80d7000",
+    "flash_gap_before_radio_bytes": 9112,
+    "dfu_crc_verified": true,
+    "packaged_fap_count": 295,
+    "packaged_fal_count": 121,
+    "required_apps": [
+      {
+        "path": "apps/Tools/lab.fap",
+        "display_name": "Flipper Lab",
+        "api_version": 5832704,
+        "bytes": 22880,
+        "sha256": "071303a95b124c4a6de26cbe6c56f37d371dca9fafd89c101dfba0e6f1221247"
+      },
+      {
+        "path": "apps/Tools/lab_bridge.fap",
+        "display_name": "Lab Bridge",
+        "api_version": 5832704,
+        "bytes": 7176,
+        "sha256": "efb2782d549188c271aa6f6739d847b2f13a4809522e1d615dda1f5de966c2b8"
+      },
+      {
+        "path": "apps/Tools/clock.fap",
+        "display_name": "床头时钟",
+        "api_version": 5832704,
+        "bytes": 12860,
+        "sha256": "cd49d0d5e3ad39d38860304a31671999f2befb5665a72573064e1e3b68059f4e"
+      },
+      {
+        "path": "apps/Tools/pomodoro_timer.fap",
+        "display_name": "番茄钟",
+        "api_version": 5832704,
+        "bytes": 10888,
+        "sha256": "aab32d97e30920553695f6f402e7f951420e32d03e6dba4055858fd28f2a3674"
+      },
+      {
+        "path": "apps/Tools/analog_clock.fap",
+        "display_name": "指针时钟",
+        "api_version": 5832704,
+        "bytes": 15460,
+        "sha256": "3d5226c1b3fc54e6599fab2bab1ad23d0372d5ee0152c0e7119d471c03198652"
+      },
+      {
+        "path": "apps/Tools/segment_clock.fap",
+        "display_name": "数码管时钟",
+        "api_version": 5832704,
+        "bytes": 9384,
+        "sha256": "2008ba140592d2a91c9ab15d16b2f43cfc1d748a1328e9911474c571a5c6169d"
+      },
+      {
+        "path": "apps/Tools/calendar.fap",
+        "display_name": "日历",
+        "api_version": 5832704,
+        "bytes": 10692,
+        "sha256": "c1b8aa2121deded8775eae2dfef2736883520909164b544d714111dbb47d08f9"
+      },
+      {
+        "path": "apps/Tools/net_calculator.fap",
+        "display_name": "子网计算器",
+        "api_version": 5832704,
+        "bytes": 6936,
+        "sha256": "e65e847f2213ee3d704fe4f0e71e701f17001de5f8d053118629373531db9782"
+      },
+      {
+        "path": "apps/Tools/multi_counter.fap",
+        "display_name": "多人计数器",
+        "api_version": 5832704,
+        "bytes": 6596,
+        "sha256": "f6d022b64f644828efcbb0ab34e2c72a11af663ccd61dddfb7874dbfbc9272f4"
+      },
+      {
+        "path": "apps/Tools/sd_info.fap",
+        "display_name": "SD卡信息",
+        "api_version": 5832704,
+        "bytes": 11408,
+        "sha256": "c74a5f8defe23a8910edd12605a64ad666c316442245cb47b99abbe339b871c1"
+      },
+      {
+        "path": "apps/Tools/flipper_chronometer.fap",
+        "display_name": "秒表",
+        "api_version": 5832704,
+        "bytes": 3384,
+        "sha256": "7a993fdabbe6b5a71d2ccaa8bf58a400ce23afa6795e896a083478a5c29f79c0"
+      },
+      {
+        "path": "apps/Tools/trackerflipx.fap",
+        "display_name": "任务计时器",
+        "api_version": 5832704,
+        "bytes": 38996,
+        "sha256": "342f3ba3d9ad52fc961c38008715dbfa67095df25e3bc1051d07aba74496772f"
+      },
+      {
+        "path": "apps/Tools/flipnote.fap",
+        "display_name": "FlipNote记事本",
+        "api_version": 5832704,
+        "bytes": 27872,
+        "sha256": "ff6efee10a6a7069d892ffd04a856f0e088d191e2d5fe58cf370e195aff61ed8"
+      },
+      {
+        "path": "apps/Tools/gps_rpc.fap",
+        "display_name": "手机 GPS",
+        "api_version": 5832704,
+        "bytes": 5420,
+        "sha256": "4a9b84c93ea1bb5cd1df4862f2fb815106d26a3e97168d2b6a674349652131c1"
+      },
+      {
+        "path": "apps/Tools/example_network.fap",
+        "display_name": "手机联网测试",
+        "api_version": 5832704,
+        "bytes": 4316,
+        "sha256": "0b64bdbd6a1a7facb4ba299e397fd947d1f75d9754eb4d84480613feb52d8071"
+      },
+      {
+        "path": "apps/Tools/brainfuck.fap",
+        "display_name": "Brainfuck",
+        "api_version": 5832704,
+        "bytes": 20684,
+        "sha256": "bd45f5f1c89af281d70599f31145784214707857f0ec12d3e616e3c9a8b0a381"
+      },
+      {
+        "path": "apps/Games/chess_clock.fap",
+        "display_name": "棋钟",
+        "api_version": 5832704,
+        "bytes": 3324,
+        "sha256": "8c03e552c486106c8294a4157eddc580698bb0ba4e26bd1e15fd795ad48afd79"
+      },
+      {
+        "path": "apps/Infrared/pause_timer.fap",
+        "display_name": "暂停定时器",
+        "api_version": 5832704,
+        "bytes": 16396,
+        "sha256": "5fc4e99226c4b6cebe7cd5471b6154d733213b9e308d234b33d8afbc1d709a35"
+      },
+      {
+        "path": "apps/Games/mandelbrotset.fap",
+        "display_name": "曼德勃罗集",
+        "api_version": 5832704,
+        "bytes": 5572,
+        "sha256": "a407271fe492ed59b375b0284758aa18a959084a5f5eea50c1ad0528280939bf"
+      },
+      {
+        "path": "apps/Games/reaction.fap",
+        "display_name": "反应测试",
+        "api_version": 5832704,
+        "bytes": 3896,
+        "sha256": "a42a48fdfa7d802292dbfb828cc5a40a63860ce606c3140773a787bf99f1a734"
+      },
+      {
+        "path": "apps/Games/dice_app.fap",
+        "display_name": "D&D 骰子",
+        "api_version": 5832704,
+        "bytes": 21940,
+        "sha256": "10026ebfedc38dcb7ba0fcc06f90502ff22529a83986870b0261d9857c2b690a"
+      },
+      {
+        "path": "apps/Games/montyhall.fap",
+        "display_name": "三门问题",
+        "api_version": 5832704,
+        "bytes": 5912,
+        "sha256": "471e16d92b0fdfb4edc93c4de9048a76c38755592c533f169f81f15c749853eb"
+      },
+      {
+        "path": "apps/Media/ocarina.fap",
+        "display_name": "陶笛",
+        "api_version": 5832704,
+        "bytes": 7928,
+        "sha256": "f5679b99741e8ab04531f732dbe48a8ca062e8229064c6e411ee015d7a1ff9c8"
+      },
+      {
+        "path": "apps/Games/racegame.fap",
+        "display_name": "赛车",
+        "api_version": 5832704,
+        "bytes": 5040,
+        "sha256": "938d5529f765ab5e5f3a31b8702c41fc0e0099cb6b00e8e576b8828e07fa0b04"
+      },
+      {
+        "path": "apps/Games/bounce.fap",
+        "display_name": "弹跳球",
+        "api_version": 5832704,
+        "bytes": 29640,
+        "sha256": "aef3ed6b4c055b7ab578ef5fb95bce3b718d55d7564c93d24392dda774681f9b"
+      },
+      {
+        "path": "apps/Games/stack_attack.fap",
+        "display_name": "方块搬运",
+        "api_version": 5832704,
+        "bytes": 22712,
+        "sha256": "622e4a6bbdfa39cf01696e1c18419a8226a8935b1f480d1c8221b32831669528"
+      },
+      {
+        "path": "apps/Games/sudoku.fap",
+        "display_name": "数独",
+        "api_version": 5832704,
+        "bytes": 9256,
+        "sha256": "c00167d2854250bcc590f8c3bd4de9c87c811d975b8070ae27908d02f4ea034f"
+      },
+      {
+        "path": "apps/Tools/nickname_generator.fap",
+        "display_name": "昵称生成器",
+        "api_version": 5832704,
+        "bytes": 13376,
+        "sha256": "a22c34e0a90fc20cc92caad1285ec9e0c45d8f1aaaa4423eb9f6c14be585be05"
+      }
+    ],
+    "chinese_glyph_resource": {
+      "path": "locale/zh_cn.glyphs",
+      "bytes": 925216,
+      "sha256": "ef3423813e6843dffd6f4bcee0c329f93802104db12325fe0f802ca9f6498eaa",
+      "matches_source": true
+    }
+  },
+  "ci_package_before_navigation_change": {
+    "source_commit": "12b8c35f3da5c89d48efe3836591b197c2a0c48e",
+    "workflow_run": 36663671731,
+    "artifact_id": 11075137260,
+    "input_sha256": "e901bf7dba34318878d69e81a6449fbd3ae9b6716294b3f60cfa4f42e521f016",
+    "package_name": "flipper-z-f7-update-mntm-HEAD-d0a71d4e.tgz",
+    "package_bytes": 13025678,
+    "package_sha256": "dacca31cbef4491ff9fd786c8a11c0add12e0d130ce50dce6a6500d1f02f1643",
+    "updater_bytes": 123829,
+    "firmware_bytes": 871504,
+    "radio_address": "0x80d7000",
+    "flash_gap_before_radio_bytes": 9136,
+    "dfu_crc_verified": true,
+    "packaged_fap_count": 295,
+    "packaged_fal_count": 121,
+    "required_apps": [
+      {
+        "path": "apps/Tools/lab.fap",
+        "display_name": "Flipper Lab",
+        "api_version": 5832704,
+        "bytes": 22880,
+        "sha256": "36613318ba5890f1677f12ddd3d287bf976eb52c3c25c2c3a3a7771444cf463a"
+      },
+      {
+        "path": "apps/Tools/lab_bridge.fap",
+        "display_name": "Lab Bridge",
+        "api_version": 5832704,
+        "bytes": 7176,
+        "sha256": "3242e2fc4f49a439fd82872496e696d35a85c581aaeaeca2e3f035545f7022d7"
+      },
+      {
+        "path": "apps/Tools/clock.fap",
+        "display_name": "床头时钟",
+        "api_version": 5832704,
+        "bytes": 12860,
+        "sha256": "eaad504695b18943d9eacc9d5fe7584e5b3d09b26e8ccd88dd8594569f967db2"
+      },
+      {
+        "path": "apps/Tools/pomodoro_timer.fap",
+        "display_name": "番茄钟",
+        "api_version": 5832704,
+        "bytes": 10888,
+        "sha256": "20a7f7accb58158282b702673d0f8f62b4438eb3ccc0a2b1e3383f4291cf32f9"
+      },
+      {
+        "path": "apps/Tools/analog_clock.fap",
+        "display_name": "指针时钟",
+        "api_version": 5832704,
+        "bytes": 15460,
+        "sha256": "204595d6c7044cda2c854396105c1a72cf60acc67067c5ccae835c2912d5feb1"
+      },
+      {
+        "path": "apps/Tools/segment_clock.fap",
+        "display_name": "数码管时钟",
+        "api_version": 5832704,
+        "bytes": 9384,
+        "sha256": "05fe3ed026ba0a3fe849eee223c43b4b292ead926d5aeeba2ebbe1a0dd3338f9"
+      },
+      {
+        "path": "apps/Tools/calendar.fap",
+        "display_name": "日历",
+        "api_version": 5832704,
+        "bytes": 10692,
+        "sha256": "6267a8065ddf9cb786829686d3a3c97176d5395ed02bb07f7375f176450d0602"
+      },
+      {
+        "path": "apps/Tools/net_calculator.fap",
+        "display_name": "子网计算器",
+        "api_version": 5832704,
+        "bytes": 6936,
+        "sha256": "9fe3258558c9871595de6ee039e8110c69ad6a68be657c7f0aa92f43c86af0ee"
+      },
+      {
+        "path": "apps/Tools/multi_counter.fap",
+        "display_name": "多人计数器",
+        "api_version": 5832704,
+        "bytes": 6596,
+        "sha256": "9b2e09d0145764b65f37a024dde90c6497235efc41beeb83c38e9d094af50b34"
+      },
+      {
+        "path": "apps/Tools/sd_info.fap",
+        "display_name": "SD卡信息",
+        "api_version": 5832704,
+        "bytes": 11408,
+        "sha256": "b444337e38550b908a668858122f71239390c7d83124250ab66bd58f8296e8df"
+      },
+      {
+        "path": "apps/Tools/flipper_chronometer.fap",
+        "display_name": "秒表",
+        "api_version": 5832704,
+        "bytes": 3384,
+        "sha256": "df14ed860ceee9475cbf801201989af8e15659fd2a22fcff317b6017dcba0914"
+      },
+      {
+        "path": "apps/Tools/trackerflipx.fap",
+        "display_name": "任务计时器",
+        "api_version": 5832704,
+        "bytes": 38996,
+        "sha256": "a95eeac7fe68247ad537a6cb76e4a2f05d59a3ccc4e3dd4cdb6e3931afcb25a2"
+      },
+      {
+        "path": "apps/Tools/flipnote.fap",
+        "display_name": "FlipNote记事本",
+        "api_version": 5832704,
+        "bytes": 27872,
+        "sha256": "e2c02499bffe47aaeb24676dc71a43959f3278d9b885f6c2de47e70a0729ba4f"
+      },
+      {
+        "path": "apps/Tools/gps_rpc.fap",
+        "display_name": "手机 GPS",
+        "api_version": 5832704,
+        "bytes": 5420,
+        "sha256": "4fe48d5682b28ac150722d4bb18f197eac987288a4209f31d537cdfdbd8aa4a5"
+      },
+      {
+        "path": "apps/Tools/example_network.fap",
+        "display_name": "手机联网测试",
+        "api_version": 5832704,
+        "bytes": 4316,
+        "sha256": "5d406c893a165cd1b64ce9457ba38fff4c27d1ff1ba346cd31d3a5b62c6c6e3d"
+      },
+      {
+        "path": "apps/Tools/brainfuck.fap",
+        "display_name": "Brainfuck",
+        "api_version": 5832704,
+        "bytes": 20684,
+        "sha256": "68a232f50c301ce18fc331d43800bf4b0fc7c55d58bbc039cd850f80b8851026"
+      },
+      {
+        "path": "apps/Games/chess_clock.fap",
+        "display_name": "棋钟",
+        "api_version": 5832704,
+        "bytes": 3324,
+        "sha256": "67d76c9e891c338719273b6aa4d26dfd3974a6e997115417d248929f3056f175"
+      },
+      {
+        "path": "apps/Infrared/pause_timer.fap",
+        "display_name": "暂停定时器",
+        "api_version": 5832704,
+        "bytes": 16396,
+        "sha256": "057c412e0607e01dad3bd6055522c18da594b0f5a1e4e8707141385ad4568223"
+      },
+      {
+        "path": "apps/Games/mandelbrotset.fap",
+        "display_name": "曼德勃罗集",
+        "api_version": 5832704,
+        "bytes": 5572,
+        "sha256": "e32079a1b10be112b151193f78ad5168da1084f5bc7f7f2d5a71a29541c0da7a"
+      },
+      {
+        "path": "apps/Games/reaction.fap",
+        "display_name": "反应测试",
+        "api_version": 5832704,
+        "bytes": 3896,
+        "sha256": "df84321c2914b695ef85514ce75bec50f23e0b07d2f6e2b7132651a9bb7ed60e"
+      },
+      {
+        "path": "apps/Games/dice_app.fap",
+        "display_name": "D&D 骰子",
+        "api_version": 5832704,
+        "bytes": 21940,
+        "sha256": "3605af1ee481f25d6c8a439ed47a6fb06cb2ab3dcaacec60d2ea1ed0d8dadc50"
+      },
+      {
+        "path": "apps/Games/montyhall.fap",
+        "display_name": "三门问题",
+        "api_version": 5832704,
+        "bytes": 5912,
+        "sha256": "6ad4536be4f96fa27665beccb91cbf967bfb4172fa3d8656bbc3d9b540caa47b"
+      },
+      {
+        "path": "apps/Media/ocarina.fap",
+        "display_name": "陶笛",
+        "api_version": 5832704,
+        "bytes": 7928,
+        "sha256": "654c7ea7b06b7563381f3504c1409ebfe3d6fe877af4268ff39ee1d970d07ecd"
+      },
+      {
+        "path": "apps/Games/racegame.fap",
+        "display_name": "赛车",
+        "api_version": 5832704,
+        "bytes": 5040,
+        "sha256": "3b278441e88b467b733ed02d95854e9f20d2c42d43cdb2181a336440eea356d8"
+      },
+      {
+        "path": "apps/Games/bounce.fap",
+        "display_name": "弹跳球",
+        "api_version": 5832704,
+        "bytes": 29640,
+        "sha256": "8d6036a2a4c03cfedbca7e07b6a21654bf4878a2f27f71b8c7fcc07a946b5713"
+      },
+      {
+        "path": "apps/Games/stack_attack.fap",
+        "display_name": "方块搬运",
+        "api_version": 5832704,
+        "bytes": 22712,
+        "sha256": "b0271e68f5b470e926e7f68c861cd9951cd1ef543fe4870bdbf99893204548f3"
+      },
+      {
+        "path": "apps/Games/sudoku.fap",
+        "display_name": "数独",
+        "api_version": 5832704,
+        "bytes": 9256,
+        "sha256": "3991c94a3f56427a37522f4b5e1cef469313de9838944d078a869eac6eb17e77"
+      },
+      {
+        "path": "apps/Tools/nickname_generator.fap",
+        "display_name": "昵称生成器",
+        "api_version": 5832704,
+        "bytes": 13376,
+        "sha256": "d780cd0130e29d4673365a93e9951c92bf529c8c2d850cfcc7593ed7344965f4"
+      }
+    ],
+    "chinese_glyph_resource": {
+      "path": "locale/zh_cn.glyphs",
+      "bytes": 925216,
+      "sha256": "ef3423813e6843dffd6f4bcee0c329f93802104db12325fe0f802ca9f6498eaa",
+      "matches_source": true
+    }
+  },
+  "ci_package": {
+    "source_commit": "6f94bdc9dda35db4d3cbb6105c73f753190525a3",
+    "workflow_run": 36665403323,
+    "artifact_id": 11076243050,
+    "input_sha256": "0fb01ba722e4829f3518fae5cbc3c5d80ceb3f8198d2bc7a473547e13b5c69ba",
+    "package_name": "flipper-z-f7-update-mntm-HEAD-012c4a26.tgz",
+    "package_bytes": 13025307,
+    "package_sha256": "dd04016aa071ae449705e2f749070272ac88b7000f5bc4921d517efa764164bb",
+    "updater_bytes": 123829,
+    "firmware_bytes": 871504,
+    "radio_address": "0x80d7000",
+    "flash_gap_before_radio_bytes": 9136,
+    "dfu_crc_verified": true,
+    "packaged_fap_count": 295,
+    "packaged_fal_count": 121,
+    "required_apps": [
+      {
+        "path": "apps/Tools/lab.fap",
+        "display_name": "Flipper Lab",
+        "api_version": 5832704,
+        "bytes": 22880,
+        "sha256": "36613318ba5890f1677f12ddd3d287bf976eb52c3c25c2c3a3a7771444cf463a"
+      },
+      {
+        "path": "apps/Tools/lab_bridge.fap",
+        "display_name": "Lab Bridge",
+        "api_version": 5832704,
+        "bytes": 7176,
+        "sha256": "3242e2fc4f49a439fd82872496e696d35a85c581aaeaeca2e3f035545f7022d7"
+      },
+      {
+        "path": "apps/Tools/clock.fap",
+        "display_name": "床头时钟",
+        "api_version": 5832704,
+        "bytes": 12860,
+        "sha256": "eaad504695b18943d9eacc9d5fe7584e5b3d09b26e8ccd88dd8594569f967db2"
+      },
+      {
+        "path": "apps/Tools/pomodoro_timer.fap",
+        "display_name": "番茄钟",
+        "api_version": 5832704,
+        "bytes": 10888,
+        "sha256": "20a7f7accb58158282b702673d0f8f62b4438eb3ccc0a2b1e3383f4291cf32f9"
+      },
+      {
+        "path": "apps/Tools/analog_clock.fap",
+        "display_name": "指针时钟",
+        "api_version": 5832704,
+        "bytes": 15460,
+        "sha256": "204595d6c7044cda2c854396105c1a72cf60acc67067c5ccae835c2912d5feb1"
+      },
+      {
+        "path": "apps/Tools/segment_clock.fap",
+        "display_name": "数码管时钟",
+        "api_version": 5832704,
+        "bytes": 9384,
+        "sha256": "05fe3ed026ba0a3fe849eee223c43b4b292ead926d5aeeba2ebbe1a0dd3338f9"
+      },
+      {
+        "path": "apps/Tools/calendar.fap",
+        "display_name": "日历",
+        "api_version": 5832704,
+        "bytes": 10692,
+        "sha256": "6267a8065ddf9cb786829686d3a3c97176d5395ed02bb07f7375f176450d0602"
+      },
+      {
+        "path": "apps/Tools/net_calculator.fap",
+        "display_name": "子网计算器",
+        "api_version": 5832704,
+        "bytes": 6936,
+        "sha256": "9fe3258558c9871595de6ee039e8110c69ad6a68be657c7f0aa92f43c86af0ee"
+      },
+      {
+        "path": "apps/Tools/multi_counter.fap",
+        "display_name": "多人计数器",
+        "api_version": 5832704,
+        "bytes": 6596,
+        "sha256": "9b2e09d0145764b65f37a024dde90c6497235efc41beeb83c38e9d094af50b34"
+      },
+      {
+        "path": "apps/Tools/sd_info.fap",
+        "display_name": "SD卡信息",
+        "api_version": 5832704,
+        "bytes": 11408,
+        "sha256": "b444337e38550b908a668858122f71239390c7d83124250ab66bd58f8296e8df"
+      },
+      {
+        "path": "apps/Tools/flipper_chronometer.fap",
+        "display_name": "秒表",
+        "api_version": 5832704,
+        "bytes": 3384,
+        "sha256": "df14ed860ceee9475cbf801201989af8e15659fd2a22fcff317b6017dcba0914"
+      },
+      {
+        "path": "apps/Tools/trackerflipx.fap",
+        "display_name": "任务计时器",
+        "api_version": 5832704,
+        "bytes": 38996,
+        "sha256": "a95eeac7fe68247ad537a6cb76e4a2f05d59a3ccc4e3dd4cdb6e3931afcb25a2"
+      },
+      {
+        "path": "apps/Tools/flipnote.fap",
+        "display_name": "FlipNote记事本",
+        "api_version": 5832704,
+        "bytes": 27872,
+        "sha256": "e2c02499bffe47aaeb24676dc71a43959f3278d9b885f6c2de47e70a0729ba4f"
+      },
+      {
+        "path": "apps/Tools/gps_rpc.fap",
+        "display_name": "手机 GPS",
+        "api_version": 5832704,
+        "bytes": 5420,
+        "sha256": "4fe48d5682b28ac150722d4bb18f197eac987288a4209f31d537cdfdbd8aa4a5"
+      },
+      {
+        "path": "apps/Tools/example_network.fap",
+        "display_name": "手机联网测试",
+        "api_version": 5832704,
+        "bytes": 4316,
+        "sha256": "5d406c893a165cd1b64ce9457ba38fff4c27d1ff1ba346cd31d3a5b62c6c6e3d"
+      },
+      {
+        "path": "apps/Tools/brainfuck.fap",
+        "display_name": "Brainfuck",
+        "api_version": 5832704,
+        "bytes": 20684,
+        "sha256": "68a232f50c301ce18fc331d43800bf4b0fc7c55d58bbc039cd850f80b8851026"
+      },
+      {
+        "path": "apps/Games/chess_clock.fap",
+        "display_name": "棋钟",
+        "api_version": 5832704,
+        "bytes": 3324,
+        "sha256": "67d76c9e891c338719273b6aa4d26dfd3974a6e997115417d248929f3056f175"
+      },
+      {
+        "path": "apps/Infrared/pause_timer.fap",
+        "display_name": "暂停定时器",
+        "api_version": 5832704,
+        "bytes": 16396,
+        "sha256": "057c412e0607e01dad3bd6055522c18da594b0f5a1e4e8707141385ad4568223"
+      },
+      {
+        "path": "apps/Games/mandelbrotset.fap",
+        "display_name": "曼德勃罗集",
+        "api_version": 5832704,
+        "bytes": 5572,
+        "sha256": "e32079a1b10be112b151193f78ad5168da1084f5bc7f7f2d5a71a29541c0da7a"
+      },
+      {
+        "path": "apps/Games/reaction.fap",
+        "display_name": "反应测试",
+        "api_version": 5832704,
+        "bytes": 3896,
+        "sha256": "df84321c2914b695ef85514ce75bec50f23e0b07d2f6e2b7132651a9bb7ed60e"
+      },
+      {
+        "path": "apps/Games/dice_app.fap",
+        "display_name": "D&D 骰子",
+        "api_version": 5832704,
+        "bytes": 21940,
+        "sha256": "3605af1ee481f25d6c8a439ed47a6fb06cb2ab3dcaacec60d2ea1ed0d8dadc50"
+      },
+      {
+        "path": "apps/Games/montyhall.fap",
+        "display_name": "三门问题",
+        "api_version": 5832704,
+        "bytes": 5912,
+        "sha256": "6ad4536be4f96fa27665beccb91cbf967bfb4172fa3d8656bbc3d9b540caa47b"
+      },
+      {
+        "path": "apps/Media/ocarina.fap",
+        "display_name": "陶笛",
+        "api_version": 5832704,
+        "bytes": 7928,
+        "sha256": "654c7ea7b06b7563381f3504c1409ebfe3d6fe877af4268ff39ee1d970d07ecd"
+      },
+      {
+        "path": "apps/Games/racegame.fap",
+        "display_name": "赛车",
+        "api_version": 5832704,
+        "bytes": 5040,
+        "sha256": "3b278441e88b467b733ed02d95854e9f20d2c42d43cdb2181a336440eea356d8"
+      },
+      {
+        "path": "apps/Games/bounce.fap",
+        "display_name": "弹跳球",
+        "api_version": 5832704,
+        "bytes": 29640,
+        "sha256": "8d6036a2a4c03cfedbca7e07b6a21654bf4878a2f27f71b8c7fcc07a946b5713"
+      },
+      {
+        "path": "apps/Games/stack_attack.fap",
+        "display_name": "方块搬运",
+        "api_version": 5832704,
+        "bytes": 22712,
+        "sha256": "b0271e68f5b470e926e7f68c861cd9951cd1ef543fe4870bdbf99893204548f3"
+      },
+      {
+        "path": "apps/Games/sudoku.fap",
+        "display_name": "数独",
+        "api_version": 5832704,
+        "bytes": 9256,
+        "sha256": "3991c94a3f56427a37522f4b5e1cef469313de9838944d078a869eac6eb17e77"
+      },
+      {
+        "path": "apps/Tools/nickname_generator.fap",
+        "display_name": "昵称生成器",
+        "api_version": 5832704,
+        "bytes": 13376,
+        "sha256": "d780cd0130e29d4673365a93e9951c92bf529c8c2d850cfcc7593ed7344965f4"
+      }
+    ],
+    "chinese_glyph_resource": {
+      "path": "locale/zh_cn.glyphs",
+      "bytes": 925216,
+      "sha256": "ef3423813e6843dffd6f4bcee0c329f93802104db12325fe0f802ca9f6498eaa",
+      "matches_source": true
+    }
+  },
+  "ci_validation_before_navigation_change": {
+    "commit": "12b8c35f3da5c89d48efe3836591b197c2a0c48e",
+    "run_id": 36663671713,
+    "host_tests": 120,
+    "host_seconds": 14.875,
+    "swift_tests": 151,
+    "swift_seconds": 12.229,
+    "ui_tests": 6,
+    "ui_failures": 1,
+    "unsigned_simulator_build": "success",
+    "status": "failure",
+    "screenshots_artifact": {
+      "id": 11076111140,
+      "bytes": 17922347,
+      "sha256": "ecddddf895f512a042ca6f24fd5f28065792269985e06cb0bbc9612aaaa3019c",
+      "downloaded_and_inspected_failure_evidence": true
+    }
+  },
+  "ci_validation": {
+    "commit": "6f94bdc9dda35db4d3cbb6105c73f753190525a3",
+    "run_id": 36665403336,
+    "status": "success",
+    "firmware_run": 36665403323,
+    "firmware_status": "success",
+    "lint_run": 36665403357,
+    "lint_status": "success",
+    "pr_merge_checkout": "012c4a26cbaed08e301d3870b3b2044ef9e7a262",
+    "host_tests": 129,
+    "host_seconds": 16.591,
+    "host_skipped": 0,
+    "host_status": "success",
+    "swift_tests": 151,
+    "swift_seconds": 11.478,
+    "swift_skipped": 0,
+    "ui_tests": 6,
+    "ui_failures": 0,
+    "ui_seconds": 352.752,
+    "dark_accessibility_navigation_seconds": 81.993,
+    "unsigned_simulator_build": "success",
+    "xcode": "26.6",
+    "device": "iPhone 17 Pro Max",
+    "os": "iOS 26.5",
+    "original_assertions_preserved": true,
+    "screenshots_artifact": {
+      "id": 11075984428,
+      "bytes": 7853907,
+      "sha256": "6b3949037d011eaa2b21e27446ab34c27e8a40fd1652b37596fd73ba0a5ba951",
+      "png_count": 24,
+      "downloaded_sha_verified": true,
+      "inspected": [
+        "01b-功能中心离线预览",
+        "16-深色大字-任务"
+      ],
+      "original_copies_manifest": "previews/union-20260930/iphone-manifest.json"
+    },
+    "source_previews_artifact": {
+      "id": 11076127376,
+      "bytes": 539269,
+      "sha256": "3ce4c4523eb43ed7085aad4535527269d391c49e695739f486917de67da9ece6",
+      "png_count": 73,
+      "downloaded_sha_verified": true,
+      "note": "66 Flipper Lab screens, 6 native screens and one contact sheet. Four new union previews are generated locally and committed; optional CI step was not pushed."
+    },
+    "simulator_evidence_artifact": {
+      "id": 11076287311,
+      "bytes": 9323737,
+      "sha256": "e2390f940e2dd5b3691a22e8f11fadcbbcc57e40ae30bd67d8493becef35aea6",
+      "metadata_checked_only": true,
+      "downloaded": false
+    }
+  },
+  "hardware": {
+    "user_connected_github_only": true,
+    "flipper_connected": false,
+    "iphone_connected": false,
+    "aio_connected": false,
+    "flashed": false,
+    "ble_end_to_end": false,
+    "aio_uart_end_to_end": false,
+    "real_card": false,
+    "external_cc1101_nrf24": false,
+    "rf_acceptance": false,
+    "targeted_wifi_disconnect_added": false
+  },
+  "app_inventory_counts": {
+    "app_local_source_identical": 36,
+    "unmatched_application": 134,
+    "matched_source_differs_review_required": 232,
+    "unmatched_plugin": 19
+  },
+  "literal_app_id_counts": {
+    "current_literal_ids": 491,
+    "reference_literal_ids": 421,
+    "shared_literal_ids": 238,
+    "reference_ids_absent_from_current": 183
+  },
+  "ui_audit": {
+    "api_signatures": 48,
+    "overall": {
+      "files_scanned": 7661,
+      "skipped": 12,
+      "files_with_entries": 1478,
+      "calls": 9803,
+      "entries": 9922,
+      "needing-review": 4478,
+      "chinese": 1156,
+      "neutral": 503,
+      "dynamic": 3785,
+      "chinese_with_latin_words": 192
+    },
+    "by_scope": {
+      "applications/main": {
+        "files_scanned": 667,
+        "skipped": 1,
+        "files_with_entries": 240,
+        "calls": 1267,
+        "entries": 1280,
+        "needing-review": 32,
+        "chinese": 702,
+        "neutral": 67,
+        "dynamic": 479,
+        "chinese_with_latin_words": 122
+      },
+      "applications/settings": {
+        "files_scanned": 93,
+        "skipped": 0,
+        "files_with_entries": 37,
+        "calls": 261,
+        "entries": 269,
+        "needing-review": 0,
+        "chinese": 160,
+        "neutral": 9,
+        "dynamic": 100,
+        "chinese_with_latin_words": 37
+      },
+      "applications/services": {
+        "files_scanned": 283,
+        "skipped": 3,
+        "files_with_entries": 41,
+        "calls": 186,
+        "entries": 199,
+        "needing-review": 2,
+        "chinese": 63,
+        "neutral": 24,
+        "dynamic": 110,
+        "chinese_with_latin_words": 9
+      },
+      "applications/system": {
+        "files_scanned": 142,
+        "skipped": 1,
+        "files_with_entries": 40,
+        "calls": 171,
+        "entries": 173,
+        "needing-review": 11,
+        "chinese": 97,
+        "neutral": 6,
+        "dynamic": 59,
+        "chinese_with_latin_words": 6
+      },
+      "applications/external": {
+        "files_scanned": 6352,
+        "skipped": 7,
+        "files_with_entries": 1078,
+        "calls": 7664,
+        "entries": 7745,
+        "needing-review": 4433,
+        "chinese": 1,
+        "neutral": 385,
+        "dynamic": 2926,
+        "chinese_with_latin_words": 0
+      },
+      "applications/union": {
+        "files_scanned": 124,
+        "skipped": 0,
+        "files_with_entries": 42,
+        "calls": 254,
+        "entries": 256,
+        "needing-review": 0,
+        "chinese": 133,
+        "neutral": 12,
+        "dynamic": 111,
+        "chinese_with_latin_words": 18
+      },
+      "applications_user": {
+        "files_scanned": 0,
+        "skipped": 0,
+        "files_with_entries": 0,
+        "calls": 0,
+        "entries": 0,
+        "needing-review": 0,
+        "chinese": 0,
+        "neutral": 0,
+        "dynamic": 0,
+        "chinese_with_latin_words": 0
+      }
+    },
+    "raw_sha256": "f4a8f771b61c2ac213baac0cb9b48d0544796ab59e96b6a0da6c3972ff853f71",
+    "coverage_note": "Counts cover only the text parameters of the functions listed in apis. Custom drawing, macro wrappers, string tables, formatted FuriStrings and other indirect text are not followed, so these counts are not a translation coverage percentage.",
+    "not_a_chinese_coverage_percentage": true
+  },
+  "previews": {
+    "type": "production C source preview, not a device or simulator screenshot",
+    "manifest": "previews/union-20260930/manifest.json",
+    "source_sha256_and_draw_calls": "see preview manifest",
+    "approximations": "rounded-corner raster; no RTOS, SD cache, input timing or device execution"
+  },
+  "files": {
+    "applications/services/gui/native_zh_font.h": "6f288e41c9c0cc9f1e400475051420de0355aa4139a5263767c69df596c86413",
+    "applications/union/UPSTREAM.json": "3d982cfdcd1a5c1c31b9c12ee971aef27931a5643a952f873e6d23ebe6b52bd9",
+    "applications/union/application.fam": "9dca7d8c2eeb708d0dc640683b0ae2a4b6e969f51c4851f4ba96b54978c00572",
+    "applications/union/bounce/LICENSE": "60bee27f5d9e2044a6bebd4aba7784a045e0dc8d0777ee062bc029fcb85a4a49",
+    "applications/union/bounce/application.fam": "a0b05dd4835a26a6bde3be4d734bf12aab1362fd271a2b24e083c54d8436a53b",
+    "applications/union/bounce/bounce.c": "f6601c578c71ff21b11b03fd3ada5df5b9de09e7e3d0c28bb57c1ed004f76af4",
+    "applications/union/bounce/bounce_10px.png": "ccb751b994bc295c8ec5931532bb1897c8432830004f08e9cd034714761613ad",
+    "applications/union/bounce/levels.h": "bddb50dbc991ef46e61e428cf350b8fdfe3fac768a5a676d7eb6dee4f6beabee",
+    "applications/union/brainfuck/views/bf_dev_env.c": "c7af105752d2a9ab676ef6f2f0a95fdcf1e4566907fe5b266c08e5caa834f095",
+    "applications/union/dice/constants.h": "9db85328aacbc371129ac4e3de4a7c31629c5d71d116d0d97cb53144e57e0813",
+    "applications/union/dice/dice_app.c": "d2fcf8dc25abadab011d40bdc43a8fd43cd864b472beebe613f0b7ac01a0bad6",
+    "applications/union/flipnote/flipnote.c": "fb1440d86111dc55e4b9e8f5605285c73acb983ede3b3850a570642caede4336",
+    "applications/union/flipnote/flipnote_utf8.h": "19bb3e66ff1ffeadc1c9fa3efa523723a5a23075d9f5f87bee9415b7286a7955",
+    "applications/union/flipnote/fznote_text_input.c": "4b5ca418fa8c3f13c47294637250a5340be1fb285addc29f92bb99208c8f1987",
+    "applications/union/flipper_task_tracker/app/datetime/datetime.c": "2a2850010a2c47e10176b6e8dcf48a60d6f115eeab6dcd73949a82dbca7b3af8",
+    "applications/union/flipper_task_tracker/app/scene/task_continue/task_continue.c": "ca9b3a26bd1f9e102a87f9e7e061bc673ead5c9d156473a5b0286c2afd9743d3",
+    "applications/union/flipper_task_tracker/app/scene/view_stats/view_stats.c": "eeda5ba24e8bce9dd348e6fea1e3e3bc95672b41d583dd7f0bbe054559a12be1",
+    "applications/union/flipper_task_tracker/app/tasks/task.c": "7e15c5abb2bb3bf707812c605678f754570d2736bda84f15dd6b26da0374fc8a",
+    "applications/union/nickname_generator/LICENSE": "3376acd6e9b9ad069f0c6ab59fc91e1e6447101af59be4f6465d54f5451d5e72",
+    "applications/union/nickname_generator/application.fam": "16918f7f64af5011fc30d5688acdd4e31e7a3f0677a2a614c8c25170641027a7",
+    "applications/union/nickname_generator/icon.png": "2a5b3f347d62d60b81cf71865740224431040dc01febcfc32a0c591ab84fead9",
+    "applications/union/nickname_generator/main.c": "2ce32cec9e6fdcbca6c60673f3d019785216c277d5f7dde9dddf5c22744bf94c",
+    "applications/union/segment_clock/main.c": "9e32aba6d576c96dcf3021421f8e689da32ddfe0a1e27634b137aae97b503720",
+    "applications/union/stack_attack/LICENSE": "b037c26cb1e350369a49d5befae5e721017839d5721915b754501f9af96e03ac",
+    "applications/union/stack_attack/application.fam": "6cb5497ec3071cc86d3a1ff2e5adfba8e5d06ff652fdae5ab39f7b7392ba5057",
+    "applications/union/stack_attack/game.c": "ebe0585afa9afebdf0ba8e473db41ac053d0e17cc7738ded1b8f83f47701ec18",
+    "applications/union/stack_attack/game.h": "fbed16ba1c5404d66983bb824d84d744df33dfce3d25c1e6c52b3e2c7216e17b",
+    "applications/union/stack_attack/icon.png": "0c32f29e58791e28f8833719eb0237109d280c6fb05020b1b29324de29c34a37",
+    "applications/union/stack_attack/render.c": "a00cb1408fda0cc0aee6c24bd408322045dd78f307ca18965d754c389088279f",
+    "applications/union/stack_attack/render.h": "2b68d4139c7a15dcf82efce6953033401ee9b1c5d311c28844d7a72436d03b97",
+    "applications/union/stack_attack/sprites.h": "76608d837ff6ab8994d160dd8b977a13248b205d5a55eba6b6712d9e6f62ea07",
+    "applications/union/stack_attack/stack_attack.c": "8735a89b8f1707fc4d487eebb754a781fb9eca4239a1e4152e9e413ba582b93c",
+    "applications/union/sudoku/LICENSE": "b65e22a506115b1466b23a0a5590406ff1360e6d93482b833bae57984de63758",
+    "applications/union/sudoku/application.fam": "eabc3c14da91d61108bdc9a1d7fb6d5821012abd77abae3b7f198f5588e3b3c4",
+    "applications/union/sudoku/sudoku.c": "66c0a3c8af3642ffcaac573fd13c5af0d3ab17dbf30131d93c7de535c5d40954",
+    "applications/union/sudoku/sudoku.png": "f0e35a51f938f019455fac3c4a362b66996315f0ef98db5d000099102966bb31",
+    "applications/union/sudoku/sudoku_save.h": "ff9940d18d4e38b02a4541e8c6de0b204f974929db844b8bfee84d5a37a7c4a1",
+    "mobile/FlipperLab/App/Views/LibraryView.swift": "9cd340745f4c49fa94b4ce5b276dcbc813e343777e8a4d372fbc6ce9735a6a00",
+    "mobile/FlipperLab/App/Views/RecordDetailView.swift": "74c4c225670df186ac908fedb5e2b722f64ce96d172db9675f89f6bfb6a2a52d",
+    "mobile/FlipperLab/Sources/FlipperCore/FlipperFunction.swift": "456e3f1664d4436ee5ce2b60abb5a7c15fc399b126c5a0b6ad23bedaad4ce076",
+    "mobile/FlipperLab/Tests/FlipperCoreTests/CompanionWebSocketLoopbackTests.swift": "9a0e318bfe94dfa11b8043cb9c67e37b9edfdd7b190a51df8c739bf05bf853b8",
+    "mobile/FlipperLab/Tests/FlipperCoreTests/FlipperFunctionTests.swift": "0e72c41f857a51f2eecacff7d0dfb6467456ee89d6f1d870c42a2d94228ee8c7",
+    "scripts/render_union_zh_preview.py": "d4152f1b9f4beefd3066a095bf30dd62454aba19e786f342b1a1d6d8a56a4165",
+    "scripts/tests/test_dice_history.py": "1350049c8b749b2355f32ed09a017c2449543101aa4042a493e856b30fd2e136",
+    "scripts/tests/test_flipnote_storage.py": "26a8d884bed6b684117778c13ce5e84595e9343c762366a6751766ac430d67da",
+    "scripts/tests/test_flipnote_utf8.py": "3cf224d937fd1c3d1b0032643abb7ea6e03fe0761f3a2ca121d5e68a1fed724a",
+    "scripts/tests/test_sudoku_save.py": "45da43d88f61f43e35654db1580216c2d2f4ab22c4b74a88ad3740ca954e5e86"
+  }
+}

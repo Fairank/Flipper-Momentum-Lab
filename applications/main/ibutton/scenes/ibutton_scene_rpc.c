@@ -35,6 +35,7 @@ bool ibutton_scene_rpc_on_event(void* context, SceneManagerEvent event) {
                 result = true;
             } else {
                 rpc_system_app_set_error_code(ibutton->rpc, RpcAppSystemErrorCodeParseFile);
+                // RPC error text is sent to the companion app, kept in English
                 rpc_system_app_set_error_text(ibutton->rpc, "Cannot load key file");
             }
             rpc_system_app_confirm(ibutton->rpc, result);

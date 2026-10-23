@@ -27,9 +27,9 @@ static void desktop_settings_view_pin_setup_howto2_draw(Canvas* canvas, void* mo
         0,
         AlignCenter,
         AlignTop,
-        "Forgotten PIN can only be\n"
-        "reset with entire device.\n"
-        "Read docs: How to reset PIN.");
+        "Forgotten PIN can only be\nreset with entire device.\nRead docs: How to reset PIN."
+        ""
+        "");
 
     elements_button_right(canvas, "OK");
     elements_button_left(canvas, "Cancel");

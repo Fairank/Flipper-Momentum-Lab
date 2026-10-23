@@ -2,6 +2,25 @@
 #include "updater_scene.h"
 #include <update_util/update_operation.h>
 
+// Display-only labels: the library keeps its existing CLI error descriptions.
+static const char* updater_preparation_result_label(UpdatePrepareResult result) {
+    static const char* const labels[] = {
+        [UpdatePrepareResultOK] = "Ready",
+        [UpdatePrepareResultManifestPathInvalid] = "Update manifest\nname or path invalid",
+        [UpdatePrepareResultManifestFolderNotFound] = "No update folder",
+        [UpdatePrepareResultManifestInvalid] = "Bad manifest data",
+        [UpdatePrepareResultStageMissing] = "No update loader",
+        [UpdatePrepareResultStageIntegrityError] = "Update loader broken",
+        [UpdatePrepareResultManifestPointerCreateError] = "Cannot create\nupdate path file",
+        [UpdatePrepareResultManifestPointerCheckError] = "Bad update path file",
+        [UpdatePrepareResultTargetMismatch] = "HW target mismatch",
+        [UpdatePrepareResultOutdatedManifestVersion] = "Update pkg too old",
+        [UpdatePrepareResultIntFull] = "Low internal storage",
+        [UpdatePrepareResultUnspecifiedError] = "Unknown error",
+    };
+    return (uint32_t)result < COUNT_OF(labels) ? labels[result] : "Unknown error";
+}
+
 void updater_scene_error_callback(GuiButtonType result, InputType type, void* context) {
     furi_assert(context);
     Updater* updater = context;
@@ -31,7 +50,7 @@ void updater_scene_error_on_enter(void* context) {
         AlignCenter,
         AlignCenter,
         FontPrimary,
-        update_operation_describe_preparation_result(updater->preparation_result));
+        updater_preparation_result_label(updater->preparation_result));
 
     view_dispatcher_switch_to_view(updater->view_dispatcher, UpdaterViewWidget);
 }

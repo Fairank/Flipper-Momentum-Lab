@@ -19,12 +19,6 @@ extern const SubGhzProtocol subghz_protocol_faac_slh;
 void* subghz_protocol_encoder_faac_slh_alloc(SubGhzEnvironment* environment);
 
 /**
- * Free SubGhzProtocolEncoderFaacSLH.
- * @param context Pointer to a SubGhzProtocolEncoderFaacSLH instance
- */
-void subghz_protocol_encoder_faac_slh_free(void* context);
-
-/**
  * Deserialize and generating an upload to send.
  * @param context Pointer to a SubGhzProtocolEncoderFaacSLH instance
  * @param flipper_format Pointer to a FlipperFormat instance
@@ -34,17 +28,10 @@ SubGhzProtocolStatus
     subghz_protocol_encoder_faac_slh_deserialize(void* context, FlipperFormat* flipper_format);
 
 /**
- * Forced transmission stop.
+ * Free SubGhzProtocolEncoderFaacSLH.
  * @param context Pointer to a SubGhzProtocolEncoderFaacSLH instance
  */
-void subghz_protocol_encoder_faac_slh_stop(void* context);
-
-/**
- * Getting the level and duration of the upload to be loaded into DMA.
- * @param context Pointer to a SubGhzProtocolEncoderFaacSLH instance
- * @return LevelDuration 
- */
-LevelDuration subghz_protocol_encoder_faac_slh_yield(void* context);
+void subghz_protocol_encoder_faac_slh_free(void* context);
 
 /**
  * Allocate SubGhzProtocolDecoderFaacSLH.
@@ -58,12 +45,6 @@ void* subghz_protocol_decoder_faac_slh_alloc(SubGhzEnvironment* environment);
  * @param context Pointer to a SubGhzProtocolDecoderFaacSLH instance
  */
 void subghz_protocol_decoder_faac_slh_free(void* context);
-
-/**
- * Reset decoder SubGhzProtocolDecoderFaacSLH.
- * @param context Pointer to a SubGhzProtocolDecoderFaacSLH instance
- */
-void subghz_protocol_decoder_faac_slh_reset(void* context);
 
 /**
  * Parse a raw sequence of levels and durations received from the air.

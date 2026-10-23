@@ -53,10 +53,10 @@ void subghz_scene_saved_menu_on_enter(void* context) {
         subghz_scene_saved_menu_submenu_callback,
         subghz,
         !furi_hal_rtc_is_flag_set(FuriHalRtcFlagDebug),
-        "Enable\n"
-        "Settings >\n"
-        "System >\n"
-        "Debug");
+        "Enable\nSettings >\nSystem >\nDebug"
+        ""
+        ""
+        "");
 
     submenu_set_selected_item(
         subghz->submenu,

@@ -7,6 +7,10 @@
 #include <datetime.h>
 #include <nfc/protocols/mf_classic/mf_classic_poller_sync.h>
 #include <flipper_format/flipper_format.h>
+#include "mf_classic_parser_util.h"
+
+#define TAG "Plantain"
+
 #define PLANTAIN_EPOCH_START      1262304000 //2010-01-01
 #define PPK_WHOLE_EPOCH_START     946684800 //2000-01-01
 #define PPK_CURRENT_EPOCH_START   1388534400 //2014-01-01
@@ -16,6 +20,9 @@
 #define FIRST_TICKET_VALUE_BLOCK  104
 #define SECOND_PPK_TICKET_OFFSET  102
 #define SECOND_TICKET_VALUE_BLOCK 108
+
+// the sector whose key B tells the two PPK keysets apart; only a 1K card lacks it
+#define PPK_KEYSET_SECTOR 26
 
 typedef struct {
     uint64_t a;
@@ -173,6 +180,12 @@ typedef struct {
     uint8_t ppk_cnt;
 } PPKData;
 
+typedef enum {
+    PlantainPpkKeysUnknown = 0,
+    PlantainPpkKeysAbsent,
+    PlantainPpkKeysInstalled,
+} PlantainPpkKeys;
+
 typedef struct {
     uint64_t card_number;
     FuriString* card_number_str;
@@ -186,7 +199,7 @@ typedef struct {
     uint32_t last_payment_date_data;
     DateTime last_payment_date;
     uint16_t last_payment_amount;
-    uint8_t keyset;
+    PlantainPpkKeys ppk_keys;
 
 } PlantainData;
 // Function to map UIC codes to station names
@@ -309,6 +322,36 @@ static inline void extract_purse_data(
         datetime_timestamp_to_datetime(last_trip_timestamp, &purse->last_trip_time);
         datetime_timestamp_to_datetime(last_payment_timestamp, &purse->last_payment_date);
 
+    } else if(data->type == MfClassicType2k) {
+        // Plus 2K SL1: purse fields live in the lower sectors, same as when the card was read as 1K.
+        uint32_t balance = 0;
+        for(uint8_t i = 0; i < 4; i++)
+            balance = (balance << 8) | data->block[16].data[3 - i];
+        balance /= 100;
+        purse->balance = balance;
+        purse->trips_metro = data->block[21].data[0];
+        purse->trips_ground = data->block[21].data[1];
+
+        for(uint8_t i = 0; i < 3; i++) {
+            purse->last_trip_data = (purse->last_trip_data << 8) | data->block[21].data[4 - i];
+        }
+        purse->validator = (data->block[20].data[5] << 8) | data->block[20].data[4];
+        uint16_t fare = ((data->block[20].data[7] << 8) | data->block[20].data[6]) / 100;
+        purse->fare = fare;
+
+        for(uint8_t i = 0; i < 3; i++) {
+            purse->last_payment_date_data = (purse->last_payment_date_data << 8) |
+                                            data->block[18].data[4 - i];
+        }
+        purse->last_payment_amount = ((data->block[18].data[10] << 16) |
+                                      (data->block[18].data[9] << 8) | (data->block[18].data[8])) /
+                                     100;
+        uint32_t last_trip_timestamp =
+            PLANTAIN_EPOCH_START + purse->last_trip_data * SECONDS_IN_A_MINUTE;
+        const uint32_t last_payment_timestamp =
+            PLANTAIN_EPOCH_START + purse->last_payment_date_data * SECONDS_IN_A_MINUTE;
+        datetime_timestamp_to_datetime(last_trip_timestamp, &purse->last_trip_time);
+        datetime_timestamp_to_datetime(last_payment_timestamp, &purse->last_payment_date);
     } else if(data->type == MfClassicType4k) {
         uint32_t balance = 0;
         for(uint8_t i = 0; i < 4; i++)
@@ -449,12 +492,10 @@ static void printf_plantain_data(FuriString* parsed_data, PlantainData* purse) {
         purse->last_payment_date.minute,
         purse->last_payment_amount);
 
-    if(purse->keyset == 1)
-        furi_string_cat_printf(parsed_data, "\nPPK keys installed:> YES");
-    else
-        furi_string_cat_printf(parsed_data, "\nPPK keys installed:> NO");
-
-    furi_string_free(purse->card_number_str);
+    const char* ppk_keys = (purse->ppk_keys == PlantainPpkKeysInstalled) ? "YES" :
+                           (purse->ppk_keys == PlantainPpkKeysAbsent)    ? "NO" :
+                                                                           "Unknown";
+    furi_string_cat_printf(parsed_data, "\nPPK keys installed:> %s", ppk_keys);
 }
 
 // Function to format and print PPK ticket data
@@ -559,11 +600,16 @@ static void printf_ppk_data(FuriString* parsed_data, PPKData* ticket, bool ticke
     furi_string_cat_printf(
         parsed_data, "SYS N:> %lld\nPPK CNT:> %03d", ticket->sys_n, ticket->ppk_cnt);
 }
-//Function to select a keyset based on card type
+//Function to select the key table based on card type
 static bool plantain_get_card_config(PlantainCardConfig* config, MfClassicType type) {
     bool success = true;
 
     if(type == MfClassicType1k) {
+        config->data_sector = 8;
+        config->keys = plantain_1k_keys;
+
+    } else if(type == MfClassicType2k) {
+        // Plus 2K SL1: read as the Classic 1K it presents (same lower-sector keys/data sector).
         config->data_sector = 8;
         config->keys = plantain_1k_keys;
 
@@ -664,13 +710,18 @@ static bool plantain_read(Nfc* nfc, NfcDevice* device) {
 
         nfc_device_set_data(device, NfcProtocolMfClassic, data);
 
-        is_read = (error == MfClassicErrorNone);
+        // Accept a partial read only if the data sector the parser needs was actually read;
+        // otherwise report "not handled" so the app runs the nested/dict-attack tail for the rest.
+        is_read = (error == MfClassicErrorNone) ||
+                  (error == MfClassicErrorPartialRead &&
+                   mf_classic_is_sector_read(data, cfg.data_sector));
     } while(false);
 
     mf_classic_free(data);
 
     return is_read;
 }
+
 //Main parsing function
 static bool plantain_parse(const NfcDevice* device, FuriString* parsed_data) {
     furi_assert(device);
@@ -697,10 +748,33 @@ static bool plantain_parse(const NfcDevice* device, FuriString* parsed_data) {
             bit_lib_bytes_to_num_be(sec_tr->key_a.data, COUNT_OF(sec_tr->key_a.data));
         if(key != cfg.keys[cfg.data_sector].a) break;
 
-        if(data->block[107].data[10] == 0x02)
-            purse.keyset = 0;
-        else
-            purse.keyset = 1;
+        // the purse spans sectors 4 and 5, which the sector 8 key check does not cover, and
+        // every field below comes from one of these blocks - a zero one renders as an empty
+        // card that was topped up on 01.01.2010, so decline and let Sectors Read explain
+        static const uint8_t purse_blocks[] = {16, 18, 20, 21};
+        bool purse_read = true;
+        for(size_t i = 0; i < COUNT_OF(purse_blocks); i++) {
+            if(mf_classic_parser_block_has_data(data, purse_blocks[i])) continue;
+            FURI_LOG_D(TAG, "Purse block %u is empty", purse_blocks[i]);
+            purse_read = false;
+            break;
+        }
+        if(!purse_read) break;
+
+        // key B of sector 26 tells the keysets apart: 0x02 leads the legacy key, so no PPK.
+        // a card without that sector cannot carry PPK tickets at all, which is an answer;
+        // having the sector but not its key is not, so that stays Unknown
+        if(mf_classic_get_total_sectors_num(data->type) <= PPK_KEYSET_SECTOR) {
+            purse.ppk_keys = PlantainPpkKeysAbsent;
+        } else {
+            const MfClassicSectorTrailer* ppk_sec_tr =
+                mf_classic_get_sector_trailer_by_sector(data, PPK_KEYSET_SECTOR);
+            if(mf_classic_parser_block_has_data(
+                   data, mf_classic_get_sector_trailer_num_by_sector(PPK_KEYSET_SECTOR))) {
+                purse.ppk_keys = (ppk_sec_tr->key_b.data[0] == 0x02) ? PlantainPpkKeysAbsent :
+                                                                       PlantainPpkKeysInstalled;
+            }
+        }
 
         // Extract plantain purse data and fill PPK tickets markers
         extract_purse_data(

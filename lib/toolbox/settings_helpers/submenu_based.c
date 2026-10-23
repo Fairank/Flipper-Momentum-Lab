@@ -1,5 +1,6 @@
 #include "submenu_based.h"
 #include <archive/helpers/archive_favorites.h>
+#include <locale/locale_ui.h>
 
 struct SubmenuSettingsHelper {
     const SubmenuSettingsHelperDescriptor* descriptor;
@@ -72,7 +73,7 @@ void submenu_settings_helpers_scene_enter(SubmenuSettingsHelper* helper) {
     for(size_t i = 0; i < helper->descriptor->options_cnt; i++) {
         submenu_add_item_ex(
             helper->submenu,
-            helper->descriptor->options[i].name,
+            locale_ui_label(helper->descriptor->options[i].name),
             i,
             submenu_settings_helpers_callback,
             helper);

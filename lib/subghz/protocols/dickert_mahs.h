@@ -19,12 +19,6 @@ extern const SubGhzProtocol subghz_protocol_dickert_mahs;
  */
 void* subghz_protocol_encoder_dickert_mahs_alloc(SubGhzEnvironment* environment);
 
-/** Free SubGhzProtocolEncoderDickertMAHS.
- *
- * @param      context  Pointer to a SubGhzProtocolEncoderDickertMAHS instance
- */
-void subghz_protocol_encoder_dickert_mahs_free(void* context);
-
 /** Deserialize and generating an upload to send.
  *
  * @param      context         Pointer to a SubGhzProtocolEncoderDickertMAHS
@@ -36,20 +30,6 @@ void subghz_protocol_encoder_dickert_mahs_free(void* context);
 SubGhzProtocolStatus
     subghz_protocol_encoder_dickert_mahs_deserialize(void* context, FlipperFormat* flipper_format);
 
-/** Forced transmission stop.
- *
- * @param      context  Pointer to a SubGhzProtocolEncoderDickertMAHS instance
- */
-void subghz_protocol_encoder_dickert_mahs_stop(void* context);
-
-/** Getting the level and duration of the upload to be loaded into DMA.
- *
- * @param      context  Pointer to a SubGhzProtocolEncoderDickertMAHS instance
- *
- * @return     LevelDuration
- */
-LevelDuration subghz_protocol_encoder_dickert_mahs_yield(void* context);
-
 /** Allocate SubGhzProtocolDecoderDickertMAHS.
  *
  * @param      environment  Pointer to a SubGhzEnvironment instance
@@ -57,18 +37,6 @@ LevelDuration subghz_protocol_encoder_dickert_mahs_yield(void* context);
  * @return     pointer to a SubGhzProtocolDecoderDickertMAHS instance
  */
 void* subghz_protocol_decoder_dickert_mahs_alloc(SubGhzEnvironment* environment);
-
-/** Free SubGhzProtocolDecoderDickertMAHS.
- *
- * @param      context  Pointer to a SubGhzProtocolDecoderDickertMAHS instance
- */
-void subghz_protocol_decoder_dickert_mahs_free(void* context);
-
-/** Reset decoder SubGhzProtocolDecoderDickertMAHS.
- *
- * @param      context  Pointer to a SubGhzProtocolDecoderDickertMAHS instance
- */
-void subghz_protocol_decoder_dickert_mahs_reset(void* context);
 
 /** Parse a raw sequence of levels and durations received from the air.
  *

@@ -66,6 +66,7 @@ bool infrared_scene_rpc_on_event(void* context, SceneManagerEvent event) {
                     infrared->scene_manager, InfraredSceneRpc, InfraredRpcStateLoaded);
             } else {
                 FuriString* str = furi_string_alloc();
+                // RPC error text is sent to the companion app, kept in English
                 furi_string_printf(
                     str, "Failed to load\n%s", furi_string_get_cstr(infrared->file_path));
 

@@ -1,4 +1,5 @@
 #include "gap.h"
+#include "ble_scan_parser.h"
 
 #include "app_common.h"
 #include <core/mutex.h>
@@ -42,6 +43,10 @@ typedef struct {
     bool enable_adv;
     bool is_secure;
     uint8_t negotiation_round;
+    GapScanCallback scan_callback;
+    void* scan_context;
+    bool scan_active;
+    bool scan_stopping;
 } Gap;
 
 typedef enum {
@@ -151,6 +156,12 @@ BleEventFlowStatus ble_event_app_notification(void* pckt) {
     case HCI_LE_META_EVT_CODE:
         meta_evt = (evt_le_meta_event*)event_pckt->data;
         switch(meta_evt->subevent) {
+        case HCI_LE_ADVERTISING_REPORT_SUBEVT_CODE:
+            if(gap->scan_callback && event_pckt->plen > 1) {
+                ble_scan_parse_reports(
+                    meta_evt->data, event_pckt->plen - 1, gap->scan_callback, gap->scan_context);
+            }
+            break;
         case HCI_LE_CONNECTION_UPDATE_COMPLETE_SUBEVT_CODE: {
             hci_le_connection_update_complete_event_rp0* event =
                 (hci_le_connection_update_complete_event_rp0*)meta_evt->data;
@@ -208,6 +219,15 @@ BleEventFlowStatus ble_event_app_notification(void* pckt) {
         blue_evt = (evt_blecore_aci*)event_pckt->data;
         switch(blue_evt->ecode) {
             aci_gap_pairing_complete_event_rp0* pairing_complete;
+
+        case ACI_GAP_PROC_COMPLETE_VSEVT_CODE: {
+            const aci_gap_proc_complete_event_rp0* complete = (const void*)blue_evt->data;
+            if(complete->Procedure_Code == GAP_OBSERVATION_PROC) {
+                gap->scan_active = false;
+                gap->scan_stopping = false;
+            }
+            break;
+        }
 
         case ACI_GAP_LIMITED_DISCOVERABLE_VSEVT_CODE:
             FURI_LOG_I(TAG, "Limited discoverable event");
@@ -357,7 +377,8 @@ static void gap_init_svc(Gap* gap, const GapRootSecurityKeys* root_keys) {
     // Skip fist symbol AD_TYPE_COMPLETE_LOCAL_NAME
     char* name = gap->service.adv_name + 1;
     aci_gap_init(
-        GAP_PERIPHERAL_ROLE,
+        GAP_PERIPHERAL_ROLE |
+            (furi_hal_bt_get_radio_stack() == FuriHalBtStackFull ? GAP_OBSERVER_ROLE : 0),
         0,
         strlen(name),
         &gap->service.gap_svc_handle,
@@ -603,6 +624,57 @@ GapState gap_get_state(void) {
         state = GapStateUninitialized;
     }
     return state;
+}
+
+bool gap_scan_start(GapScanCallback callback, void* context) {
+    if(!gap || !gap->state_mutex || !callback || !context) return false;
+    furi_mutex_acquire(gap->state_mutex, FuriWaitForever);
+    bool success = false;
+    if(!gap->scan_active && !gap->scan_stopping) {
+        /* Passive, 60 ms window / 100 ms interval, duplicates enabled so RSSI
+         * continues updating. Retain GAP peripheral role and existing pairing.
+         */
+        success = aci_gap_start_observation_proc(160, 96, 0, CFG_IDENTITY_ADDRESS, 0, 0) ==
+                  BLE_STATUS_SUCCESS;
+        if(success) {
+            gap->scan_callback = callback;
+            gap->scan_context = context;
+            gap->scan_active = true;
+        }
+    } else if(!gap->scan_stopping && gap->scan_context == context) {
+        gap->scan_callback = callback;
+        success = true;
+    }
+    furi_mutex_release(gap->state_mutex);
+    return success;
+}
+
+bool gap_scan_stop(void* context) {
+    if(!gap || !gap->state_mutex) return true;
+    furi_mutex_acquire(gap->state_mutex, FuriWaitForever);
+    bool success = !gap->scan_active;
+    if(gap->scan_context == context) {
+        /* Clearing the callback under the event mutex drains all in-flight
+         * callbacks before the caller may free its queue/context.
+         */
+        gap->scan_callback = NULL;
+        if(gap->scan_active && !gap->scan_stopping) {
+            success = aci_gap_terminate_gap_proc(GAP_OBSERVATION_PROC) == BLE_STATUS_SUCCESS;
+            gap->scan_stopping = success;
+        } else {
+            success = true;
+        }
+    }
+    furi_mutex_release(gap->state_mutex);
+    return success;
+}
+
+bool gap_scan_is_active(void* context) {
+    if(!gap || !gap->state_mutex) return false;
+    furi_mutex_acquire(gap->state_mutex, FuriWaitForever);
+    bool active = gap->scan_active && !gap->scan_stopping && gap->scan_context == context;
+    furi_mutex_release(gap->state_mutex);
+    return active;
 }
 
 void gap_thread_stop(void) {

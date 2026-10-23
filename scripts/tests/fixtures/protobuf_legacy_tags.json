@@ -1,0 +1,370 @@
+{
+  "source": "Next-Flip/flipperzero-protobuf@ea4f185f5eaa265955c520eae2832887ee6aa5e4",
+  "content": [
+    {
+      "type": "Empty",
+      "name": "empty",
+      "tag": 4
+    },
+    {
+      "type": "StopSession",
+      "name": "stop_session",
+      "tag": 19
+    },
+    {
+      "type": ".PB_System.PingRequest",
+      "name": "system_ping_request",
+      "tag": 5
+    },
+    {
+      "type": ".PB_System.PingResponse",
+      "name": "system_ping_response",
+      "tag": 6
+    },
+    {
+      "type": ".PB_System.RebootRequest",
+      "name": "system_reboot_request",
+      "tag": 31
+    },
+    {
+      "type": ".PB_System.DeviceInfoRequest",
+      "name": "system_device_info_request",
+      "tag": 32
+    },
+    {
+      "type": ".PB_System.DeviceInfoResponse",
+      "name": "system_device_info_response",
+      "tag": 33
+    },
+    {
+      "type": ".PB_System.FactoryResetRequest",
+      "name": "system_factory_reset_request",
+      "tag": 34
+    },
+    {
+      "type": ".PB_System.GetDateTimeRequest",
+      "name": "system_get_datetime_request",
+      "tag": 35
+    },
+    {
+      "type": ".PB_System.GetDateTimeResponse",
+      "name": "system_get_datetime_response",
+      "tag": 36
+    },
+    {
+      "type": ".PB_System.SetDateTimeRequest",
+      "name": "system_set_datetime_request",
+      "tag": 37
+    },
+    {
+      "type": ".PB_System.PlayAudiovisualAlertRequest",
+      "name": "system_play_audiovisual_alert_request",
+      "tag": 38
+    },
+    {
+      "type": ".PB_System.ProtobufVersionRequest",
+      "name": "system_protobuf_version_request",
+      "tag": 39
+    },
+    {
+      "type": ".PB_System.ProtobufVersionResponse",
+      "name": "system_protobuf_version_response",
+      "tag": 40
+    },
+    {
+      "type": ".PB_System.UpdateRequest",
+      "name": "system_update_request",
+      "tag": 41
+    },
+    {
+      "type": ".PB_System.UpdateResponse",
+      "name": "system_update_response",
+      "tag": 46
+    },
+    {
+      "type": ".PB_System.PowerInfoRequest",
+      "name": "system_power_info_request",
+      "tag": 44
+    },
+    {
+      "type": ".PB_System.PowerInfoResponse",
+      "name": "system_power_info_response",
+      "tag": 45
+    },
+    {
+      "type": ".PB_Storage.InfoRequest",
+      "name": "storage_info_request",
+      "tag": 28
+    },
+    {
+      "type": ".PB_Storage.InfoResponse",
+      "name": "storage_info_response",
+      "tag": 29
+    },
+    {
+      "type": ".PB_Storage.TimestampRequest",
+      "name": "storage_timestamp_request",
+      "tag": 59
+    },
+    {
+      "type": ".PB_Storage.TimestampResponse",
+      "name": "storage_timestamp_response",
+      "tag": 60
+    },
+    {
+      "type": ".PB_Storage.StatRequest",
+      "name": "storage_stat_request",
+      "tag": 24
+    },
+    {
+      "type": ".PB_Storage.StatResponse",
+      "name": "storage_stat_response",
+      "tag": 25
+    },
+    {
+      "type": ".PB_Storage.ListRequest",
+      "name": "storage_list_request",
+      "tag": 7
+    },
+    {
+      "type": ".PB_Storage.ListResponse",
+      "name": "storage_list_response",
+      "tag": 8
+    },
+    {
+      "type": ".PB_Storage.ReadRequest",
+      "name": "storage_read_request",
+      "tag": 9
+    },
+    {
+      "type": ".PB_Storage.ReadResponse",
+      "name": "storage_read_response",
+      "tag": 10
+    },
+    {
+      "type": ".PB_Storage.WriteRequest",
+      "name": "storage_write_request",
+      "tag": 11
+    },
+    {
+      "type": ".PB_Storage.DeleteRequest",
+      "name": "storage_delete_request",
+      "tag": 12
+    },
+    {
+      "type": ".PB_Storage.MkdirRequest",
+      "name": "storage_mkdir_request",
+      "tag": 13
+    },
+    {
+      "type": ".PB_Storage.Md5sumRequest",
+      "name": "storage_md5sum_request",
+      "tag": 14
+    },
+    {
+      "type": ".PB_Storage.Md5sumResponse",
+      "name": "storage_md5sum_response",
+      "tag": 15
+    },
+    {
+      "type": ".PB_Storage.RenameRequest",
+      "name": "storage_rename_request",
+      "tag": 30
+    },
+    {
+      "type": ".PB_Storage.BackupCreateRequest",
+      "name": "storage_backup_create_request",
+      "tag": 42
+    },
+    {
+      "type": ".PB_Storage.BackupRestoreRequest",
+      "name": "storage_backup_restore_request",
+      "tag": 43
+    },
+    {
+      "type": ".PB_Storage.TarExtractRequest",
+      "name": "storage_tar_extract_request",
+      "tag": 71
+    },
+    {
+      "type": ".PB_App.StartRequest",
+      "name": "app_start_request",
+      "tag": 16
+    },
+    {
+      "type": ".PB_App.LockStatusRequest",
+      "name": "app_lock_status_request",
+      "tag": 17
+    },
+    {
+      "type": ".PB_App.LockStatusResponse",
+      "name": "app_lock_status_response",
+      "tag": 18
+    },
+    {
+      "type": ".PB_App.AppExitRequest",
+      "name": "app_exit_request",
+      "tag": 47
+    },
+    {
+      "type": ".PB_App.AppLoadFileRequest",
+      "name": "app_load_file_request",
+      "tag": 48
+    },
+    {
+      "type": ".PB_App.AppButtonPressRequest",
+      "name": "app_button_press_request",
+      "tag": 49
+    },
+    {
+      "type": ".PB_App.AppButtonReleaseRequest",
+      "name": "app_button_release_request",
+      "tag": 50
+    },
+    {
+      "type": ".PB_App.AppButtonPressReleaseRequest",
+      "name": "app_button_press_release_request",
+      "tag": 75
+    },
+    {
+      "type": ".PB_App.GetErrorRequest",
+      "name": "app_get_error_request",
+      "tag": 63
+    },
+    {
+      "type": ".PB_App.GetErrorResponse",
+      "name": "app_get_error_response",
+      "tag": 64
+    },
+    {
+      "type": ".PB_App.DataExchangeRequest",
+      "name": "app_data_exchange_request",
+      "tag": 65
+    },
+    {
+      "type": ".PB_Gui.StartScreenStreamRequest",
+      "name": "gui_start_screen_stream_request",
+      "tag": 20
+    },
+    {
+      "type": ".PB_Gui.StopScreenStreamRequest",
+      "name": "gui_stop_screen_stream_request",
+      "tag": 21
+    },
+    {
+      "type": ".PB_Gui.ScreenFrame",
+      "name": "gui_screen_frame",
+      "tag": 22
+    },
+    {
+      "type": ".PB_Gui.SendInputEventRequest",
+      "name": "gui_send_input_event_request",
+      "tag": 23
+    },
+    {
+      "type": ".PB_Gui.SendAsciiEventRequest",
+      "name": "gui_send_ascii_event_request",
+      "tag": 100
+    },
+    {
+      "type": ".PB_Gui.StartVirtualDisplayRequest",
+      "name": "gui_start_virtual_display_request",
+      "tag": 26
+    },
+    {
+      "type": ".PB_Gui.StopVirtualDisplayRequest",
+      "name": "gui_stop_virtual_display_request",
+      "tag": 27
+    },
+    {
+      "type": ".PB_Gpio.SetPinMode",
+      "name": "gpio_set_pin_mode",
+      "tag": 51
+    },
+    {
+      "type": ".PB_Gpio.SetInputPull",
+      "name": "gpio_set_input_pull",
+      "tag": 52
+    },
+    {
+      "type": ".PB_Gpio.GetPinMode",
+      "name": "gpio_get_pin_mode",
+      "tag": 53
+    },
+    {
+      "type": ".PB_Gpio.GetPinModeResponse",
+      "name": "gpio_get_pin_mode_response",
+      "tag": 54
+    },
+    {
+      "type": ".PB_Gpio.ReadPin",
+      "name": "gpio_read_pin",
+      "tag": 55
+    },
+    {
+      "type": ".PB_Gpio.ReadPinResponse",
+      "name": "gpio_read_pin_response",
+      "tag": 56
+    },
+    {
+      "type": ".PB_Gpio.WritePin",
+      "name": "gpio_write_pin",
+      "tag": 57
+    },
+    {
+      "type": ".PB_Gpio.GetOtgMode",
+      "name": "gpio_get_otg_mode",
+      "tag": 72
+    },
+    {
+      "type": ".PB_Gpio.GetOtgModeResponse",
+      "name": "gpio_get_otg_mode_response",
+      "tag": 73
+    },
+    {
+      "type": ".PB_Gpio.SetOtgMode",
+      "name": "gpio_set_otg_mode",
+      "tag": 74
+    },
+    {
+      "type": ".PB_App.AppStateResponse",
+      "name": "app_state_response",
+      "tag": 58
+    },
+    {
+      "type": ".PB_Property.GetRequest",
+      "name": "property_get_request",
+      "tag": 61
+    },
+    {
+      "type": ".PB_Property.GetResponse",
+      "name": "property_get_response",
+      "tag": 62
+    },
+    {
+      "type": ".PB_Desktop.IsLockedRequest",
+      "name": "desktop_is_locked_request",
+      "tag": 66
+    },
+    {
+      "type": ".PB_Desktop.UnlockRequest",
+      "name": "desktop_unlock_request",
+      "tag": 67
+    },
+    {
+      "type": ".PB_Desktop.StatusSubscribeRequest",
+      "name": "desktop_status_subscribe_request",
+      "tag": 68
+    },
+    {
+      "type": ".PB_Desktop.StatusUnsubscribeRequest",
+      "name": "desktop_status_unsubscribe_request",
+      "tag": 69
+    },
+    {
+      "type": ".PB_Desktop.Status",
+      "name": "desktop_status",
+      "tag": 70
+    }
+  ]
+}

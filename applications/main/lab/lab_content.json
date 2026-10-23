@@ -1,0 +1,177 @@
+{
+  "schema_version": 1,
+  "notes": "Short on-device help text in English (ASCII only). After editing, run python scripts/generate_lab_font.py to regenerate lab_content.h and lab_font.h. Keep every menu label, title, footer and page line within 19 characters and every page within 3 lines; do not use a slash in menu labels or page lines. The generator checks pixel width and vertical bounds against the actual glyphs, and layout.max_wide_chars still caps non-ASCII characters per line. launch must name a MENUEXTERNAL/SETTINGS app in applications/main or applications/settings, or the Apps browser declared in loader.h.",
+  "layout": {
+    "text_x": 2,
+    "text_max_width": 120,
+    "list_width": 124,
+    "indicator_right": 126,
+    "indicator_gap": 4,
+    "title_baseline": 11,
+    "rows_top": 14,
+    "row_height": 12,
+    "row_baseline": 10,
+    "rows": 3,
+    "footer_baseline": 62,
+    "max_wide_chars": 10
+  },
+  "ui": {
+    "menu_title": "Feature Guide",
+    "menu_footer": "Up/Dn pick, OK open",
+    "detail_footer": "L/R page, Back list",
+    "detail_footer_launch": "L/R page, OK app",
+    "indicator": "{index}/{count}"
+  },
+  "topics": [
+    {
+      "id": "about",
+      "menu": "How to Use",
+      "title": "How to Use",
+      "launch": null,
+      "pages": [
+        ["A short guide to", "using each feature", "No signal in or out"],
+        ["Topic: Up, Down, OK", "Page: Left or Right", "Back: up one level"],
+        ["On a topic page, OK", "opens its app", "Flipper UI: English"],
+        ["Phone app: Chinese", "Added features kept", "Device test pending"]
+      ]
+    },
+    {
+      "id": "bluetooth",
+      "menu": "Bluetooth Link",
+      "title": "Bluetooth Link",
+      "launch": "Bluetooth",
+      "pages": [
+        ["Phone app connects", "over Bluetooth for", "files and status"],
+        ["1. Bluetooth on", "Settings: Bluetooth", "Set Bluetooth to ON"],
+        ["2. Phone permission", "iPhone Bluetooth on", "Allow app to use it"],
+        ["3. Pair on phone", "6 digits on Flipper", "Enter or confirm"],
+        ["4. Open the app", "Open companion app", "Choose this Flipper"],
+        ["No link? Pair again", "Flipper: unpair all", "iPhone: forget it"],
+        ["Just a data channel", "What works depends", "on app and firmware"]
+      ]
+    },
+    {
+      "id": "remote_apps",
+      "menu": "Phone Remote",
+      "title": "Phone Remote",
+      "launch": "Apps",
+      "pages": [
+        ["Official phone app:", "open Remote Control", "to view this screen"],
+        ["Phone arrows and OK", "work like the keys", "Back: return, exit"],
+        ["OK here opens Apps", "Browse SD folders", "Pick an app to open"],
+        ["Private apps may not", "appear in the phone", "app catalog"],
+        ["Wrong API: remote", "start is refused", "Use a matching FAP"],
+        ["Apps that change BT", "may stop the link", "Board tests pending"]
+      ]
+    },
+    {
+      "id": "infrared",
+      "menu": "Infrared Remote",
+      "title": "Infrared Remote",
+      "launch": "Infrared",
+      "pages": [
+        ["Learn remote keys", "Save, send anytime", "One remote for all"],
+        ["Step 1: Learn", "Learn New Remote", "Aim remote at top"],
+        ["Press a remote key", "Then name and save", "Repeat for each key"],
+        ["Step 2: Use", "Open Saved Remotes", "Pick a key to send"],
+        ["Universal Remotes:", "pick a device type", "Tries codes in turn"],
+        ["Flipper: TX and RX", "Phone: file import,", "pulse stats, labels"],
+        ["Only for IR devices", "Not Bluetooth or RF", "Unknown: saved RAW"]
+      ]
+    },
+    {
+      "id": "subghz",
+      "menu": "Sub-GHz Radio",
+      "title": "Sub-GHz Radio",
+      "launch": "Sub-GHz",
+      "pages": [
+        ["Send and receive", "sub-1 GHz remotes:", "doorbells, outlets"],
+        ["Default bands:", "300-348 387-464", "779-928 MHz"],
+        ["Read: decode signal", "Read RAW: waveform", "Saved: view records"],
+        ["Frequency Analyzer:", "find the frequency,", "then use Read"],
+        ["Flipper: TX and RX", "Phone: file import,", "timing stats, diffs"],
+        ["Rolling: no replay", "Cannot decrypt data", "Own devices only"],
+        ["TX is limited by", "local law and bands", "Check the law first"]
+      ]
+    },
+    {
+      "id": "nfc",
+      "menu": "NFC Cards",
+      "title": "NFC Cards",
+      "launch": "NFC",
+      "pages": [
+        ["Read 13.56MHz cards", "door and bus cards", "Save, emulate some"],
+        ["Step 1: choose Read", "Hold card to back", "Save when prompted"],
+        ["Step 2: open Saved", "Pick card, Emulate", "Hold back to reader"],
+        ["Saved auth samples:", "phone checks keys", "offline, not live"],
+        ["Sectors need keys", "Bank cards: no copy", "Some: UID only"],
+        ["NFC and 125kHz use", "different hardware", "Know your card type"]
+      ]
+    },
+    {
+      "id": "lfrfid",
+      "menu": "125kHz RFID",
+      "title": "125kHz RFID",
+      "launch": "125 kHz RFID",
+      "pages": [
+        ["Read, save LF cards", "like EM4100 and HID", "Emulate or write"],
+        ["Step 1: choose Read", "Hold card to back", "Wait for card ID"],
+        ["Step 2: open Saved", "Emulate: mimic card", "Write: onto a blank"],
+        ["125kHz LF only", "Encrypted: no copy", "Blanks: e.g. T5577"],
+        ["Flipper: read-write", "Phone: file import,", "labels, comparison"]
+      ]
+    },
+    {
+      "id": "ibutton",
+      "menu": "iButton Keys",
+      "title": "iButton Keys",
+      "launch": "iButton",
+      "pages": [
+        ["Read, save contact", "keys like DS1990", "Emulate or write"],
+        ["Step 1: choose Read", "Touch key to back", "iButton contacts"],
+        ["Step 2: open Saved", "Emulate: mimic key", "Write ID: to blanks"],
+        ["Make good contact", "Supports Dallas etc", "Use matching blanks"],
+        ["Flipper: read-write", "Phone: file import,", "labels, comparison"]
+      ]
+    },
+    {
+      "id": "gpio",
+      "menu": "GPIO Serial",
+      "title": "GPIO Serial",
+      "launch": "GPIO",
+      "pages": [
+        ["USB-UART Bridge:", "PC uses Flipper to", "reach a board UART"],
+        ["Default pins 13, 14", "13 is TX, 14 is RX", "Cross TX and RX"],
+        ["Connect GND to GND", "Use 3.3V logic", "5V: level shifter"],
+        ["Run USB-UART Bridge", "Baud same as board", "PC: serial terminal"],
+        ["Lab Bridge: live", "board data to phone", "Check port and baud"],
+        ["AIO Board 1.4:", "chip, firmware and", "link are unverified"]
+      ]
+    },
+    {
+      "id": "files",
+      "menu": "File Management",
+      "title": "File Management",
+      "launch": null,
+      "pages": [
+        ["Records save to SD", "One folder per app", "like infrared, nfc"],
+        ["Desktop: press Down", "to open the Archive", "unless remapped"],
+        ["Copy files by PC:", "qFlipper, SD reader", "or by the phone app"],
+        ["BT: big files slow", "Short file names", "Back up, then edit"]
+      ]
+    },
+    {
+      "id": "phone",
+      "menu": "Phone Companion",
+      "title": "Phone Companion",
+      "launch": null,
+      "pages": [
+        ["Phone: heavy math", "Flipper: hardware", "and live TX and RX"],
+        ["App code available", "Install needs a Mac", "Bluetooth: untested"],
+        ["Files, record stats", "Classic keys, UART", "GPS+proxy: app open"],
+        ["No wider RF bands", "or longer TX range", "May not ID unknowns"],
+        ["If Bluetooth drops,", "Flipper works alone", "Press Back to stop"]
+      ]
+    }
+  ]
+}

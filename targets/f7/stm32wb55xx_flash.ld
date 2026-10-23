@@ -6,11 +6,14 @@ _stack_end = 0x20030000;    /* end of RAM */
 _stack_size = 0x400; /* required amount of stack */
 
 MEMORY {
-    FLASH (rx)  : ORIGIN = 0x08000000, LENGTH = 1024K
+    FLASH (rx)  : ORIGIN = 0x08000000, LENGTH = __radio_start__ - 0x08000000
     RAM1  (xrw) : ORIGIN = 0x20000008, LENGTH = 0x2FFF8
     RAM2A (xrw) : ORIGIN = 0x20030000, LENGTH = 10K
     RAM2B (xrw) : ORIGIN = 0x20038000, LENGTH = 10K
 }
+
+ASSERT(DEFINED(Reset_Handler), "Missing firmware reset entry");
+ASSERT(SIZEOF(.isr_vector) >= 64, "Missing firmware interrupt vectors");
 
 SECTIONS {
     /* The startup code goes first into FLASH */

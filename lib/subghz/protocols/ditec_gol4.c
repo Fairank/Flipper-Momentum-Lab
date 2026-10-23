@@ -4,6 +4,7 @@
 #include "../blocks/encoder.h"
 #include "../blocks/generic.h"
 #include "../blocks/math.h"
+#include "common.h"
 
 #include "../blocks/custom_btn_i.h"
 
@@ -24,6 +25,7 @@ struct SubGhzProtocolDecoderDitecGOL4 {
     SubGhzBlockDecoder decoder;
     SubGhzBlockGeneric generic;
 };
+SUBGHZ_ASSERT_DECODER_COMMON_LAYOUT(SubGhzProtocolDecoderDitecGOL4);
 
 struct SubGhzProtocolEncoderDitecGOL4 {
     SubGhzProtocolEncoderBase base;
@@ -31,6 +33,7 @@ struct SubGhzProtocolEncoderDitecGOL4 {
     SubGhzProtocolBlockEncoder encoder;
     SubGhzBlockGeneric generic;
 };
+SUBGHZ_ASSERT_ENCODER_GENERIC_LAYOUT(SubGhzProtocolEncoderDitecGOL4);
 
 typedef enum {
     DitecGOL4DecoderStepReset = 0,
@@ -41,10 +44,10 @@ typedef enum {
 
 const SubGhzProtocolDecoder subghz_protocol_ditec_gol4_decoder = {
     .alloc = subghz_protocol_decoder_ditec_gol4_alloc,
-    .free = subghz_protocol_decoder_ditec_gol4_free,
+    .free = subghz_protocol_decoder_common_free,
 
     .feed = subghz_protocol_decoder_ditec_gol4_feed,
-    .reset = subghz_protocol_decoder_ditec_gol4_reset,
+    .reset = subghz_protocol_decoder_common_reset,
 
     .get_hash_data = NULL,
     .get_hash_data_long = subghz_protocol_decoder_ditec_gol4_get_hash_data,
@@ -56,11 +59,11 @@ const SubGhzProtocolDecoder subghz_protocol_ditec_gol4_decoder = {
 
 const SubGhzProtocolEncoder subghz_protocol_ditec_gol4_encoder = {
     .alloc = subghz_protocol_encoder_ditec_gol4_alloc,
-    .free = subghz_protocol_encoder_ditec_gol4_free,
+    .free = subghz_protocol_encoder_common_free,
 
     .deserialize = subghz_protocol_encoder_ditec_gol4_deserialize,
-    .stop = subghz_protocol_encoder_ditec_gol4_stop,
-    .yield = subghz_protocol_encoder_ditec_gol4_yield,
+    .stop = subghz_protocol_encoder_common_stop,
+    .yield = subghz_protocol_encoder_common_yield,
 };
 
 const SubGhzProtocol subghz_protocol_ditec_gol4 = {
@@ -242,23 +245,8 @@ static uint32_t serial_to_display(const uint8_t* s) {
 
 void* subghz_protocol_encoder_ditec_gol4_alloc(SubGhzEnvironment* environment) {
     UNUSED(environment);
-    SubGhzProtocolEncoderDitecGOL4* instance = malloc(sizeof(SubGhzProtocolEncoderDitecGOL4));
-
-    instance->base.protocol = &subghz_protocol_ditec_gol4;
-    instance->generic.protocol_name = instance->base.protocol->name;
-
-    instance->encoder.repeat = 4;
-    instance->encoder.size_upload = 128; // 110 actual
-    instance->encoder.upload = malloc(instance->encoder.size_upload * sizeof(LevelDuration));
-    instance->encoder.is_running = false;
-    return instance;
-}
-
-void subghz_protocol_encoder_ditec_gol4_free(void* context) {
-    furi_assert(context);
-    SubGhzProtocolEncoderDitecGOL4* instance = context;
-    free(instance->encoder.upload);
-    free(instance);
+    return subghz_protocol_encoder_common_alloc(
+        sizeof(SubGhzProtocolEncoderDitecGOL4), &subghz_protocol_ditec_gol4, 4, 128); // 110 actual
 }
 
 /**
@@ -353,9 +341,6 @@ static void subghz_protocol_ditec_gol4_decode_key(SubGhzBlockGeneric* instance) 
 static void subghz_protocol_ditec_gol4_encode_key(SubGhzBlockGeneric* instance) {
     // Encoder crypto part:
     //
-    // TODO: Current issue - last bit at original remote sometimes 0 but we encode as 1, or vice versa.
-    // This does not affect decoding but may have issue on real receiver
-    //
     uint8_t decrypted[GOL4_RAW_BYTES];
 
     // Save original button for later use
@@ -366,8 +351,9 @@ static void subghz_protocol_ditec_gol4_encode_key(SubGhzBlockGeneric* instance) 
     instance->btn = subghz_protocol_ditec_gol4_get_btn_code();
 
     // override button if we change it with signal settings button editor
-    if(subghz_block_generic_global_button_override_get(&instance->btn))
+    if(subghz_block_generic_global_button_override_get(&instance->btn)) {
         FURI_LOG_D(TAG, "Button sucessfully changed to 0x%X", instance->btn);
+    }
 
     // Check for OFEX (overflow experimental) mode
     if(furi_hal_subghz_get_rolling_counter_mult() != -0x7FFFFFFF) {
@@ -447,47 +433,10 @@ SubGhzProtocolStatus
     return ret;
 }
 
-void subghz_protocol_encoder_ditec_gol4_stop(void* context) {
-    SubGhzProtocolEncoderDitecGOL4* instance = context;
-    instance->encoder.is_running = false;
-}
-
-LevelDuration subghz_protocol_encoder_ditec_gol4_yield(void* context) {
-    SubGhzProtocolEncoderDitecGOL4* instance = context;
-
-    if(instance->encoder.repeat == 0 || !instance->encoder.is_running) {
-        instance->encoder.is_running = false;
-        return level_duration_reset();
-    }
-
-    LevelDuration ret = instance->encoder.upload[instance->encoder.front];
-
-    if(++instance->encoder.front == instance->encoder.size_upload) {
-        if(!subghz_block_generic_global.endless_tx) instance->encoder.repeat--;
-        instance->encoder.front = 0;
-    }
-
-    return ret;
-}
-
 void* subghz_protocol_decoder_ditec_gol4_alloc(SubGhzEnvironment* environment) {
     UNUSED(environment);
-    SubGhzProtocolDecoderDitecGOL4* instance = malloc(sizeof(SubGhzProtocolDecoderDitecGOL4));
-    instance->base.protocol = &subghz_protocol_ditec_gol4;
-    instance->generic.protocol_name = instance->base.protocol->name;
-    return instance;
-}
-
-void subghz_protocol_decoder_ditec_gol4_free(void* context) {
-    furi_assert(context);
-    SubGhzProtocolDecoderDitecGOL4* instance = context;
-    free(instance);
-}
-
-void subghz_protocol_decoder_ditec_gol4_reset(void* context) {
-    furi_assert(context);
-    SubGhzProtocolDecoderDitecGOL4* instance = context;
-    instance->decoder.parser_step = DitecGOL4DecoderStepReset;
+    return subghz_protocol_decoder_common_alloc(
+        sizeof(SubGhzProtocolDecoderDitecGOL4), &subghz_protocol_ditec_gol4);
 }
 
 void subghz_protocol_decoder_ditec_gol4_feed(void* context, bool level, uint32_t duration) {

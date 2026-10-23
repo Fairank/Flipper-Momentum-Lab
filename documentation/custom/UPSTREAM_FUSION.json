@@ -1,0 +1,2945 @@
+{
+  "recorded_at": "2026-09-29",
+  "baseline": "c1ead037bff4c89a1d57a5f9cece433a7c075fb8",
+  "momentum": "d3f89dfe2ef6b01839201598e9be1590cba80322",
+  "unleashed": "15bca58e644c8e75fcac42a1929b3d37cbea208f",
+  "common_ancestor": "78cbcab365895e9efc5304253d7feb7e472500ec",
+  "integration": "reviewed source adaptations; not a wholesale Git merge or a claim of complete feature parity",
+  "api_version": "89.0",
+  "protobuf_version": "0.29 with Momentum ASCII overlay",
+  "hardware_validated": false,
+  "file_hashes": "SHA-256 after normalizing CRLF to LF for cross-platform review",
+  "claude_tasks": [
+    {
+      "name": "opus-number-input-20260929",
+      "requested_model": "claude-opus-5-5",
+      "requested_effort": "max",
+      "returned_models": [
+        "claude-opus-5-5"
+      ],
+      "exit_code": 0
+    },
+    {
+      "name": "opus-loading-label-20260929",
+      "requested_model": "claude-opus-5-5",
+      "requested_effort": "max",
+      "returned_models": [
+        "claude-opus-5-5"
+      ],
+      "exit_code": 0
+    },
+    {
+      "name": "fable-loading-compat-20260929",
+      "requested_model": "claude-fable-5-1",
+      "requested_effort": "max",
+      "returned_models": [
+        "claude-fable-5-1"
+      ],
+      "exit_code": 0
+    },
+    {
+      "name": "fable-fusion-inventory-20260929",
+      "requested_model": "claude-fable-5-1",
+      "requested_effort": "max",
+      "returned_models": [
+        "claude-fable-5-1"
+      ],
+      "exit_code": 0
+    },
+    {
+      "name": "fable-menu-styles-20260929",
+      "requested_model": "claude-fable-5-1",
+      "requested_effort": "max",
+      "returned_models": [
+        "claude-fable-5-1"
+      ],
+      "exit_code": 0
+    },
+    {
+      "name": "fable-native-translation-20260929",
+      "requested_model": "claude-fable-5-1",
+      "requested_effort": "max",
+      "returned_models": [
+        "<synthetic>",
+        "claude-fable-5-1"
+      ],
+      "exit_code": 1
+    },
+    {
+      "name": "fable-loader-test-20260929",
+      "requested_model": "claude-fable-5-1",
+      "requested_effort": "max",
+      "returned_models": [
+        "claude-fable-5-1"
+      ],
+      "exit_code": 0
+    }
+  ],
+  "files": [
+    {
+      "path": ".gitmodules",
+      "status": "modified-or-added",
+      "sha256": "014e30027ba9d0eebdba420f3823a16a3696ce4ea3a2c018a6976b1ec5aea2e7"
+    },
+    {
+      "path": "applications/debug/unit_tests/resources/unit_tests/nfc/Felica_Standard_v2.nfc",
+      "status": "modified-or-added",
+      "sha256": "6adc6e191d5537627e41a0a528e4bfd0b1c5dccded2c849cb49a515f61e7c3c8"
+    },
+    {
+      "path": "applications/debug/unit_tests/resources/unit_tests/nfc/Felica_Standard_with_keys.nfc",
+      "status": "modified-or-added",
+      "sha256": "fd867eee497be2cfd1ce50c60f2bf64368a84df66ed51e6a4b82f8a6d5e10f70"
+    },
+    {
+      "path": "applications/debug/unit_tests/resources/unit_tests/nfc/Felica_oversized_lite.nfc",
+      "status": "modified-or-added",
+      "sha256": "59fa6c6813072637835e65b2f1fe451ac9127e17684e285c546b4bc6230da3e5"
+    },
+    {
+      "path": "applications/debug/unit_tests/resources/unit_tests/subghz/elplast.sub",
+      "status": "modified-or-added",
+      "sha256": "348d6e3ba9c6497f5d9ab335fe8d35fe225e460e241c08bc5b130c8da3ed80b9"
+    },
+    {
+      "path": "applications/debug/unit_tests/resources/unit_tests/subghz/elplast_raw.sub",
+      "status": "modified-or-added",
+      "sha256": "3b94eadc480644045d7171b51f63e518ee50576333e546cb33861be703906e3f"
+    },
+    {
+      "path": "applications/debug/unit_tests/resources/unit_tests/subghz/telcoma_edge_ch_raw.sub",
+      "status": "modified-or-added",
+      "sha256": "8789914dc089a28eee10a7a9a90272f87e7990239b6d1c93b774797df4019f79"
+    },
+    {
+      "path": "applications/debug/unit_tests/resources/unit_tests/subghz/telcoma_edge_raw.sub",
+      "status": "modified-or-added",
+      "sha256": "7db856db31206252ec2346d4cf6cc99a35f02ed3edd3a6e627620d8aa0e20feb"
+    },
+    {
+      "path": "applications/debug/unit_tests/tests/args/args_test.c",
+      "status": "modified-or-added",
+      "sha256": "30c33a1e10fb0f63115a36087f3dc348008246a148c59e09ab1df58fac000f37"
+    },
+    {
+      "path": "applications/debug/unit_tests/tests/lfrfid/lfrfid_protocols.c",
+      "status": "modified-or-added",
+      "sha256": "926d96668f82006f513d9c6ec327007a8d542a089c61a2bc2fcf44cd5667fb47"
+    },
+    {
+      "path": "applications/debug/unit_tests/tests/nfc/nfc_test.c",
+      "status": "modified-or-added",
+      "sha256": "422e2fedc82c7394381ca5491704f5081c1fb5d2bf2136ba81d4dabfecfb60a7"
+    },
+    {
+      "path": "applications/debug/unit_tests/tests/subghz/subghz_test.c",
+      "status": "modified-or-added",
+      "sha256": "ec53d46c4e26f52bbf4bc6b927e4e33020e35fe63c639672170e59803816b648"
+    },
+    {
+      "path": "applications/debug/unit_tests/unit_test_api_table_i.h",
+      "status": "modified-or-added",
+      "sha256": "740a71ba8bcbff055ac4c413ce59d526850f597dc5a0713a6af73439f9db65a9"
+    },
+    {
+      "path": "applications/drivers/subghz/cc1101_ext/cc1101_ext.c",
+      "status": "modified-or-added",
+      "sha256": "5e869e189007087523c6eaf43914724fec9b68103ed8800f87fcdd88b9e7cf35"
+    },
+    {
+      "path": "applications/examples/example_canvas_buffer/application.fam",
+      "status": "modified-or-added",
+      "sha256": "0af79456df6c45fb29a2f8b67131a01650c178caca12dbd19ad3a40978e026c1"
+    },
+    {
+      "path": "applications/examples/example_canvas_buffer/cube_10px.png",
+      "status": "modified-or-added",
+      "sha256": "39921c645bad1bdadf4db9256768bf0f17745225cbf3cb0c6f630b1f3c1c34b3"
+    },
+    {
+      "path": "applications/examples/example_canvas_buffer/display.c",
+      "status": "modified-or-added",
+      "sha256": "95074ab930896c9cee254f7a807d1c5af44cca611e1ecc5b97f784358487cec1"
+    },
+    {
+      "path": "applications/examples/example_gps/application.fam",
+      "status": "modified-or-added",
+      "sha256": "216a78bf6ad11754ac3670f13d56452e170765d9538a66d953f2c071c1e8a5fb"
+    },
+    {
+      "path": "applications/examples/example_gps/gps_10px.png",
+      "status": "modified-or-added",
+      "sha256": "1019be94c8f821f64ff435bb4c959c89890e4735a367d26fed682733d3b4460b"
+    },
+    {
+      "path": "applications/examples/example_gps/gps_click.c",
+      "status": "modified-or-added",
+      "sha256": "cd58f9376a5169b126c9f620ec271350b5bd299f8ae74c0361c0b988eabd23d7"
+    },
+    {
+      "path": "applications/examples/example_gps/gps_stream.c",
+      "status": "modified-or-added",
+      "sha256": "0ab50aa105b127e93e018d307e0ae3d6febecc46259838fe9ead333d2679f795"
+    },
+    {
+      "path": "applications/examples/example_network/application.fam",
+      "status": "modified-or-added",
+      "sha256": "a23cd3e2c0e0a5dd51cc571f90840b951e5daad46be8f52942bc203768d394b0"
+    },
+    {
+      "path": "applications/examples/example_network/bad_apple.c",
+      "status": "modified-or-added",
+      "sha256": "89d6aaffe6f0481f1b0a8049ae99f0d9a4c417a262e954dbd96167d71b1c1c95"
+    },
+    {
+      "path": "applications/examples/example_network/bad_apple_save.c",
+      "status": "modified-or-added",
+      "sha256": "16af855a9a43c65c7a0f8ddc2f68dd8544d9b351714f9b6b2e504dd439dbc473"
+    },
+    {
+      "path": "applications/examples/example_network/network.c",
+      "status": "modified-or-added",
+      "sha256": "bc8eefdecdd761a0dedf03451154b53ea37c1c17a15ed32bb68434a3e27defd2"
+    },
+    {
+      "path": "applications/examples/example_network/network_10px.png",
+      "status": "modified-or-added",
+      "sha256": "f5d7fceaf1f0573d2540fa6416d5832307fdfc055129cf43886773be76c2f026"
+    },
+    {
+      "path": "applications/examples/example_network/ping.c",
+      "status": "modified-or-added",
+      "sha256": "82830314e162bb8029024989eb53b2bb48dce545ac8c4d8ee44c593d2fa5723a"
+    },
+    {
+      "path": "applications/examples/example_network/websocket.c",
+      "status": "modified-or-added",
+      "sha256": "99d3384ea8d1c1529827af085b132d60473744b99324fc986e8fe6d5d63754e7"
+    },
+    {
+      "path": "applications/main/archive/archive.c",
+      "status": "modified-or-added",
+      "sha256": "fce81cf5588df0aeec08ba5066c61d22968c2cb3a5e371526df8ac85d7a2ad1c"
+    },
+    {
+      "path": "applications/main/archive/scenes/archive_scene_browser.c",
+      "status": "modified-or-added",
+      "sha256": "233b00a3040a068a56595fcc1a2abddeeb9dfc696f0ee24a9c487d240b6b6791"
+    },
+    {
+      "path": "applications/main/ibutton/application.fam",
+      "status": "modified-or-added",
+      "sha256": "aadbac24178ffdc230caf7474fd8a385f0ad823226e1f275741fb6b2d124ea7e"
+    },
+    {
+      "path": "applications/main/ibutton/ibutton.c",
+      "status": "modified-or-added",
+      "sha256": "fecfe364cf52ae59707e16a9013ddfcfa40b26bf04efe68e7bd10d523bafd156"
+    },
+    {
+      "path": "applications/main/ibutton/ibutton_cli.c",
+      "status": "modified-or-added",
+      "sha256": "c7be6f18b4ed8eca75dfe9d21b3c7c3970d991dcacb1d57b1e86af1254581c96"
+    },
+    {
+      "path": "applications/main/ibutton/ibutton_custom_event.h",
+      "status": "modified-or-added",
+      "sha256": "34a408c43fd1ed6aa29f096fd1d8abf5197f1e5814b29de409c4e68886f9e76f"
+    },
+    {
+      "path": "applications/main/ibutton/ibutton_i.h",
+      "status": "modified-or-added",
+      "sha256": "a0e54484eb882627bff2fe1c0ca2a2a90ca64dfd4523c76af5b6c94ecfbf4a41"
+    },
+    {
+      "path": "applications/main/ibutton/plugins/settings/ibutton_settings_plugin.h",
+      "status": "modified-or-added",
+      "sha256": "c87a46377892ed902b988e6aa52f27bb7a693b59cc58c967f090e0fae74e8dbb"
+    },
+    {
+      "path": "applications/main/ibutton/plugins/settings/ibutton_settings_write_targets.c",
+      "status": "modified-or-added",
+      "sha256": "24d69bb0f4b0df830e1a080c4d2cef8d59992e6b2a1905c8f88cf2578e82bcaa"
+    },
+    {
+      "path": "applications/main/ibutton/scenes/ibutton_scene_config.h",
+      "status": "modified-or-added",
+      "sha256": "72aab3b657f72083f673967ab287b6d5982c8a0437154530e746e86e9c77e075"
+    },
+    {
+      "path": "applications/main/ibutton/scenes/ibutton_scene_save_name.c",
+      "status": "modified-or-added",
+      "sha256": "ca91de7e3ac4411fd470bfae8ba1f4516dd4de090754b2ef911f82f13747b176"
+    },
+    {
+      "path": "applications/main/ibutton/scenes/ibutton_scene_settings.c",
+      "status": "modified-or-added",
+      "sha256": "fa53f242f57f0e75a47721a50bfd4b08ceaa167a2d8d9251c2b5e604be3b89f7"
+    },
+    {
+      "path": "applications/main/ibutton/scenes/ibutton_scene_settings_write_targets.c",
+      "status": "modified-or-added",
+      "sha256": "65411ae51278fdc10db7d810ddb3145b22adf9569b1058c7b5a11a3db5f21773"
+    },
+    {
+      "path": "applications/main/ibutton/scenes/ibutton_scene_start.c",
+      "status": "modified-or-added",
+      "sha256": "b38c86b9b11d39c099d04be01ef1b697a046ed5ded3663425aa540a6288abcb5"
+    },
+    {
+      "path": "applications/main/ibutton/scenes/ibutton_scene_write.c",
+      "status": "modified-or-added",
+      "sha256": "8eab61872b4291e56763903351ea81b4e8414ff747768c5ae2b6b6d90c3eeefc"
+    },
+    {
+      "path": "applications/main/ibutton/scenes/ibutton_scene_write_success.c",
+      "status": "modified-or-added",
+      "sha256": "8d64db1cfb6321e7b8f0a7aa9b74b08a9239f9abea926625d1456d9d85d8e932"
+    },
+    {
+      "path": "applications/main/infrared/infrared_app.c",
+      "status": "modified-or-added",
+      "sha256": "c31687b0e762507d0ae8dc1a291a87b0971a837d2204f808ada7e6a841d54c37"
+    },
+    {
+      "path": "applications/main/infrared/infrared_app_i.h",
+      "status": "modified-or-added",
+      "sha256": "c69eb280d8a06be6fe598e23325e44fbadfb7cfec70808a44de5937ddc68f70b"
+    },
+    {
+      "path": "applications/main/infrared/scenes/common/infrared_scene_universal_common.c",
+      "status": "modified-or-added",
+      "sha256": "dce8c7ff65ba672f507b4fd471e39b0e9cd8e34533b1f38e09ac44c87fe87e92"
+    },
+    {
+      "path": "applications/main/infrared/scenes/common/infrared_scene_universal_common.h",
+      "status": "modified-or-added",
+      "sha256": "d16c07423e0b9263395be0b9d525c1e16a05b9a638df100e86b52abfa0f42460"
+    },
+    {
+      "path": "applications/main/infrared/scenes/infrared_scene_config.h",
+      "status": "modified-or-added",
+      "sha256": "0ef998447e16e486d10402cbdabd320aa1d7e8492f75872ad175416066db296d"
+    },
+    {
+      "path": "applications/main/infrared/scenes/infrared_scene_remote_list.c",
+      "status": "modified-or-added",
+      "sha256": "887370b3c452a8a2a62e7dca144c3dd4d4258dd6e72170deb0017656236f3b28"
+    },
+    {
+      "path": "applications/main/infrared/scenes/infrared_scene_universal_save.c",
+      "status": "modified-or-added",
+      "sha256": "527fdf9e07d8653c01f557760edf0c025ec98ea631b01f8179dd29900a9efb6b"
+    },
+    {
+      "path": "applications/main/infrared/scenes/infrared_scene_universal_save_done.c",
+      "status": "modified-or-added",
+      "sha256": "0f10f807822b74a580733acdfd64fa36644bf2a1bd88ce9f80251a4e5d3435fe"
+    },
+    {
+      "path": "applications/main/infrared/scenes/infrared_scene_universal_save_name.c",
+      "status": "modified-or-added",
+      "sha256": "defad2f15a0ed10bdd2da0b5a9b2fe44dcf054943606c5d9a83d4b45382a0670"
+    },
+    {
+      "path": "applications/main/infrared/views/infrared_progress_view.c",
+      "status": "modified-or-added",
+      "sha256": "b15f507c563abdaa7a242a29d28da1c639fe6247182b98ffe9e1f4700d6c4924"
+    },
+    {
+      "path": "applications/main/infrared/views/infrared_progress_view.h",
+      "status": "modified-or-added",
+      "sha256": "77689397fcdf01bfb69050eb6997987f1937785fb219d5dbcb6a02cac0a18241"
+    },
+    {
+      "path": "applications/main/lfrfid/application.fam",
+      "status": "modified-or-added",
+      "sha256": "96c4df86a4d41218fa34f072cdaf37a08205045580f8a8119b0843359bcf3e14"
+    },
+    {
+      "path": "applications/main/lfrfid/lfrfid.c",
+      "status": "modified-or-added",
+      "sha256": "c4d2bde58a071b59465bd9b460e47be707dad58aaca6cdf1540aac8e15874fc0"
+    },
+    {
+      "path": "applications/main/lfrfid/lfrfid_casi_format.c",
+      "status": "modified-or-added",
+      "sha256": "dadb37972407a4036b1e6aa1f0da57c021f88aea8d1c20859a1c366e17b8c927"
+    },
+    {
+      "path": "applications/main/lfrfid/lfrfid_casi_format.h",
+      "status": "modified-or-added",
+      "sha256": "93d9588583ea1665a1381efc7caea0cbc2703c3f8f2c29ad42eab4b0abcbaa3e"
+    },
+    {
+      "path": "applications/main/lfrfid/lfrfid_cli.c",
+      "status": "modified-or-added",
+      "sha256": "c47667585cb8baf28efa7c2cc7a83281f949b95c7dd9299a253c823dad38d7d4"
+    },
+    {
+      "path": "applications/main/lfrfid/lfrfid_hid_format.c",
+      "status": "modified-or-added",
+      "sha256": "0586cd742c2bd128a67c3c9a730938e493d3807d5c83a24285e93a20d5ae4b59"
+    },
+    {
+      "path": "applications/main/lfrfid/lfrfid_hid_format.h",
+      "status": "modified-or-added",
+      "sha256": "25cb818df99a213243b19a58acacf0122f8d70f76302e6e79c3efee35b078ee9"
+    },
+    {
+      "path": "applications/main/lfrfid/lfrfid_i.h",
+      "status": "modified-or-added",
+      "sha256": "84b5b9e7a75607fcb8302ea949477c8834097a8a2c4a14f01561287e0aeb3522"
+    },
+    {
+      "path": "applications/main/lfrfid/lfrfid_manual_format.c",
+      "status": "modified-or-added",
+      "sha256": "4ea1abb8c99e2148f44e339abe350a5896a7227c08a41af3062b9678af4b0cc0"
+    },
+    {
+      "path": "applications/main/lfrfid/lfrfid_manual_format.h",
+      "status": "modified-or-added",
+      "sha256": "a9cdd4137715852638d3b44b9475efc2f7ae7411df844f9860702a0734fa1b4f"
+    },
+    {
+      "path": "applications/main/lfrfid/plugins/settings/lfrfid_settings_plugin.h",
+      "status": "modified-or-added",
+      "sha256": "f07e531d5cc2d13ef77d8db15c916f839828ad88c01494eb6213cd54beb8d940"
+    },
+    {
+      "path": "applications/main/lfrfid/plugins/settings/lfrfid_settings_write_targets.c",
+      "status": "modified-or-added",
+      "sha256": "3c52a3b0b2bb1b26ee2217cc596b896063d79bda2836edb908e47f8ab9b0c515"
+    },
+    {
+      "path": "applications/main/lfrfid/scenes/lfrfid_scene_config.h",
+      "status": "modified-or-added",
+      "sha256": "aa8aa83065a50e596262d4ef2051489a0585a3976d7b811c689d3ffb02fc4736"
+    },
+    {
+      "path": "applications/main/lfrfid/scenes/lfrfid_scene_extra_actions.c",
+      "status": "modified-or-added",
+      "sha256": "f6b430b2b94662224248ca51c63d820aee8f77fdae833a906d1806d422753244"
+    },
+    {
+      "path": "applications/main/lfrfid/scenes/lfrfid_scene_read_success.c",
+      "status": "modified-or-added",
+      "sha256": "d4b5e7d2d84896caf305441e0ba2fd5d0ba53d33087958f19c0f254045651c70"
+    },
+    {
+      "path": "applications/main/lfrfid/scenes/lfrfid_scene_save_data.c",
+      "status": "modified-or-added",
+      "sha256": "e2481fe0d0dc3275437e2dd64725b0b52fa08c88a8e51a168d8b0d99eae718ca"
+    },
+    {
+      "path": "applications/main/lfrfid/scenes/lfrfid_scene_save_fields.c",
+      "status": "modified-or-added",
+      "sha256": "cda0b374dd443e5983d353710402cd9e12dea6d214cdc95dd4a8177a6a379210"
+    },
+    {
+      "path": "applications/main/lfrfid/scenes/lfrfid_scene_save_method.c",
+      "status": "modified-or-added",
+      "sha256": "41c0881a5c6a549f8f6a78b5b014d66758f1d3f197f47c84bc8e742a42b3899b"
+    },
+    {
+      "path": "applications/main/lfrfid/scenes/lfrfid_scene_save_name.c",
+      "status": "modified-or-added",
+      "sha256": "f40e1bf2561f279183d85b9a954eb7c0801e4feeb46f882fe2137f8cea4708e1"
+    },
+    {
+      "path": "applications/main/lfrfid/scenes/lfrfid_scene_save_type.c",
+      "status": "modified-or-added",
+      "sha256": "328c699c8c1cf359386b869e99a90e8e84168b87a45aac29b58951ec84ac8fb9"
+    },
+    {
+      "path": "applications/main/lfrfid/scenes/lfrfid_scene_saved_info.c",
+      "status": "modified-or-added",
+      "sha256": "65a5e59ba3c0a0f65987d4d567eb0ace531ac9ad4eca1670682554ce5511f18a"
+    },
+    {
+      "path": "applications/main/lfrfid/scenes/lfrfid_scene_settings.c",
+      "status": "modified-or-added",
+      "sha256": "41558c9248e69da6f2a685d0cb406ae44d4aaa89700905992c8adebd2cedf8ea"
+    },
+    {
+      "path": "applications/main/lfrfid/scenes/lfrfid_scene_settings_write_targets.c",
+      "status": "modified-or-added",
+      "sha256": "0f44497ba5ca316ca75aa131a7f3afae7210b525c1d2dea395625fe196933c39"
+    },
+    {
+      "path": "applications/main/lfrfid/scenes/lfrfid_scene_start.c",
+      "status": "modified-or-added",
+      "sha256": "2d7f3ea3711befa4fb315a0f007de0a86310539e91da1cd40808ce02990efcfb"
+    },
+    {
+      "path": "applications/main/lfrfid/scenes/lfrfid_scene_wipe_t5577.c",
+      "status": "modified-or-added",
+      "sha256": "7c638c9ed5494c291e4710afd36ffc71c01bca9bbdad7b2f396a5e205e9b00b9"
+    },
+    {
+      "path": "applications/main/lfrfid/scenes/lfrfid_scene_wipe_t5577_confirm.c",
+      "status": "modified-or-added",
+      "sha256": "056fd7ea6196e678267983c5d7f9846c7f64e83d8169137a40925dbbf5c33c6f"
+    },
+    {
+      "path": "applications/main/lfrfid/scenes/lfrfid_scene_write.c",
+      "status": "modified-or-added",
+      "sha256": "cee5a41214625b8117cd11a9a8ed1490d3b553294bd37d60a952fc9eb8bab75d"
+    },
+    {
+      "path": "applications/main/lfrfid/scenes/lfrfid_scene_write_and_set_pass.c",
+      "status": "modified-or-added",
+      "sha256": "2bafd24b1ebffdd490bd45ca94dc3e3d6326110cb704f10a34d74bdf54788b54"
+    },
+    {
+      "path": "applications/main/lfrfid/scenes/lfrfid_scene_write_success.c",
+      "status": "modified-or-added",
+      "sha256": "a217d138c37fe035d3950bc8aeaf0a3db4175a44954d4a7e828a1be125d6d46f"
+    },
+    {
+      "path": "applications/main/momentum_app/scenes/momentum_app_scene_interface_mainmenu.c",
+      "status": "modified-or-added",
+      "sha256": "965c91425b0a4393558300c1388ea9d478c3b18a374c0fe8f23bc891e93b37ce"
+    },
+    {
+      "path": "applications/main/nfc/api/mosgortrans/mosgortrans_util.c",
+      "status": "modified-or-added",
+      "sha256": "fb8ecfbb843acd8f631b75212c691c4910874f8d99e78760c71562c543ae6ab4"
+    },
+    {
+      "path": "applications/main/nfc/api/nfc_app_api_table_i.h",
+      "status": "modified-or-added",
+      "sha256": "bcff0a6a2c14bc31bfda866621556caa1d0c685439c1366eafdc156fa109fbde"
+    },
+    {
+      "path": "applications/main/nfc/application.fam",
+      "status": "modified-or-added",
+      "sha256": "900dc94da8c60f2e3706afda7307395d1566927ffb210695442a469a002f8aca"
+    },
+    {
+      "path": "applications/main/nfc/helpers/mf_plus_key_cache.c",
+      "status": "modified-or-added",
+      "sha256": "256e8ef19f5dc59671731a2af7750296cf1aa937cb634fdb24533b47607310bd"
+    },
+    {
+      "path": "applications/main/nfc/helpers/mf_plus_key_cache.h",
+      "status": "modified-or-added",
+      "sha256": "0cded26e3a4dcd1075e595cc409d500e5390e50ae58ec2828269029f0b2dea96"
+    },
+    {
+      "path": "applications/main/nfc/helpers/mf_ultralight_auth.c",
+      "status": "modified-or-added",
+      "sha256": "92c58ea16659656c025fbef31930372772fd21879ceed3e34abb639383e52df2"
+    },
+    {
+      "path": "applications/main/nfc/helpers/mf_ultralight_auth.h",
+      "status": "modified-or-added",
+      "sha256": "e714d2eafe458520fe8bb598f7442eb4c4702b594190d1b016458a2c3a8950c9"
+    },
+    {
+      "path": "applications/main/nfc/helpers/mf_user_dict.c",
+      "status": "removed-or-relocated",
+      "sha256": null
+    },
+    {
+      "path": "applications/main/nfc/helpers/mf_user_dict.h",
+      "status": "removed-or-relocated",
+      "sha256": null
+    },
+    {
+      "path": "applications/main/nfc/helpers/nfc_detected_protocols.c",
+      "status": "modified-or-added",
+      "sha256": "d9ef2693bd13e3fc93e3722f13d63e1ebfbe10aff1ed40e2997cc4657b2e3741"
+    },
+    {
+      "path": "applications/main/nfc/helpers/nfc_detected_protocols.h",
+      "status": "modified-or-added",
+      "sha256": "3b2a22732f2ee4ba250bfb8ac8d44383d3d15ebc64fd26ef784acb40f88f5747"
+    },
+    {
+      "path": "applications/main/nfc/helpers/nfc_key_dict.c",
+      "status": "modified-or-added",
+      "sha256": "e10b1a124206da39d0cc73cdb1d0e93e04b44747b3f9c2e82a71e4fa382051c3"
+    },
+    {
+      "path": "applications/main/nfc/helpers/nfc_key_dict.h",
+      "status": "modified-or-added",
+      "sha256": "47cf76a021cae5bfa812c023b4da76a47c29c2863eb5868bea3450ec06d16b5a"
+    },
+    {
+      "path": "applications/main/nfc/helpers/nfc_supported_cards.c",
+      "status": "modified-or-added",
+      "sha256": "762f566acb9fa1314f88f186282dbc0daf13dde087a988a1031c9e416017f5f5"
+    },
+    {
+      "path": "applications/main/nfc/helpers/nfc_supported_cards.h",
+      "status": "modified-or-added",
+      "sha256": "9e813b300bfe7fd3b4a46983588753d9ba95d6b9b3953ba26536ee0fd6f7978b"
+    },
+    {
+      "path": "applications/main/nfc/helpers/protocol_support/emv/emv.c",
+      "status": "modified-or-added",
+      "sha256": "dfe3df6eb96a13f7d8b17f77150f09d0f69cdb09d5339bb38b0efff9964b8659"
+    },
+    {
+      "path": "applications/main/nfc/helpers/protocol_support/emv/emv_extra_scenes.c",
+      "status": "modified-or-added",
+      "sha256": "0214c2d9e537fd75d213c6d7a3a6823bbbf4f9921ae8a65517ddb6c63ebe9556"
+    },
+    {
+      "path": "applications/main/nfc/helpers/protocol_support/emv/emv_extra_scenes.h",
+      "status": "modified-or-added",
+      "sha256": "af48e638ff1f4141d1b36e6f2e2f067d405f9122a33f297c407bf2369d7105cd"
+    },
+    {
+      "path": "applications/main/nfc/helpers/protocol_support/emv/emv_render.c",
+      "status": "modified-or-added",
+      "sha256": "2f0c5dc887f7f6f97523800427bfa9c06b9d88d69a0f70b174288a077b981f39"
+    },
+    {
+      "path": "applications/main/nfc/helpers/protocol_support/emv/emv_render.h",
+      "status": "modified-or-added",
+      "sha256": "1e0b827fffdc96cbb8a0545a784580aa3e4f9e2a1db04c076d32add913f40f65"
+    },
+    {
+      "path": "applications/main/nfc/helpers/protocol_support/felica/felica.c",
+      "status": "modified-or-added",
+      "sha256": "18327fbc28422ff25b7d227a9aaeae106a5afeced27538d4771dcfacc822a06e"
+    },
+    {
+      "path": "applications/main/nfc/helpers/protocol_support/felica/felica_extra_scenes.c",
+      "status": "modified-or-added",
+      "sha256": "b3e1669d5288837a8a7df22400781dded116554d571bdfd49bf28b5b99bb9dd8"
+    },
+    {
+      "path": "applications/main/nfc/helpers/protocol_support/felica/felica_extra_scenes.h",
+      "status": "modified-or-added",
+      "sha256": "1bfdba1693e314b7dc4f193115891271dce0c60b2d71829ab0462bfe81446f64"
+    },
+    {
+      "path": "applications/main/nfc/helpers/protocol_support/iso14443_3b/iso14443_3b_render.c",
+      "status": "modified-or-added",
+      "sha256": "1bf0f0dabf176c219ca5a00bdca21c19f2378265c9f6832b7704499346b4d835"
+    },
+    {
+      "path": "applications/main/nfc/helpers/protocol_support/iso14443_4a/iso14443_4a_render.c",
+      "status": "modified-or-added",
+      "sha256": "79b436dea64bfdd0ea45f3860fd22c8b7ea3a30ce48bbd6d9d1bec7cac40e9d5"
+    },
+    {
+      "path": "applications/main/nfc/helpers/protocol_support/mf_classic/mf_classic.c",
+      "status": "modified-or-added",
+      "sha256": "f637204ef5a7a18578859655bfa67024b860389e09d681af96e704cbbfd50970"
+    },
+    {
+      "path": "applications/main/nfc/helpers/protocol_support/mf_classic/mf_classic_extra_scenes.c",
+      "status": "modified-or-added",
+      "sha256": "d43217b0422b1631311ab10f13ce8915e7bb615fe0ac640b253cc539f94537da"
+    },
+    {
+      "path": "applications/main/nfc/helpers/protocol_support/mf_classic/mf_classic_extra_scenes.h",
+      "status": "modified-or-added",
+      "sha256": "ac36a8ed3be8f2fed3dcbb21ad42bebd3da88a099b309a36400c9fa94b89a699"
+    },
+    {
+      "path": "applications/main/nfc/helpers/protocol_support/mf_desfire/mf_desfire.c",
+      "status": "modified-or-added",
+      "sha256": "068ffc6afb6b276b61935d591eef39dc9b363d4cd1d67caeffe28dede9d68e8f"
+    },
+    {
+      "path": "applications/main/nfc/helpers/protocol_support/mf_desfire/mf_desfire_extra_scenes.c",
+      "status": "modified-or-added",
+      "sha256": "2bacb26a71732474fbeefc993780067a7e525b87fbb4d0b339319906c591dea6"
+    },
+    {
+      "path": "applications/main/nfc/helpers/protocol_support/mf_desfire/mf_desfire_extra_scenes.h",
+      "status": "modified-or-added",
+      "sha256": "177b432f8315757713623f877fc61161ebaf5a8741ff9d69409dd509cf8389a1"
+    },
+    {
+      "path": "applications/main/nfc/helpers/protocol_support/mf_plus/mf_plus.c",
+      "status": "modified-or-added",
+      "sha256": "a64988ca7a4afffbe2c724f529e4942d8fe3c2812b48f94222d77dad4bfeec60"
+    },
+    {
+      "path": "applications/main/nfc/helpers/protocol_support/mf_plus/mf_plus_extra_scenes.c",
+      "status": "modified-or-added",
+      "sha256": "7168598fee0310186f0f74a4e15adba8414971f14a411f64c929c52ead94b9fa"
+    },
+    {
+      "path": "applications/main/nfc/helpers/protocol_support/mf_plus/mf_plus_extra_scenes.h",
+      "status": "modified-or-added",
+      "sha256": "6e11e13515aa3c2b55e9b80d62397fd4b2f0907d0112ba3f272f12e8ba273806"
+    },
+    {
+      "path": "applications/main/nfc/helpers/protocol_support/mf_plus/mf_plus_render.c",
+      "status": "modified-or-added",
+      "sha256": "7d05f62a6d1a14f5f2ad736e7d804bda81a0d9d73e792ac3babfd3631f30ab59"
+    },
+    {
+      "path": "applications/main/nfc/helpers/protocol_support/mf_plus/mf_plus_render.h",
+      "status": "modified-or-added",
+      "sha256": "9eb9fa399818af8939ef843c199c12d64499bbdd20a44fecdeeed725da19a976"
+    },
+    {
+      "path": "applications/main/nfc/helpers/protocol_support/mf_ultralight/mf_ultralight.c",
+      "status": "modified-or-added",
+      "sha256": "f470fb513360d85588cf30b39c754811aa0f0f21642c2a973b4f19f2bbff018e"
+    },
+    {
+      "path": "applications/main/nfc/helpers/protocol_support/mf_ultralight/mf_ultralight_extra_scenes.c",
+      "status": "modified-or-added",
+      "sha256": "5dcd6d6ee54846a8edd5390290f4b2b5cc64d5a3f0dd959fc1f7cbe8540dfa35"
+    },
+    {
+      "path": "applications/main/nfc/helpers/protocol_support/mf_ultralight/mf_ultralight_extra_scenes.h",
+      "status": "modified-or-added",
+      "sha256": "3a4446d584195ed8e92512e064c010416472c862060d2843ed9a4d7f814baed8"
+    },
+    {
+      "path": "applications/main/nfc/helpers/protocol_support/mf_ultralight/mf_ultralight_render.c",
+      "status": "modified-or-added",
+      "sha256": "ad44624dbbd57fc90462073f2e4b677450d1651a659ba76a5b498b2c12849360"
+    },
+    {
+      "path": "applications/main/nfc/helpers/protocol_support/mf_ultralight/mf_ultralight_render.h",
+      "status": "modified-or-added",
+      "sha256": "fed93a6d068488a2d8a10aed2f912da88482acc57034317d5994969da66addf4"
+    },
+    {
+      "path": "applications/main/nfc/helpers/protocol_support/nfc_protocol_support.c",
+      "status": "modified-or-added",
+      "sha256": "34b61013e1a463d22154e1b68d240cd5d0bebecd82226d4a510d1ac79d6e9c7e"
+    },
+    {
+      "path": "applications/main/nfc/helpers/protocol_support/nfc_protocol_support.h",
+      "status": "modified-or-added",
+      "sha256": "809c8c1bdae54057d9bae0e18870544f91e9c3cbc8ab94b8718f06e29620794c"
+    },
+    {
+      "path": "applications/main/nfc/helpers/protocol_support/nfc_protocol_support_base.h",
+      "status": "modified-or-added",
+      "sha256": "d19df0bf621bc40df47151e2e6b12ca29fce5eb0c0d26469b2f6042f17c7ece5"
+    },
+    {
+      "path": "applications/main/nfc/helpers/protocol_support/nfc_protocol_support_unlock_helper.c",
+      "status": "modified-or-added",
+      "sha256": "972c823d9312fddec81505c88db346bd726f5e35afa1c1e2d06d039448e187f2"
+    },
+    {
+      "path": "applications/main/nfc/helpers/protocol_support/slix/slix.c",
+      "status": "modified-or-added",
+      "sha256": "5fe5f8b66dbbf7a6d8d9b809608c2db28d0a79f37aa18acad026d54541edb314"
+    },
+    {
+      "path": "applications/main/nfc/helpers/protocol_support/slix/slix_extra_scenes.c",
+      "status": "modified-or-added",
+      "sha256": "81bdb789538ffaa755051cfd35420131db436fe3ea92458568888acad2660e35"
+    },
+    {
+      "path": "applications/main/nfc/helpers/protocol_support/slix/slix_extra_scenes.h",
+      "status": "modified-or-added",
+      "sha256": "aff9d2579c40cd3f7b4e7236870fbd393a34dd27c2241159b351c5942c35152e"
+    },
+    {
+      "path": "applications/main/nfc/nfc_app.c",
+      "status": "modified-or-added",
+      "sha256": "4bd14e03baab1d3fc2c78af4ce471cb68d22d81d25f1c97bd258859e73405e42"
+    },
+    {
+      "path": "applications/main/nfc/nfc_app_i.h",
+      "status": "modified-or-added",
+      "sha256": "f5936a1a277cf3fe34dcc9bea0e80b50616917a16e14d6dc035fe2ccaa43d02b"
+    },
+    {
+      "path": "applications/main/nfc/plugins/supported_cards/all_in_one.c",
+      "status": "modified-or-added",
+      "sha256": "20ca98ec21782cacdfeaee870e20412d424a398418eb89ff9670a2163daeda74"
+    },
+    {
+      "path": "applications/main/nfc/plugins/supported_cards/bambu.c",
+      "status": "modified-or-added",
+      "sha256": "db6b4548c39f757e6317f1ae59a739023732b5c82983e310bfb54f4094394ddc"
+    },
+    {
+      "path": "applications/main/nfc/plugins/supported_cards/bambu_filaments.h",
+      "status": "modified-or-added",
+      "sha256": "3ebd5e0694d39260041b7774a0c23df39de8a44927e1b63fe99c845107f3fbb6"
+    },
+    {
+      "path": "applications/main/nfc/plugins/supported_cards/bambu_parser.h",
+      "status": "modified-or-added",
+      "sha256": "3f14fc2381102d1fbd09abeca47b126f13009e752745ccacdf8b93aa206b9a9a"
+    },
+    {
+      "path": "applications/main/nfc/plugins/supported_cards/banapass.c",
+      "status": "modified-or-added",
+      "sha256": "3d04174aa1d82b9c08a5c51a0c4ef8a16cba02e77375ab91bb34add1e757fdab"
+    },
+    {
+      "path": "applications/main/nfc/plugins/supported_cards/bip.c",
+      "status": "modified-or-added",
+      "sha256": "873b9786d8a5b0d4dc50ec4d6b14a9c5b0f32e6ce5936a2f0d9e9398d0ecc577"
+    },
+    {
+      "path": "applications/main/nfc/plugins/supported_cards/charliecard.c",
+      "status": "modified-or-added",
+      "sha256": "19ddee8cf4d196ed7302e2ef29c6561402ede286ca9c3c20c8d38fd4fbe70def"
+    },
+    {
+      "path": "applications/main/nfc/plugins/supported_cards/csc.c",
+      "status": "modified-or-added",
+      "sha256": "d0951268ad2896504e547c543ae998371f92776d23453d5dfda9994d7aa98d5c"
+    },
+    {
+      "path": "applications/main/nfc/plugins/supported_cards/hworld.c",
+      "status": "modified-or-added",
+      "sha256": "f702583f8b7aae7fb7687460695b71fcb73fd4a3bddf8c39fed4a08421d2d374"
+    },
+    {
+      "path": "applications/main/nfc/plugins/supported_cards/kazan.c",
+      "status": "modified-or-added",
+      "sha256": "7ef207569118c6b50e39a13b53e4a42d85a3e210b0427d691b7f54231e6891f3"
+    },
+    {
+      "path": "applications/main/nfc/plugins/supported_cards/metromoney.c",
+      "status": "modified-or-added",
+      "sha256": "e5ecc9b26800df2b4b72dde8bd223e6f7a4016f3fcb945f9349ef90a01d94c99"
+    },
+    {
+      "path": "applications/main/nfc/plugins/supported_cards/mf_classic_parser_util.h",
+      "status": "modified-or-added",
+      "sha256": "e8b36ae3ae4478d57853f1ff33f1dab4d1ad3d23c3e03a5d23fcbd214ed122e5"
+    },
+    {
+      "path": "applications/main/nfc/plugins/supported_cards/microel.c",
+      "status": "modified-or-added",
+      "sha256": "eff75bffb727371fc327373c20da98292b0d646d4dac97a22fa730e614096e08"
+    },
+    {
+      "path": "applications/main/nfc/plugins/supported_cards/mizip.c",
+      "status": "modified-or-added",
+      "sha256": "f00c3c60f4d3d379510e1959f03cdca162ead680b0ec2ca5799a1e1323f356a0"
+    },
+    {
+      "path": "applications/main/nfc/plugins/supported_cards/ndef.c",
+      "status": "modified-or-added",
+      "sha256": "dc86cf9452ce0bbbbd41085e450f4c5f4481ec4149d69e3096b92e2b84606822"
+    },
+    {
+      "path": "applications/main/nfc/plugins/supported_cards/nfc_supported_card_plugin.h",
+      "status": "modified-or-added",
+      "sha256": "021e18f16a010cf617f90f209da870758e40c55f6cae7338061d3c2006e5752b"
+    },
+    {
+      "path": "applications/main/nfc/plugins/supported_cards/plantain.c",
+      "status": "modified-or-added",
+      "sha256": "f62d0d9c05522165ad20d28c6d60fead33e79dd945f7b03dd36544e395ed5f62"
+    },
+    {
+      "path": "applications/main/nfc/plugins/supported_cards/saflok.c",
+      "status": "modified-or-added",
+      "sha256": "fb4fa30f3b2d02c2b018e43fbfa365ea5ccb88875629be91483d80adb7b5c925"
+    },
+    {
+      "path": "applications/main/nfc/plugins/supported_cards/sevppk_tk.c",
+      "status": "modified-or-added",
+      "sha256": "627c66907c093c14f4e12761d2229857bcbecc6a7ee8655a0d8f519889e534fa"
+    },
+    {
+      "path": "applications/main/nfc/plugins/supported_cards/sk_tk.c",
+      "status": "modified-or-added",
+      "sha256": "92254e08e553d2b572d1b4c7df0b1ceca4deb9c16b490a0f6dcf7a0cef84c487"
+    },
+    {
+      "path": "applications/main/nfc/plugins/supported_cards/smartrider.c",
+      "status": "modified-or-added",
+      "sha256": "ff7af5ad4122ef9ee7fcefbf56dd4ce3eae19d1c107e68b2f6f8f40126292cbe"
+    },
+    {
+      "path": "applications/main/nfc/plugins/supported_cards/social_moscow.c",
+      "status": "modified-or-added",
+      "sha256": "1e2fef39845a8a13c8f799f176bf079996811854d14b4a69b3a01ffad8da1b8a"
+    },
+    {
+      "path": "applications/main/nfc/plugins/supported_cards/szppk_so.c",
+      "status": "modified-or-added",
+      "sha256": "72a49689d057b5cdad25e80df749ea52233bdf4ee663e9ca32527f6ee2ea871b"
+    },
+    {
+      "path": "applications/main/nfc/plugins/supported_cards/troika.c",
+      "status": "modified-or-added",
+      "sha256": "f2edb957c5564569a7452d6e7c4b05ff6ed5fffd46769e56943926f5b892064f"
+    },
+    {
+      "path": "applications/main/nfc/plugins/supported_cards/two_cities.c",
+      "status": "modified-or-added",
+      "sha256": "bfee9fb3759b0197acea8cba4ea036962aeec29a5d12bceb3e7825c0767ce842"
+    },
+    {
+      "path": "applications/main/nfc/plugins/supported_cards/washcity.c",
+      "status": "modified-or-added",
+      "sha256": "a70dcb04cf0d4b9a3d6e2faae4f7c689bd2db27bb7b591dc77d66ac63d427b0c"
+    },
+    {
+      "path": "applications/main/nfc/resources/nfc/assets/mf_plus_dict.nfc",
+      "status": "modified-or-added",
+      "sha256": "9a8aad4b7fa18f10d210a96d7d7a5e7dfd3fcf1f32aa4c2bab84759e7d308d86"
+    },
+    {
+      "path": "applications/main/nfc/resources/nfc/assets/mf_ultralight_aes_dict.nfc",
+      "status": "modified-or-added",
+      "sha256": "c41e1ae383518eefcc0adbe5eb53c231eae0c210242645b4ffc80862632bba35"
+    },
+    {
+      "path": "applications/main/nfc/scenes/nfc_scene_config.h",
+      "status": "modified-or-added",
+      "sha256": "08c2c5708914b123dac1d32baf36feac0ff53b36f2e16bfe1b65d21ab3fcefa9"
+    },
+    {
+      "path": "applications/main/nfc/scenes/nfc_scene_delete_success.c",
+      "status": "modified-or-added",
+      "sha256": "7c303cfd876d727e3876c16d3e7a70d8b07a241178dfe2819ef5aada7eb1b00f"
+    },
+    {
+      "path": "applications/main/nfc/scenes/nfc_scene_des_auth_key_input.c",
+      "status": "modified-or-added",
+      "sha256": "367e0dc772481d318a31b834b57714bce73cc6f7ddac53265d23d830a9668e83"
+    },
+    {
+      "path": "applications/main/nfc/scenes/nfc_scene_des_auth_unlock_warn.c",
+      "status": "modified-or-added",
+      "sha256": "c7e665de11756a9465ec614ba8b39ba9e75111df158eedecdb873a7a322e65cc"
+    },
+    {
+      "path": "applications/main/nfc/scenes/nfc_scene_emv_transactions.c",
+      "status": "modified-or-added",
+      "sha256": "fd954917f9809b747f238d62d476b1a180f73053e98e617ad2a1597f818f9366"
+    },
+    {
+      "path": "applications/main/nfc/scenes/nfc_scene_extra_actions.c",
+      "status": "modified-or-added",
+      "sha256": "b0fe26a1fd02835213fc40e3492f6a1840ff89fe4a8d9dc0f15460876fcd35ea"
+    },
+    {
+      "path": "applications/main/nfc/scenes/nfc_scene_felica_more_info.c",
+      "status": "modified-or-added",
+      "sha256": "81de508a609b30f723a7c40dd3a9e0208b85624a880cb3bc720e76afec6e1b45"
+    },
+    {
+      "path": "applications/main/nfc/scenes/nfc_scene_felica_system.c",
+      "status": "modified-or-added",
+      "sha256": "ab0a73f65dd57b4f7f628c205de6cb77ccccc9f0f45d27af2ead3140df29777d"
+    },
+    {
+      "path": "applications/main/nfc/scenes/nfc_scene_key_dict.c",
+      "status": "modified-or-added",
+      "sha256": "54dabc2cb52c95ea2f1cea343771774e6f663cbfd4bcc60fffa9360eeb42de27"
+    },
+    {
+      "path": "applications/main/nfc/scenes/nfc_scene_key_dict_add.c",
+      "status": "modified-or-added",
+      "sha256": "223600e3a0a569d452b9d5e327ad2d9a444f7110ac6e315b30b0cd4e94cb4c4c"
+    },
+    {
+      "path": "applications/main/nfc/scenes/nfc_scene_key_dict_delete.c",
+      "status": "modified-or-added",
+      "sha256": "513301a9c33d2c44ba72cf021c7bceb1b9043687cc98d2df70f183b787fb54b9"
+    },
+    {
+      "path": "applications/main/nfc/scenes/nfc_scene_key_dict_import.c",
+      "status": "modified-or-added",
+      "sha256": "c7face79a9c2f810e3f4f5b350917cdb75e080af870b6850e0fe840a39d54e12"
+    },
+    {
+      "path": "applications/main/nfc/scenes/nfc_scene_key_dict_list.c",
+      "status": "modified-or-added",
+      "sha256": "194723b1a76ecf13b76209caa5377d4dfd57c9064731f45b82982d9231d9ca2c"
+    },
+    {
+      "path": "applications/main/nfc/scenes/nfc_scene_key_dict_warn_duplicate.c",
+      "status": "modified-or-added",
+      "sha256": "c4e765f5c23d02a6ad9688d950c0eead975455237304c24dee89bdf1763c8c0d"
+    },
+    {
+      "path": "applications/main/nfc/scenes/nfc_scene_mf_classic_detect_reader.c",
+      "status": "modified-or-added",
+      "sha256": "675322b8d4465e1c8809689b0b3e3ce21fef1309ab73143108b2ca4dadfb66d1"
+    },
+    {
+      "path": "applications/main/nfc/scenes/nfc_scene_mf_classic_dict_attack.c",
+      "status": "modified-or-added",
+      "sha256": "9f5a8b048a5b6c7be10e760da84279fd61f312ceac7d1fec2da25c190b98902c"
+    },
+    {
+      "path": "applications/main/nfc/scenes/nfc_scene_mf_classic_keys.c",
+      "status": "removed-or-relocated",
+      "sha256": null
+    },
+    {
+      "path": "applications/main/nfc/scenes/nfc_scene_mf_classic_keys_add.c",
+      "status": "removed-or-relocated",
+      "sha256": null
+    },
+    {
+      "path": "applications/main/nfc/scenes/nfc_scene_mf_classic_keys_delete.c",
+      "status": "removed-or-relocated",
+      "sha256": null
+    },
+    {
+      "path": "applications/main/nfc/scenes/nfc_scene_mf_classic_keys_list.c",
+      "status": "removed-or-relocated",
+      "sha256": null
+    },
+    {
+      "path": "applications/main/nfc/scenes/nfc_scene_mf_classic_keys_warn_duplicate.c",
+      "status": "removed-or-relocated",
+      "sha256": null
+    },
+    {
+      "path": "applications/main/nfc/scenes/nfc_scene_mf_classic_mfkey_complete.c",
+      "status": "modified-or-added",
+      "sha256": "90652a2bd99fcc11c87e659e41b7b53dcdad57c94f104a22499383c7141d1ee1"
+    },
+    {
+      "path": "applications/main/nfc/scenes/nfc_scene_mf_classic_mfkey_nonces_info.c",
+      "status": "modified-or-added",
+      "sha256": "9ceece834ac205a5a7cefc636d453adf3302b6ff646020fc3db4bb2a28562343"
+    },
+    {
+      "path": "applications/main/nfc/scenes/nfc_scene_mf_classic_show_keys.c",
+      "status": "modified-or-added",
+      "sha256": "bdc760a9081b4c138a300cb6b1df19cc9c58c1978ae94b647ad0857f7528fe79"
+    },
+    {
+      "path": "applications/main/nfc/scenes/nfc_scene_mf_classic_update_initial.c",
+      "status": "modified-or-added",
+      "sha256": "386ac2032a5b3436c1695c3151b77f5e46a0a263bd9fd3e0d47c61138da44062"
+    },
+    {
+      "path": "applications/main/nfc/scenes/nfc_scene_mf_classic_update_initial_success.c",
+      "status": "removed-or-relocated",
+      "sha256": null
+    },
+    {
+      "path": "applications/main/nfc/scenes/nfc_scene_mf_classic_update_initial_wrong_card.c",
+      "status": "removed-or-relocated",
+      "sha256": null
+    },
+    {
+      "path": "applications/main/nfc/scenes/nfc_scene_mf_desfire_app.c",
+      "status": "modified-or-added",
+      "sha256": "b814df0cad43a13964f87c604afeb7bb8b4b8967fdd20458403a6628b0b8bc0c"
+    },
+    {
+      "path": "applications/main/nfc/scenes/nfc_scene_mf_desfire_more_info.c",
+      "status": "modified-or-added",
+      "sha256": "cd39cc2365eceafa3c7fd94492734e55a7fd13b70736d608b6a045f14c818aa7"
+    },
+    {
+      "path": "applications/main/nfc/scenes/nfc_scene_mf_plus_dict_attack.c",
+      "status": "modified-or-added",
+      "sha256": "58ecf06e3f369c80bab53b22189c922607cd0774178b352951dc065e70c6c6cb"
+    },
+    {
+      "path": "applications/main/nfc/scenes/nfc_scene_mf_plus_iso4_info.c",
+      "status": "modified-or-added",
+      "sha256": "2c224171ded14de86c05927a471ccd8c91832f6429628677ceb35b3ac2e68953"
+    },
+    {
+      "path": "applications/main/nfc/scenes/nfc_scene_mf_plus_more_info.c",
+      "status": "modified-or-added",
+      "sha256": "614140528989109aaa37196cb3754832b5c9dc39fb8d51c66cc5435745155a42"
+    },
+    {
+      "path": "applications/main/nfc/scenes/nfc_scene_mf_plus_show_keys.c",
+      "status": "modified-or-added",
+      "sha256": "d2f58dfb60e93bdd1b9da1a5ccf3ea7ee2d7b1c11c756eca794a3af71b412094"
+    },
+    {
+      "path": "applications/main/nfc/scenes/nfc_scene_mf_plus_update_initial.c",
+      "status": "modified-or-added",
+      "sha256": "a4db4c9313552b298099ce9563b3d91599a49227ef26b9527d9732fa54f040e6"
+    },
+    {
+      "path": "applications/main/nfc/scenes/nfc_scene_mf_plus_version.c",
+      "status": "modified-or-added",
+      "sha256": "fe576e4e91678871b8f4d0980b2b6aae2f779600e4cf4649838cf3696e35204b"
+    },
+    {
+      "path": "applications/main/nfc/scenes/nfc_scene_mf_ultralight_aes_dict_attack.c",
+      "status": "modified-or-added",
+      "sha256": "b4ce5a1bcfa1b8a4a14418428cd8d4c09d7395207f6022a8786111c89e729fc2"
+    },
+    {
+      "path": "applications/main/nfc/scenes/nfc_scene_mf_ultralight_aes_dict_attack_warn.c",
+      "status": "modified-or-added",
+      "sha256": "82c6cbbdb1087edae75f582de1a818a08ded3d85a6f5a029aabb9add624ecf9c"
+    },
+    {
+      "path": "applications/main/nfc/scenes/nfc_scene_mf_ultralight_c_dict_attack.c",
+      "status": "modified-or-added",
+      "sha256": "9f386e7d1f91b6dd6e90301bb78d0eb467f2b22079a7e7b305f0ca1020c3b30a"
+    },
+    {
+      "path": "applications/main/nfc/scenes/nfc_scene_mf_ultralight_c_keys.c",
+      "status": "removed-or-relocated",
+      "sha256": null
+    },
+    {
+      "path": "applications/main/nfc/scenes/nfc_scene_mf_ultralight_c_keys_add.c",
+      "status": "removed-or-relocated",
+      "sha256": null
+    },
+    {
+      "path": "applications/main/nfc/scenes/nfc_scene_mf_ultralight_c_keys_delete.c",
+      "status": "removed-or-relocated",
+      "sha256": null
+    },
+    {
+      "path": "applications/main/nfc/scenes/nfc_scene_mf_ultralight_c_keys_list.c",
+      "status": "removed-or-relocated",
+      "sha256": null
+    },
+    {
+      "path": "applications/main/nfc/scenes/nfc_scene_mf_ultralight_c_keys_warn_duplicate.c",
+      "status": "removed-or-relocated",
+      "sha256": null
+    },
+    {
+      "path": "applications/main/nfc/scenes/nfc_scene_mf_ultralight_capture_pass.c",
+      "status": "modified-or-added",
+      "sha256": "d345a7b3358f67f72582758a0ffe8a97c91671ef621962c874b05b89c7dee0df"
+    },
+    {
+      "path": "applications/main/nfc/scenes/nfc_scene_mf_ultralight_key_input.c",
+      "status": "modified-or-added",
+      "sha256": "8c3f8a55045d75040c640950e58204024aead942e18b2af56641f31038d0aa61"
+    },
+    {
+      "path": "applications/main/nfc/scenes/nfc_scene_mf_ultralight_unlock_menu.c",
+      "status": "modified-or-added",
+      "sha256": "70203e6487da07fe44a50f0c3364abc0605edaa0a8287757cf76d395d95a90ef"
+    },
+    {
+      "path": "applications/main/nfc/scenes/nfc_scene_mf_ultralight_unlock_warn.c",
+      "status": "modified-or-added",
+      "sha256": "f2da36e99adcfc3f813fb280ad97ac277bda94f42e45f8dacf72fa607e3b316b"
+    },
+    {
+      "path": "applications/main/nfc/scenes/nfc_scene_save_success.c",
+      "status": "modified-or-added",
+      "sha256": "6f1b0ceabcfc7be486f7a9e6b2b3d94b3b8c406360c1643b567a09307c615913"
+    },
+    {
+      "path": "applications/main/nfc/scenes/nfc_scene_set_type.c",
+      "status": "modified-or-added",
+      "sha256": "68b302fcd5d1406b6c065e53e5037069e1d6fcb10d2edacf637f3ad416ba67a9"
+    },
+    {
+      "path": "applications/main/nfc/scenes/nfc_scene_slix_key_input.c",
+      "status": "modified-or-added",
+      "sha256": "1aaf42f91fe6f76f4b3e9b9df318c7723583b6efcdf15ebb57bef3c868797b83"
+    },
+    {
+      "path": "applications/main/nfc/scenes/nfc_scene_slix_unlock.c",
+      "status": "modified-or-added",
+      "sha256": "2db357ae27f290d746e8447af04daef5093cfe8b4c2136f67c4579c56d6ff28d"
+    },
+    {
+      "path": "applications/main/nfc/scenes/nfc_scene_slix_unlock_menu.c",
+      "status": "modified-or-added",
+      "sha256": "496dbd1938c0aff4c9ab1167a63516051a5b2c1fb9cf63da924d4e19048f2838"
+    },
+    {
+      "path": "applications/main/nfc/scenes/nfc_scene_slix_unlock_success.c",
+      "status": "modified-or-added",
+      "sha256": "26af22584a35b1a9b352208f797cb3c5034f3e5a1f0db116c50c330fe5cdeec0"
+    },
+    {
+      "path": "applications/main/nfc/scenes/nfc_scene_update_initial_success.c",
+      "status": "modified-or-added",
+      "sha256": "bc3623d41dae5d3bd8ae637e73f62df1d1458d94cade1da65f94287dc1cd8526"
+    },
+    {
+      "path": "applications/main/nfc/scenes/nfc_scene_update_initial_wrong_card.c",
+      "status": "modified-or-added",
+      "sha256": "5e89e49f3f9833acac8b476b376520fabd1ab74d2f81a26f03de91e16803b028"
+    },
+    {
+      "path": "applications/main/nfc/views/detect_reader.c",
+      "status": "modified-or-added",
+      "sha256": "640066755d589a0924655eb11f4810e1da0fe25b6facbe1b1e08bd4300e9ad4e"
+    },
+    {
+      "path": "applications/main/nfc/views/detect_reader.h",
+      "status": "modified-or-added",
+      "sha256": "ef784977455af39617ce499dd0601235c23445ffa3175c2fec2333e941a50de6"
+    },
+    {
+      "path": "applications/main/nfc/views/dict_attack.c",
+      "status": "modified-or-added",
+      "sha256": "10f62713b58884f4d8b59a578b2dc24c708e8b088310a91b367b2a55b151fadb"
+    },
+    {
+      "path": "applications/main/nfc/views/dict_attack.h",
+      "status": "modified-or-added",
+      "sha256": "b20710ac74762d015c1d735cf97f8a56bc50dc56263892ace499175191b3f60c"
+    },
+    {
+      "path": "applications/main/subghz/helpers/subghz_custom_event.h",
+      "status": "modified-or-added",
+      "sha256": "75f84578208918b138b62eaa563a239f4f3229e6ac8d939a4910273c4e65ddbb"
+    },
+    {
+      "path": "applications/main/subghz/helpers/subghz_frequency_analyzer_worker.c",
+      "status": "modified-or-added",
+      "sha256": "3fc3487019f8aa4ee70109a2b6fad21bcd4e752121009efb102985484b846995"
+    },
+    {
+      "path": "applications/main/subghz/helpers/subghz_gen_info.c",
+      "status": "modified-or-added",
+      "sha256": "ef8002b18476d0ff8b9d844c890772ac0e85d36b45cb27895c4c05895561eec4"
+    },
+    {
+      "path": "applications/main/subghz/helpers/subghz_txrx.c",
+      "status": "modified-or-added",
+      "sha256": "7ac8dca4ef8670b9079172e4a9864e4b19eb8dfbe863ad2c036b0f861eb0922f"
+    },
+    {
+      "path": "applications/main/subghz/helpers/subghz_txrx.h",
+      "status": "modified-or-added",
+      "sha256": "d2fc3d92de285f5d1db70401a6d78e3e82e2491532e705b8ebc531112ce14554"
+    },
+    {
+      "path": "applications/main/subghz/helpers/subghz_txrx_create_protocol_key.c",
+      "status": "modified-or-added",
+      "sha256": "f55385a8783e068309988bea075946cb0daaaa73de28b8a84d1ffc0bf06eea4a"
+    },
+    {
+      "path": "applications/main/subghz/helpers/subghz_txrx_i.h",
+      "status": "modified-or-added",
+      "sha256": "b556fbdcb7a1be70f2f1a011bbb4e62eaa1ef19de80e9886c937054b676b7953"
+    },
+    {
+      "path": "applications/main/subghz/resources/subghz/assets/keeloq_mfcodes",
+      "status": "modified-or-added",
+      "sha256": "8dbc0959233af4411cf4fa10e0ce09208c30a5b272d48fd5a6189f54dba0372e"
+    },
+    {
+      "path": "applications/main/subghz/scenes/subghz_scene_decode_raw.c",
+      "status": "modified-or-added",
+      "sha256": "14a18db6d42d310cf7972e143a320763979ce686e894ff484b24c7b6839d08b0"
+    },
+    {
+      "path": "applications/main/subghz/scenes/subghz_scene_radio_settings.c",
+      "status": "modified-or-added",
+      "sha256": "e2ce9d359af9e10cd13ccd32569e8383f4a2dff07990fab2a8506fa7bceb4eab"
+    },
+    {
+      "path": "applications/main/subghz/scenes/subghz_scene_read_raw.c",
+      "status": "modified-or-added",
+      "sha256": "c36dc57b536465e4b4926baaabbe906b81b292ee4eac398a00b6c9da2e70743b"
+    },
+    {
+      "path": "applications/main/subghz/scenes/subghz_scene_receiver.c",
+      "status": "modified-or-added",
+      "sha256": "3cac94ef6bc5bc24f4be03fc86867c88e2006798564cc99c1d2b21f017dece51"
+    },
+    {
+      "path": "applications/main/subghz/scenes/subghz_scene_receiver_info.c",
+      "status": "modified-or-added",
+      "sha256": "f5204190413a927d33b84b3578bb6ea88950e2f7caa0e245cddc0ff60fc6c60f"
+    },
+    {
+      "path": "applications/main/subghz/scenes/subghz_scene_rpc.c",
+      "status": "modified-or-added",
+      "sha256": "fc80592e59a05d5975961c59cf8accd70bc00699dfab5fe54d216cd50cc2750f"
+    },
+    {
+      "path": "applications/main/subghz/scenes/subghz_scene_save_success.c",
+      "status": "modified-or-added",
+      "sha256": "30fe261e793ba639b92d53eb8f8ce1d2f54f2e85e42f96091099703d88d5eb99"
+    },
+    {
+      "path": "applications/main/subghz/scenes/subghz_scene_set_seed.c",
+      "status": "modified-or-added",
+      "sha256": "e674f72039d2e5d006e97562f3842a330520f8163aa08c89de92bfffdb05fc09"
+    },
+    {
+      "path": "applications/main/subghz/scenes/subghz_scene_set_type.c",
+      "status": "modified-or-added",
+      "sha256": "c9abe5ee9e60410ed748b105b5be66451cfb606d3e8befc75d206f071a1bff0a"
+    },
+    {
+      "path": "applications/main/subghz/scenes/subghz_scene_start.c",
+      "status": "modified-or-added",
+      "sha256": "50d1792d634062ef0e9472e5f2439384fc329cd9b6c010b8bb3a8fc30b8227d1"
+    },
+    {
+      "path": "applications/main/subghz/scenes/subghz_scene_transmitter.c",
+      "status": "modified-or-added",
+      "sha256": "442e6fdc17f664c9eb7916e2e06aa694a908ea220671938d4855c1f4650a13e5"
+    },
+    {
+      "path": "applications/main/subghz/subghz_cli.c",
+      "status": "modified-or-added",
+      "sha256": "f2b83a2a1d252e9dc8faf1892ee6ff7d34a1d174f1f128b355328cefbf344236"
+    },
+    {
+      "path": "applications/main/subghz/subghz_history.c",
+      "status": "modified-or-added",
+      "sha256": "bc9637e0f8eaf7841a9f498a1a9ff898193ad80ee39ab26147dfe80809ce49eb"
+    },
+    {
+      "path": "applications/main/subghz/subghz_history.h",
+      "status": "modified-or-added",
+      "sha256": "c42d6e60ea6c2402253e7dca688e877e6285ddbf3bf83d0327eb427a962c5935"
+    },
+    {
+      "path": "applications/main/subghz/subghz_i.c",
+      "status": "modified-or-added",
+      "sha256": "9abfa5a063c6ff88851fb7f459a6336d2aea3197623a36c4644938121fe83441"
+    },
+    {
+      "path": "applications/main/subghz/subghz_last_settings.h",
+      "status": "modified-or-added",
+      "sha256": "9b4ace2409931f591d49f8a4847508902ca5e1c544a539052785099d9f4d25fe"
+    },
+    {
+      "path": "applications/main/subghz/views/subghz_frequency_analyzer.c",
+      "status": "modified-or-added",
+      "sha256": "31e0da387a07aa6d26338a113adad469cf847c3341dc58d6be73bcf9841b8419"
+    },
+    {
+      "path": "applications/services/application.fam",
+      "status": "modified-or-added",
+      "sha256": "bf02ae1d65f9f056977203bcc4fa83e16fcdac0a73d8993b525af08d1cbf9c97"
+    },
+    {
+      "path": "applications/services/cli/cli_main_shell.c",
+      "status": "modified-or-added",
+      "sha256": "aba159bb49b81e71aeced0390b92f46e6e232112db2c6ed81bb641e6d539c8c2"
+    },
+    {
+      "path": "applications/services/gps/application.fam",
+      "status": "modified-or-added",
+      "sha256": "b14027b0f4c0afa5118736b09d3d4731b83e1292bd1f1814fa262ee62b7a53b9"
+    },
+    {
+      "path": "applications/services/gps/gps.c",
+      "status": "modified-or-added",
+      "sha256": "e9138599181e7986e529ab837be1d881ad353d98a6af19c054d8a065919100e7"
+    },
+    {
+      "path": "applications/services/gps/gps.h",
+      "status": "modified-or-added",
+      "sha256": "0db03f20671d34b4aa2b47dd6db9b63f7b6a4a5c8c60f96b821caa4221c6de5f"
+    },
+    {
+      "path": "applications/services/gps/gps_i.h",
+      "status": "modified-or-added",
+      "sha256": "033065436b38785ce7bc699109c6358955b2a682ae7c9d217a63af7cae389850"
+    },
+    {
+      "path": "applications/services/gui/canvas.h",
+      "status": "modified-or-added",
+      "sha256": "b4e6302814b7d4e111c14c3ef39168d4b1ced04bdd1507c4376cc0e7072a36c9"
+    },
+    {
+      "path": "applications/services/gui/canvas_i.h",
+      "status": "modified-or-added",
+      "sha256": "033d6ccf173bf18ae28f7f6459b1df1744fa54e674c018d07d92cfe34c0e070a"
+    },
+    {
+      "path": "applications/services/gui/elements.c",
+      "status": "modified-or-added",
+      "sha256": "c0187f1636e8cd9216b6dee5b5bc5a31960b530d031afcf1c94733c7905377e9"
+    },
+    {
+      "path": "applications/services/gui/gui_i.h",
+      "status": "modified-or-added",
+      "sha256": "2aa808eaf48a43a11b5c07d57e7ad484d427b0b05370e4728694c8023699aaba"
+    },
+    {
+      "path": "applications/services/gui/modules/date_time_input.c",
+      "status": "modified-or-added",
+      "sha256": "0780e3250e80f089d8b0e010c854008fd4a11f09d3b5f1641dca2857d9807611"
+    },
+    {
+      "path": "applications/services/gui/modules/loading.c",
+      "status": "modified-or-added",
+      "sha256": "f4142c94a9bd4fb08deaff84dde9724f2993287a743328ca827023523f849bae"
+    },
+    {
+      "path": "applications/services/gui/modules/loading.h",
+      "status": "modified-or-added",
+      "sha256": "c5c3ea6f3490b38e3583419833a73124518a94706983a8693c5461e078ed87b5"
+    },
+    {
+      "path": "applications/services/gui/modules/menu.c",
+      "status": "modified-or-added",
+      "sha256": "b28eb2954575dfaf77d01d14e9b0f0c103eedb91c0238522944e7f48d2516aef"
+    },
+    {
+      "path": "applications/services/gui/modules/number_input.c",
+      "status": "modified-or-added",
+      "sha256": "e80b366316dbe82e4318173cc49212b784c23e6f0b76f8360113fd9727e206e0"
+    },
+    {
+      "path": "applications/services/gui/native_zh_font.h",
+      "status": "modified-or-added",
+      "sha256": "8d653bdd215a450b53b83c4fc9f270db4b47041246dd0766797206ffc4b82e81"
+    },
+    {
+      "path": "applications/services/gui/view.h",
+      "status": "modified-or-added",
+      "sha256": "a5e699d40df47bbf85336a64d3eca08ebde3d5c7f4bbc15a4f4a7f25bd1ce104"
+    },
+    {
+      "path": "applications/services/gui/view_dispatcher.c",
+      "status": "modified-or-added",
+      "sha256": "43986d1de3612c6316ed31b25131e119aa014ff9d84a300f95a2d89e0aadafdc"
+    },
+    {
+      "path": "applications/services/gui/view_dispatcher.h",
+      "status": "modified-or-added",
+      "sha256": "4cd3d57379f86a6bb16c1965250901509b3f6dbf43189f7b994cd9508447fcc1"
+    },
+    {
+      "path": "applications/services/gui/view_dispatcher_i.h",
+      "status": "modified-or-added",
+      "sha256": "a50f8e05ac65f425d0d5a87be693b81a23d2037be8d131341038d5a5b3fc2acc"
+    },
+    {
+      "path": "applications/services/gui/view_i.h",
+      "status": "modified-or-added",
+      "sha256": "bcb9a3809128cfe800751011712a31d300c3424fffd34541b9ce804374ab7583"
+    },
+    {
+      "path": "applications/services/gui/view_port.h",
+      "status": "modified-or-added",
+      "sha256": "d6745f0f5427cedd3b4354c44fd66186f1daec8ca2bce64f04aa94a5ec94caa0"
+    },
+    {
+      "path": "applications/services/gui/view_port_i.h",
+      "status": "modified-or-added",
+      "sha256": "7cca7921d0aee0a63e000dc14edbab9e3e116f48b3073a88fc462bd37eb4d570"
+    },
+    {
+      "path": "applications/services/loader/loader.c",
+      "status": "modified-or-added",
+      "sha256": "bdfdbf4e3cfd27bc67b11edf7752cc3071caf77cd54906fc9940dfcd48fc08ff"
+    },
+    {
+      "path": "applications/services/loader/loader_cli.c",
+      "status": "modified-or-added",
+      "sha256": "883b4c6e5e4e138ff5bd6aa8b1effb65f4c05aa233d819ca4c761bb7b528adca"
+    },
+    {
+      "path": "applications/services/loader/loader_i.h",
+      "status": "modified-or-added",
+      "sha256": "1d35c22f99066d2c1e8fe059459878ae8fe6aa886e0aa02a01158dbb734aa0c9"
+    },
+    {
+      "path": "applications/services/network/application.fam",
+      "status": "modified-or-added",
+      "sha256": "b89074648b7eef3491d7b2f28c316936b056fdf01f68cae10a7b59cb8a72f9f1"
+    },
+    {
+      "path": "applications/services/network/network.c",
+      "status": "modified-or-added",
+      "sha256": "355d698570e572612c96d1794a41790cf5c50a7794e768a7fde1d743e2fffc43"
+    },
+    {
+      "path": "applications/services/network/network.h",
+      "status": "modified-or-added",
+      "sha256": "9ff44cc35b284bacfa0d28d0d693b261944c44e9615e533f5b2b4f14ebf80a1a"
+    },
+    {
+      "path": "applications/services/network/network_i.h",
+      "status": "modified-or-added",
+      "sha256": "83f3196d84a6d67e1b15840fee868630f29df2f1308f8d01bbba02c9fa113db9"
+    },
+    {
+      "path": "applications/services/rpc/rpc.c",
+      "status": "modified-or-added",
+      "sha256": "56e0286b1129f0bb5f3d5cf616cb2c934d26357a349676cbe6596bfc69ca9d7e"
+    },
+    {
+      "path": "applications/services/rpc/rpc_app.c",
+      "status": "modified-or-added",
+      "sha256": "7d30634939f6bdafeb60665b3d3d6e3d955010376f78edd6d166acf1e1da8845"
+    },
+    {
+      "path": "applications/services/rpc/rpc_cli.c",
+      "status": "modified-or-added",
+      "sha256": "d8b4a9933e6ad4c896b45e86cb1b1715ad611296f2f849085aa3e190afbd9ad9"
+    },
+    {
+      "path": "applications/services/rpc/rpc_gps.c",
+      "status": "modified-or-added",
+      "sha256": "52a353d0ea32c2b32b5d4a491f24f31fbeacfd762b2ed0fde915a334d0775eaa"
+    },
+    {
+      "path": "applications/services/rpc/rpc_i.h",
+      "status": "modified-or-added",
+      "sha256": "d69ae2fa5c8c151be357182e5ad9ea73497ca35708ffb24423f0f97a9b370638"
+    },
+    {
+      "path": "applications/services/rpc/rpc_network.c",
+      "status": "modified-or-added",
+      "sha256": "72a3e74a5b27c30096e421db9da31150e6df9175ee42afea71100bf472a265f1"
+    },
+    {
+      "path": "applications/services/storage/storage_external_api.c",
+      "status": "modified-or-added",
+      "sha256": "652c322442ad7c2da6213e90991fdc47b4c072e9273ef8e2a52d5799f3d1785e"
+    },
+    {
+      "path": "applications/system/findmy/findmy.c",
+      "status": "modified-or-added",
+      "sha256": "300086e9d185f65330ce320b350c366d07ebd68d48d0822b0dbc26a52d72e61c"
+    },
+    {
+      "path": "applications/system/findmy/findmy_state.c",
+      "status": "modified-or-added",
+      "sha256": "8729ec170da1237184b77932c42d098922c1e2f2ea4ef5827fc56593a9437ef8"
+    },
+    {
+      "path": "applications/system/findmy/findmy_state.h",
+      "status": "modified-or-added",
+      "sha256": "fdf203e23c7df8b5b8856df1d0734e7c5f754c479449d3c97a6d03e501cf26ed"
+    },
+    {
+      "path": "applications/system/findmy/scenes/findmy_scene_config.c",
+      "status": "modified-or-added",
+      "sha256": "c59243de01d59317109217329c3e00e22cba7de611e6c1c6c80e816813f6b875"
+    },
+    {
+      "path": "applications/system/findmy/scenes/findmy_scene_config_tagtype.c",
+      "status": "modified-or-added",
+      "sha256": "34faf8074241000dcf5cc89076d976b1e73166988063308f4f9fcc1001252b4f"
+    },
+    {
+      "path": "applications/system/findmy/views/findmy_main.c",
+      "status": "modified-or-added",
+      "sha256": "6748ba85bfd74a06a36fe45e5eb203bdf03bd17f1caf9cdff539323690220ac4"
+    },
+    {
+      "path": "applications/system/hid_app/hid.c",
+      "status": "modified-or-added",
+      "sha256": "87789b5f5c5858bdbfbd9fc120463031926e10f7b48a3967f8f427dc24923f35"
+    },
+    {
+      "path": "applications/system/hid_app/hid.h",
+      "status": "modified-or-added",
+      "sha256": "1b6b098acd3d77ec1dba74e668eacffeca3fbd16b95de6279cf50e32c5fd9d39"
+    },
+    {
+      "path": "applications/system/hid_app/views/hid_mouse_jiggler.c",
+      "status": "modified-or-added",
+      "sha256": "3f144f5b759deb96a5b972f2e56b36b4af95fbf812812bc12d53c2c5136a1ac3"
+    },
+    {
+      "path": "applications/system/hid_app/views/hid_mouse_jiggler_stealth.c",
+      "status": "modified-or-added",
+      "sha256": "e02f065c7e90070a8113ba8074add4848100d5792e064c9d8d32403dfd91b4a6"
+    },
+    {
+      "path": "applications/system/js_app/modules/js_event_loop/js_event_loop.c",
+      "status": "modified-or-added",
+      "sha256": "11e066e8661f31e721bea9f367df9f1ada4ead2469720b16f725c6611c5f4bd9"
+    },
+    {
+      "path": "applications/system/js_app/packages/fz-sdk/gpio/index.d.ts",
+      "status": "modified-or-added",
+      "sha256": "6034728f3df0bc5130f4f85a527b8794f1a8d7ad0316515e190f75038b4f7f39"
+    },
+    {
+      "path": "assets/SConscript",
+      "status": "modified-or-added",
+      "sha256": "b733c14eff67ed5da435d01a30a381e0ee083c5a1fd3071a29cd69add03061d0"
+    },
+    {
+      "path": "assets/protobuf_overrides/flipper.proto",
+      "status": "modified-or-added",
+      "sha256": "991f30922ebbc3f62a76d4d13ef9a141ef38669d961e583cbbae750e87f32ef5"
+    },
+    {
+      "path": "assets/protobuf_overrides/gui.proto",
+      "status": "modified-or-added",
+      "sha256": "99916b4dd20660bb7c15a3540298285e11a7bd08be21e638dc2fe892af0bc4ec"
+    },
+    {
+      "path": "firmware.scons",
+      "status": "modified-or-added",
+      "sha256": "19e36d144d0ec36171f28b397b6e79d9a446babd71a1dc50dfef0317652f472e"
+    },
+    {
+      "path": "furi/core/event_loop.c",
+      "status": "modified-or-added",
+      "sha256": "9422806ac337964688063237fd3312bdcba299dff84b059f58f2427bd92ef265"
+    },
+    {
+      "path": "furi/core/event_loop.h",
+      "status": "modified-or-added",
+      "sha256": "22cddea7c31ec3939fb9118a13ea4f07c0e6e24137a11772080b5c6154839f55"
+    },
+    {
+      "path": "furi/core/log.h",
+      "status": "modified-or-added",
+      "sha256": "d5e04af1e37ab4a2eb8786a6593b5abb08b6f2ed2e01e1280ad977592c7d82be"
+    },
+    {
+      "path": "lib/bit_lib/bit_lib.c",
+      "status": "modified-or-added",
+      "sha256": "bf64179577e41e5d5486e420525ad26d9963d3f5ab67f558541723b176d98460"
+    },
+    {
+      "path": "lib/ble_profile/extra_profiles/hid_profile.c",
+      "status": "modified-or-added",
+      "sha256": "716fad06240ef1d910272435dc99d75675a926cec83a580578ced01e37eda52a"
+    },
+    {
+      "path": "lib/drivers/cc1101.c",
+      "status": "modified-or-added",
+      "sha256": "ace7fbbb26077fd4d14365ac5bcbacf2e1cf2652d49c76b58b5a903e4d3b7b56"
+    },
+    {
+      "path": "lib/ibutton/SConscript",
+      "status": "modified-or-added",
+      "sha256": "163788b038e021206e43734971d04bac98aea7a0f4c092b4bf43183114989cf4"
+    },
+    {
+      "path": "lib/ibutton/ibutton_protocols.c",
+      "status": "modified-or-added",
+      "sha256": "cd1ba6a51aa69401de9f74db17baa5890c3ca932486ffd8f470c1e50fc710991"
+    },
+    {
+      "path": "lib/ibutton/ibutton_protocols.h",
+      "status": "modified-or-added",
+      "sha256": "0473ea1229a8f64ff5baa5165908b296aa7e83aaee2ffd2da53443918606fe86"
+    },
+    {
+      "path": "lib/ibutton/ibutton_settings.c",
+      "status": "modified-or-added",
+      "sha256": "08d3229574a3095689f37d450317db6242deac9c4aee9379f6ab666fa3be0d7e"
+    },
+    {
+      "path": "lib/ibutton/ibutton_settings.h",
+      "status": "modified-or-added",
+      "sha256": "4015eed17746a9cda2e803aa48e649b1bc39e3d71d9f030a8bb457eb375538e1"
+    },
+    {
+      "path": "lib/ibutton/ibutton_worker.c",
+      "status": "modified-or-added",
+      "sha256": "0a6d31256ac6fafe8d28a228fb4c02fd91b77aa7c6a6f92588802697fd84705b"
+    },
+    {
+      "path": "lib/ibutton/ibutton_worker.h",
+      "status": "modified-or-added",
+      "sha256": "128cde4aa9e7802c7d3d3fe4d626725222fbed2e7a4953708d2d4c0010e66581"
+    },
+    {
+      "path": "lib/ibutton/ibutton_worker_i.h",
+      "status": "modified-or-added",
+      "sha256": "512962c7e1301d0b1fa9186c91216021287a22cc7b4c1fa8521368dc6e712f67"
+    },
+    {
+      "path": "lib/ibutton/ibutton_worker_modes.c",
+      "status": "modified-or-added",
+      "sha256": "a7ff59418ca02a998fef4ef00862a5903908216741a7a28c937af7a1fb96b6ff"
+    },
+    {
+      "path": "lib/ibutton/ibutton_write_targets.c",
+      "status": "modified-or-added",
+      "sha256": "9a7ec57a6304a6bb7a3794a2989d6bc1c276b7e80ce7e4d2cec1b14043967e84"
+    },
+    {
+      "path": "lib/ibutton/ibutton_write_targets.h",
+      "status": "modified-or-added",
+      "sha256": "c656535df18d2f6bc3b4fbc55a53d23a5b2046d0cc30d575ee08f70da9cd6f4f"
+    },
+    {
+      "path": "lib/ibutton/protocols/dallas/protocol_dallas_base.h",
+      "status": "modified-or-added",
+      "sha256": "bf0be894a2c6fb06997c89fedbf8d61bb839dfbca940b9e78e7b847a7d0dd7b4"
+    },
+    {
+      "path": "lib/ibutton/protocols/dallas/protocol_ds1420.c",
+      "status": "modified-or-added",
+      "sha256": "af9d2198c68b5215cb2eca0a449ca971db6b81e5d33a4ee0af8c51e6ba62c4a2"
+    },
+    {
+      "path": "lib/ibutton/protocols/dallas/protocol_ds1971.c",
+      "status": "modified-or-added",
+      "sha256": "27b4325a721556301d2072e1e655d4fc9f95e369d8b6d98f7fc65f3e6db1bbe9"
+    },
+    {
+      "path": "lib/ibutton/protocols/dallas/protocol_ds1990.c",
+      "status": "modified-or-added",
+      "sha256": "6574fd10e3bd92597f0e0c295c18a8ce4846188f9a066f7e105ffcf67c44b798"
+    },
+    {
+      "path": "lib/ibutton/protocols/dallas/protocol_ds1992.c",
+      "status": "modified-or-added",
+      "sha256": "ac76b66b059db94c8b0086a199837b06dbcfc852c7314049b2be60f63220f69f"
+    },
+    {
+      "path": "lib/ibutton/protocols/dallas/protocol_ds1996.c",
+      "status": "modified-or-added",
+      "sha256": "4ee9988cdf69691cab91e1af24de133ff00cf26349922229bbc3c477c887351b"
+    },
+    {
+      "path": "lib/ibutton/protocols/dallas/protocol_ds_generic.c",
+      "status": "modified-or-added",
+      "sha256": "8af448171f02382b85a59e82390c48f30216822b45199b0fc03d5b5fd38776fe"
+    },
+    {
+      "path": "lib/ibutton/protocols/dallas/protocol_group_dallas.c",
+      "status": "modified-or-added",
+      "sha256": "c642792de6a4d214d0b2cf34cf0422c67f6e88880195a6269a6deb9186e46087"
+    },
+    {
+      "path": "lib/ibutton/protocols/misc/protocol_group_misc.c",
+      "status": "modified-or-added",
+      "sha256": "8d53c62e239c44ec52d6911a8241e42e6d791ceaadc3a76af6f356a7faadf815"
+    },
+    {
+      "path": "lib/ibutton/protocols/protocol_group_base.h",
+      "status": "modified-or-added",
+      "sha256": "51ddcff2d457515476b9468f4075c7825862c8dda9eb2ec5d489a7e1c44c248c"
+    },
+    {
+      "path": "lib/infrared/encoder_decoder/common/infrared_common_decoder.c",
+      "status": "modified-or-added",
+      "sha256": "55da7ebd6b31280931444b84432d8546a56d0b506e3991f2a11751df709455bc"
+    },
+    {
+      "path": "lib/infrared/signal/infrared_brute_force.c",
+      "status": "modified-or-added",
+      "sha256": "075851557b3de587e13daafb433b37a732075b13292699d19414f7e4c3d5184c"
+    },
+    {
+      "path": "lib/infrared/signal/infrared_brute_force.h",
+      "status": "modified-or-added",
+      "sha256": "ed74007571610b49d9c829a0c68884ad47328b964b3d147271742e5284461172"
+    },
+    {
+      "path": "lib/lfrfid/SConscript",
+      "status": "modified-or-added",
+      "sha256": "011e49c9e33e4056f52028f248503657524911198d8fbae602b40acf66b0ccd8"
+    },
+    {
+      "path": "lib/lfrfid/lfrfid_settings.c",
+      "status": "modified-or-added",
+      "sha256": "3a448dc9da4027959a1efdf052a7654f42981be4ee1c6af8e1f611b78ea1800c"
+    },
+    {
+      "path": "lib/lfrfid/lfrfid_settings.h",
+      "status": "modified-or-added",
+      "sha256": "9e8994e36c5294f26cc3532265bda0e55492533c2c70fcc802488700b64b2c52"
+    },
+    {
+      "path": "lib/lfrfid/lfrfid_worker.c",
+      "status": "modified-or-added",
+      "sha256": "f473ba8ea6fa019bc62fe262448e25b01f04b7ee368d478ee07c2fbcbc2f13d8"
+    },
+    {
+      "path": "lib/lfrfid/lfrfid_worker.h",
+      "status": "modified-or-added",
+      "sha256": "8520d4e6b29baed4c70a10fa7d0f5dad5f775301b75d1ce8506790ccb7ee3fcc"
+    },
+    {
+      "path": "lib/lfrfid/lfrfid_worker_i.h",
+      "status": "modified-or-added",
+      "sha256": "03b0438600fc205d09ecf3eeb640f6f58e774ff0feed89f147607c0e5cd497ae"
+    },
+    {
+      "path": "lib/lfrfid/lfrfid_worker_modes.c",
+      "status": "modified-or-added",
+      "sha256": "aeb1eb3ea14d8acf1ee8af360ad619689bee25dd72479bde2995f3f0cacda20a"
+    },
+    {
+      "path": "lib/lfrfid/lfrfid_write_targets.c",
+      "status": "modified-or-added",
+      "sha256": "3b68b4f939ecffe5c7bd3c808dbd7eac05a131c0ef00379812a7d696c440476e"
+    },
+    {
+      "path": "lib/lfrfid/lfrfid_write_targets.h",
+      "status": "modified-or-added",
+      "sha256": "ceaebda5bf76050c2a91ddb4d12f58f736a2f344f92dc793539fbf50a439ba10"
+    },
+    {
+      "path": "lib/lfrfid/protocols/lfrfid_protocols.h",
+      "status": "modified-or-added",
+      "sha256": "cfcf1d318bdc98eb952615aebc3f4cae9249b35745c1b97186295c1312f4576f"
+    },
+    {
+      "path": "lib/lfrfid/protocols/protocol_em4100.c",
+      "status": "modified-or-added",
+      "sha256": "e8a5fa2ac0b4f6c59675a9e1ed41f0de389ea1f81c772402b9d574d65775d35b"
+    },
+    {
+      "path": "lib/lfrfid/protocols/protocol_hid_generic.c",
+      "status": "modified-or-added",
+      "sha256": "42f0a5fd41d1b063acba7320c939f21c41998b21a787e2616dad53456de14be1"
+    },
+    {
+      "path": "lib/lfrfid/protocols/protocol_keri.c",
+      "status": "modified-or-added",
+      "sha256": "b2aba03b1bde408a8ffc81885adcb1f6fbd3a1189e059d2414de704531435648"
+    },
+    {
+      "path": "lib/lfrfid/protocols/protocol_pac_stanley.c",
+      "status": "modified-or-added",
+      "sha256": "84e3732a09e10bdd5bf24e924f7d64ea7e17962eab815f01fb1833576b74a8b8"
+    },
+    {
+      "path": "lib/lfrfid/protocols/protocol_pyramid.c",
+      "status": "modified-or-added",
+      "sha256": "6ad98d57a09095eed98a84c7bc71025d53d73a28b15863a34c9ddb4bcc761973"
+    },
+    {
+      "path": "lib/lfrfid/tools/hitagmicro.c",
+      "status": "modified-or-added",
+      "sha256": "15c0cae57f5290a3137b6c4e4b1fcd74b69e84c7eebb24e64faacc822819208c"
+    },
+    {
+      "path": "lib/lfrfid/tools/hitagmicro.h",
+      "status": "modified-or-added",
+      "sha256": "55c8e038f44de6450986803d140d9a53dd9f6e8c43cf59fba4865f7efb430ee7"
+    },
+    {
+      "path": "lib/lfrfid/tools/hitags.c",
+      "status": "modified-or-added",
+      "sha256": "45cf420e140239e7153ed4db0348113196ccd817962ba3e831ddd0dd9a9f0fda"
+    },
+    {
+      "path": "lib/lfrfid/tools/hitags.h",
+      "status": "modified-or-added",
+      "sha256": "4b3b03a335c66172b9a7d36805305ef726df04e22af3e884dd90fbaf198d69dd"
+    },
+    {
+      "path": "lib/momentum/settings.h",
+      "status": "modified-or-added",
+      "sha256": "d5d685f587db27de12a1b3f15cc37cdd08b40db4e2c700caf97b369676d60f86"
+    },
+    {
+      "path": "lib/music_worker/music_worker.c",
+      "status": "modified-or-added",
+      "sha256": "87249ce375a0879797b0bd736bd352f78d8152b5c0d6e20b317195255904ebd2"
+    },
+    {
+      "path": "lib/music_worker/music_worker.h",
+      "status": "modified-or-added",
+      "sha256": "4f26c56e81c496d4eb4a1473d16cd261d9fc7ebfc62b12f7512711d4de623517"
+    },
+    {
+      "path": "lib/nfc/helpers/iso14443_4_layer.c",
+      "status": "modified-or-added",
+      "sha256": "31dd4dcf0a03fc5b82a65771a477a0b1727cb2bf4c4188faf48d90d5c99c033f"
+    },
+    {
+      "path": "lib/nfc/helpers/nfc_data_generator.c",
+      "status": "modified-or-added",
+      "sha256": "131e47bb1918454fa9be4a19e2b54c0f0ac0ac91cf73b692cc438d97824a8eea"
+    },
+    {
+      "path": "lib/nfc/helpers/nfc_data_generator.h",
+      "status": "modified-or-added",
+      "sha256": "97cabb8d7ef2c61cf051a41605d51b3c8c76da011316792212301d575a9675b2"
+    },
+    {
+      "path": "lib/nfc/nfc_poller.h",
+      "status": "modified-or-added",
+      "sha256": "0fd8093c8dab0d4197d8cc1e74e0e1a9d72b9f27d7405f2b0e9efbc490cfea0e"
+    },
+    {
+      "path": "lib/nfc/nfc_scanner.c",
+      "status": "modified-or-added",
+      "sha256": "53ad68954a22ee0d107ada8a84ead72c56f7887c587269722b04859ddf193dac"
+    },
+    {
+      "path": "lib/nfc/protocols/emv/emv.c",
+      "status": "modified-or-added",
+      "sha256": "51d8c0e8ad1ed890a36f3dfdd3a0e270d10bc786b8364c6c7a1297d4986fe92b"
+    },
+    {
+      "path": "lib/nfc/protocols/emv/emv.h",
+      "status": "modified-or-added",
+      "sha256": "75b2bd59db60def70fb747f9c41f4edbd7430e695cfffd2e12f82b8e4f829055"
+    },
+    {
+      "path": "lib/nfc/protocols/emv/emv_poller_i.c",
+      "status": "modified-or-added",
+      "sha256": "1d8e328e56863bba6970ae70ec004e704debca5ebb5eb2d60ff3859685a0313c"
+    },
+    {
+      "path": "lib/nfc/protocols/felica/felica.c",
+      "status": "modified-or-added",
+      "sha256": "945063bdaa0a80617e2fa6b460f016f7546ed3df06b3faa8ba62994cf756a2c8"
+    },
+    {
+      "path": "lib/nfc/protocols/felica/felica.h",
+      "status": "modified-or-added",
+      "sha256": "c9e2d2ac9d70f944964eabc86845769ac6f152fc853d446a0ce97f3ad1f4f4f9"
+    },
+    {
+      "path": "lib/nfc/protocols/felica/felica_i.c",
+      "status": "modified-or-added",
+      "sha256": "b23fb8682bf92d0a7c5aae7b805d931ecf9d2bb9ddc677b6560580cc30d2f2ed"
+    },
+    {
+      "path": "lib/nfc/protocols/felica/felica_i.h",
+      "status": "modified-or-added",
+      "sha256": "822c0aeb3ce446f6f017c9df7cc44536e0bfad2f6de94a9ef16a168e3596ff73"
+    },
+    {
+      "path": "lib/nfc/protocols/felica/felica_listener.c",
+      "status": "modified-or-added",
+      "sha256": "d354c948aff73aab12a96b3eaf6629e7cd82ea7c2d45b1588edd443f85d6ebb8"
+    },
+    {
+      "path": "lib/nfc/protocols/felica/felica_listener_i.c",
+      "status": "modified-or-added",
+      "sha256": "5a0127751d0792787c22eb4915073301c69e6f080b3e5c975eb05e01f6db3089"
+    },
+    {
+      "path": "lib/nfc/protocols/felica/felica_listener_i.h",
+      "status": "modified-or-added",
+      "sha256": "a11992083d27860b51af0ff2f87dee012095d6a3ca66a51f9c8994d6468af1f1"
+    },
+    {
+      "path": "lib/nfc/protocols/felica/felica_poller.c",
+      "status": "modified-or-added",
+      "sha256": "c24561de8dc483f36ccaa517af6303e33bfb14b09f380362f6e3019651d34bf9"
+    },
+    {
+      "path": "lib/nfc/protocols/felica/felica_poller_i.c",
+      "status": "modified-or-added",
+      "sha256": "6aae51627b60cee06ff9d905f30318f60a442b1d3154d11239787dc641232199"
+    },
+    {
+      "path": "lib/nfc/protocols/felica/felica_poller_i.h",
+      "status": "modified-or-added",
+      "sha256": "c8050382e9abf28edb2c1b913f99ae7c8dafa2a442673326f3cdb759a0396cac"
+    },
+    {
+      "path": "lib/nfc/protocols/iso14443_3a/iso14443_3a_poller_i.c",
+      "status": "modified-or-added",
+      "sha256": "ead0b9aef5c9bbadff8ff7b13cad9f7df858e368bcb2426fa3ded73460dd7cb7"
+    },
+    {
+      "path": "lib/nfc/protocols/iso14443_3a/iso14443_3a_poller_i.h",
+      "status": "modified-or-added",
+      "sha256": "d7b4da19dc7f9161e448777a62b07a08cc23f9793866075ed8854a2722868ee0"
+    },
+    {
+      "path": "lib/nfc/protocols/iso15693_3/iso15693_3_listener_i.h",
+      "status": "modified-or-added",
+      "sha256": "d2d8f5c703affaf0e77c465518b8d74f66de1f561ec9c4ce68381305b32b641b"
+    },
+    {
+      "path": "lib/nfc/protocols/mf_classic/mf_classic.c",
+      "status": "modified-or-added",
+      "sha256": "4807d90dfe13ead0230da0b1c62e3875492d0a43f4022e22bdf54f15794ed4ea"
+    },
+    {
+      "path": "lib/nfc/protocols/mf_classic/mf_classic.h",
+      "status": "modified-or-added",
+      "sha256": "ad375e87b1e38a4df18699d5c9b8f9538492f273b22d2fc61de4d5699389f65c"
+    },
+    {
+      "path": "lib/nfc/protocols/mf_classic/mf_classic_poller.c",
+      "status": "modified-or-added",
+      "sha256": "a45c35ca4683f5b5ed1d9b681317d01cb62e5bc718abccd4054429f09510d118"
+    },
+    {
+      "path": "lib/nfc/protocols/mf_classic/mf_classic_poller_i.h",
+      "status": "modified-or-added",
+      "sha256": "5c42021e1034fe26cea5c3923d11780893068c28f1d973dc5a85a4bf5ffe35cc"
+    },
+    {
+      "path": "lib/nfc/protocols/mf_classic/mf_classic_poller_sync.c",
+      "status": "modified-or-added",
+      "sha256": "8f427c63c06ac1a8774728cffb1f765a7461032e57a1bfbcddb4753d5bb19023"
+    },
+    {
+      "path": "lib/nfc/protocols/mf_desfire/mf_desfire.c",
+      "status": "modified-or-added",
+      "sha256": "4afaa9206334225ea10f365c4db9a40e7a6129f7e94af54846b517730e95a0a7"
+    },
+    {
+      "path": "lib/nfc/protocols/mf_desfire/mf_desfire_i.c",
+      "status": "modified-or-added",
+      "sha256": "cb29af827fa3a0a5656f8c3fab4256253f74c7cc0ca0c1d814fc1dc909933c52"
+    },
+    {
+      "path": "lib/nfc/protocols/mf_desfire/mf_desfire_i.h",
+      "status": "modified-or-added",
+      "sha256": "eadd0dadd0442695ab1c71d0edd3ed42e5fbcf6b76fd02aa7df5362960798c20"
+    },
+    {
+      "path": "lib/nfc/protocols/mf_desfire/mf_desfire_poller_i.c",
+      "status": "modified-or-added",
+      "sha256": "1147dcc2ae3a5f6342f09f934573ab93e37784ae316996befb000842453747ac"
+    },
+    {
+      "path": "lib/nfc/protocols/mf_plus/mf_plus.c",
+      "status": "modified-or-added",
+      "sha256": "b274612ac5f85d6b3b2f2f4c0fabade5e40e85bd8eb945a13827d080e0e7c4c4"
+    },
+    {
+      "path": "lib/nfc/protocols/mf_plus/mf_plus.h",
+      "status": "modified-or-added",
+      "sha256": "809a15ea5cc4ab8eb55a3f1057206d636b9661b76ceef11c075f437f5685f0ca"
+    },
+    {
+      "path": "lib/nfc/protocols/mf_plus/mf_plus_crypto.c",
+      "status": "modified-or-added",
+      "sha256": "7e8aa00ed7c63272c12cb1b797345d6d749d0ba893a6dbd15132bee0f3bb0d08"
+    },
+    {
+      "path": "lib/nfc/protocols/mf_plus/mf_plus_crypto.h",
+      "status": "modified-or-added",
+      "sha256": "31c1ddc8cae35b25613de90ea2428108598a152f35305c99b92f567e3944a46c"
+    },
+    {
+      "path": "lib/nfc/protocols/mf_plus/mf_plus_i.c",
+      "status": "modified-or-added",
+      "sha256": "56c736ed66d6e8d7a706d5bfe911b70bf6591fbc21df63804c408946b417c33b"
+    },
+    {
+      "path": "lib/nfc/protocols/mf_plus/mf_plus_i.h",
+      "status": "modified-or-added",
+      "sha256": "a3d250a00d3bae682b1bbb5f25fc32981cb34c93761ccc4745af27aafd884214"
+    },
+    {
+      "path": "lib/nfc/protocols/mf_plus/mf_plus_listener.c",
+      "status": "modified-or-added",
+      "sha256": "465292421c338967909d5756810b674567f559662a66e506b9f903176bbfff15"
+    },
+    {
+      "path": "lib/nfc/protocols/mf_plus/mf_plus_listener.h",
+      "status": "modified-or-added",
+      "sha256": "126c79844914465e17654e1c193a996085b9bf418ff03d8727fb337f5ec28660"
+    },
+    {
+      "path": "lib/nfc/protocols/mf_plus/mf_plus_listener_defs.h",
+      "status": "modified-or-added",
+      "sha256": "7c95cb7c86dc366a7d5f0d8248d82985a77f2c3b30a31ece95f189dfd19c7160"
+    },
+    {
+      "path": "lib/nfc/protocols/mf_plus/mf_plus_listener_i.c",
+      "status": "modified-or-added",
+      "sha256": "9dfe3b503a66ba1ce875ae437ead74a3169f1f0ac2ae602bf3081872af2f995c"
+    },
+    {
+      "path": "lib/nfc/protocols/mf_plus/mf_plus_listener_i.h",
+      "status": "modified-or-added",
+      "sha256": "8fe2f3bb6028809c4c5a4a6d997e025bcec9eac6ded707f8318358b212f8400a"
+    },
+    {
+      "path": "lib/nfc/protocols/mf_plus/mf_plus_poller.c",
+      "status": "modified-or-added",
+      "sha256": "8332c1f24493e341e15ab825393788b51c8cdffd34f83649aab941c00a5bf79b"
+    },
+    {
+      "path": "lib/nfc/protocols/mf_plus/mf_plus_poller.h",
+      "status": "modified-or-added",
+      "sha256": "6f5f8a469be74455a96904e32c54c343afabd7458bad65dbbf039d22c7440bae"
+    },
+    {
+      "path": "lib/nfc/protocols/mf_plus/mf_plus_poller_i.c",
+      "status": "modified-or-added",
+      "sha256": "f068a99de6b415ea78be28f0e3128283af5d110c92279fe8d69265799eabdd70"
+    },
+    {
+      "path": "lib/nfc/protocols/mf_plus/mf_plus_poller_i.h",
+      "status": "modified-or-added",
+      "sha256": "5f0aa62b2a8def545e7873e46ea8cfb6886bc216804e4c089363187994857afd"
+    },
+    {
+      "path": "lib/nfc/protocols/mf_ultralight/mf_ultralight.c",
+      "status": "modified-or-added",
+      "sha256": "662bd9532879297ae883444ef181ae88b6bad6c5dbca4d35bd88a70ca5ccfef0"
+    },
+    {
+      "path": "lib/nfc/protocols/mf_ultralight/mf_ultralight.h",
+      "status": "modified-or-added",
+      "sha256": "1c34020afb5a384731b97989886ddd35a6c650ee797760e9f07f8379b1954092"
+    },
+    {
+      "path": "lib/nfc/protocols/mf_ultralight/mf_ultralight_aes_crypto.c",
+      "status": "modified-or-added",
+      "sha256": "5012be6638724a462cb130bcb3f19b47f4a2e23f7c384a6e3f1096d790aee6e7"
+    },
+    {
+      "path": "lib/nfc/protocols/mf_ultralight/mf_ultralight_aes_crypto.h",
+      "status": "modified-or-added",
+      "sha256": "0960a96dfec152f8d87bcab54ac7660ac924cb745a9311c215e8dd85f367dda0"
+    },
+    {
+      "path": "lib/nfc/protocols/mf_ultralight/mf_ultralight_listener.c",
+      "status": "modified-or-added",
+      "sha256": "f5459434e10155a7cb768abcc7e2f9136102b200097d301b8c2a724d8c620429"
+    },
+    {
+      "path": "lib/nfc/protocols/mf_ultralight/mf_ultralight_listener_i.c",
+      "status": "modified-or-added",
+      "sha256": "20111c45884205c4d505284f56212a08c4db9f0d41e811c19e029bd755d7becb"
+    },
+    {
+      "path": "lib/nfc/protocols/mf_ultralight/mf_ultralight_listener_i.h",
+      "status": "modified-or-added",
+      "sha256": "55357fed935fa1387f03285cd000ec1e807bb91f600261efaf758fb1694fd0b6"
+    },
+    {
+      "path": "lib/nfc/protocols/mf_ultralight/mf_ultralight_poller.c",
+      "status": "modified-or-added",
+      "sha256": "9f8c6eabc9e7232d83819a0888f24c5ff3dfd46458d20ab93bac41502a7c377f"
+    },
+    {
+      "path": "lib/nfc/protocols/mf_ultralight/mf_ultralight_poller.h",
+      "status": "modified-or-added",
+      "sha256": "9d581b85fe5d31503a59ca6c28f689470ab2a04514ef5f65194e873435fd9f3f"
+    },
+    {
+      "path": "lib/nfc/protocols/mf_ultralight/mf_ultralight_poller_i.c",
+      "status": "modified-or-added",
+      "sha256": "8152acddaaf15a8a805bdebde8b282089c96ccf1db4af01c1a71ef4ae27a9279"
+    },
+    {
+      "path": "lib/nfc/protocols/mf_ultralight/mf_ultralight_poller_i.h",
+      "status": "modified-or-added",
+      "sha256": "f643bbb4ce62b7ed3d3c612a2ec840a0f261e8c4a9a74e0ea360d2ef9065b535"
+    },
+    {
+      "path": "lib/nfc/protocols/nfc_listener_defs.c",
+      "status": "modified-or-added",
+      "sha256": "e47063b834f8f581393899e8ab007a8104a38afb849ef867d70ba3c353b78dc6"
+    },
+    {
+      "path": "lib/nfc/protocols/st25tb/st25tb_poller_i.c",
+      "status": "modified-or-added",
+      "sha256": "8a90f8513a06eec6c719cc29d3fcfead96bf4ac9b1a32f48fbcc64ad7e5c386d"
+    },
+    {
+      "path": "lib/nfc/protocols/type_4_tag/type_4_tag_listener.c",
+      "status": "modified-or-added",
+      "sha256": "a1ee7b86982d109b656bbfa8725cf4330156bab633e8e015c0f0f7b157b55a97"
+    },
+    {
+      "path": "lib/nfc/protocols/type_4_tag/type_4_tag_listener_i.c",
+      "status": "modified-or-added",
+      "sha256": "cd7ce52de7463697fea11ea54c8d614ee2cb7e34de6664b573500420733eda9a"
+    },
+    {
+      "path": "lib/signal_reader/parsers/iso15693/iso15693_parser.c",
+      "status": "modified-or-added",
+      "sha256": "e7fdb737b4a73aa78c9adeeaa85c80b3d3f3c3651317a5bab0519518396840d5"
+    },
+    {
+      "path": "lib/subghz/blocks/decoder.c",
+      "status": "modified-or-added",
+      "sha256": "4128a057355ec801baedaaaca99a22deabb679e94875c6ef7cf150693a715d71"
+    },
+    {
+      "path": "lib/subghz/blocks/encoder.c",
+      "status": "modified-or-added",
+      "sha256": "3bb93f6573012108af80c7284c88f9621a2a5eb5747c69dd14204275dc5aa298"
+    },
+    {
+      "path": "lib/subghz/devices/registry.c",
+      "status": "modified-or-added",
+      "sha256": "4278863125b0342548ea1a4f82bca0560007083815d382ed91ceda6bd8a54f2e"
+    },
+    {
+      "path": "lib/subghz/protocols/allstar_firefly.c",
+      "status": "modified-or-added",
+      "sha256": "728638005064fda49476565749ca29044307303dbdf6cb698de00b730ca0b5a4"
+    },
+    {
+      "path": "lib/subghz/protocols/allstar_firefly.h",
+      "status": "modified-or-added",
+      "sha256": "dd0e4c2b4d3c877286ecd830e1b08d1b6de80eed9527581bdc0881456daff56b"
+    },
+    {
+      "path": "lib/subghz/protocols/alutech_at_4n.c",
+      "status": "modified-or-added",
+      "sha256": "80a06a9efc9fedbabfc651361e88aa9086dbcc00f7ddfce447d278e98af3f811"
+    },
+    {
+      "path": "lib/subghz/protocols/alutech_at_4n.h",
+      "status": "modified-or-added",
+      "sha256": "3438e705961934f7123b806a6f9c9b8885ffd29bf91856c843415758f2186fc8"
+    },
+    {
+      "path": "lib/subghz/protocols/ansonic.c",
+      "status": "modified-or-added",
+      "sha256": "a7c446fe906ef82bec99f1aff8ea81bd9d7f52663d11da556b7e178bf542ce42"
+    },
+    {
+      "path": "lib/subghz/protocols/ansonic.h",
+      "status": "modified-or-added",
+      "sha256": "2900988d7e22dc51787af48e993d252d3e76bacd5c8fd53123a7ccdff3ad74d4"
+    },
+    {
+      "path": "lib/subghz/protocols/beninca_arc.c",
+      "status": "modified-or-added",
+      "sha256": "0510e521b1a573affd98acd7a53399628ffc49d5b533e414dd220a351afd11a4"
+    },
+    {
+      "path": "lib/subghz/protocols/beninca_arc.h",
+      "status": "modified-or-added",
+      "sha256": "9c1854730a855eb132a590155f0ce0db00073dd9cbc3b80d9448b5343479d86d"
+    },
+    {
+      "path": "lib/subghz/protocols/bett.c",
+      "status": "modified-or-added",
+      "sha256": "f09eb07f33450e710a2fd238c96f59d137bdd9823e07a32b28ba63082ced0986"
+    },
+    {
+      "path": "lib/subghz/protocols/bett.h",
+      "status": "modified-or-added",
+      "sha256": "fc75578f263564b910f98e0a31688f2c1915067cef936848ff3d01fbadc3c7cb"
+    },
+    {
+      "path": "lib/subghz/protocols/bin_raw.c",
+      "status": "modified-or-added",
+      "sha256": "df68b522787c320a909455ac0f52f7e997bb3a49361caa4f513049144f33c898"
+    },
+    {
+      "path": "lib/subghz/protocols/bin_raw.h",
+      "status": "modified-or-added",
+      "sha256": "0b4428adaddaee72a96561080c4a212bc4c64bedd55e1b1aca25900d3591eacd"
+    },
+    {
+      "path": "lib/subghz/protocols/came.c",
+      "status": "modified-or-added",
+      "sha256": "50340025c80eee5b9a205d94fa8637d4377d9f5d87b8866e4b98d41fe803b8a4"
+    },
+    {
+      "path": "lib/subghz/protocols/came.h",
+      "status": "modified-or-added",
+      "sha256": "e63eb4b06f850a5abf68d9e1a66fc4af61fec82245e1143c41310a28df80601a"
+    },
+    {
+      "path": "lib/subghz/protocols/came_atomo.c",
+      "status": "modified-or-added",
+      "sha256": "c1203456841467931863d21d1618cc27f5e85075e20aa728618e89048a1bf945"
+    },
+    {
+      "path": "lib/subghz/protocols/came_atomo.h",
+      "status": "modified-or-added",
+      "sha256": "204309cd8d94952d0271dc3dde6edbbf785fc75ba32b040362f07fe01b0be698"
+    },
+    {
+      "path": "lib/subghz/protocols/came_twee.c",
+      "status": "modified-or-added",
+      "sha256": "b1b14a6a6806c3b32edc35372c68a2c1ae9ae684c2babb34ad1b20b18e6db7e2"
+    },
+    {
+      "path": "lib/subghz/protocols/came_twee.h",
+      "status": "modified-or-added",
+      "sha256": "4c2b26d87105ce637b35a52f64067eccafde3fc4ad157ceb59adf1c0108b5f75"
+    },
+    {
+      "path": "lib/subghz/protocols/chamberlain_code.c",
+      "status": "modified-or-added",
+      "sha256": "a49d31c461babfb57d16ba96df6724d0ce087f99d77190e20b89a904b886f3df"
+    },
+    {
+      "path": "lib/subghz/protocols/chamberlain_code.h",
+      "status": "modified-or-added",
+      "sha256": "cb1a70764ef3002ba294aca0653d53749013d4902791372b072aecf479609c52"
+    },
+    {
+      "path": "lib/subghz/protocols/clemsa.c",
+      "status": "modified-or-added",
+      "sha256": "6d51826a9ad9d7259786c01c9c9dbd63add1bc4f7bdf962178a63755b9bb2422"
+    },
+    {
+      "path": "lib/subghz/protocols/clemsa.h",
+      "status": "modified-or-added",
+      "sha256": "8ad4c250c75e50845f484d0ef63441bb8452b88a3edd4785b3b0fd610578dd4f"
+    },
+    {
+      "path": "lib/subghz/protocols/common.c",
+      "status": "modified-or-added",
+      "sha256": "fed86ffddf11cfed29c6e18520ee3987217d48afef548747be88c38f7907afba"
+    },
+    {
+      "path": "lib/subghz/protocols/common.h",
+      "status": "modified-or-added",
+      "sha256": "70051ca1a38f7c31330a3763fd0ac18d2bf20c06ba2deb2002532507aa6b77d8"
+    },
+    {
+      "path": "lib/subghz/protocols/dickert_mahs.c",
+      "status": "modified-or-added",
+      "sha256": "f2f8e71dde27bd1eacc224525af72c6a33dcb9f465676bd61bf47fefb9ee6536"
+    },
+    {
+      "path": "lib/subghz/protocols/dickert_mahs.h",
+      "status": "modified-or-added",
+      "sha256": "9f8187928c19015e81500497a6a6f0dc9697a4f16b9ea760f9717fa354bccc31"
+    },
+    {
+      "path": "lib/subghz/protocols/ditec_gol4.c",
+      "status": "modified-or-added",
+      "sha256": "f87fbfd65068929694743b31327a9ee21d3caafbb48e90658c973a87d1c16aed"
+    },
+    {
+      "path": "lib/subghz/protocols/ditec_gol4.h",
+      "status": "modified-or-added",
+      "sha256": "257306b5f0a40af5d8d0cf92e26b023cff7782d4061e0b67067410f6c604ddea"
+    },
+    {
+      "path": "lib/subghz/protocols/doitrand.c",
+      "status": "modified-or-added",
+      "sha256": "4c7805b32170af81aad2d0374c77f541d856c67e18b26778f03270896fa393a2"
+    },
+    {
+      "path": "lib/subghz/protocols/doitrand.h",
+      "status": "modified-or-added",
+      "sha256": "50d3a76eac76bfd476f1f1b5cb2f8f01e333f99c2019fe2861d6090547405cbc"
+    },
+    {
+      "path": "lib/subghz/protocols/dooya.c",
+      "status": "modified-or-added",
+      "sha256": "b5fc00fe6a6cc1f16bdf344dd8ff0db456c974f01fde12e5c3a5dbb97b8fc581"
+    },
+    {
+      "path": "lib/subghz/protocols/dooya.h",
+      "status": "modified-or-added",
+      "sha256": "a3fa19fd95cf1e4bedbc6c60c977d337b9bace7234e53db44f8ef2dd95e6ef0a"
+    },
+    {
+      "path": "lib/subghz/protocols/elplast.c",
+      "status": "modified-or-added",
+      "sha256": "cf728e8e9e263c87e92763de58314bb223289323da1497317f2717d7f59ee162"
+    },
+    {
+      "path": "lib/subghz/protocols/elplast.h",
+      "status": "modified-or-added",
+      "sha256": "ee50f9d01fb471f89e020dc89dc77769826e5ef15934968d9845b406c1348a96"
+    },
+    {
+      "path": "lib/subghz/protocols/faac_slh.c",
+      "status": "modified-or-added",
+      "sha256": "cc427f82354cfdfcd9d01a5c05f597bd2b8eb4c58fe57f55568ad999eb5d2038"
+    },
+    {
+      "path": "lib/subghz/protocols/faac_slh.h",
+      "status": "modified-or-added",
+      "sha256": "f304e9260aff93b08aae5908b5b2b1b987685a2c77e7c4cca0983890f614c8b0"
+    },
+    {
+      "path": "lib/subghz/protocols/feron.c",
+      "status": "modified-or-added",
+      "sha256": "e794a171be21a072de759dd29348c5d3956cd7fe0d2593d6f0c73d651103ea1e"
+    },
+    {
+      "path": "lib/subghz/protocols/feron.h",
+      "status": "modified-or-added",
+      "sha256": "2c58b63661f0ed28ca89098f33c229ecede334652bdcf779dc6ca2cb2f53fb89"
+    },
+    {
+      "path": "lib/subghz/protocols/gangqi.c",
+      "status": "modified-or-added",
+      "sha256": "8caa1c5be38f171d2ff69f88a0cffb0ce7607c49131b2aef6d20a977cd3923a2"
+    },
+    {
+      "path": "lib/subghz/protocols/gangqi.h",
+      "status": "modified-or-added",
+      "sha256": "f238dc711e9297902fb64851ccc99db86587d119035a950e741deb55a4601a3c"
+    },
+    {
+      "path": "lib/subghz/protocols/gate_tx.c",
+      "status": "modified-or-added",
+      "sha256": "fb3e6c0c5ff4000ca16c32e233f24b8a42eac78a08063a88ede495d7f64fe2c2"
+    },
+    {
+      "path": "lib/subghz/protocols/gate_tx.h",
+      "status": "modified-or-added",
+      "sha256": "7da076af7b4c5c908c095020c68c896f1f8575189cebb24fa81127761b63811c"
+    },
+    {
+      "path": "lib/subghz/protocols/hay21.c",
+      "status": "modified-or-added",
+      "sha256": "ae499b6469ee5c9a3a0b400e52068fa3821444dc5abd411441d944aed6f4cf6c"
+    },
+    {
+      "path": "lib/subghz/protocols/hay21.h",
+      "status": "modified-or-added",
+      "sha256": "71fbb95283ef4804b94cdeef6864d0c635d8e1c84f0971f2dd88b84cebb73a7d"
+    },
+    {
+      "path": "lib/subghz/protocols/hollarm.c",
+      "status": "modified-or-added",
+      "sha256": "a60fd8dd63fe50be02427f093afed633bd3485fe778dcf456125099d9223a408"
+    },
+    {
+      "path": "lib/subghz/protocols/hollarm.h",
+      "status": "modified-or-added",
+      "sha256": "ac68d32acf09b160d9d49b69613f5a5d0eaa7ce48c2659cbf95dafbf583edc63"
+    },
+    {
+      "path": "lib/subghz/protocols/holtek.c",
+      "status": "modified-or-added",
+      "sha256": "d1a3ce17a506e40a5cb0d08c3f0fdb375bf437d97e65d1fb898fee6c8b194673"
+    },
+    {
+      "path": "lib/subghz/protocols/holtek.h",
+      "status": "modified-or-added",
+      "sha256": "94742ebd47b63d9756b681572366aac1b7a30776cb3d7bba751cfd1c91a1c57d"
+    },
+    {
+      "path": "lib/subghz/protocols/holtek_ht12x.c",
+      "status": "modified-or-added",
+      "sha256": "d339e3da51576378286510cfa1b0e1d3075e8f8a7b1838f463a5577e289be4ac"
+    },
+    {
+      "path": "lib/subghz/protocols/holtek_ht12x.h",
+      "status": "modified-or-added",
+      "sha256": "d097c272c517d11cccb7f8f7ad9d3edc97dec936c44be4f2af26e5a9cf04c99a"
+    },
+    {
+      "path": "lib/subghz/protocols/honeywell.c",
+      "status": "modified-or-added",
+      "sha256": "2ce0386b673348fee41c2b332f333489b2534a344c3d0504b4d1749bd8c00e69"
+    },
+    {
+      "path": "lib/subghz/protocols/honeywell.h",
+      "status": "modified-or-added",
+      "sha256": "f24bc5ded5fa58b5b456fc301f064a1904be5b32b5c7eb595acafebf492dd4fc"
+    },
+    {
+      "path": "lib/subghz/protocols/honeywell_wdb.c",
+      "status": "modified-or-added",
+      "sha256": "14550cd8d70edb8998f4e0d17710317bd99c0e565ab616081144a18f095a7b94"
+    },
+    {
+      "path": "lib/subghz/protocols/honeywell_wdb.h",
+      "status": "modified-or-added",
+      "sha256": "041f7f88df06d90c8e19eafd663bbfe24b631f28dfb96ec1a0e0a40c646622bb"
+    },
+    {
+      "path": "lib/subghz/protocols/hormann.c",
+      "status": "modified-or-added",
+      "sha256": "329f25ce550a60a73841288d8d929deedcbd910f7bededa1b61466bdbf5fd58f"
+    },
+    {
+      "path": "lib/subghz/protocols/hormann.h",
+      "status": "modified-or-added",
+      "sha256": "4fbf67d1fdfde7dfee734d166635114b1a8a9ebfa776f58fc471d1c44bf64463"
+    },
+    {
+      "path": "lib/subghz/protocols/ido.c",
+      "status": "modified-or-added",
+      "sha256": "382d96bd12819df9875e9477837dea665650aab4ffa1507f59fbde7444cb2d2e"
+    },
+    {
+      "path": "lib/subghz/protocols/ido.h",
+      "status": "modified-or-added",
+      "sha256": "e55cf0927005ea5358f3c138b39bf98e9d91dbce648e12127b8670fe48132b22"
+    },
+    {
+      "path": "lib/subghz/protocols/intertechno_v3.c",
+      "status": "modified-or-added",
+      "sha256": "21edffaa398f6657ea91ddb60965f0cb50997937108e6837ada7b8b68456b27e"
+    },
+    {
+      "path": "lib/subghz/protocols/intertechno_v3.h",
+      "status": "modified-or-added",
+      "sha256": "deb2518b34bc1f55678b8e7f4b32dceb9b614f8e8409ca2d6ccf0ecb095f0995"
+    },
+    {
+      "path": "lib/subghz/protocols/jarolift.c",
+      "status": "modified-or-added",
+      "sha256": "56965773dc7ae5fe9226e360009b716fecb64fdd2145b59744c59cc6383f9b9f"
+    },
+    {
+      "path": "lib/subghz/protocols/jarolift.h",
+      "status": "modified-or-added",
+      "sha256": "71d4c04fd8442fa6cce6e1b43221182eba054dbb1819b0849f93dbc44be44a86"
+    },
+    {
+      "path": "lib/subghz/protocols/keeloq.c",
+      "status": "modified-or-added",
+      "sha256": "bafd1a251bbbc43d59d384490500ec2bb776de299649cd0d8e779f771f442fe4"
+    },
+    {
+      "path": "lib/subghz/protocols/keeloq.h",
+      "status": "modified-or-added",
+      "sha256": "4a9579d2a018e36a1a361c4b628db01c42e5ecc919ab813bb157490c37184b54"
+    },
+    {
+      "path": "lib/subghz/protocols/keeloq_common.c",
+      "status": "modified-or-added",
+      "sha256": "aa3b77d957ebe8c782ee26694450a15ab9799413bbb798e01edc631556dcc996"
+    },
+    {
+      "path": "lib/subghz/protocols/keeloq_common.h",
+      "status": "modified-or-added",
+      "sha256": "e6855aaab3ec52e44bd32e6e6cafed6e590fc6bb7a6c8a87fd681950ffd271bd"
+    },
+    {
+      "path": "lib/subghz/protocols/keyfinder.c",
+      "status": "modified-or-added",
+      "sha256": "407bd57309e740434e23076679a9f2658aff4df122352c6596a2237aa880b631"
+    },
+    {
+      "path": "lib/subghz/protocols/keyfinder.h",
+      "status": "modified-or-added",
+      "sha256": "6ebb0e45ab15886d3bb7be4f97a62985801d23366fbed65b96efad585648a810"
+    },
+    {
+      "path": "lib/subghz/protocols/kinggates_stylo_4k.c",
+      "status": "modified-or-added",
+      "sha256": "2ee0b7f8c26b3997f3f80c3c0f62ec8cc0a8d38334a5eb267aaf84c0acb74fa2"
+    },
+    {
+      "path": "lib/subghz/protocols/kinggates_stylo_4k.h",
+      "status": "modified-or-added",
+      "sha256": "fb92b9774d68750efba62646e8e0686b17a0b313bd626af72e9355938f5e866a"
+    },
+    {
+      "path": "lib/subghz/protocols/legrand.c",
+      "status": "modified-or-added",
+      "sha256": "e1b4b8a310088d071424ed3654902a24dfae927613d157e2b4bd47c44886bf3d"
+    },
+    {
+      "path": "lib/subghz/protocols/legrand.h",
+      "status": "modified-or-added",
+      "sha256": "6550f664b17107873be3b162282014fb6cdb3324023c4eb22d4ef5df318331b5"
+    },
+    {
+      "path": "lib/subghz/protocols/linear.c",
+      "status": "modified-or-added",
+      "sha256": "08d292c7c8633ef3c62ab469567dad6f2952d6ba638130f7826adb76d31e9b4d"
+    },
+    {
+      "path": "lib/subghz/protocols/linear.h",
+      "status": "modified-or-added",
+      "sha256": "7425f3076e66b58193fb504fceb04710004dcb3044263ce73bbca3fff8cf5f90"
+    },
+    {
+      "path": "lib/subghz/protocols/linear_delta3.c",
+      "status": "modified-or-added",
+      "sha256": "d2ed93875a9d9a5f2fed47b77bb13e10aee55a899aedd7fc2cf52afb06ec009a"
+    },
+    {
+      "path": "lib/subghz/protocols/linear_delta3.h",
+      "status": "modified-or-added",
+      "sha256": "2cbc1f317cc5c36b4b9767d6d1b3ce259abd761a3a4c10044d90a0e2664beb5c"
+    },
+    {
+      "path": "lib/subghz/protocols/magellan.c",
+      "status": "modified-or-added",
+      "sha256": "aa9002492d850e267d5eb99315646ef135eb3a8867b31aefde71765273c00186"
+    },
+    {
+      "path": "lib/subghz/protocols/magellan.h",
+      "status": "modified-or-added",
+      "sha256": "f5f472f5404bca78a6a46aa76b821d4245ce8fadc75d1788163017a578264784"
+    },
+    {
+      "path": "lib/subghz/protocols/marantec.c",
+      "status": "modified-or-added",
+      "sha256": "d672c94740cc96e4ef68493da878044a66f0eacd1270c9ce97e42a535becafe6"
+    },
+    {
+      "path": "lib/subghz/protocols/marantec.h",
+      "status": "modified-or-added",
+      "sha256": "4dcf13e21e1483cfa753a4c3dcc835c9f7efd65171529eccca2dbf6e952eef09"
+    },
+    {
+      "path": "lib/subghz/protocols/marantec24.c",
+      "status": "modified-or-added",
+      "sha256": "ea35aa70287c66a75261da70226441cdb9e7594d76b0ffb4b3f5e3d5170191ed"
+    },
+    {
+      "path": "lib/subghz/protocols/marantec24.h",
+      "status": "modified-or-added",
+      "sha256": "7c5804b42887876054abe2397516780a8bd3023af8c4d5a76fcc0730e9d5d359"
+    },
+    {
+      "path": "lib/subghz/protocols/mastercode.c",
+      "status": "modified-or-added",
+      "sha256": "33cbf917a65929db9000bfd79eefcb52b3a6880b7a0fb5ce098fb120b5a5770c"
+    },
+    {
+      "path": "lib/subghz/protocols/mastercode.h",
+      "status": "modified-or-added",
+      "sha256": "667ab7eb3c2ae10e61c44bac5373c9f0a19ca3863d7f8e7f9eec723018531b95"
+    },
+    {
+      "path": "lib/subghz/protocols/megacode.c",
+      "status": "modified-or-added",
+      "sha256": "1eabedc172cefebda1c67b50fc801ab38d036ebb377c65e7a7775ea0f93b0fc8"
+    },
+    {
+      "path": "lib/subghz/protocols/megacode.h",
+      "status": "modified-or-added",
+      "sha256": "9783561ef0cc1be5ffb906f9b9b16aeeb93a938cc1438bf468e127dbd07d26a6"
+    },
+    {
+      "path": "lib/subghz/protocols/nero_radio.c",
+      "status": "modified-or-added",
+      "sha256": "9760b36b5e4e3d878ab1afe03876b39594c924aaf340d4e3fc5961c951384f5a"
+    },
+    {
+      "path": "lib/subghz/protocols/nero_radio.h",
+      "status": "modified-or-added",
+      "sha256": "b2703581656de1e979c315bf632d51acae3050fb9932a4bf335e2d11d5926525"
+    },
+    {
+      "path": "lib/subghz/protocols/nero_sketch.c",
+      "status": "modified-or-added",
+      "sha256": "0be854a1d4e2bfaa8017e343e0c2da6e72a55145a1b2cb3df36cda18da2f5d1a"
+    },
+    {
+      "path": "lib/subghz/protocols/nero_sketch.h",
+      "status": "modified-or-added",
+      "sha256": "90e3c3b2945c83aa1b7475e5e9ae0872243dbf0057f9c92ae80356dba1ce1010"
+    },
+    {
+      "path": "lib/subghz/protocols/nice_flo.c",
+      "status": "modified-or-added",
+      "sha256": "7400a89d91283c120563354c53c4e3192bdbd6c5242ecc66278aa0d49702fd60"
+    },
+    {
+      "path": "lib/subghz/protocols/nice_flo.h",
+      "status": "modified-or-added",
+      "sha256": "6ab169688d4fea28f636181b761cafd20932cc502f037ada900dc100f4e0f002"
+    },
+    {
+      "path": "lib/subghz/protocols/nice_flor_s.c",
+      "status": "modified-or-added",
+      "sha256": "2e43454cee2e8dd62af88513c2929ed1d5f96eff53db8c1dfd4b39cb06226d4f"
+    },
+    {
+      "path": "lib/subghz/protocols/nice_flor_s.h",
+      "status": "modified-or-added",
+      "sha256": "e3a6ffaf193ac80a02283a50f6dff65c17397cc7e043acbbeaf22f77cdfd184d"
+    },
+    {
+      "path": "lib/subghz/protocols/nord_ice.c",
+      "status": "modified-or-added",
+      "sha256": "a3d87e2f9a60e154f85c333c29d58100dc7d144ab47242aaf2deb301e7a5b435"
+    },
+    {
+      "path": "lib/subghz/protocols/nord_ice.h",
+      "status": "modified-or-added",
+      "sha256": "ae6c966b367e1d5811f66b89acd23d11dbb6fff62b770d623151e2e51d4def55"
+    },
+    {
+      "path": "lib/subghz/protocols/phoenix_v2.c",
+      "status": "modified-or-added",
+      "sha256": "56b9ac3e19d7476175b243a03cf89c003da288659937cec589f637ab963c2222"
+    },
+    {
+      "path": "lib/subghz/protocols/phoenix_v2.h",
+      "status": "modified-or-added",
+      "sha256": "eaff90a418c945774fa600a85b71a268dc85e18d153e97260751c7a42688bbb0"
+    },
+    {
+      "path": "lib/subghz/protocols/power_smart.c",
+      "status": "modified-or-added",
+      "sha256": "be2e4a473927b85b15a563cca0e51ae03a3a9ca57f0a045726658163c4cb1108"
+    },
+    {
+      "path": "lib/subghz/protocols/power_smart.h",
+      "status": "modified-or-added",
+      "sha256": "833b27dd7c5aad4f12e7a1e07e7c9e78993f7a95feba4d0d4a99c6e6d5e19693"
+    },
+    {
+      "path": "lib/subghz/protocols/prastel.c",
+      "status": "modified-or-added",
+      "sha256": "2c1773de537b407dfc785c6bd1395f6f2aa5d821a30aa2d8844bde1b8fa79d67"
+    },
+    {
+      "path": "lib/subghz/protocols/prastel.h",
+      "status": "modified-or-added",
+      "sha256": "845e4d1295d0adc0b8701a6d8d482455a4e2bcea0f93fe409732187a87f12f25"
+    },
+    {
+      "path": "lib/subghz/protocols/princeton.c",
+      "status": "modified-or-added",
+      "sha256": "330b2bab5364fe1d08ea2884ca4cdd7532875dae77cbd1d49f02999e2c5e4b8b"
+    },
+    {
+      "path": "lib/subghz/protocols/princeton.h",
+      "status": "modified-or-added",
+      "sha256": "ab63dfcddced297954016cb8405cf0b986c14a4a542568ae6096e78cd955fb83"
+    },
+    {
+      "path": "lib/subghz/protocols/protocol_items.c",
+      "status": "modified-or-added",
+      "sha256": "5f920e2883f2771dcc2419d046715eb8554becc6f4f2b623e7413495b67c2bf2"
+    },
+    {
+      "path": "lib/subghz/protocols/protocol_items.h",
+      "status": "modified-or-added",
+      "sha256": "51d8196e2c24863449497378612a04b3704c0b3c2290f275922d63058d646fad"
+    },
+    {
+      "path": "lib/subghz/protocols/public_api.h",
+      "status": "modified-or-added",
+      "sha256": "d84025263a9e8bfd00c8375ccebf139866db52f6580b143cb50039461e3b7704"
+    },
+    {
+      "path": "lib/subghz/protocols/revers_rb2.c",
+      "status": "modified-or-added",
+      "sha256": "bc40016725af4c5b8ee32cd1e386644b17c4c7fe5d556175a432f45d5f78af04"
+    },
+    {
+      "path": "lib/subghz/protocols/revers_rb2.h",
+      "status": "modified-or-added",
+      "sha256": "5b9f716920ab5f521d2839ee989ec3705ab8eb56abdfc0c3bb6a8afca9e846af"
+    },
+    {
+      "path": "lib/subghz/protocols/roger.c",
+      "status": "modified-or-added",
+      "sha256": "3c9764e6b6f6cb6d4b2f7722d2ca5020dcea6a1f4e78d2c0176b769a7a11ebab"
+    },
+    {
+      "path": "lib/subghz/protocols/roger.h",
+      "status": "modified-or-added",
+      "sha256": "e9b34e5c8879b6ae0010636d483d5979f2b8d3e86ca8dfa91e2497ecf75d5ca5"
+    },
+    {
+      "path": "lib/subghz/protocols/secplus_v1.c",
+      "status": "modified-or-added",
+      "sha256": "1536b146d5100e264f729c7a6fb0857d9468b5820a76f70e3d048d3d1d8f845e"
+    },
+    {
+      "path": "lib/subghz/protocols/secplus_v1.h",
+      "status": "modified-or-added",
+      "sha256": "0ecd1b792af4a55864afc0a5d400c11c876e94e14adfb2098818862b462ed683"
+    },
+    {
+      "path": "lib/subghz/protocols/secplus_v2.c",
+      "status": "modified-or-added",
+      "sha256": "5bbb367beae7107f72b1f89c262587fadf9e34dc3a92ab4ecff24a5fe31b8036"
+    },
+    {
+      "path": "lib/subghz/protocols/secplus_v2.h",
+      "status": "modified-or-added",
+      "sha256": "5162c03b05f33c7c8cf005bc54ce40927f1fe100b94b22250684e09519683098"
+    },
+    {
+      "path": "lib/subghz/protocols/smc5326.c",
+      "status": "modified-or-added",
+      "sha256": "a6706faa2fc436b395fd62459b862a7ebce208e4f6195132a4f529728a5ea515"
+    },
+    {
+      "path": "lib/subghz/protocols/smc5326.h",
+      "status": "modified-or-added",
+      "sha256": "f5d4f4d78b6cc53a851a6e052fecd7fdcb7a789bfdf42ec0e1258b243c844c4b"
+    },
+    {
+      "path": "lib/subghz/protocols/somfy_keytis.c",
+      "status": "modified-or-added",
+      "sha256": "1f6137f100bce784fd82d7153f3e7916cbf75083671e59c3a6ddc7c764b9b100"
+    },
+    {
+      "path": "lib/subghz/protocols/somfy_keytis.h",
+      "status": "modified-or-added",
+      "sha256": "798fcb95e653fdc08e549a690f55087536449e88aa33a2b398202542f38cd1d2"
+    },
+    {
+      "path": "lib/subghz/protocols/somfy_telis.c",
+      "status": "modified-or-added",
+      "sha256": "6ce9e15eb72718d154af282bb614c51a7649fe381068a3bb94d28b4c0fc04af9"
+    },
+    {
+      "path": "lib/subghz/protocols/somfy_telis.h",
+      "status": "modified-or-added",
+      "sha256": "4dbe1efe6351f5674d468649c3eee734a39bd2486818e9d18e4c160b2cec2e50"
+    },
+    {
+      "path": "lib/subghz/protocols/telcoma_edge.c",
+      "status": "modified-or-added",
+      "sha256": "8a52915b118a21b2dedee2daf571a2d27c83b6699c39b2c25ad02d40d6d5664b"
+    },
+    {
+      "path": "lib/subghz/protocols/telcoma_edge.h",
+      "status": "modified-or-added",
+      "sha256": "fa5a5db7d2d0d9baa74c05ffad19c3bbd77f3a6108ab54a8708cc1246c95a8b2"
+    },
+    {
+      "path": "lib/subghz/protocols/treadmill37.c",
+      "status": "modified-or-added",
+      "sha256": "e14dd41d535b1a999f4501754f49602197463af2df2257cbedb564968e5443c2"
+    },
+    {
+      "path": "lib/subghz/protocols/treadmill37.h",
+      "status": "modified-or-added",
+      "sha256": "f249e142b58a037007e0f4cbaa9a6bbd1ead0150bd67ad032b68a6722dd6bccd"
+    },
+    {
+      "path": "lib/subghz/subghz_file_encoder_worker.c",
+      "status": "modified-or-added",
+      "sha256": "981d180a48a4ff4ec11a3e7441e0f7d89812adb3d02365a0dd6aa27241ae4868"
+    },
+    {
+      "path": "lib/subghz/subghz_file_encoder_worker.h",
+      "status": "modified-or-added",
+      "sha256": "0e80ceb626d164c2b024d6ddf6c82bc81fee16d024365020d7f994cd7446f866"
+    },
+    {
+      "path": "lib/toolbox/args.c",
+      "status": "modified-or-added",
+      "sha256": "c3bf07f521ba6df107c224e00c6bbac7633d88e1773e7efe28cd4fb82b4506ae"
+    },
+    {
+      "path": "lib/toolbox/cli/shell/cli_shell.c",
+      "status": "modified-or-added",
+      "sha256": "55d3c6ec0c04927343dd67897a5bd18554c8b55ccd55000dc4a43c92f748729d"
+    },
+    {
+      "path": "lib/toolbox/keys_dict.c",
+      "status": "modified-or-added",
+      "sha256": "dda67d4bc324d9e4846fd4bc4565b265ff74e7c4f07b783c7161c052cb0c896e"
+    },
+    {
+      "path": "lib/toolbox/simple_array.c",
+      "status": "modified-or-added",
+      "sha256": "4a1f60571471f737fd96df70919db8386a70bcf3bf84a911dbeb7a3fac571749"
+    },
+    {
+      "path": "lib/toolbox/simple_array.h",
+      "status": "modified-or-added",
+      "sha256": "eb752a3a320a756fb5da96eaf54e82c1e0335a42608b9643687677a921a33027"
+    },
+    {
+      "path": "scripts/fbt/appmanifest.py",
+      "status": "modified-or-added",
+      "sha256": "ace35e948f90bd8e1e06de80ee5c549c7ff7143842225e96bd6cb5a8b36617a8"
+    },
+    {
+      "path": "scripts/fbt/sdk/app_api.py",
+      "status": "modified-or-added",
+      "sha256": "2a72743e1024d17a423b3e1693ed4dca9323b0c50ad5bf2b9c9e4c25d8f3d7ce"
+    },
+    {
+      "path": "scripts/fbt_tools/fbt_assets.py",
+      "status": "modified-or-added",
+      "sha256": "36b10728f6750614bfc18083a35e5a3aec1252473e720568cb84b84c13b684ab"
+    },
+    {
+      "path": "scripts/fbt_tools/fbt_extapps.py",
+      "status": "modified-or-added",
+      "sha256": "8417c7a1992d51982b48ec742d5d2e1a0540b1c61ea0d339fc8c1b28030605e8"
+    },
+    {
+      "path": "scripts/flipper/storage.py",
+      "status": "modified-or-added",
+      "sha256": "b7f57908e5f2858b84139f0c67cf5c337340c20efeb4b6019dda346356ef2857"
+    },
+    {
+      "path": "scripts/imglint.py",
+      "status": "modified-or-added",
+      "sha256": "899bc6b967cd5bf50567d4d636b62bb1d97e506679649a1d5bc666220decb99d"
+    },
+    {
+      "path": "scripts/tests/fixtures/protobuf_legacy_tags.json",
+      "status": "modified-or-added",
+      "sha256": "98924fcde5ba3c5b67dbc8f4165ad7a0a4b21d695068c1a792942c9fabccc3ee"
+    },
+    {
+      "path": "scripts/tests/test_app_api.py",
+      "status": "modified-or-added",
+      "sha256": "09d3e90459ef8956b786f81d7b9f2a874bb0fd862fe1929f3cabbb85c2393d2d"
+    },
+    {
+      "path": "scripts/tests/test_companion_services.py",
+      "status": "modified-or-added",
+      "sha256": "513f4bb321d42e87719e106ce0f1f7e7e039404abfa69a80cfb4a30ae25603cf"
+    },
+    {
+      "path": "scripts/tests/test_loader_loading.py",
+      "status": "modified-or-added",
+      "sha256": "3f63d1fe40478e269f780269062ffcb34f4e07e1dac2f64f4b6d3d21a64a144a"
+    },
+    {
+      "path": "scripts/tests/test_menu_styles.py",
+      "status": "modified-or-added",
+      "sha256": "ab9353195ef6249bb5429360071b28d4e1d4179df9345120fdee3c01312d3a81"
+    },
+    {
+      "path": "scripts/tests/test_number_input.py",
+      "status": "modified-or-added",
+      "sha256": "a13b6c5b2e829f7d1d0dd6d6f3ea59abc48865b43c6bd50b52e0754c9ea7a75d"
+    },
+    {
+      "path": "scripts/tests/test_protocol_compatibility.py",
+      "status": "modified-or-added",
+      "sha256": "65b488c1645b8baa341e2ec6626e81a0e3157aea128382c63226758000b2cc52"
+    },
+    {
+      "path": "scripts/tests/test_unleashed_integration.py",
+      "status": "modified-or-added",
+      "sha256": "b5e5d99d4247ed6ac81847633c4c42110fe892150ea978cda6f858688070525d"
+    },
+    {
+      "path": "scripts/tests/test_upstream_data.py",
+      "status": "modified-or-added",
+      "sha256": "a6b624f9bfb3e06e916a5885cef7da7a03ec72d0865e1fa0a0608a2f716f5e09"
+    },
+    {
+      "path": "site_scons/extapps.scons",
+      "status": "modified-or-added",
+      "sha256": "4b066c9bb559b25d027dd4225a6342a8d98fdfc4c99e3a9e3639cbaa4b19adb4"
+    },
+    {
+      "path": "site_scons/firmwareopts.scons",
+      "status": "modified-or-added",
+      "sha256": "097251fb4620ec3c9e2f04e1cfa221d8351a1819f8ea33e5b5188aa12ccf0d9d"
+    },
+    {
+      "path": "targets/f7/api_symbols.csv",
+      "status": "modified-or-added",
+      "sha256": "5fc89392776b29ca5db614edc495816838ca20901c281f2fa04f27d0b1f615e8"
+    },
+    {
+      "path": "targets/f7/ble_glue/services/serial_service.c",
+      "status": "modified-or-added",
+      "sha256": "e4c931a1a0bccab4e0243317f16d074477c9172d29246995c46a65a8b5ab8367"
+    },
+    {
+      "path": "targets/f7/furi_hal/furi_hal_power.c",
+      "status": "modified-or-added",
+      "sha256": "37af233399d6fa64518d2212dbdbddd5ab4123acfcc1b1befff57dfc888168d4"
+    },
+    {
+      "path": "targets/f7/furi_hal/furi_hal_rfid.c",
+      "status": "modified-or-added",
+      "sha256": "e284fb8c4dbcff9fe44bc3c6c7c015eca0df001d787e0c766b7d43cf879a329d"
+    },
+    {
+      "path": "targets/f7/furi_hal/furi_hal_serial_control.c",
+      "status": "modified-or-added",
+      "sha256": "74092aac81f148ece89d285e7d1b5ac957d994d7a064ba646f0fc9e0bbf1f1fb"
+    },
+    {
+      "path": "targets/f7/furi_hal/furi_hal_subghz.c",
+      "status": "modified-or-added",
+      "sha256": "b7552050c460954592ededbe891b3cef4fd2b24921cb4dc4943a22156336781d"
+    },
+    {
+      "path": "targets/f7/furi_hal/furi_hal_usb_hid.c",
+      "status": "modified-or-added",
+      "sha256": "15574c225e3b89c46bc3c0af11d3a677daa20f19db4fd6fb31bfa9c55b82ba24"
+    },
+    {
+      "path": "targets/f7/platform_specific/intrinsic_export.h",
+      "status": "modified-or-added",
+      "sha256": "1a2ea62505539af14567ad82e7406d5b80702ee646e188b7cf176c2dd013638a"
+    }
+  ]
+}

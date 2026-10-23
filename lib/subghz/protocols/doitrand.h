@@ -19,12 +19,6 @@ extern const SubGhzProtocol subghz_protocol_doitrand;
 void* subghz_protocol_encoder_doitrand_alloc(SubGhzEnvironment* environment);
 
 /**
- * Free SubGhzProtocolEncoderDoitrand.
- * @param context Pointer to a SubGhzProtocolEncoderDoitrand instance
- */
-void subghz_protocol_encoder_doitrand_free(void* context);
-
-/**
  * Deserialize and generating an upload to send.
  * @param context Pointer to a SubGhzProtocolEncoderDoitrand instance
  * @param flipper_format Pointer to a FlipperFormat instance
@@ -34,36 +28,11 @@ SubGhzProtocolStatus
     subghz_protocol_encoder_doitrand_deserialize(void* context, FlipperFormat* flipper_format);
 
 /**
- * Forced transmission stop.
- * @param context Pointer to a SubGhzProtocolEncoderDoitrand instance
- */
-void subghz_protocol_encoder_doitrand_stop(void* context);
-
-/**
- * Getting the level and duration of the upload to be loaded into DMA.
- * @param context Pointer to a SubGhzProtocolEncoderDoitrand instance
- * @return LevelDuration 
- */
-LevelDuration subghz_protocol_encoder_doitrand_yield(void* context);
-
-/**
  * Allocate SubGhzProtocolDecoderDoitrand.
  * @param environment Pointer to a SubGhzEnvironment instance
  * @return SubGhzProtocolDecoderDoitrand* pointer to a SubGhzProtocolDecoderDoitrand instance
  */
 void* subghz_protocol_decoder_doitrand_alloc(SubGhzEnvironment* environment);
-
-/**
- * Free SubGhzProtocolDecoderDoitrand.
- * @param context Pointer to a SubGhzProtocolDecoderDoitrand instance
- */
-void subghz_protocol_decoder_doitrand_free(void* context);
-
-/**
- * Reset decoder SubGhzProtocolDecoderDoitrand.
- * @param context Pointer to a SubGhzProtocolDecoderDoitrand instance
- */
-void subghz_protocol_decoder_doitrand_reset(void* context);
 
 /**
  * Parse a raw sequence of levels and durations received from the air.

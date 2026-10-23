@@ -248,10 +248,9 @@ static bool system_settings_custom_event_callback(void* context, uint32_t event)
         dialog_message_set_header(msg, "Enable Debug?", 64, 4, AlignCenter, AlignTop);
         dialog_message_set_text(
             msg,
-            "This consumes 400% more\n"
-            "battery life. Don't use unless\n"
-            "you know exactly what\n"
-            "you're doing.",
+            "This consumes 400% more\nbattery life. Don't use unless\nyou know exactly what\nyou're doing."
+            ""
+            "",
             64,
             36,
             AlignCenter,
@@ -267,10 +266,9 @@ static bool system_settings_custom_event_callback(void* context, uint32_t event)
         dialog_message_set_header(msg, "Disable DeepSleep?", 64, 4, AlignCenter, AlignTop);
         dialog_message_set_text(
             msg,
-            "Disabling will consume 400%\n"
-            "more battery life. Only\n"
-            "disable if you have a\n"
-            "specific reason.",
+            "Disabling will consume 400%\nmore battery life. Only\ndisable if you have a\nspecific reason."
+            ""
+            "",
             64,
             36,
             AlignCenter,
@@ -286,10 +284,9 @@ static bool system_settings_custom_event_callback(void* context, uint32_t event)
         dialog_message_set_header(msg, "Enable Heap Trace?", 64, 4, AlignCenter, AlignTop);
         dialog_message_set_text(
             msg,
-            "Will use more RAM and might\n"
-            "cause Out Of Memory errors.\n"
-            "Don't enable without a\n"
-            "specific reason.",
+            "Will use more RAM and might\ncause Out Of Memory errors.\nDon't enable without a\nspecific reason."
+            ""
+            "",
             64,
             36,
             AlignCenter,

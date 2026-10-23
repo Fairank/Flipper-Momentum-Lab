@@ -13,7 +13,7 @@ void ibutton_scene_delete_confirm_on_enter(void* context) {
     widget_add_button_element(
         widget, GuiButtonTypeRight, "Delete", ibutton_widget_callback, context);
 
-    furi_string_printf(tmp, "\e#Delete %s?\e#\n", ibutton->key_name);
+    furi_string_printf(tmp, "\033#Delete %s?\033#\n", ibutton->key_name);
 
     ibutton_protocols_render_uid(ibutton->protocols, key, uid);
 

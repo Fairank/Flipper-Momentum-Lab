@@ -4,6 +4,8 @@ enum SubmenuIndex {
     SubmenuIndexReadCardType,
     SubmenuIndexMfClassicKeys,
     SubmenuIndexMfUltralightCKeys,
+    SubmenuIndexMfUltralightAesKeys,
+    SubmenuIndexMfPlusKeys,
     SubmenuIndexMfUltralightUnlock,
     SubmenuIndexSlixUnlock,
 };
@@ -32,8 +34,20 @@ void nfc_scene_extra_actions_on_enter(void* context) {
         instance);
     submenu_add_item(
         submenu,
+        "MIFARE Plus Keys",
+        SubmenuIndexMfPlusKeys,
+        nfc_scene_extra_actions_submenu_callback,
+        instance);
+    submenu_add_item(
+        submenu,
         "MIFARE Ultralight C Keys",
         SubmenuIndexMfUltralightCKeys,
+        nfc_scene_extra_actions_submenu_callback,
+        instance);
+    submenu_add_item(
+        submenu,
+        "MIFARE UL AES Keys",
+        SubmenuIndexMfUltralightAesKeys,
         nfc_scene_extra_actions_submenu_callback,
         instance);
     submenu_add_item(
@@ -59,10 +73,20 @@ bool nfc_scene_extra_actions_on_event(void* context, SceneManagerEvent event) {
 
     if(event.type == SceneManagerEventTypeCustom) {
         if(event.event == SubmenuIndexMfClassicKeys) {
-            scene_manager_next_scene(instance->scene_manager, NfcSceneMfClassicKeys);
+            instance->key_dict_type = NfcKeyDictTypeMfClassic;
+            scene_manager_next_scene(instance->scene_manager, NfcSceneKeyDict);
             consumed = true;
         } else if(event.event == SubmenuIndexMfUltralightCKeys) {
-            scene_manager_next_scene(instance->scene_manager, NfcSceneMfUltralightCKeys);
+            instance->key_dict_type = NfcKeyDictTypeMfUltralightC;
+            scene_manager_next_scene(instance->scene_manager, NfcSceneKeyDict);
+            consumed = true;
+        } else if(event.event == SubmenuIndexMfUltralightAesKeys) {
+            instance->key_dict_type = NfcKeyDictTypeMfUltralightAes;
+            scene_manager_next_scene(instance->scene_manager, NfcSceneKeyDict);
+            consumed = true;
+        } else if(event.event == SubmenuIndexMfPlusKeys) {
+            instance->key_dict_type = NfcKeyDictTypeMfPlus;
+            scene_manager_next_scene(instance->scene_manager, NfcSceneKeyDict);
             consumed = true;
         } else if(event.event == SubmenuIndexMfUltralightUnlock) {
             mf_ultralight_auth_reset(instance->mf_ul_auth);
