@@ -44,9 +44,15 @@ typedef enum {
     AlignCenter
 } Align;
 typedef struct {
+    int x, y;
+    unsigned radius;
+} RecordedCircle;
+typedef struct {
     Font font;
     char text[8192];
     unsigned count, big_readings;
+    RecordedCircle circles[8], discs[8], dots[8];
+    unsigned circle_count, disc_count, dot_count;
 } Canvas;
 typedef enum {
     InputKeyUp,
@@ -139,21 +145,18 @@ void canvas_draw_str(Canvas* canvas, int x, int y, const char* text) {
     if(canvas->font == FontBigNumbers && strpbrk(text, "0123456789")) canvas->big_readings++;
 }
 void canvas_draw_circle(Canvas* canvas, int x, int y, unsigned radius) {
-    UNUSED(canvas);
-    UNUSED(x);
-    UNUSED(y);
-    UNUSED(radius);
+    assert(canvas->circle_count < 8);
+    assert(x >= (int)radius && y >= (int)radius && x + radius < 128 && y + radius < 64);
+    canvas->circles[canvas->circle_count++] = (RecordedCircle){x, y, radius};
 }
 void canvas_draw_dot(Canvas* canvas, int x, int y) {
-    UNUSED(canvas);
-    UNUSED(x);
-    UNUSED(y);
+    assert(canvas->dot_count < 8 && x >= 0 && x < 128 && y >= 0 && y < 64);
+    canvas->dots[canvas->dot_count++] = (RecordedCircle){x, y, 0};
 }
 void canvas_draw_disc(Canvas* canvas, int x, int y, unsigned radius) {
-    UNUSED(canvas);
-    UNUSED(x);
-    UNUSED(y);
-    UNUSED(radius);
+    assert(canvas->disc_count < 8);
+    assert(x >= (int)radius && y >= (int)radius && x + radius < 128 && y + radius < 64);
+    canvas->discs[canvas->disc_count++] = (RecordedCircle){x, y, radius};
 }
 void canvas_draw_box(Canvas* canvas, int x, int y, unsigned width, unsigned height) {
     UNUSED(canvas);
@@ -186,15 +189,26 @@ static void show(RadarModel* model) {
     draw(&canvas, model);
     puts(canvas.text);
     printf("large_numeric_readings=%u\n", canvas.big_readings);
+    for(unsigned i = 0; i < canvas.circle_count; i++)
+        printf(
+            "circle=%d,%d,%u\n",
+            canvas.circles[i].x,
+            canvas.circles[i].y,
+            canvas.circles[i].radius);
+    for(unsigned i = 0; i < canvas.dot_count; i++)
+        printf("dot=%d,%d\n", canvas.dots[i].x, canvas.dots[i].y);
+    for(unsigned i = 0; i < canvas.disc_count; i++)
+        printf("disc=%d,%d,%u\n", canvas.discs[i].x, canvas.discs[i].y, canvas.discs[i].radius);
 }
 static void range_target(
     RadarModel* model,
     bool reference,
     bool unstable,
     int signal_rssi,
-    int reference_rssi) {
+    int reference_rssi,
+    unsigned samples) {
     radar_init(&model->core);
-    for(unsigned i = 0; i < 16; i++) {
+    for(unsigned i = 0; i < samples; i++) {
         int rssi = unstable ? (i % 2 ? -40 : -90) : signal_rssi;
         clock_ms = 1000 + i * 250;
         assert(radar_observe(
@@ -273,10 +287,20 @@ int main(int argc, char** argv) {
             strcmp(state, "uncalibrated") != 0,
             !strcmp(state, "unstable"),
             signal_rssi,
-            reference_rssi);
+            reference_rssi,
+            !strcmp(state, "collecting") ? 1 : 16);
         if(!strcmp(state, "paused")) model.paused = true;
         if(!strcmp(state, "aging")) model.now = clock_ms + 4000;
         if(!strcmp(state, "lost")) model.now = clock_ms + 13000;
+        show(&model);
+    } else if(!strncmp(argv[1], "circle-", 7)) {
+        char mode[8], proximity[8];
+        assert(sscanf(argv[1], "circle-%7[^-]-%7s", mode, proximity) == 2);
+        bool calibrated = !strcmp(mode, "cal");
+        int signal = !strcmp(proximity, "close") ? (calibrated ? -50 : -45) :
+                     !strcmp(proximity, "far")   ? -80 :
+                                                   -60;
+        range_target(&model, calibrated, false, signal, -60, 16);
         show(&model);
     } else if(!strcmp(argv[1], "calibrate-pause")) {
         key(&app, InputKeyOk, InputTypeLong);

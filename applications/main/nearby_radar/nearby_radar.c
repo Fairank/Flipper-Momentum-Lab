@@ -217,15 +217,24 @@ static void meters_text(char* text, size_t size, uint16_t cm) {
     else
         snprintf(text, size, "%u", (cm + 50u) / 100u);
 }
-static void draw_strength(Canvas* canvas, uint8_t strength) {
-    for(unsigned i = 0; i < 4; i++) {
-        unsigned height = 5u + i * 5u;
-        int x = 94 + (int)i * 8;
-        if(i < strength)
-            canvas_draw_box(canvas, x, 35 - height, 5, height);
-        else
-            canvas_draw_frame(canvas, x, 35 - height, 5, height);
+static void draw_proximity_circle(Canvas* canvas, const RadarRangeEstimate* estimate, bool fresh) {
+    const int center_x = 23;
+    const int center_y = 29;
+    canvas_draw_circle(canvas, center_x, center_y, 17);
+    canvas_draw_circle(canvas, center_x, center_y, 8);
+    canvas_draw_dot(canvas, center_x, center_y);
+    if(!fresh || estimate->proximity == RadarRangeProximityUnknown) return;
+
+    /* This single radial scale shows proximity, never a compass bearing. */
+    unsigned offset;
+    if(estimate->status == RadarRangeStatusReady) {
+        offset = 2u + (uint32_t)estimate->cm * 12u / (estimate->cm + 200u);
+    } else {
+        offset = estimate->proximity == RadarRangeProximityVeryNear ? 2u :
+                 estimate->proximity == RadarRangeProximityNear     ? 8u :
+                                                                      14u;
     }
+    canvas_draw_disc(canvas, center_x, center_y - (int)offset, 2);
 }
 static void draw_setup(Canvas* canvas, const RadarModel* m, const RadarDevice* d) {
     const RadarRange* range = &d->range;
@@ -294,38 +303,42 @@ static void draw_finding(Canvas* canvas, const RadarModel* m, const RadarDevice*
                                                                                 "";
     canvas_set_font(canvas, FontSecondary);
     label(canvas, 2, 9, device_name(d), 124);
-    draw_strength(canvas, fresh ? estimate.strength : 0);
-    if(fresh) label(canvas, 94, 45, proximity, 32);
+    draw_proximity_circle(canvas, &estimate, fresh);
+    const char* circle_label = fresh && estimate.status == RadarRangeStatusReady ? proximity :
+                                                                                   "Signal";
+    unsigned circle_label_width = canvas_string_width(canvas, circle_label);
+    canvas_draw_str(canvas, 23 - (int)circle_label_width / 2, 55, circle_label);
 
     const char* title = "Reading...";
-    const char* guidance = "Hold steady briefly";
-    const char* note = "Signal-based finding";
+    const char* guidance = "Keep still";
+    const char* note = "Signal only";
     if(estimate.status == RadarRangeStatusReady && !limited) {
         char value[16], lower[12], upper[12], band[40];
         meters_text(value, sizeof(value), estimate.cm);
         canvas_set_font(canvas, FontBigNumbers);
         unsigned width = canvas_string_width(canvas, value);
-        canvas_draw_str(canvas, 3, 35, value);
+        canvas_draw_str(canvas, 51, 32, value);
         canvas_set_font(canvas, FontSecondary);
-        canvas_draw_str(canvas, 7 + width, 34, "m");
+        canvas_draw_str(canvas, 55 + width, 31, "m");
         meters_text(lower, sizeof(lower), estimate.lower_cm);
         meters_text(upper, sizeof(upper), estimate.upper_cm);
         snprintf(band, sizeof(band), "Est. %s-%sm", lower, upper);
         canvas_set_font(canvas, FontSecondary);
-        canvas_draw_str(
+        label(
             canvas,
-            3,
-            46,
+            51,
+            43,
             estimate.trend > 0 ? "Signal rising" :
             estimate.trend < 0 ? "Signal fading" :
-                                 "Move slowly");
-        label(canvas, 3, 55, band, 122);
+                                 "Move slowly",
+            74);
+        label(canvas, 51, 55, band, 74);
         canvas_draw_str(canvas, 3, 63, "OK:Info  Hold OK:1m");
         return;
     } else if(limited) {
-        title = "Too uncertain";
-        guidance = "Recheck 1m setup";
-        note = "Estimate unavailable";
+        title = "Uncertain";
+        guidance = "Try 1m setup";
+        note = "Unavailable";
     } else if(estimate.status == RadarRangeStatusUncalibrated) {
         title = estimate.proximity == RadarRangeProximityVeryNear ? "Close (est.)" :
                 estimate.proximity == RadarRangeProximityNear     ? "Near (est.)" :
@@ -333,29 +346,29 @@ static void draw_finding(Canvas* canvas, const RadarModel* m, const RadarDevice*
         guidance = estimate.trend > 0 ? "Signal rising" :
                    estimate.trend < 0 ? "Signal fading" :
                                         "Move slowly";
-        note = "Signal estimate / no 1m";
+        note = "No 1m reference";
     } else if(estimate.status == RadarRangeStatusUnstable) {
-        title = "Signal varies";
-        guidance = "Hold still / move slowly";
-        note = "Estimate unavailable";
+        title = "Unstable";
+        guidance = "Keep still";
+        note = "No estimate";
     } else if(estimate.status == RadarRangeStatusAging) {
         title = "Updating...";
-        guidance = "Waiting for broadcast";
-        note = "No fresh estimate";
+        guidance = "Wait for signal";
+        note = "No fresh data";
     } else if(estimate.status == RadarRangeStatusLost) {
         title = "Signal lost";
-        guidance = "Try a more open spot";
-        note = "Keep target in range";
+        guidance = "Try open space";
+        note = "Signal absent";
     } else if(estimate.status == RadarRangeStatusPaused) {
         title = m->paused ? "Paused" : "Starting...";
-        guidance = m->paused ? "Left: resume scanning" : "Waiting for scan";
-        note = "No live estimate";
+        guidance = m->paused ? "Left:resume" : "Wait for scan";
+        note = "No live data";
     }
     canvas_set_font(canvas, FontPrimary);
-    label(canvas, 3, 30, title, 88);
+    label(canvas, 51, 28, title, 74);
     canvas_set_font(canvas, FontSecondary);
-    label(canvas, 3, 46, guidance, 122);
-    label(canvas, 3, 55, note, 122);
+    label(canvas, 51, 43, guidance, 74);
+    label(canvas, 51, 55, note, 74);
     canvas_draw_str(canvas, 3, 63, "OK:Info  Hold OK:1m");
 }
 static void draw(Canvas* canvas, void* context) {

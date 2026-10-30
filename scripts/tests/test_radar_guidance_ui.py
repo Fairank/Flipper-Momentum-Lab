@@ -6,6 +6,7 @@ replaced. Device screenshots still own visual acceptance.
 """
 
 from pathlib import Path
+import re
 import subprocess
 import tempfile
 import unittest
@@ -161,6 +162,75 @@ class RadarGuidanceUiTests(unittest.TestCase):
                 self.assertIn("large_numeric_readings=0", output)
                 self.assertNotRegex(output, r"(?im)^(?:Est\.|Estimated)\s+[0-9]")
                 self.assertRegex(output.lower(), r"limit|unavailable", output)
+
+    def circle_geometry(self, output):
+        circles = [
+            tuple(map(int, match))
+            for match in re.findall(r"(?m)^circle=(-?\d+),(-?\d+),(\d+)$", output)
+        ]
+        discs = [
+            tuple(map(int, match))
+            for match in re.findall(r"(?m)^disc=(-?\d+),(-?\d+),(\d+)$", output)
+        ]
+        dots = [
+            tuple(map(int, match))
+            for match in re.findall(r"(?m)^dot=(-?\d+),(-?\d+)$", output)
+        ]
+        self.assertGreaterEqual(len(circles), 2, output)
+        outer = max(circles, key=lambda circle: circle[2])
+        inner = [
+            circle
+            for circle in circles
+            if circle[:2] == outer[:2] and 0 < circle[2] < outer[2]
+        ]
+        self.assertTrue(inner, output)
+        self.assertIn(outer[:2], dots, output)
+        return outer, discs
+
+    def test_circle_marker_contracts_toward_centre_for_both_calibrated_and_rough_proximity(
+        self,
+    ):
+        # Removing the circle, omitting the live target, or reversing near/far
+        # must fail. Exact pixel constants remain a design choice.
+        for mode in ("cal", "uncal"):
+            distances = []
+            centres = []
+            vectors = []
+            for proximity in ("close", "near", "far"):
+                with self.subTest(mode=mode, proximity=proximity):
+                    output = self.scenario(f"circle-{mode}-{proximity}")
+                    outer, discs = self.circle_geometry(output)
+                    self.assertEqual(len(discs), 1, output)
+                    x, y, radius = discs[0]
+                    dx, dy = x - outer[0], y - outer[1]
+                    distances.append(dx * dx + dy * dy)
+                    centres.append(outer[:2])
+                    vectors.append((dx, dy))
+                    self.assertLessEqual(
+                        dx * dx + dy * dy, (outer[2] - radius) ** 2, output
+                    )
+            self.assertEqual(
+                len(distances), 3, "Incomplete live circle geometry: " + mode
+            )
+            self.assertEqual(len(set(centres)), 1)
+            self.assertLess(distances[0], distances[1])
+            self.assertLess(distances[1], distances[2])
+            # A fixed radial scale does not invent a changing compass bearing.
+            self.assertEqual(
+                vectors[0][0] * vectors[2][1], vectors[0][1] * vectors[2][0]
+            )
+            self.assertEqual(
+                vectors[1][0] * vectors[2][1], vectors[1][1] * vectors[2][0]
+            )
+
+    def test_circle_never_presents_a_live_marker_for_degraded_or_collecting_signal(
+        self,
+    ):
+        for state in ("paused", "aging", "lost", "unstable", "collecting"):
+            with self.subTest(state=state):
+                output = self.scenario("range-" + state)
+                _, discs = self.circle_geometry(output)
+                self.assertEqual(discs, [], output)
 
 
 if __name__ == "__main__":
