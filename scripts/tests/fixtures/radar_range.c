@@ -255,6 +255,24 @@ static void opposite_outliers(void) {
     assert(r.calibration == RadarRangeCalibrationUnstable);
     assert(r.reference == RadarRangeReferenceBeacon && r.reference_rssi == -60);
 }
+static void queued_calibration(bool wrap) {
+    const uint32_t starts[] = {wrap ? 10u : 10000u, UINT32_MAX - 2000u};
+    for(unsigned run = 0; run < (wrap ? 2u : 1u); run++) {
+        uint32_t start = starts[run];
+        uint32_t queued = start - 15u;
+        RadarRange r = {0};
+        assert(radar_range_begin_calibration(&r, start));
+        radar_range_tick(&r, queued);
+        assert(r.calibration == RadarRangeCalibrationCollecting);
+        radar_range_observe(&r, -90, queued);
+        assert(r.calibration == RadarRangeCalibrationCollecting && !r.calibration_count);
+        /* A queued packet can update normal tracking, but not the new 1m fit. */
+        assert(r.count == 1);
+        samples(&r, -60, start, 24);
+        radar_range_tick(&r, start + 6000u);
+        assert(r.calibration == RadarRangeCalibrationDone && r.reference_rssi == -60);
+    }
+}
 int main(int argc, char** argv) {
     assert(setvbuf(stdout, NULL, _IONBF, 0) == 0);
     assert(argc == 2);
@@ -288,6 +306,10 @@ int main(int argc, char** argv) {
         two_missed_packets();
     else if(!strcmp(argv[1], "opposite-outliers"))
         opposite_outliers();
+    else if(!strcmp(argv[1], "queued-calibration"))
+        queued_calibration(false);
+    else if(!strcmp(argv[1], "queued-calibration-wrap"))
+        queued_calibration(true);
     else
         assert(0);
     puts("Range scenario passed");

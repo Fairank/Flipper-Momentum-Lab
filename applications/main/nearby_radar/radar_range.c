@@ -8,6 +8,12 @@
 #define MIN_SAMPLES       4u
 #define WINDOW_MAX_AGE_MS 5000u
 
+/* FIFO observations may predate confirmation. Half-range ordering also covers
+ * the millisecond counter wrapping during the six-second calibration. */
+static bool at_or_after(uint32_t now, uint32_t origin) {
+    return (uint32_t)(now - origin) <= INT32_MAX;
+}
+
 static void sort(int8_t* values, unsigned count) {
     for(unsigned i = 1; i < count; i++) {
         int8_t value = values[i];
@@ -118,6 +124,7 @@ bool radar_range_begin_calibration(RadarRange* range, uint32_t now) {
 }
 void radar_range_tick(RadarRange* range, uint32_t now) {
     if(!range || range->calibration != RadarRangeCalibrationCollecting ||
+       !at_or_after(now, range->calibration_started) ||
        (uint32_t)(now - range->calibration_started) < RADAR_RANGE_CALIBRATION_MS)
         return;
     if(range->calibration_count < MIN_SAMPLES || range->calibration_gap ||
@@ -152,6 +159,7 @@ void radar_range_observe(RadarRange* range, int rssi, uint32_t now) {
     if(!range || rssi < -127 || rssi > 20) return;
     radar_range_tick(range, now);
     if(range->calibration == RadarRangeCalibrationCollecting &&
+       at_or_after(now, range->calibration_started) &&
        (!range->calibration_count ||
         (uint32_t)(now - range->calibration_last) >= SAMPLE_SPACING_MS)) {
         if(range->calibration_count && (uint32_t)(now - range->calibration_last) > 2500u)

@@ -83,6 +83,14 @@ class RadarRangeTests(unittest.TestCase):
     def test_opposite_outliers_cannot_masquerade_as_a_stable_low_sample_window(self):
         self.scenario("opposite-outliers")
 
+    def test_queued_observation_before_confirmation_does_not_end_or_seed_calibration(
+        self,
+    ):
+        self.scenario("queued-calibration")
+
+    def test_queued_calibration_timestamp_order_survives_clock_wrap(self):
+        self.scenario("queued-calibration-wrap")
+
 
 if __name__ == "__main__":
     unittest.main()
