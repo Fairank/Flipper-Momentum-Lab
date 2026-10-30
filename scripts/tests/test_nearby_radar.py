@@ -86,6 +86,7 @@ class NearbyRadarTests(unittest.TestCase):
                 [
                     gap / "ble_scan_parser.c",
                     core / "radar_core.c",
+                    core / "radar_range.c",
                     core / "radar_ble.c",
                     Path(__file__).parent / "fixtures/native_ble.c",
                 ],
@@ -170,6 +171,7 @@ puts("Native scan ownership and callback lifetime passed");return 0;}
                 Path(temp),
                 [
                     core / "radar_core.c",
+                    core / "radar_range.c",
                     Path(__file__).parent / "fixtures/nearby_radar.c",
                 ],
                 "nearby_radar",

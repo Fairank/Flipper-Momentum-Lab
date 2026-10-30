@@ -2,6 +2,7 @@
 #include <stdbool.h>
 #include <stddef.h>
 #include <stdint.h>
+#include "radar_range.h"
 
 #define RADAR_CAPACITY  32
 #define RADAR_LINE_SIZE 160
@@ -19,6 +20,7 @@ typedef struct {
     uint32_t seen;
     uint32_t anchor_time;
     bool used;
+    RadarRange range;
 } RadarDevice;
 typedef struct {
     RadarDevice devices[RADAR_CAPACITY];
@@ -57,3 +59,4 @@ size_t radar_visible(
     uint8_t indices[RADAR_CAPACITY]);
 bool radar_stale(const RadarDevice* device, uint32_t now);
 unsigned radar_radius(const RadarDevice* device);
+bool radar_set_beacon_reference(RadarCore* core, const char* id, uint8_t address_type, int rssi_1m);

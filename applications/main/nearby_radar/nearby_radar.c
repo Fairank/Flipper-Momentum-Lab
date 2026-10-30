@@ -33,6 +33,7 @@ typedef struct {
     uint32_t now;
     bool detail;
     bool info;
+    bool setup;
     bool paused;
     bool opened;
 } RadarModel;
@@ -103,6 +104,7 @@ static void open_backend(RadarApp* app) {
             m->paused = false;
             m->detail = false;
             m->info = false;
+            m->setup = false;
             m->opened = app->serial != NULL;
             m->port = app->port;
             snprintf(
@@ -171,6 +173,7 @@ static void open_backend(RadarApp* app) {
             m->kind = RADAR_KIND;
             m->focus = UINT8_MAX;
             m->detail = m->info = m->paused = false;
+            m->setup = false;
         },
         false);
     scan_command(app);
@@ -207,6 +210,154 @@ static const char* device_name(const RadarDevice* d) {
     snprintf(unnamed, sizeof(unnamed), "%s %s", d->kind == 'B' ? "BLE" : "WiFi", d->id + 6);
     return unnamed;
 }
+static void meters_text(char* text, size_t size, uint16_t cm) {
+    unsigned tenths = (cm + 5u) / 10u;
+    if(cm < 1000u)
+        snprintf(text, size, "%u.%u", tenths / 10u, tenths % 10u);
+    else
+        snprintf(text, size, "%u", (cm + 50u) / 100u);
+}
+static void draw_strength(Canvas* canvas, uint8_t strength) {
+    for(unsigned i = 0; i < 4; i++) {
+        unsigned height = 5u + i * 5u;
+        int x = 94 + (int)i * 8;
+        if(i < strength)
+            canvas_draw_box(canvas, x, 35 - height, 5, height);
+        else
+            canvas_draw_frame(canvas, x, 35 - height, 5, height);
+    }
+}
+static void draw_setup(Canvas* canvas, const RadarModel* m, const RadarDevice* d) {
+    const RadarRange* range = &d->range;
+    canvas_set_font(canvas, FontPrimary);
+    canvas_draw_str(canvas, 3, 11, "1m calibration");
+    canvas_set_font(canvas, FontSecondary);
+    if(m->paused) {
+        canvas_draw_str(canvas, 3, 29, "Scan paused");
+        canvas_draw_str(canvas, 3, 43, "Left: resume scanning");
+        canvas_draw_str(canvas, 3, 63, "Back:Cancel");
+    } else if(range->calibration == RadarRangeCalibrationCollecting) {
+        uint32_t elapsed = m->now - range->calibration_started;
+        if(elapsed > RADAR_RANGE_CALIBRATION_MS) elapsed = RADAR_RANGE_CALIBRATION_MS;
+        char seconds[12];
+        snprintf(
+            seconds,
+            sizeof(seconds),
+            "%lu",
+            (unsigned long)((RADAR_RANGE_CALIBRATION_MS - elapsed + 999u) / 1000u));
+        canvas_set_font(canvas, FontBigNumbers);
+        canvas_draw_str(canvas, 3, 35, seconds);
+        canvas_set_font(canvas, FontSecondary);
+        canvas_draw_str(canvas, 27, 32, "seconds left");
+        canvas_draw_frame(canvas, 3, 41, 122, 4);
+        unsigned fill = elapsed * 120u / RADAR_RANGE_CALIBRATION_MS;
+        if(fill) canvas_draw_box(canvas, 4, 42, fill, 2);
+        canvas_draw_str(canvas, 3, 54, "Keep both devices still");
+        canvas_draw_str(canvas, 3, 63, "Back:Cancel");
+    } else if(range->calibration == RadarRangeCalibrationDone) {
+        canvas_set_font(canvas, FontPrimary);
+        canvas_draw_str(canvas, 3, 31, "Reference saved");
+        canvas_set_font(canvas, FontSecondary);
+        canvas_draw_str(canvas, 3, 44, "Distance is an estimate");
+        canvas_draw_str(canvas, 3, 54, "For this target / session");
+        canvas_draw_str(canvas, 3, 63, "OK:Find  Right:Clear");
+    } else if(
+        range->calibration == RadarRangeCalibrationNoSignal ||
+        range->calibration == RadarRangeCalibrationUnstable) {
+        canvas_set_font(canvas, FontPrimary);
+        canvas_draw_str(
+            canvas,
+            3,
+            29,
+            range->calibration == RadarRangeCalibrationNoSignal ? "Too few readings" :
+                                                                  "Signal fluctuates");
+        canvas_set_font(canvas, FontSecondary);
+        canvas_draw_str(canvas, 3, 43, "Keep target still at 1m");
+        canvas_draw_str(canvas, 3, 63, "OK:Retry  Back:Cancel");
+    } else {
+        canvas_draw_str(canvas, 3, 25, "Place THIS target");
+        canvas_draw_str(canvas, 3, 37, "1m away. Keep still.");
+        canvas_draw_str(canvas, 3, 49, "Collect readings for 6s");
+        canvas_draw_str(canvas, 3, 63, "OK:Start  Back:Cancel");
+    }
+}
+static void draw_finding(Canvas* canvas, const RadarModel* m, const RadarDevice* d) {
+    RadarRangeEstimate estimate =
+        radar_range_estimate(&d->range, m->now, m->paused || !m->core.running);
+    bool limited = estimate.status == RadarRangeStatusReady &&
+                   (estimate.cm <= 5 || estimate.cm >= 30000);
+    bool fresh = (estimate.status == RadarRangeStatusReady && !limited) ||
+                 estimate.status == RadarRangeStatusUncalibrated;
+    const char* proximity = estimate.proximity == RadarRangeProximityVeryNear ? "Close" :
+                            estimate.proximity == RadarRangeProximityNear     ? "Near" :
+                            estimate.proximity == RadarRangeProximityFar      ? "Far" :
+                                                                                "";
+    canvas_set_font(canvas, FontSecondary);
+    label(canvas, 2, 9, device_name(d), 124);
+    draw_strength(canvas, fresh ? estimate.strength : 0);
+    if(fresh) label(canvas, 94, 45, proximity, 32);
+
+    const char* title = "Reading...";
+    const char* guidance = "Hold steady briefly";
+    const char* note = "Signal-based finding";
+    if(estimate.status == RadarRangeStatusReady && !limited) {
+        char value[16], lower[12], upper[12], band[40];
+        meters_text(value, sizeof(value), estimate.cm);
+        canvas_set_font(canvas, FontBigNumbers);
+        unsigned width = canvas_string_width(canvas, value);
+        canvas_draw_str(canvas, 3, 35, value);
+        canvas_set_font(canvas, FontSecondary);
+        canvas_draw_str(canvas, 7 + width, 34, "m");
+        meters_text(lower, sizeof(lower), estimate.lower_cm);
+        meters_text(upper, sizeof(upper), estimate.upper_cm);
+        snprintf(band, sizeof(band), "Est. %s-%sm", lower, upper);
+        canvas_set_font(canvas, FontSecondary);
+        canvas_draw_str(
+            canvas,
+            3,
+            46,
+            estimate.trend > 0 ? "Signal rising" :
+            estimate.trend < 0 ? "Signal fading" :
+                                 "Move slowly");
+        label(canvas, 3, 55, band, 122);
+        canvas_draw_str(canvas, 3, 63, "OK:Info  Hold OK:1m");
+        return;
+    } else if(limited) {
+        title = "Too uncertain";
+        guidance = "Recheck 1m setup";
+        note = "Estimate unavailable";
+    } else if(estimate.status == RadarRangeStatusUncalibrated) {
+        title = estimate.proximity == RadarRangeProximityVeryNear ? "Close (est.)" :
+                estimate.proximity == RadarRangeProximityNear     ? "Near (est.)" :
+                                                                    "Far (est.)";
+        guidance = estimate.trend > 0 ? "Signal rising" :
+                   estimate.trend < 0 ? "Signal fading" :
+                                        "Move slowly";
+        note = "Signal estimate / no 1m";
+    } else if(estimate.status == RadarRangeStatusUnstable) {
+        title = "Signal varies";
+        guidance = "Hold still / move slowly";
+        note = "Estimate unavailable";
+    } else if(estimate.status == RadarRangeStatusAging) {
+        title = "Updating...";
+        guidance = "Waiting for broadcast";
+        note = "No fresh estimate";
+    } else if(estimate.status == RadarRangeStatusLost) {
+        title = "Signal lost";
+        guidance = "Try a more open spot";
+        note = "Keep target in range";
+    } else if(estimate.status == RadarRangeStatusPaused) {
+        title = m->paused ? "Paused" : "Starting...";
+        guidance = m->paused ? "Left: resume scanning" : "Waiting for scan";
+        note = "No live estimate";
+    }
+    canvas_set_font(canvas, FontPrimary);
+    label(canvas, 3, 30, title, 88);
+    canvas_set_font(canvas, FontSecondary);
+    label(canvas, 3, 46, guidance, 122);
+    label(canvas, 3, 55, note, 122);
+    canvas_draw_str(canvas, 3, 63, "OK:Info  Hold OK:1m");
+}
 static void draw(Canvas* canvas, void* context) {
     RadarModel* m = context;
     char text[64];
@@ -226,46 +377,33 @@ static void draw(Canvas* canvas, void* context) {
     }
     if(m->detail && m->core.pinned >= 0) {
         const RadarDevice* d = &m->core.devices[m->core.pinned];
-        canvas_set_font(canvas, FontPrimary);
-        label(canvas, 2, 11, device_name(d), 124);
+        if(m->setup) {
+            draw_setup(canvas, m, d);
+            return;
+        }
         canvas_set_font(canvas, FontSecondary);
         if(m->info) {
-            canvas_draw_str(canvas, 3, 25, d->kind == 'B' ? "Bluetooth LE" : "WiFi access point");
-            canvas_draw_str(canvas, 3, 37, d->id);
+            label(canvas, 2, 9, device_name(d), 124);
+            canvas_draw_str(canvas, 3, 22, d->kind == 'B' ? "Bluetooth LE" : "WiFi access point");
+            canvas_draw_str(canvas, 3, 32, d->id);
             if(d->kind == 'W')
                 snprintf(text, sizeof(text), "CH%u  %d dBm", d->channel, d->average_q4 / 4);
             else
                 snprintf(text, sizeof(text), "%d dBm", d->average_q4 / 4);
-            canvas_draw_str(canvas, 3, 49, text);
+            canvas_draw_str(canvas, 3, 42, text);
             snprintf(text, sizeof(text), "%lus ago", (unsigned long)((m->now - d->seen) / 1000));
-            label(canvas, 83, 49, text, 42);
-            canvas_draw_str(canvas, 3, 63, "Back:Radar");
+            label(canvas, 83, 42, text, 42);
+            canvas_draw_str(
+                canvas,
+                3,
+                52,
+                d->range.reference == RadarRangeReferenceManual ? "Ref: manual 1m / est." :
+                d->range.reference == RadarRangeReferenceBeacon ? "Ref: beacon / est." :
+                                                                  "No 1m reference");
+            canvas_draw_str(canvas, 3, 63, "Hold OK:1m  Back:Find");
             return;
         }
-        canvas_draw_circle(canvas, 27, 35, 9);
-        canvas_draw_circle(canvas, 27, 35, 18);
-        canvas_draw_dot(canvas, 27, 35);
-        bool stale = radar_stale(d, m->now);
-        if(!stale && !m->paused && m->core.running)
-            canvas_draw_disc(canvas, 27, 35 - (int)radar_radius(d) * 17 / 28, 2);
-        canvas_set_font(canvas, FontPrimary);
-        if(stale)
-            snprintf(text, sizeof(text), "-- dBm");
-        else
-            snprintf(text, sizeof(text), "%d dBm", d->average_q4 / 4);
-        canvas_draw_str(canvas, 59, 30, text);
-        canvas_set_font(canvas, FontSecondary);
-        canvas_draw_str(
-            canvas,
-            59,
-            45,
-            m->paused        ? "Paused" :
-            stale            ? "Lost signal" :
-            !m->core.running ? "Starting" :
-            d->trend > 0     ? "Stronger" :
-            d->trend < 0     ? "Weaker" :
-                               "Steady");
-        canvas_draw_str(canvas, 3, 63, "OK:Info");
+        draw_finding(canvas, m, d);
         return;
     }
     uint8_t indices[RADAR_CAPACITY];
@@ -309,6 +447,7 @@ static void filter_done(void* context) {
             bool ready = m->core.ready;
             bool running = m->core.running;
             radar_init(&m->core);
+            m->setup = false;
             m->focus = UINT8_MAX;
             m->core.ready = ready;
             m->core.running = running;
@@ -348,10 +487,24 @@ static bool input(InputEvent* event, void* context) {
             text_input_set_result_callback(
                 app->input, filter_done, app, app->filter, sizeof(app->filter), false);
             view_dispatcher_switch_to_view(app->dispatcher, 1);
+        } else {
+            with_view_model(
+                app->view,
+                RadarModel * m,
+                {
+                    if(m->core.pinned >= 0) {
+                        radar_range_cancel_calibration(&m->core.devices[m->core.pinned].range);
+                        m->setup = true;
+                        m->info = false;
+                    }
+                },
+                true);
         }
         return true;
     }
     if(event->type != InputTypeShort && event->type != InputTypeRepeat) return false;
+    if(event->type == InputTypeRepeat && event->key != InputKeyUp && event->key != InputKeyDown)
+        return false;
     if(!backend_opened(app) && event->key == InputKeyOk) {
         open_backend(app);
         return true;
@@ -368,7 +521,10 @@ static bool input(InputEvent* event, void* context) {
             for(size_t i = 0; i < n; i++)
                 if(indices[i] == m->focus) selected = i;
             if(event->key == InputKeyBack) {
-                if(m->info) {
+                if(m->setup && m->core.pinned >= 0) {
+                    radar_range_cancel_calibration(&m->core.devices[m->core.pinned].range);
+                    m->setup = false;
+                } else if(m->info) {
                     m->info = false;
                 } else if(m->detail) {
                     m->detail = false;
@@ -382,8 +538,23 @@ static bool input(InputEvent* event, void* context) {
 #endif
             } else if(event->key == InputKeyLeft && m->core.ready) {
                 m->paused = !m->paused;
+                if(m->paused && m->core.pinned >= 0)
+                    radar_range_cancel_calibration(&m->core.devices[m->core.pinned].range);
                 paused = m->paused;
                 toggle = true;
+            } else if(m->setup && m->core.pinned >= 0) {
+                RadarRange* range = &m->core.devices[m->core.pinned].range;
+                if(event->key == InputKeyRight) {
+                    radar_range_cancel_calibration(range);
+                    radar_range_reset_reference(range);
+                } else if(event->key == InputKeyOk && !m->paused) {
+                    if(range->calibration == RadarRangeCalibrationDone)
+                        m->setup = false;
+                    else if(range->calibration != RadarRangeCalibrationCollecting) {
+                        m->now = now_ms();
+                        radar_range_begin_calibration(range, m->now);
+                    }
+                }
             } else if(m->detail && event->key == InputKeyOk) {
                 m->info = !m->info;
             } else if(!m->detail && n) {
@@ -394,6 +565,7 @@ static bool input(InputEvent* event, void* context) {
                     m->core.pinned = (int8_t)m->focus;
                     m->detail = true;
                     m->info = false;
+                    m->setup = false;
                 }
             }
         },
@@ -426,6 +598,8 @@ static void tick(void* context) {
             }
             for(size_t i = 0; i < size; i++)
                 radar_feed(&m->core, bytes[i], now);
+            for(size_t i = 0; i < RADAR_CAPACITY; i++)
+                if(m->core.devices[i].used) radar_range_tick(&m->core.devices[i].range, now);
             if(m->core.ready && (uint32_t)(now - m->core.last_frame) > 8000) {
                 m->core.ready = false;
                 app->scan_sent = false;
@@ -472,6 +646,8 @@ static void tick(void* context) {
                                   next.time))
                     m->core.malformed++;
             }
+            for(size_t i = 0; i < RADAR_CAPACITY; i++)
+                if(m->core.devices[i].used) radar_range_tick(&m->core.devices[i].range, now);
         },
         true);
     if(!paused && !active && (uint32_t)(now - app->start_at) > 1000) scan_command(app);

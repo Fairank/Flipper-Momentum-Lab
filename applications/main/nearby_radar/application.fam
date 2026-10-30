@@ -8,8 +8,8 @@ App(
     icon="A_GPIO_14",
     order=7,
     fap_category="Bluetooth",
-    fap_description="Onboard passive BLE discovery, name filter and RSSI target tracking",
-    fap_version="1.2",
+    fap_description="Onboard BLE finding, proximity guidance and calibrated range estimates",
+    fap_version="1.3",
 )
 
 App(
@@ -23,6 +23,6 @@ App(
     order=8,
     cflags=["-DRADAR_WIFI_ONLY=1"],
     fap_category="WiFi",
-    fap_description="Passive WiFi access point discovery and RSSI target tracking",
-    fap_version="1.2",
+    fap_description="Passive WiFi discovery, proximity guidance and calibrated range estimates",
+    fap_version="1.3",
 )

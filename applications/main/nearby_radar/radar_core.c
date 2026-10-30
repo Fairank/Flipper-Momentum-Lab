@@ -191,6 +191,7 @@ bool radar_observe(
     d->channel = (uint8_t)channel;
     d->seen = now;
     d->used = true;
+    radar_range_observe(&d->range, rssi, now);
     core->last_frame = now;
     return true;
 }
@@ -225,6 +226,25 @@ unsigned radar_radius(const RadarDevice* d) {
     if(strength < -95) strength = -95;
     if(strength > -35) strength = -35;
     return (unsigned)(28 - (strength + 95) * 22 / 60);
+}
+bool radar_set_beacon_reference(RadarCore* core, const char* id, uint8_t address_type, int rssi_1m) {
+    if(!core || !id || strlen(id) != 12 || address_type > 1 || rssi_1m < -100 || rssi_1m > -15)
+        return false;
+    char canonical[13] = {0};
+    for(unsigned i = 0; i < 12; i++) {
+        int value = hex(id[i]);
+        if(value < 0) return false;
+        canonical[i] = "0123456789ABCDEF"[value];
+    }
+    for(unsigned i = 0; i < RADAR_CAPACITY; i++) {
+        RadarDevice* device = &core->devices[i];
+        if(device->used && device->kind == 'B' && device->address_type == address_type &&
+           !strcmp(device->id, canonical) &&
+           (contains(device->name, core->accept_filter) ||
+            contains(device->id, core->accept_filter)))
+            return radar_range_set_beacon_reference(&device->range, rssi_1m);
+    }
+    return false;
 }
 size_t radar_visible(
     const RadarCore* core,
