@@ -402,6 +402,20 @@ BleGlueCommandResult ble_glue_fus_stack_install(uint32_t src_addr, uint32_t dst_
     return BleGlueCommandResultError;
 }
 
+bool ble_glue_fus_read_status(uint8_t* state, uint8_t* error) {
+    if(!state || !error || !ble_glue || ble_glue->status < BleGlueStatusC2Started ||
+       ble_glue->c2_info.mode != BleGlueC2ModeFUS) {
+        return false;
+    }
+
+    // Keep the vendor enum local: it may be wider than the public output byte.
+    SHCI_FUS_GetState_ErrorCode_t fus_error = FUS_STATE_ERROR_NO_ERROR;
+    uint8_t fus_state = SHCI_C2_FUS_GetState(&fus_error);
+    *state = fus_state;
+    *error = (uint8_t)fus_error;
+    return true;
+}
+
 BleGlueCommandResult ble_glue_fus_get_status(void) {
     furi_check(ble_glue->c2_info.mode == BleGlueC2ModeFUS);
 

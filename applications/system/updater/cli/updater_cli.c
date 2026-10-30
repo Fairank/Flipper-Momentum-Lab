@@ -13,7 +13,6 @@
 #include <update_util/int_backup.h>
 #include <update_util/update_operation.h>
 #include <ble_glue.h>
-#include <interface/patterns/ble_thread/shci/shci.h>
 
 typedef void (*cmd_handler)(FuriString* args);
 typedef struct {
@@ -77,9 +76,14 @@ static void updater_cli_fus_status(FuriString* args) {
     }
 
     // A repeated GET_STATE in Stack mode can start FUS. Never retry this query.
-    SHCI_FUS_GetState_ErrorCode_t error = FUS_STATE_ERROR_NO_ERROR;
-    uint8_t state = SHCI_C2_FUS_GetState(&error);
+    uint8_t state = 0;
+    uint8_t error = 0;
+    bool read = ble_glue_fus_read_status(&state, &error);
     furi_hal_bt_unlock_core2();
+    if(!read) {
+        printf("FUS query refused: Core2 is no longer ready in FUS mode\r\n");
+        return;
+    }
     printf("FUS state: 0x%02X, error: 0x%02X\r\n", (unsigned)state, (unsigned)error);
 }
 

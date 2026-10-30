@@ -818,6 +818,7 @@ Function,+,ble_gatt_service_add,_Bool,"uint8_t, const Service_UUID_t*, uint8_t, 
 Function,+,ble_gatt_service_delete,_Bool,uint16_t
 Function,+,ble_glue_force_c2_mode,BleGlueCommandResult,BleGlueC2Mode
 Function,-,ble_glue_fus_get_status,BleGlueCommandResult,
+Function,-,ble_glue_fus_read_status,_Bool,"uint8_t*, uint8_t*"
 Function,-,ble_glue_fus_stack_delete,BleGlueCommandResult,
 Function,-,ble_glue_fus_stack_install,BleGlueCommandResult,"uint32_t, uint32_t"
 Function,-,ble_glue_fus_wait_operation,BleGlueCommandResult,

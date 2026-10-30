@@ -120,6 +120,13 @@ BleGlueCommandResult ble_glue_fus_stack_delete(void);
 
 BleGlueCommandResult ble_glue_fus_stack_install(uint32_t src_addr, uint32_t dst_addr);
 
+/** Read one raw FUS status response without switching modes or retrying.
+ *
+ * Caller must hold the Core2 mutex. Refuses unless Core2 is ready in FUS mode;
+ * output bytes are unchanged on refusal. A successful read may report a FUS error.
+ */
+bool ble_glue_fus_read_status(uint8_t* state, uint8_t* error);
+
 BleGlueCommandResult ble_glue_fus_get_status(void);
 
 BleGlueCommandResult ble_glue_fus_wait_operation(void);
