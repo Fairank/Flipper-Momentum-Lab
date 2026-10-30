@@ -12,11 +12,14 @@
 #include <update_util/update_manifest.h>
 #include <update_util/int_backup.h>
 #include <update_util/update_operation.h>
+#include <ble_glue.h>
+#include <interface/patterns/ble_thread/shci/shci.h>
 
 typedef void (*cmd_handler)(FuriString* args);
 typedef struct {
     const char* command;
     const cmd_handler handler;
+    bool requires_arg;
 } CliSubcommand;
 
 static void updater_cli_install(FuriString* manifest_path) {
@@ -50,18 +53,50 @@ static void updater_cli_restore(FuriString* args) {
     printf("Result: %s\r\n", success ? "OK" : "FAIL");
 }
 
+static void updater_cli_fus_status(FuriString* args) {
+    if(!furi_string_empty(args)) {
+        printf("Usage: update fus-status\r\n");
+        return;
+    }
+    if(!furi_hal_bt_is_alive()) {
+        printf("FUS query refused: Core2 is not ready\r\n");
+        return;
+    }
+
+    furi_hal_bt_lock_core2();
+    if(!furi_hal_bt_is_alive()) {
+        furi_hal_bt_unlock_core2();
+        printf("FUS query refused: Core2 is not ready\r\n");
+        return;
+    }
+    const BleGlueC2Info* info = ble_glue_get_c2_info();
+    if(!info || info->mode != BleGlueC2ModeFUS) {
+        furi_hal_bt_unlock_core2();
+        printf("FUS query refused: Core2 is not in FUS mode\r\n");
+        return;
+    }
+
+    // A repeated GET_STATE in Stack mode can start FUS. Never retry this query.
+    SHCI_FUS_GetState_ErrorCode_t error = FUS_STATE_ERROR_NO_ERROR;
+    uint8_t state = SHCI_C2_FUS_GetState(&error);
+    furi_hal_bt_unlock_core2();
+    printf("FUS state: 0x%02X, error: 0x%02X\r\n", (unsigned)state, (unsigned)error);
+}
+
 static void updater_cli_help(FuriString* args) {
     UNUSED(args);
     printf("Commands:\r\n"
            "\tinstall /ext/path/to/update.fuf - verify & apply update package\r\n"
            "\tbackup /ext/path/to/backup.tar - create internal storage backup\r\n"
-           "\trestore /ext/path/to/backup.tar - restore internal storage backup\r\n");
+           "\trestore /ext/path/to/backup.tar - restore internal storage backup\r\n"
+           "\tfus-status - read FUS state once, only while Core2 is in FUS mode\r\n");
 }
 
 static const CliSubcommand update_cli_subcommands[] = {
-    {.command = "install", .handler = updater_cli_install},
-    {.command = "backup", .handler = updater_cli_backup},
-    {.command = "restore", .handler = updater_cli_restore},
+    {.command = "install", .handler = updater_cli_install, .requires_arg = true},
+    {.command = "backup", .handler = updater_cli_backup, .requires_arg = true},
+    {.command = "restore", .handler = updater_cli_restore, .requires_arg = true},
+    {.command = "fus-status", .handler = updater_cli_fus_status},
     {.command = "help", .handler = updater_cli_help},
 };
 
@@ -70,7 +105,7 @@ static void updater_cli_ep(PipeSide* pipe, FuriString* args, void* context) {
     UNUSED(context);
     FuriString* subcommand;
     subcommand = furi_string_alloc();
-    if(!args_read_string_and_trim(args, subcommand) || furi_string_empty(args)) {
+    if(!args_read_string_and_trim(args, subcommand)) {
         updater_cli_help(args);
         furi_string_free(subcommand);
         return;
@@ -78,7 +113,11 @@ static void updater_cli_ep(PipeSide* pipe, FuriString* args, void* context) {
     for(size_t idx = 0; idx < COUNT_OF(update_cli_subcommands); ++idx) {
         const CliSubcommand* subcmd_def = &update_cli_subcommands[idx];
         if(furi_string_cmp_str(subcommand, subcmd_def->command) == 0) {
-            subcmd_def->handler(args);
+            if(subcmd_def->requires_arg && furi_string_empty(args)) {
+                updater_cli_help(args);
+            } else {
+                subcmd_def->handler(args);
+            }
             furi_string_free(subcommand);
             return;
         }
