@@ -17,7 +17,7 @@ ROOT = Path(__file__).resolve().parents[2]
 CLI = ROOT / "applications/system/updater/cli/updater_cli.c"
 GLUE = ROOT / "targets/f7/ble_glue/ble_glue.c"
 
-WRAPPER_HARNESS = r'''
+WRAPPER_HARNESS = r"""
 #ifdef NDEBUG
 #undef NDEBUG
 #endif
@@ -69,9 +69,9 @@ int main(int argc, char** argv) {
     fflush(stdout);
     return 0;
 }
-'''
+"""
 
-HARNESS = r'''
+HARNESS = r"""
 #ifdef NDEBUG
 #undef NDEBUG
 #endif
@@ -187,19 +187,23 @@ int main(int argc, char** argv) {
     fflush(stdout);
     return 0;
 }
-'''
+"""
 
 
 class UpdaterFusStatusTests(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
-        compiler = next((x for n in ("cc", "gcc", "clang") if (x := shutil.which(n))), None)
+        compiler = next(
+            (x for n in ("cc", "gcc", "clang") if (x := shutil.which(n))), None
+        )
         if compiler is None and sys.platform == "win32":
             shim = ROOT.parent / "flipper-tools/cc.cmd"
             if shim.is_file():
                 compiler = str(shim)
         if compiler is None:
-            raise AssertionError("A host C compiler is required; FUS guard tests must not skip")
+            raise AssertionError(
+                "A host C compiler is required; FUS guard tests must not skip"
+            )
         temporary = tempfile.TemporaryDirectory(prefix="flipper-fus-status-")
         cls.addClassCleanup(temporary.cleanup)
         folder = Path(temporary.name)
@@ -208,22 +212,49 @@ class UpdaterFusStatusTests(unittest.TestCase):
         end = production.index("static void updater_start_app", start)
         source = folder / "updater_fus_status.c"
         source.write_text(
-            HARNESS.replace("/* PRODUCTION_UPDATER_CLI */", production[start:end]), encoding="utf-8"
+            HARNESS.replace("/* PRODUCTION_UPDATER_CLI */", production[start:end]),
+            encoding="utf-8",
         )
-        cls.executable = folder / ("updater_fus_status.exe" if sys.platform == "win32" else "updater_fus_status")
-        command = [compiler, "-std=c11", "-Wall", "-Wextra", "-Werror", "-O1", "-UNDEBUG"]
+        cls.executable = folder / (
+            "updater_fus_status.exe"
+            if sys.platform == "win32"
+            else "updater_fus_status"
+        )
+        command = [
+            compiler,
+            "-std=c11",
+            "-Wall",
+            "-Wextra",
+            "-Werror",
+            "-O1",
+            "-UNDEBUG",
+        ]
         if sys.platform.startswith("linux"):
             command += ["-fsanitize=address,undefined", "-fno-sanitize-recover=all"]
-        command += ["-I" + str(ROOT / "targets/f7/ble_glue"), str(source), "-o", str(cls.executable)]
+        command += [
+            "-I" + str(ROOT / "targets/f7/ble_glue"),
+            str(source),
+            "-o",
+            str(cls.executable),
+        ]
         environment = os.environ.copy()
         environment["ZIG_GLOBAL_CACHE_DIR"] = str(folder / "zig-global")
         environment["ZIG_LOCAL_CACHE_DIR"] = str(folder / "zig-local")
-        result = subprocess.run(command, capture_output=True, text=True, env=environment, timeout=180)
+        result = subprocess.run(
+            command, capture_output=True, text=True, env=environment, timeout=180
+        )
         if result.returncode:
-            raise AssertionError("FUS CLI harness build failed:\n" + result.stdout + result.stderr)
+            raise AssertionError(
+                "FUS CLI harness build failed:\n" + result.stdout + result.stderr
+            )
 
     def invoke(self, mode, command="fus-status"):
-        result = subprocess.run([str(self.executable), mode, command], capture_output=True, text=True, timeout=15)
+        result = subprocess.run(
+            [str(self.executable), mode, command],
+            capture_output=True,
+            text=True,
+            timeout=15,
+        )
         self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
         return result.stdout
 
@@ -281,42 +312,88 @@ class BleGlueFusStatusWrapperTests(unittest.TestCase):
     def test_read_only_wrapper_guards_transport_and_preserves_raw_response(self):
         production = GLUE.read_text(encoding="utf-8")
         wrapper = re.search(
-            r"bool ble_glue_fus_read_status\([^)]*\)\s*\{.*?^\}", production, re.S | re.M
+            r"bool ble_glue_fus_read_status\([^)]*\)\s*\{.*?^\}",
+            production,
+            re.S | re.M,
         )
-        self.assertIsNotNone(wrapper, "The raw read-only FUS hardware interface is not implemented")
+        self.assertIsNotNone(
+            wrapper, "The raw read-only FUS hardware interface is not implemented"
+        )
         glue_type = re.search(r"typedef struct\s*\{[^{}]*\}\s*BleGlue;", production)
         self.assertIsNotNone(glue_type, "The real Core2 context type is unavailable")
-        shci = (ROOT / "lib/stm32wb_copro/wpan/interface/patterns/ble_thread/shci/shci.h").read_text()
-        error_enum = re.search(r"typedef enum\s*\{[^{}]*\}\s*SHCI_FUS_GetState_ErrorCode_t;", shci)
+        shci = (
+            ROOT / "lib/stm32wb_copro/wpan/interface/patterns/ble_thread/shci/shci.h"
+        ).read_text()
+        error_enum = re.search(
+            r"typedef enum\s*\{[^{}]*\}\s*SHCI_FUS_GetState_ErrorCode_t;", shci
+        )
         self.assertIsNotNone(error_enum, "The real SHCI error type is unavailable")
-        compiler = next((x for n in ("cc", "gcc", "clang") if (x := shutil.which(n))), None)
+        compiler = next(
+            (x for n in ("cc", "gcc", "clang") if (x := shutil.which(n))), None
+        )
         if compiler is None and sys.platform == "win32":
             shim = ROOT.parent / "flipper-tools/cc.cmd"
             if shim.is_file():
                 compiler = str(shim)
-        self.assertIsNotNone(compiler, "A host C compiler is required; wrapper tests must not skip")
+        self.assertIsNotNone(
+            compiler, "A host C compiler is required; wrapper tests must not skip"
+        )
         with tempfile.TemporaryDirectory(prefix="flipper-fus-wrapper-") as temporary:
             folder = Path(temporary)
             source = folder / "fus_wrapper.c"
             source.write_text(
                 WRAPPER_HARNESS.replace("/* PRODUCTION_BLE_GLUE_TYPE */", glue_type[0])
                 .replace("/* SHCI_ERROR_ENUM */", error_enum[0])
-                .replace("/* PRODUCTION_FUS_WRAPPER */", wrapper[0]), encoding="utf-8"
+                .replace("/* PRODUCTION_FUS_WRAPPER */", wrapper[0]),
+                encoding="utf-8",
             )
-            executable = folder / ("fus_wrapper.exe" if sys.platform == "win32" else "fus_wrapper")
-            command = [compiler, "-std=c11", "-Wall", "-Wextra", "-Werror", "-O1", "-UNDEBUG"]
+            executable = folder / (
+                "fus_wrapper.exe" if sys.platform == "win32" else "fus_wrapper"
+            )
+            command = [
+                compiler,
+                "-std=c11",
+                "-Wall",
+                "-Wextra",
+                "-Werror",
+                "-O1",
+                "-UNDEBUG",
+            ]
             if sys.platform.startswith("linux"):
                 command += ["-fsanitize=address,undefined", "-fno-sanitize-recover=all"]
-            command += ["-I" + str(ROOT / "targets/f7/ble_glue"), str(source), "-o", str(executable)]
+            command += [
+                "-I" + str(ROOT / "targets/f7/ble_glue"),
+                str(source),
+                "-o",
+                str(executable),
+            ]
             environment = os.environ.copy()
             environment["ZIG_GLOBAL_CACHE_DIR"] = str(folder / "zig-global")
             environment["ZIG_LOCAL_CACHE_DIR"] = str(folder / "zig-local")
-            result = subprocess.run(command, capture_output=True, text=True, env=environment, timeout=180)
+            result = subprocess.run(
+                command, capture_output=True, text=True, env=environment, timeout=180
+            )
             self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
-            for mode in ("missing", "startup", "broken", "stack", "unknown", "null-state", "null-error", "fus"):
+            for mode in (
+                "missing",
+                "startup",
+                "broken",
+                "stack",
+                "unknown",
+                "null-state",
+                "null-error",
+                "fus",
+            ):
                 with self.subTest(mode=mode):
-                    result = subprocess.run([str(executable), mode], capture_output=True, text=True, timeout=15)
-                    self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
+                    result = subprocess.run(
+                        [str(executable), mode],
+                        capture_output=True,
+                        text=True,
+                        timeout=15,
+                    )
+                    self.assertEqual(
+                        result.returncode, 0, result.stdout + result.stderr
+                    )
                     self.assertIn("FUS wrapper scenario passed", result.stdout)
 
 
