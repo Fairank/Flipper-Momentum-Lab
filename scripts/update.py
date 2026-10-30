@@ -11,7 +11,7 @@ import pathlib
 from flipper.app import App
 from flipper.assets.coprobin import CoproBinary, get_stack_type
 from flipper.assets.heatshrink_stream import HeatshrinkDataStreamHeader
-from flipper.assets.obdata import ObReferenceValues, OptionBytesData
+from flipper.assets.obdata import ObReferenceValues, OptionByte, OptionBytesData
 from flipper.assets.tarball import compress_tree_tarball, tar_sanitizer_filter
 from flipper.assets import tarball
 from flipper.utils.fff import FlipperFormatFile
@@ -32,6 +32,12 @@ class Main(App):
             ["BLE_FULL", "BLE_LIGHT", "BLE_BASIC"],
         )
     )
+
+    # AN5185 section 2.1: successful stack installation changes secure flash,
+    # SRAM2a/SRAM2b boundaries and SBRV to meet that stack's requirements.
+    # ob.data contains Light layout values; FUS must retain ownership of these
+    # four fields when bundling Full. Other protection checks remain enabled.
+    FUS_LAYOUT_OPTION_BYTES = frozenset(("SFSA", "SBRV", "SBRSA", "SNBRSA"))
 
     FLASH_BASE = 0x8000000
     FLASH_PAGE_SIZE = 4 * 1024
@@ -211,6 +217,20 @@ class Main(App):
         obvalues = ObReferenceValues((), (), ())
         if self.args.obdata:
             obd = OptionBytesData(self.args.obdata)
+            if radio_meta and get_stack_type(self.args.radiotype) == get_stack_type(
+                "BLE_FULL"
+            ):
+                for ob in obd.obs:
+                    if (
+                        ob.name in self.FUS_LAYOUT_OPTION_BYTES
+                        and ob.mode != OptionByte.OBMode.READ
+                    ):
+                        raise ValueError(
+                            f"FUS-managed option byte {ob.name} must be read-only"
+                        )
+                obd.obs = [
+                    ob for ob in obd.obs if ob.name not in self.FUS_LAYOUT_OPTION_BYTES
+                ]
             obvalues = obd.gen_values().export()
             file.writeComment(
                 "NEVER EVER MESS WITH THESE VALUES, YOU WILL BRICK YOUR DEVICE"
