@@ -1,0 +1,461 @@
+{
+  "source_commit": "bcc0deaf73f92f56a1c49bb8156bf4837dab33b3",
+  "reviewed_by": "primary assistant",
+  "note": "Only the 45 direct Latin-text candidates in non-external scopes found by the 48-signature GUI scanner. Dynamic values, strings outside those call sites, custom drawing and bitmap text remain unreviewed. This is not a localization coverage percentage. Raw scanner classifications remain unchanged.",
+  "counts": {
+    "reviewed_direct_candidates": 45,
+    "retained_terms": 45
+  },
+  "entries": [
+    {
+      "scope": "applications/main",
+      "file": "applications/main/gpio/scenes/gpio_scene_start.c",
+      "line": 81,
+      "function": "variable_item_list_add",
+      "text": "I2C-SFP",
+      "decision": "retain_terminology",
+      "reason": "保留协议、调制方式、引脚或接口标识，避免与设备丝印及标准缩写不一致。",
+      "source_sha256": "8c6bc7e8b7808f59d73217cee4007e0b633ee1cd8fe25227433f68c1824c858d"
+    },
+    {
+      "scope": "applications/main",
+      "file": "applications/main/gpio/views/gpio_i2c_scanner.c",
+      "line": 30,
+      "function": "canvas_draw_str",
+      "text": "SDA:15",
+      "decision": "retain_terminology",
+      "reason": "保留协议、调制方式、引脚或接口标识，避免与设备丝印及标准缩写不一致。",
+      "source_sha256": "5957d88fdec92e19774ac9a0dad88f51a97e08276608a1d85eb05b0cf25bec89"
+    },
+    {
+      "scope": "applications/main",
+      "file": "applications/main/gpio/views/gpio_i2c_scanner.c",
+      "line": 31,
+      "function": "canvas_draw_str",
+      "text": "SCL:16",
+      "decision": "retain_terminology",
+      "reason": "保留协议、调制方式、引脚或接口标识，避免与设备丝印及标准缩写不一致。",
+      "source_sha256": "5957d88fdec92e19774ac9a0dad88f51a97e08276608a1d85eb05b0cf25bec89"
+    },
+    {
+      "scope": "applications/main",
+      "file": "applications/main/gpio/views/gpio_i2c_sfp.c",
+      "line": 38,
+      "function": "canvas_draw_str",
+      "text": "P15 SCL",
+      "decision": "retain_terminology",
+      "reason": "保留协议、调制方式、引脚或接口标识，避免与设备丝印及标准缩写不一致。",
+      "source_sha256": "275090e3460b8d42c4e5c2c28fa7779a84c76cd16d2ae38e9e835cf3cc13916f"
+    },
+    {
+      "scope": "applications/main",
+      "file": "applications/main/gpio/views/gpio_i2c_sfp.c",
+      "line": 39,
+      "function": "canvas_draw_str",
+      "text": "P16 SDA",
+      "decision": "retain_terminology",
+      "reason": "保留协议、调制方式、引脚或接口标识，避免与设备丝印及标准缩写不一致。",
+      "source_sha256": "275090e3460b8d42c4e5c2c28fa7779a84c76cd16d2ae38e9e835cf3cc13916f"
+    },
+    {
+      "scope": "applications/main",
+      "file": "applications/main/gpio/views/gpio_usb_uart.c",
+      "line": 33,
+      "function": "canvas_draw_str",
+      "text": "TX:",
+      "decision": "retain_terminology",
+      "reason": "保留协议、调制方式、引脚或接口标识，避免与设备丝印及标准缩写不一致。",
+      "source_sha256": "dfbdcd3d7cf502b528c53e69901b54cb0f693a7e48dc49720e6a0e7c26cee536"
+    },
+    {
+      "scope": "applications/main",
+      "file": "applications/main/gpio/views/gpio_usb_uart.c",
+      "line": 34,
+      "function": "canvas_draw_str",
+      "text": "RX:",
+      "decision": "retain_terminology",
+      "reason": "保留协议、调制方式、引脚或接口标识，避免与设备丝印及标准缩写不一致。",
+      "source_sha256": "dfbdcd3d7cf502b528c53e69901b54cb0f693a7e48dc49720e6a0e7c26cee536"
+    },
+    {
+      "scope": "applications/main",
+      "file": "applications/main/gpio/views/gpio_usb_uart.c",
+      "line": 58,
+      "function": "canvas_draw_str_aligned",
+      "text": "KiB.",
+      "decision": "retain_terminology",
+      "reason": "保留计量单位，数值与单位不作为普通英文文案翻译。",
+      "source_sha256": "dfbdcd3d7cf502b528c53e69901b54cb0f693a7e48dc49720e6a0e7c26cee536"
+    },
+    {
+      "scope": "applications/main",
+      "file": "applications/main/gpio/views/gpio_usb_uart.c",
+      "line": 72,
+      "function": "canvas_draw_str_aligned",
+      "text": "KiB.",
+      "decision": "retain_terminology",
+      "reason": "保留计量单位，数值与单位不作为普通英文文案翻译。",
+      "source_sha256": "dfbdcd3d7cf502b528c53e69901b54cb0f693a7e48dc49720e6a0e7c26cee536"
+    },
+    {
+      "scope": "applications/main",
+      "file": "applications/main/ibutton/scenes/ibutton_scene_rpc.c",
+      "line": 10,
+      "function": "popup_set_header",
+      "text": "iButton",
+      "decision": "retain_terminology",
+      "reason": "保留品牌、软件名称或通用功能缩写；该决定不覆盖其周围的动态说明与图片文字。",
+      "source_sha256": "19922869a7961ad40bb3e0bb38f39c51bbf82776b0c386cd0606b4b0c01a9678"
+    },
+    {
+      "scope": "applications/main",
+      "file": "applications/main/lfrfid/scenes/lfrfid_scene_rpc.c",
+      "line": 13,
+      "function": "popup_set_header",
+      "text": "LF RFID",
+      "decision": "retain_terminology",
+      "reason": "保留协议、调制方式、引脚或接口标识，避免与设备丝印及标准缩写不一致。",
+      "source_sha256": "c0f792cf1453f6ea5d6c41a53820fff921bd3a0a40d7dbdefabf9a8c7ddf470e"
+    },
+    {
+      "scope": "applications/main",
+      "file": "applications/main/lfrfid/views/lfrfid_view_read.c",
+      "line": 27,
+      "function": "canvas_draw_str",
+      "text": "ASK",
+      "decision": "retain_terminology",
+      "reason": "保留协议、调制方式、引脚或接口标识，避免与设备丝印及标准缩写不一致。",
+      "source_sha256": "f1b3a5e6806f7b1e069d6769f915190fc1bec7ad78705c34676ccae35537a51b"
+    },
+    {
+      "scope": "applications/main",
+      "file": "applications/main/lfrfid/views/lfrfid_view_read.c",
+      "line": 32,
+      "function": "canvas_draw_str",
+      "text": "PSK",
+      "decision": "retain_terminology",
+      "reason": "保留协议、调制方式、引脚或接口标识，避免与设备丝印及标准缩写不一致。",
+      "source_sha256": "f1b3a5e6806f7b1e069d6769f915190fc1bec7ad78705c34676ccae35537a51b"
+    },
+    {
+      "scope": "applications/main",
+      "file": "applications/main/lfrfid/views/lfrfid_view_read.c",
+      "line": 36,
+      "function": "canvas_draw_str",
+      "text": "PSK",
+      "decision": "retain_terminology",
+      "reason": "保留协议、调制方式、引脚或接口标识，避免与设备丝印及标准缩写不一致。",
+      "source_sha256": "f1b3a5e6806f7b1e069d6769f915190fc1bec7ad78705c34676ccae35537a51b"
+    },
+    {
+      "scope": "applications/main",
+      "file": "applications/main/lfrfid/views/lfrfid_view_read.c",
+      "line": 41,
+      "function": "canvas_draw_str",
+      "text": "ASK",
+      "decision": "retain_terminology",
+      "reason": "保留协议、调制方式、引脚或接口标识，避免与设备丝印及标准缩写不一致。",
+      "source_sha256": "f1b3a5e6806f7b1e069d6769f915190fc1bec7ad78705c34676ccae35537a51b"
+    },
+    {
+      "scope": "applications/main",
+      "file": "applications/main/lfrfid/views/lfrfid_view_read.c",
+      "line": 46,
+      "function": "canvas_draw_str",
+      "text": "ASK",
+      "decision": "retain_terminology",
+      "reason": "保留协议、调制方式、引脚或接口标识，避免与设备丝印及标准缩写不一致。",
+      "source_sha256": "f1b3a5e6806f7b1e069d6769f915190fc1bec7ad78705c34676ccae35537a51b"
+    },
+    {
+      "scope": "applications/main",
+      "file": "applications/main/lfrfid/views/lfrfid_view_read.c",
+      "line": 48,
+      "function": "canvas_draw_str",
+      "text": "PSK",
+      "decision": "retain_terminology",
+      "reason": "保留协议、调制方式、引脚或接口标识，避免与设备丝印及标准缩写不一致。",
+      "source_sha256": "f1b3a5e6806f7b1e069d6769f915190fc1bec7ad78705c34676ccae35537a51b"
+    },
+    {
+      "scope": "applications/main",
+      "file": "applications/main/momentum_app/scenes/momentum_app_scene_protocols_gpio.c",
+      "line": 68,
+      "function": "variable_item_list_add",
+      "text": "CC1101 SPI",
+      "decision": "retain_terminology",
+      "reason": "保留协议、调制方式、引脚或接口标识，避免与设备丝印及标准缩写不一致。",
+      "source_sha256": "64bdbb477f954d8b8877d3c68a6f7884f84e47a8817ad6f93840abe41700d662"
+    },
+    {
+      "scope": "applications/main",
+      "file": "applications/main/momentum_app/scenes/momentum_app_scene_protocols_gpio.c",
+      "line": 77,
+      "function": "variable_item_list_add",
+      "text": "NRF24 SPI",
+      "decision": "retain_terminology",
+      "reason": "保留协议、调制方式、引脚或接口标识，避免与设备丝印及标准缩写不一致。",
+      "source_sha256": "64bdbb477f954d8b8877d3c68a6f7884f84e47a8817ad6f93840abe41700d662"
+    },
+    {
+      "scope": "applications/main",
+      "file": "applications/main/momentum_app/scenes/momentum_app_scene_protocols_gpio.c",
+      "line": 84,
+      "function": "variable_item_list_add",
+      "text": "ESP32/8266 UART",
+      "decision": "retain_terminology",
+      "reason": "保留协议、调制方式、引脚或接口标识，避免与设备丝印及标准缩写不一致。",
+      "source_sha256": "64bdbb477f954d8b8877d3c68a6f7884f84e47a8817ad6f93840abe41700d662"
+    },
+    {
+      "scope": "applications/main",
+      "file": "applications/main/momentum_app/scenes/momentum_app_scene_protocols_gpio.c",
+      "line": 95,
+      "function": "variable_item_list_add",
+      "text": "NMEA GPS UART",
+      "decision": "retain_terminology",
+      "reason": "保留协议、调制方式、引脚或接口标识，避免与设备丝印及标准缩写不一致。",
+      "source_sha256": "64bdbb477f954d8b8877d3c68a6f7884f84e47a8817ad6f93840abe41700d662"
+    },
+    {
+      "scope": "applications/main",
+      "file": "applications/main/nfc/helpers/protocol_support/mf_ultralight/mf_ultralight.c",
+      "line": 87,
+      "function": "widget_add_button_element",
+      "text": "ASCII",
+      "decision": "retain_terminology",
+      "reason": "保留协议、调制方式、引脚或接口标识，避免与设备丝印及标准缩写不一致。",
+      "source_sha256": "90abcbacb42e207e9c50b9f17afdb779802c3c9f48989af95918f779ff4e11bc"
+    },
+    {
+      "scope": "applications/main",
+      "file": "applications/main/nfc/helpers/protocol_support/nfc_protocol_support.c",
+      "line": 1335,
+      "function": "popup_set_header",
+      "text": "NFC",
+      "decision": "retain_terminology",
+      "reason": "保留协议、调制方式、引脚或接口标识，避免与设备丝印及标准缩写不一致。",
+      "source_sha256": "9effc9420726b8c05af37e94be0c6bbf5133cda4d91727c680eaa8558d533c4b"
+    },
+    {
+      "scope": "applications/main",
+      "file": "applications/main/nfc/helpers/protocol_support/type_4_tag/type_4_tag.c",
+      "line": 77,
+      "function": "widget_add_button_element",
+      "text": "ASCII",
+      "decision": "retain_terminology",
+      "reason": "保留协议、调制方式、引脚或接口标识，避免与设备丝印及标准缩写不一致。",
+      "source_sha256": "c4cbe41c1edcea80716972deea6ed5914c12e67feec5ebc5369d9eb78cce21e3"
+    },
+    {
+      "scope": "applications/main",
+      "file": "applications/main/nfc/scenes/nfc_scene_generate_info.c",
+      "line": 32,
+      "function": "widget_add_string_element",
+      "text": "NFC-A",
+      "decision": "retain_terminology",
+      "reason": "保留协议、调制方式、引脚或接口标识，避免与设备丝印及标准缩写不一致。",
+      "source_sha256": "e83aa960ef1ab7bc407b59ac5dc6b7429fd7ce4c97adf1bccb0b3b8908696171"
+    },
+    {
+      "scope": "applications/main",
+      "file": "applications/main/nfc/views/detect_reader.c",
+      "line": 48,
+      "function": "canvas_draw_str_aligned",
+      "text": "MIFARE MFkey32",
+      "decision": "retain_terminology",
+      "reason": "保留品牌、软件名称或通用功能缩写；该决定不覆盖其周围的动态说明与图片文字。",
+      "source_sha256": "640066755d589a0924655eb11f4810e1da0fe25b6facbe1b1e08bd4300e9ad4e"
+    },
+    {
+      "scope": "applications/main",
+      "file": "applications/main/subghz/scenes/subghz_scene_rpc.c",
+      "line": 31,
+      "function": "popup_set_header",
+      "text": "Sub-GHz",
+      "decision": "retain_terminology",
+      "reason": "保留协议、调制方式、引脚或接口标识，避免与设备丝印及标准缩写不一致。",
+      "source_sha256": "fc80592e59a05d5975961c59cf8accd70bc00699dfab5fe54d216cd50cc2750f"
+    },
+    {
+      "scope": "applications/main",
+      "file": "applications/main/subghz/views/receiver.c",
+      "line": 390,
+      "function": "canvas_draw_str",
+      "text": "MHz",
+      "decision": "retain_terminology",
+      "reason": "保留计量单位，数值与单位不作为普通英文文案翻译。",
+      "source_sha256": "e7e70733e57e054b2a0cbee58b501eed90da033dcbf237255585367e4386173f"
+    },
+    {
+      "scope": "applications/main",
+      "file": "applications/main/subghz/views/receiver.c",
+      "line": 440,
+      "function": "canvas_draw_str",
+      "text": "MHz",
+      "decision": "retain_terminology",
+      "reason": "保留计量单位，数值与单位不作为普通英文文案翻译。",
+      "source_sha256": "e7e70733e57e054b2a0cbee58b501eed90da033dcbf237255585367e4386173f"
+    },
+    {
+      "scope": "applications/main",
+      "file": "applications/main/subghz/views/subghz_frequency_analyzer.c",
+      "line": 145,
+      "function": "canvas_draw_str",
+      "text": "MHz",
+      "decision": "retain_terminology",
+      "reason": "保留计量单位，数值与单位不作为普通英文文案翻译。",
+      "source_sha256": "31e0da387a07aa6d26338a113adad469cf847c3341dc58d6be73bcf9841b8419"
+    },
+    {
+      "scope": "applications/main",
+      "file": "applications/main/subghz/views/subghz_frequency_analyzer.c",
+      "line": 164,
+      "function": "canvas_draw_str",
+      "text": "RSSI",
+      "decision": "retain_terminology",
+      "reason": "保留协议、调制方式、引脚或接口标识，避免与设备丝印及标准缩写不一致。",
+      "source_sha256": "31e0da387a07aa6d26338a113adad469cf847c3341dc58d6be73bcf9841b8419"
+    },
+    {
+      "scope": "applications/main",
+      "file": "applications/main/subghz/views/subghz_read_raw.c",
+      "line": 368,
+      "function": "canvas_draw_str",
+      "text": "RSSI",
+      "decision": "retain_terminology",
+      "reason": "保留协议、调制方式、引脚或接口标识，避免与设备丝印及标准缩写不一致。",
+      "source_sha256": "4cb5a3c775ef9a2f92c0fd30bc768e9108bbeb0f0078ea799447a7ea3e09a9d0"
+    },
+    {
+      "scope": "applications/services",
+      "file": "applications/services/gui/modules/menu.c",
+      "line": 384,
+      "function": "canvas_draw_str_aligned",
+      "text": "TAR",
+      "decision": "retain_terminology",
+      "reason": "保留归档格式或复古菜单主题标识；不是需要翻译的操作指令。",
+      "source_sha256": "1725c556d8664625d03b00bf5f749732125833ef74709ae329f371f01955281a"
+    },
+    {
+      "scope": "applications/services",
+      "file": "applications/services/gui/modules/menu.c",
+      "line": 510,
+      "function": "canvas_draw_str_aligned",
+      "text": "* FLIPPADORE 64 BASIC *",
+      "decision": "retain_terminology",
+      "reason": "保留归档格式或复古菜单主题标识；不是需要翻译的操作指令。",
+      "source_sha256": "1725c556d8664625d03b00bf5f749732125833ef74709ae329f371f01955281a"
+    },
+    {
+      "scope": "applications/system",
+      "file": "applications/system/findmy/scenes/findmy_scene_config_import.c",
+      "line": 154,
+      "function": "variable_item_list_add",
+      "text": "nRF Connect (.txt)",
+      "decision": "retain_terminology",
+      "reason": "保留品牌、软件名称或通用功能缩写；该决定不覆盖其周围的动态说明与图片文字。",
+      "source_sha256": "a2f9d6a7b84ffea7806c51d260aa3c87c2892067378b504bc051ae56643354dd"
+    },
+    {
+      "scope": "applications/system",
+      "file": "applications/system/findmy/scenes/findmy_scene_config_import.c",
+      "line": 156,
+      "function": "variable_item_list_add",
+      "text": "OpenHaystack (.keys)",
+      "decision": "retain_terminology",
+      "reason": "保留品牌、软件名称或通用功能缩写；该决定不覆盖其周围的动态说明与图片文字。",
+      "source_sha256": "a2f9d6a7b84ffea7806c51d260aa3c87c2892067378b504bc051ae56643354dd"
+    },
+    {
+      "scope": "applications/system",
+      "file": "applications/system/findmy/scenes/findmy_scene_config_tagtype.c",
+      "line": 23,
+      "function": "variable_item_list_add",
+      "text": "Apple AirTag",
+      "decision": "retain_terminology",
+      "reason": "保留品牌、软件名称或通用功能缩写；该决定不覆盖其周围的动态说明与图片文字。",
+      "source_sha256": "5147e025bb3399549cb2ab79e45405a3e38646eee37cc8624ccb5aa0ebc93fa1"
+    },
+    {
+      "scope": "applications/system",
+      "file": "applications/system/findmy/scenes/findmy_scene_config_tagtype.c",
+      "line": 25,
+      "function": "variable_item_list_add",
+      "text": "Samsung SmartTag",
+      "decision": "retain_terminology",
+      "reason": "保留品牌、软件名称或通用功能缩写；该决定不覆盖其周围的动态说明与图片文字。",
+      "source_sha256": "5147e025bb3399549cb2ab79e45405a3e38646eee37cc8624ccb5aa0ebc93fa1"
+    },
+    {
+      "scope": "applications/system",
+      "file": "applications/system/findmy/scenes/findmy_scene_config_tagtype.c",
+      "line": 27,
+      "function": "variable_item_list_add",
+      "text": "Tile SmartTag",
+      "decision": "retain_terminology",
+      "reason": "保留品牌、软件名称或通用功能缩写；该决定不覆盖其周围的动态说明与图片文字。",
+      "source_sha256": "5147e025bb3399549cb2ab79e45405a3e38646eee37cc8624ccb5aa0ebc93fa1"
+    },
+    {
+      "scope": "applications/system",
+      "file": "applications/system/findmy/scenes/findmy_scene_config_tagtype.c",
+      "line": 29,
+      "function": "variable_item_list_add",
+      "text": "Google Find My",
+      "decision": "retain_terminology",
+      "reason": "保留品牌、软件名称或通用功能缩写；该决定不覆盖其周围的动态说明与图片文字。",
+      "source_sha256": "5147e025bb3399549cb2ab79e45405a3e38646eee37cc8624ccb5aa0ebc93fa1"
+    },
+    {
+      "scope": "applications/system",
+      "file": "applications/system/hid_app/scenes/hid_scene_start.c",
+      "line": 46,
+      "function": "submenu_add_item",
+      "text": "Apple Music macOS",
+      "decision": "retain_terminology",
+      "reason": "保留品牌、软件名称或通用功能缩写；该决定不覆盖其周围的动态说明与图片文字。",
+      "source_sha256": "9fd6bc96931695299a7b49c0a069d5b6083d2d53e23aa0376a62658ec742b180"
+    },
+    {
+      "scope": "applications/system",
+      "file": "applications/system/hid_app/scenes/hid_scene_start.c",
+      "line": 56,
+      "function": "submenu_add_item",
+      "text": "TikTok / YT Shorts",
+      "decision": "retain_terminology",
+      "reason": "保留品牌、软件名称或通用功能缩写；该决定不覆盖其周围的动态说明与图片文字。",
+      "source_sha256": "9fd6bc96931695299a7b49c0a069d5b6083d2d53e23aa0376a62658ec742b180"
+    },
+    {
+      "scope": "applications/system",
+      "file": "applications/system/hid_app/views/hid_ptt.c",
+      "line": 1073,
+      "function": "elements_multiline_text_aligned",
+      "text": "PTT",
+      "decision": "retain_terminology",
+      "reason": "保留品牌、软件名称或通用功能缩写；该决定不覆盖其周围的动态说明与图片文字。",
+      "source_sha256": "b3e04c494f6c4399451f8507855bcd9721c9ec05940b303c7bcc30c5c115b255"
+    },
+    {
+      "scope": "applications/system",
+      "file": "applications/system/hid_app/views/hid_tiktok.c",
+      "line": 39,
+      "function": "elements_multiline_text_aligned",
+      "text": "TikTok /",
+      "decision": "retain_terminology",
+      "reason": "保留品牌、软件名称或通用功能缩写；该决定不覆盖其周围的动态说明与图片文字。",
+      "source_sha256": "5de329fafc440590958cc837072010d43efcb24687e5dfda7904ea1a5fcc87dd"
+    },
+    {
+      "scope": "applications/system",
+      "file": "applications/system/hid_app/views/hid_tiktok.c",
+      "line": 40,
+      "function": "elements_multiline_text_aligned",
+      "text": "YT Shorts",
+      "decision": "retain_terminology",
+      "reason": "保留品牌、软件名称或通用功能缩写；该决定不覆盖其周围的动态说明与图片文字。",
+      "source_sha256": "5de329fafc440590958cc837072010d43efcb24687e5dfda7904ea1a5fcc87dd"
+    }
+  ]
+}

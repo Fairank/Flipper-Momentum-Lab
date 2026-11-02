@@ -19,12 +19,6 @@ extern const SubGhzProtocol subghz_protocol_bett;
 void* subghz_protocol_encoder_bett_alloc(SubGhzEnvironment* environment);
 
 /**
- * Free SubGhzProtocolEncoderBETT.
- * @param context Pointer to a SubGhzProtocolEncoderBETT instance
- */
-void subghz_protocol_encoder_bett_free(void* context);
-
-/**
  * Deserialize and generating an upload to send.
  * @param context Pointer to a SubGhzProtocolEncoderBETT instance
  * @param flipper_format Pointer to a FlipperFormat instance
@@ -34,36 +28,11 @@ SubGhzProtocolStatus
     subghz_protocol_encoder_bett_deserialize(void* context, FlipperFormat* flipper_format);
 
 /**
- * Forced transmission stop.
- * @param context Pointer to a SubGhzProtocolEncoderBETT instance
- */
-void subghz_protocol_encoder_bett_stop(void* context);
-
-/**
- * Getting the level and duration of the upload to be loaded into DMA.
- * @param context Pointer to a SubGhzProtocolEncoderBETT instance
- * @return LevelDuration 
- */
-LevelDuration subghz_protocol_encoder_bett_yield(void* context);
-
-/**
  * Allocate SubGhzProtocolDecoderBETT.
  * @param environment Pointer to a SubGhzEnvironment instance
  * @return SubGhzProtocolDecoderBETT* pointer to a SubGhzProtocolDecoderBETT instance
  */
 void* subghz_protocol_decoder_bett_alloc(SubGhzEnvironment* environment);
-
-/**
- * Free SubGhzProtocolDecoderBETT.
- * @param context Pointer to a SubGhzProtocolDecoderBETT instance
- */
-void subghz_protocol_decoder_bett_free(void* context);
-
-/**
- * Reset decoder SubGhzProtocolDecoderBETT.
- * @param context Pointer to a SubGhzProtocolDecoderBETT instance
- */
-void subghz_protocol_decoder_bett_reset(void* context);
 
 /**
  * Parse a raw sequence of levels and durations received from the air.

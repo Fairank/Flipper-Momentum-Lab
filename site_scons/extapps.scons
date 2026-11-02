@@ -4,7 +4,6 @@ from fbt.appmanifest import FlipperAppType
 from SCons.Node import NodeList
 from SCons.Warnings import warn, WarningOnByDefault
 
-
 Import("ENV")
 
 
@@ -18,6 +17,16 @@ appenv = ENV["APPENV"] = ENV.Clone(
 
 appenv.Replace(
     LINKER_SCRIPT_PATH=appenv["APP_LINKER_SCRIPT_PATH"],
+    CCFLAGS=[
+        flag for flag in appenv["CCFLAGS"] if flag not in ("-flto", "-ffat-lto-objects")
+    ],
+    LINKFLAGS=[
+        flag
+        for flag in appenv["LINKFLAGS"]
+        if flag not in ("-flto", "-Oz", "-Wl,--undefined=reset_vector")
+        and not flag.startswith("-Wl,--defsym=__radio_start__=")
+        and not flag.startswith("-Wl,--undefined=__wrap__")
+    ],
 )
 
 appenv.AppendUnique(
@@ -28,6 +37,11 @@ appenv.AppendUnique(
         "-nostdlib",
     ],
     LINKFLAGS=[
+        # Fat LTO libraries need section granularity when GCC materializes their
+        # ordinary code for a relocatable FAP. Otherwise unused library routines
+        # can retain unresolved imports (for example u8g2 kerning helpers).
+        "-ffunction-sections",
+        "-fdata-sections",
         "-Ur",
         "-Wl,-Ur",
         "-nostartfiles",
@@ -50,6 +64,9 @@ appenv.AppendUnique(
     ],
     CFLAGS=[
         "-Wno-strict-prototypes",
+    ],
+    CPPDEFINES=[
+        "LOGS_DEBUG_BUILD",
     ],
 )
 

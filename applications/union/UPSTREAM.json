@@ -1,0 +1,1633 @@
+{
+  "repository": "https://github.com/xMasterX/all-the-plugins",
+  "commit": "eb87c158c7dbc930d74c3ae3ccb6b59cad5fc833",
+  "tag": "26sep2026",
+  "note": "Original import hashes; local compatibility and Chinese UI edits are recorded in Git.",
+  "files": [
+    {
+      "upstream_path": "apps_source_code/pomodoro/LICENSE",
+      "path": "applications/union/pomodoro/LICENSE",
+      "sha256": "a2010f343487d3f7618affe54f789f5487602331c0a8d03f49e9a7c547cf0499"
+    },
+    {
+      "upstream_path": "apps_source_code/pomodoro/README-catalog.md",
+      "path": "applications/union/pomodoro/README-catalog.md",
+      "sha256": "40fb2550294d0a2f44120a11180db19d999801661244f8f8ead1b5a666235db2"
+    },
+    {
+      "upstream_path": "apps_source_code/pomodoro/README.md",
+      "path": "applications/union/pomodoro/README.md",
+      "sha256": "bce228c449426831e199e47a9b4cf4b9fc021167875cef1cede8a7708308d869"
+    },
+    {
+      "upstream_path": "apps_source_code/pomodoro/application.fam",
+      "path": "applications/union/pomodoro/application.fam",
+      "sha256": "c0e32c7403e6cfbb46d51efa3a30fa970b63c999215484b58a05c1448eab7b99"
+    },
+    {
+      "upstream_path": "apps_source_code/pomodoro/icons/ButtonLeft_4x7.png",
+      "path": "applications/union/pomodoro/icons/ButtonLeft_4x7.png",
+      "sha256": "a1b5df6e1cd06d6a3834b5d748cad0c33d85ddb4a25b87ed503bfd704571e061"
+    },
+    {
+      "upstream_path": "apps_source_code/pomodoro/icons/Ok_btn_9x9.png",
+      "path": "applications/union/pomodoro/icons/Ok_btn_9x9.png",
+      "sha256": "adda3d8ed592108c503935bab423ef4e371849357e2be1e04d00483c5269a3c3"
+    },
+    {
+      "upstream_path": "apps_source_code/pomodoro/icons/Pin_back_arrow_10x8.png",
+      "path": "applications/union/pomodoro/icons/Pin_back_arrow_10x8.png",
+      "sha256": "bc8696dd6603a7fb61ff0bfdf9ff3fbb6120e36e656d5f7bc749cf56159e2e83"
+    },
+    {
+      "upstream_path": "apps_source_code/pomodoro/icons/Space_65x18.png",
+      "path": "applications/union/pomodoro/icons/Space_65x18.png",
+      "sha256": "b5ddc2fc3f14be7bb1cecba6167614dd6e52a58ca90deaebac843eee897086c4"
+    },
+    {
+      "upstream_path": "apps_source_code/pomodoro/img/2.png",
+      "path": "applications/union/pomodoro/img/2.png",
+      "sha256": "f2dd2cf1a8888d8c2c08613785b37a2c94b5b24f414c9a5c972c6065e90891f8"
+    },
+    {
+      "upstream_path": "apps_source_code/pomodoro/img/LICENSE.png",
+      "path": "applications/union/pomodoro/img/LICENSE.png",
+      "sha256": "0ad04fe5cb1d0bb3f544c39666928f53840a75119cc715d4d6ee070ecae7f071"
+    },
+    {
+      "upstream_path": "apps_source_code/pomodoro/misc/1.png",
+      "path": "applications/union/pomodoro/misc/1.png",
+      "sha256": "483c831a375a275cac02ff2196968e9114a957ac95d5867f4cb9ce50768d362f"
+    },
+    {
+      "upstream_path": "apps_source_code/pomodoro/misc/2.png",
+      "path": "applications/union/pomodoro/misc/2.png",
+      "sha256": "7360b2d277a1104a96a6e8bf52aeff424be443e99e365ba68a537cd55d806010"
+    },
+    {
+      "upstream_path": "apps_source_code/pomodoro/misc/3.png",
+      "path": "applications/union/pomodoro/misc/3.png",
+      "sha256": "395c15eee4e985680ddc8ffc77d494bd12bb0b25b0bb355afc59ba6eda83e5c0"
+    },
+    {
+      "upstream_path": "apps_source_code/pomodoro/misc/4.png",
+      "path": "applications/union/pomodoro/misc/4.png",
+      "sha256": "c4b6a4de06987a381299431ba00ff0c93b4ed47e5908c74e79a5289086e6cde9"
+    },
+    {
+      "upstream_path": "apps_source_code/pomodoro/misc/5.png",
+      "path": "applications/union/pomodoro/misc/5.png",
+      "sha256": "24f73b2a8bb3b31d3fdf39d15318e41c62805652ccee1f521ef35cceff61c22f"
+    },
+    {
+      "upstream_path": "apps_source_code/pomodoro/pomodoro.c",
+      "path": "applications/union/pomodoro/pomodoro.c",
+      "sha256": "8381f874b0b891879ae221abfed467243f48035f1075db39b74edb477a02d1ec"
+    },
+    {
+      "upstream_path": "apps_source_code/pomodoro/pomodoro.h",
+      "path": "applications/union/pomodoro/pomodoro.h",
+      "sha256": "9062381b8f49a80ebbbf7947427a8ef335a297c72f0d2eb34b14a769bef9bed9"
+    },
+    {
+      "upstream_path": "apps_source_code/pomodoro/pomodoro_timer.c",
+      "path": "applications/union/pomodoro/pomodoro_timer.c",
+      "sha256": "14a0bb551835d452efd0e127b4dcf6edf586c2bc7bd7506ea3d5605726036f77"
+    },
+    {
+      "upstream_path": "apps_source_code/pomodoro/pomodoro_timer.h",
+      "path": "applications/union/pomodoro/pomodoro_timer.h",
+      "sha256": "471985b4140176990ba0a542c86fe6077c1e022cf233ed0e900534b10a373196"
+    },
+    {
+      "upstream_path": "apps_source_code/pomodoro/pomodoro_timer.png",
+      "path": "applications/union/pomodoro/pomodoro_timer.png",
+      "sha256": "dd699ca136cdd7a17b6a0f21e21d92e11244584d6616c78fdd72e36da90c99db"
+    },
+    {
+      "upstream_path": "apps_source_code/pomodoro/views/pomodoro_10.c",
+      "path": "applications/union/pomodoro/views/pomodoro_10.c",
+      "sha256": "a6d664f52c4cba0007670802ccead318be60938a57ea9f70224112323e06f888"
+    },
+    {
+      "upstream_path": "apps_source_code/pomodoro/views/pomodoro_10.h",
+      "path": "applications/union/pomodoro/views/pomodoro_10.h",
+      "sha256": "315c6dff8d8790e4aafa4b86d3e524f736e19752e662b21e2d954fc1fcded85d"
+    },
+    {
+      "upstream_path": "apps_source_code/pomodoro/views/pomodoro_25.c",
+      "path": "applications/union/pomodoro/views/pomodoro_25.c",
+      "sha256": "4672618784344b683ec394a6af4d71cbbd2761c99e636da6c972b12beb2a7812"
+    },
+    {
+      "upstream_path": "apps_source_code/pomodoro/views/pomodoro_25.h",
+      "path": "applications/union/pomodoro/views/pomodoro_25.h",
+      "sha256": "a597cf1396a9c012c86aad507dd8fe2af07d5750da3a17a2c6e7d1f64d02783b"
+    },
+    {
+      "upstream_path": "apps_source_code/pomodoro/views/pomodoro_50.c",
+      "path": "applications/union/pomodoro/views/pomodoro_50.c",
+      "sha256": "5cc8c827f65951588f553f75587c3609c74412610ee5156df5f87e46e03b9016"
+    },
+    {
+      "upstream_path": "apps_source_code/pomodoro/views/pomodoro_50.h",
+      "path": "applications/union/pomodoro/views/pomodoro_50.h",
+      "sha256": "2c68725a1c14ae8d9368d99527626ead1ed65a6ce09952dd21caf2e9c52e3847"
+    },
+    {
+      "upstream_path": "apps_source_code/flipper_analog_clock/README.md",
+      "path": "applications/union/flipper_analog_clock/README.md",
+      "sha256": "799343df180e580b4f3f1fd5895595f6badeae620ed3277eb55442997b4c3bd3"
+    },
+    {
+      "upstream_path": "apps_source_code/flipper_analog_clock/analog_clock.c",
+      "path": "applications/union/flipper_analog_clock/analog_clock.c",
+      "sha256": "b1e81babd45d3cb282d3981d781fa930db5266c03965d6d61e4a738112e38e66"
+    },
+    {
+      "upstream_path": "apps_source_code/flipper_analog_clock/analog_clock.png",
+      "path": "applications/union/flipper_analog_clock/analog_clock.png",
+      "sha256": "eb8960c80d749c727b0791c0ae22121e48ffd34b14a3ecf6e6f6c6a931a82930"
+    },
+    {
+      "upstream_path": "apps_source_code/flipper_analog_clock/application.fam",
+      "path": "applications/union/flipper_analog_clock/application.fam",
+      "sha256": "814b5d86e05774be2b0250381685f30f1a337fa2a5fe7c26f1a6e5104e131c3f"
+    },
+    {
+      "upstream_path": "apps_source_code/flipper_analog_clock/img/1.png",
+      "path": "applications/union/flipper_analog_clock/img/1.png",
+      "sha256": "67396be50bfd7bee66aabdc99b93c66db449fbdcb61dada9383a1452be3beca4"
+    },
+    {
+      "upstream_path": "apps_source_code/segment_clock/CHANGELOG.md",
+      "path": "applications/union/segment_clock/CHANGELOG.md",
+      "sha256": "cfe47eb8fcb8681ebc7492164a130e6bdac475b91e9c88e32d8ae473879f182c"
+    },
+    {
+      "upstream_path": "apps_source_code/segment_clock/README.md",
+      "path": "applications/union/segment_clock/README.md",
+      "sha256": "607fdb507043ab01674f94d70e589d4b8d6ee8826317506256ba9ade4eb12ecc"
+    },
+    {
+      "upstream_path": "apps_source_code/segment_clock/application.fam",
+      "path": "applications/union/segment_clock/application.fam",
+      "sha256": "976f7c788ef9b1d825dbe87a02173b492944b4c1d411235357b5e45962c1aad2"
+    },
+    {
+      "upstream_path": "apps_source_code/segment_clock/catalog/docs/Changelog.md",
+      "path": "applications/union/segment_clock/catalog/docs/Changelog.md",
+      "sha256": "0fed4c7b8060d60f9a7370920eebc3f279b5440dc960d17c900863da5eed0b0f"
+    },
+    {
+      "upstream_path": "apps_source_code/segment_clock/catalog/docs/Readme.md",
+      "path": "applications/union/segment_clock/catalog/docs/Readme.md",
+      "sha256": "c82f2a6ebecff7b2f861ed9c3f8b64d898da36ab199642328b755a0fb79edad5"
+    },
+    {
+      "upstream_path": "apps_source_code/segment_clock/catalog/screenshots/1.png",
+      "path": "applications/union/segment_clock/catalog/screenshots/1.png",
+      "sha256": "c94e83b9ad14b52622a27c2acd37c381140f8897698857d4ce3d469e7523cb62"
+    },
+    {
+      "upstream_path": "apps_source_code/segment_clock/icon.png",
+      "path": "applications/union/segment_clock/icon.png",
+      "sha256": "ec02694165d40451f44134c31a72d46729ead22e5219fd67ee5f46e0b4a1157b"
+    },
+    {
+      "upstream_path": "apps_source_code/segment_clock/main.c",
+      "path": "applications/union/segment_clock/main.c",
+      "sha256": "5641e0a2c88d0a92f3ad05634e90188390fa7ff6e0d4c16f653f16bb1a1d000a"
+    },
+    {
+      "upstream_path": "non_catalog_apps/calendar/application.fam",
+      "path": "applications/union/calendar/application.fam",
+      "sha256": "d2340bf1c2b76092da51293a4dcc400357cafe27dd82023ce7940694acffe815"
+    },
+    {
+      "upstream_path": "non_catalog_apps/calendar/calendar.c",
+      "path": "applications/union/calendar/calendar.c",
+      "sha256": "53e9324b22d9d8446f26975241486a14a2949cf9152ac0981dd16fa84d973430"
+    },
+    {
+      "upstream_path": "non_catalog_apps/calendar/calendar.h",
+      "path": "applications/union/calendar/calendar.h",
+      "sha256": "7d60582f87f8e21b4929d234f24b854e74a29c628614fe58b6f5ceb773d3aab1"
+    },
+    {
+      "upstream_path": "non_catalog_apps/calendar/helpers/calendar_event.h",
+      "path": "applications/union/calendar/helpers/calendar_event.h",
+      "sha256": "e519d1b1f85d55b43edac163ca271e5840c61e8a46181249e48957025bcab618"
+    },
+    {
+      "upstream_path": "non_catalog_apps/calendar/helpers/variable_shared_context.h",
+      "path": "applications/union/calendar/helpers/variable_shared_context.h",
+      "sha256": "ce75f76a16a286281d9b5ac01cfca22842083cf25f61c214cf781a431394b053"
+    },
+    {
+      "upstream_path": "non_catalog_apps/calendar/icon.png",
+      "path": "applications/union/calendar/icon.png",
+      "sha256": "25bf76934da547d204655cc13a837297102e74a0fe7f1ed8122145a29420efbe"
+    },
+    {
+      "upstream_path": "non_catalog_apps/calendar/scenes/calendar_scene.c",
+      "path": "applications/union/calendar/scenes/calendar_scene.c",
+      "sha256": "502373981ec15305babb1a561336b749a1a79d3a2ac6c5b811cd60a4f5ffec6b"
+    },
+    {
+      "upstream_path": "non_catalog_apps/calendar/scenes/calendar_scene.h",
+      "path": "applications/union/calendar/scenes/calendar_scene.h",
+      "sha256": "d0e39f7e85867932c3d40f71b74d1bf19720d40bd42b947068810c6596aa3629"
+    },
+    {
+      "upstream_path": "non_catalog_apps/calendar/scenes/calendar_scene_config.h",
+      "path": "applications/union/calendar/scenes/calendar_scene_config.h",
+      "sha256": "8815db61ed3ebf3d439cdcc1f01c39b10f7a5ceab2c25bdff69a06663afe3f58"
+    },
+    {
+      "upstream_path": "non_catalog_apps/calendar/scenes/calendar_scene_month_browser.c",
+      "path": "applications/union/calendar/scenes/calendar_scene_month_browser.c",
+      "sha256": "79da3c574708f44ffe417933fc2b9817fc63fc8c0df202377a5483d9bbc1b747"
+    },
+    {
+      "upstream_path": "non_catalog_apps/calendar/scenes/calendar_scene_month_picker.c",
+      "path": "applications/union/calendar/scenes/calendar_scene_month_picker.c",
+      "sha256": "1d428febb768fd40fc2fa9ff1939d50369d19b60e4f7c3d45ee2d4b447963e3f"
+    },
+    {
+      "upstream_path": "non_catalog_apps/calendar/scenes/calendar_scene_year_picker.c",
+      "path": "applications/union/calendar/scenes/calendar_scene_year_picker.c",
+      "sha256": "0d20016349e8553b71e08d4b99d22d075ce112d10214d26f80453c49440d8286"
+    },
+    {
+      "upstream_path": "non_catalog_apps/calendar/views/calendar_month_browser.c",
+      "path": "applications/union/calendar/views/calendar_month_browser.c",
+      "sha256": "0483940f574099dbc6d65c26c5fb38858ec80015f71d6c84f7a29d8a0ef08f4e"
+    },
+    {
+      "upstream_path": "non_catalog_apps/calendar/views/calendar_month_browser.h",
+      "path": "applications/union/calendar/views/calendar_month_browser.h",
+      "sha256": "bbfe8f97cc59b6ba2d7e6f98e4098981add6922d354d14d2bf098535cb0249e5"
+    },
+    {
+      "upstream_path": "non_catalog_apps/calendar/views/calendar_month_picker.c",
+      "path": "applications/union/calendar/views/calendar_month_picker.c",
+      "sha256": "929d460e01fea4a0e565e9eeddfc56520a4a26a0a147c3c170ee3197292c6339"
+    },
+    {
+      "upstream_path": "non_catalog_apps/calendar/views/calendar_month_picker.h",
+      "path": "applications/union/calendar/views/calendar_month_picker.h",
+      "sha256": "83966458b8bad02d224c766243cf68c2c20d5a4306a2bda90170955db2ecafa8"
+    },
+    {
+      "upstream_path": "non_catalog_apps/calendar/views/calendar_year_picker.c",
+      "path": "applications/union/calendar/views/calendar_year_picker.c",
+      "sha256": "ce864d6241f75495f5d791c435ac7e0bc01d6faf54f95a93d6966fef16da3ca8"
+    },
+    {
+      "upstream_path": "non_catalog_apps/calendar/views/calendar_year_picker.h",
+      "path": "applications/union/calendar/views/calendar_year_picker.h",
+      "sha256": "2deb0fd4bcd59450340237bebe2cf0af20b966dcfcd4bddee7839be2afe6c183"
+    },
+    {
+      "upstream_path": "non_catalog_apps/net_calculator/LICENSE",
+      "path": "applications/union/net_calculator/LICENSE",
+      "sha256": "3972dc9744f6499f0f9b2dbf76696f2ae7ad8af9b23dde66d6af86c9dfb36986"
+    },
+    {
+      "upstream_path": "non_catalog_apps/net_calculator/application.fam",
+      "path": "applications/union/net_calculator/application.fam",
+      "sha256": "38dbd2a787095041b68c57c74b59fee1d60db97766bcc098f09a4678020ce82b"
+    },
+    {
+      "upstream_path": "non_catalog_apps/net_calculator/icon.png",
+      "path": "applications/union/net_calculator/icon.png",
+      "sha256": "8cf8bf9e5f64d54548fc5372176a50f15d93b93c62db7d00659a22918ed4de55"
+    },
+    {
+      "upstream_path": "non_catalog_apps/net_calculator/net_calculator.c",
+      "path": "applications/union/net_calculator/net_calculator.c",
+      "sha256": "309a6e5394c8f2d8dc3825d5d9ee27558d2c4d6c86676972765cb3ef6bb5774d"
+    },
+    {
+      "upstream_path": "non_catalog_apps/multi_counter/LICENSE",
+      "path": "applications/union/multi_counter/LICENSE",
+      "sha256": "07733808ae41fa441ed7b75bb1b493ef94257bfec33b1b031718e9c4acbdd545"
+    },
+    {
+      "upstream_path": "non_catalog_apps/multi_counter/application.fam",
+      "path": "applications/union/multi_counter/application.fam",
+      "sha256": "a43a4c0e0a07fbf1a33c847154a560bf7e694a208b5f6d6b72ac73b3de26412e"
+    },
+    {
+      "upstream_path": "non_catalog_apps/multi_counter/counter.c",
+      "path": "applications/union/multi_counter/counter.c",
+      "sha256": "76735beadd11324e4fb73580cc9b477db6b9765684c3aecccdb83af37c84c2e4"
+    },
+    {
+      "upstream_path": "non_catalog_apps/multi_counter/icons/DOWN.png",
+      "path": "applications/union/multi_counter/icons/DOWN.png",
+      "sha256": "14148ee8d4bcb9ce7b92ec9df07a49de9a10291a0bdbc93bc329b880bc20d350"
+    },
+    {
+      "upstream_path": "non_catalog_apps/multi_counter/icons/S_OFF.png",
+      "path": "applications/union/multi_counter/icons/S_OFF.png",
+      "sha256": "28c4141ddd878dcc9018210c7a2c77cc7c03db5d2182075b0d9bbe6574d1897e"
+    },
+    {
+      "upstream_path": "non_catalog_apps/multi_counter/icons/S_ON.png",
+      "path": "applications/union/multi_counter/icons/S_ON.png",
+      "sha256": "777308016b09fbba7b207e8fc7056323ae4dea3ba0dbd9be1084dd660468a304"
+    },
+    {
+      "upstream_path": "non_catalog_apps/multi_counter/icons/UP.png",
+      "path": "applications/union/multi_counter/icons/UP.png",
+      "sha256": "8078422b8582557f6735fdc92043eda0c3b666f54eb47eca1651921ea8955a6b"
+    },
+    {
+      "upstream_path": "non_catalog_apps/multi_counter/icons/counter_icon.png",
+      "path": "applications/union/multi_counter/icons/counter_icon.png",
+      "sha256": "d51b7a58b64205934b7247349b4e3460a7a1f0b714866ffa341daa84e42402c0"
+    },
+    {
+      "upstream_path": "non_catalog_apps/sd_info/LICENSE",
+      "path": "applications/union/sd_info/LICENSE",
+      "sha256": "3972dc9744f6499f0f9b2dbf76696f2ae7ad8af9b23dde66d6af86c9dfb36986"
+    },
+    {
+      "upstream_path": "non_catalog_apps/sd_info/application.fam",
+      "path": "applications/union/sd_info/application.fam",
+      "sha256": "d3c93f5c8fe42ecd8315672bc6485844814e1c28645b89b9ccfa466aa3bbac1e"
+    },
+    {
+      "upstream_path": "non_catalog_apps/sd_info/icon.png",
+      "path": "applications/union/sd_info/icon.png",
+      "sha256": "75de1defcb04e773d3e2a22a677cc8ad7670d270f144c84d0dd2ed3d7e139b57"
+    },
+    {
+      "upstream_path": "non_catalog_apps/sd_info/main.c",
+      "path": "applications/union/sd_info/main.c",
+      "sha256": "7a4c85a8137312f989037d29e709c5c4751929f8937f2986c0e582af3afefd0d"
+    },
+    {
+      "upstream_path": "non_catalog_apps/flipper_chronometer/application.fam",
+      "path": "applications/union/flipper_chronometer/application.fam",
+      "sha256": "c952bd47a6b792cfbf7e447e7e93aec9151c74dbfdccb4a8af39209ca217f838"
+    },
+    {
+      "upstream_path": "non_catalog_apps/flipper_chronometer/chronometer.png",
+      "path": "applications/union/flipper_chronometer/chronometer.png",
+      "sha256": "c9090affe66d92bc3ba87396e4af764275fc1291719747fb59310aa4159c1c55"
+    },
+    {
+      "upstream_path": "non_catalog_apps/flipper_chronometer/flipper_chronometer.c",
+      "path": "applications/union/flipper_chronometer/flipper_chronometer.c",
+      "sha256": "a478a47ffbf99645ba11eef2fff6e787f2412e520da58aaf244ab3f067b2e7d7"
+    },
+    {
+      "upstream_path": "non_catalog_apps/flipper_task_tracker/LICENSE.txt",
+      "path": "applications/union/flipper_task_tracker/LICENSE.txt",
+      "sha256": "b615e12d2e39e686a61d705fe26730400f6c4473ae939b66ae68bbf8c0b30527"
+    },
+    {
+      "upstream_path": "non_catalog_apps/flipper_task_tracker/app/app.h",
+      "path": "applications/union/flipper_task_tracker/app/app.h",
+      "sha256": "189546321f7446a48fdd9811a12c4d1690e206eaf6b21125e550877d3aaaef73"
+    },
+    {
+      "upstream_path": "non_catalog_apps/flipper_task_tracker/app/csv/csv.c",
+      "path": "applications/union/flipper_task_tracker/app/csv/csv.c",
+      "sha256": "f745c8906f647dbff3e0fe2aabf92c0cda322f2696d9ea022f85e4ced9235161"
+    },
+    {
+      "upstream_path": "non_catalog_apps/flipper_task_tracker/app/csv/csv.h",
+      "path": "applications/union/flipper_task_tracker/app/csv/csv.h",
+      "sha256": "12f3ca392c2832d7ff431b765002f2e259b67cc93e85eb815632ed6aea7343f5"
+    },
+    {
+      "upstream_path": "non_catalog_apps/flipper_task_tracker/app/datetime/datetime.c",
+      "path": "applications/union/flipper_task_tracker/app/datetime/datetime.c",
+      "sha256": "ae3e72cc14b86f2c5d2f44e11a14970ff6544932c5fc62876fcb499b83685aff"
+    },
+    {
+      "upstream_path": "non_catalog_apps/flipper_task_tracker/app/datetime/datetime.h",
+      "path": "applications/union/flipper_task_tracker/app/datetime/datetime.h",
+      "sha256": "058ed1cadfcb08568fd5a97778a03e2894196ba7f95b66df8fd755d838488747"
+    },
+    {
+      "upstream_path": "non_catalog_apps/flipper_task_tracker/app/free/free.c",
+      "path": "applications/union/flipper_task_tracker/app/free/free.c",
+      "sha256": "9bbf17a95de36deea36cb6da7e0115c14aa0f7f5fe6ce04ac6ab81a5f9df0ab9"
+    },
+    {
+      "upstream_path": "non_catalog_apps/flipper_task_tracker/app/free/free.h",
+      "path": "applications/union/flipper_task_tracker/app/free/free.h",
+      "sha256": "13208c18977ff4dcea4ee14d8aa6e117303fd770d725032eb144d4a79b4e7021"
+    },
+    {
+      "upstream_path": "non_catalog_apps/flipper_task_tracker/app/init/init.c",
+      "path": "applications/union/flipper_task_tracker/app/init/init.c",
+      "sha256": "328a74b6764ecc74fce695978a6fd65e1270c49ac487a376f64c050cfb920c3d"
+    },
+    {
+      "upstream_path": "non_catalog_apps/flipper_task_tracker/app/init/init.h",
+      "path": "applications/union/flipper_task_tracker/app/init/init.h",
+      "sha256": "4915b51ce5e919f4c8f64b7b2e01cf3370de1041400c4572be8af6190aba2417"
+    },
+    {
+      "upstream_path": "non_catalog_apps/flipper_task_tracker/app/scene/edit_description/edit_description.c",
+      "path": "applications/union/flipper_task_tracker/app/scene/edit_description/edit_description.c",
+      "sha256": "4f4110782536798436409430b7122b7279e2c2679c7cad531b9bd398afc9b9bb"
+    },
+    {
+      "upstream_path": "non_catalog_apps/flipper_task_tracker/app/scene/edit_description/edit_description.h",
+      "path": "applications/union/flipper_task_tracker/app/scene/edit_description/edit_description.h",
+      "sha256": "27e7f216c7133fb8a5950fb83b3b4a16272c4b629d2e8f5579db47fb2413b602"
+    },
+    {
+      "upstream_path": "non_catalog_apps/flipper_task_tracker/app/scene/edit_name/edit_name.c",
+      "path": "applications/union/flipper_task_tracker/app/scene/edit_name/edit_name.c",
+      "sha256": "1461ad792737d817cf736167289eab5dbaeda98d3982564bd9555ee94e93d526"
+    },
+    {
+      "upstream_path": "non_catalog_apps/flipper_task_tracker/app/scene/edit_name/edit_name.h",
+      "path": "applications/union/flipper_task_tracker/app/scene/edit_name/edit_name.h",
+      "sha256": "e4fb642c288a5168ae8f8fb5dad1221c093047748f1c2a1ff4f49815875a9969"
+    },
+    {
+      "upstream_path": "non_catalog_apps/flipper_task_tracker/app/scene/edit_price/edit_price.c",
+      "path": "applications/union/flipper_task_tracker/app/scene/edit_price/edit_price.c",
+      "sha256": "88fff628d5152bf620d71875c013bbeb91bc1882553670200f3b029882508db1"
+    },
+    {
+      "upstream_path": "non_catalog_apps/flipper_task_tracker/app/scene/edit_price/edit_price.h",
+      "path": "applications/union/flipper_task_tracker/app/scene/edit_price/edit_price.h",
+      "sha256": "eb5b6c8f44add8776c2883e04c9ed963a55238e80260c5754205cf5ba50cc6e5"
+    },
+    {
+      "upstream_path": "non_catalog_apps/flipper_task_tracker/app/scene/edit_task/edit_task.c",
+      "path": "applications/union/flipper_task_tracker/app/scene/edit_task/edit_task.c",
+      "sha256": "938a872831a67787b016dfa6a647570c41b837482dd2e389fb0fa0e7fbb29927"
+    },
+    {
+      "upstream_path": "non_catalog_apps/flipper_task_tracker/app/scene/edit_task/edit_task.h",
+      "path": "applications/union/flipper_task_tracker/app/scene/edit_task/edit_task.h",
+      "sha256": "0ecdca44929065cf382034f9551159bc767dee6cbcd1c8cd365325f75b9984da"
+    },
+    {
+      "upstream_path": "non_catalog_apps/flipper_task_tracker/app/scene/main_menu/main_menu.c",
+      "path": "applications/union/flipper_task_tracker/app/scene/main_menu/main_menu.c",
+      "sha256": "30cd920c1878e3003e67458a59a40e6680598e97bd1c592cab85743751734291"
+    },
+    {
+      "upstream_path": "non_catalog_apps/flipper_task_tracker/app/scene/main_menu/main_menu.h",
+      "path": "applications/union/flipper_task_tracker/app/scene/main_menu/main_menu.h",
+      "sha256": "f684a63855531fae327aa3b01e077241e52d5ff2f1ccfd591b9854b529df270a"
+    },
+    {
+      "upstream_path": "non_catalog_apps/flipper_task_tracker/app/scene/scene.c",
+      "path": "applications/union/flipper_task_tracker/app/scene/scene.c",
+      "sha256": "407ea3980de37f12be08ba466cd7bb3710270594129800d12ca909ed54f8cafe"
+    },
+    {
+      "upstream_path": "non_catalog_apps/flipper_task_tracker/app/scene/scene.h",
+      "path": "applications/union/flipper_task_tracker/app/scene/scene.h",
+      "sha256": "4325d5fb9ca50da02e225461b77a594b79cd3862f7775f8f13c7c1a8c6af39a8"
+    },
+    {
+      "upstream_path": "non_catalog_apps/flipper_task_tracker/app/scene/task_continue/task_continue.c",
+      "path": "applications/union/flipper_task_tracker/app/scene/task_continue/task_continue.c",
+      "sha256": "d6b321ca390cd702ee1ad456c839211e1a21472d0fa849abc1db8d3e4fbd1021"
+    },
+    {
+      "upstream_path": "non_catalog_apps/flipper_task_tracker/app/scene/task_continue/task_continue.h",
+      "path": "applications/union/flipper_task_tracker/app/scene/task_continue/task_continue.h",
+      "sha256": "e91ed8cd6c65a61b9060a5ff0ad62b1cdf9e4a9d9ec01d320e5ede8bb9ab9b48"
+    },
+    {
+      "upstream_path": "non_catalog_apps/flipper_task_tracker/app/scene/view_stats/view_stats.c",
+      "path": "applications/union/flipper_task_tracker/app/scene/view_stats/view_stats.c",
+      "sha256": "94e139f6a6fce2bcc3e214f2d9387cfdfa6f74b125e11dfe4f3047a702011550"
+    },
+    {
+      "upstream_path": "non_catalog_apps/flipper_task_tracker/app/scene/view_stats/view_stats.h",
+      "path": "applications/union/flipper_task_tracker/app/scene/view_stats/view_stats.h",
+      "sha256": "0e451e3f8fdd71aec79385f46759d8a63386ed8fc70e1f7e63cf1cc01c5b8683"
+    },
+    {
+      "upstream_path": "non_catalog_apps/flipper_task_tracker/app/scene/view_task/view_task.c",
+      "path": "applications/union/flipper_task_tracker/app/scene/view_task/view_task.c",
+      "sha256": "331e75f79c8c22f7a73507140ee2b1fbbaf96ef4dabb790ae5a2a6bcb7ae949b"
+    },
+    {
+      "upstream_path": "non_catalog_apps/flipper_task_tracker/app/scene/view_task/view_task.h",
+      "path": "applications/union/flipper_task_tracker/app/scene/view_task/view_task.h",
+      "sha256": "406eb7393bf16b56415b916545163babb4211d4d78d17ed4915670cdc79f2b8b"
+    },
+    {
+      "upstream_path": "non_catalog_apps/flipper_task_tracker/app/scene/view_tasks/view_tasks.c",
+      "path": "applications/union/flipper_task_tracker/app/scene/view_tasks/view_tasks.c",
+      "sha256": "5b08049c748f77ee82333c5e4d24cce40bc72e12e549509a1f1258489d2d2b3e"
+    },
+    {
+      "upstream_path": "non_catalog_apps/flipper_task_tracker/app/scene/view_tasks/view_tasks.h",
+      "path": "applications/union/flipper_task_tracker/app/scene/view_tasks/view_tasks.h",
+      "sha256": "055f5a08f9982d76c4f34ea0eea387597e0fa1ec936f93ce6b876c20c861cf65"
+    },
+    {
+      "upstream_path": "non_catalog_apps/flipper_task_tracker/app/storage/init.c",
+      "path": "applications/union/flipper_task_tracker/app/storage/init.c",
+      "sha256": "191bef0ec3bbd394a0a7cb48c11c7ade6bc12abf1d750ec8c3f8332c77ce3d5c"
+    },
+    {
+      "upstream_path": "non_catalog_apps/flipper_task_tracker/app/storage/init.h",
+      "path": "applications/union/flipper_task_tracker/app/storage/init.h",
+      "sha256": "067143a176a930cff70a2aa36726fb4085112c352a1005f713da47e3ce478cdf"
+    },
+    {
+      "upstream_path": "non_catalog_apps/flipper_task_tracker/app/structs.h",
+      "path": "applications/union/flipper_task_tracker/app/structs.h",
+      "sha256": "7d8680662c5f9d0e4f26c222db6de8c6a67e31f41c8738135e63cbdfc26053f8"
+    },
+    {
+      "upstream_path": "non_catalog_apps/flipper_task_tracker/app/tasks/task.c",
+      "path": "applications/union/flipper_task_tracker/app/tasks/task.c",
+      "sha256": "ba5296aa3a389b395cc7075289ded6dbb6409f05a70b925e887fed5bbcd5d147"
+    },
+    {
+      "upstream_path": "non_catalog_apps/flipper_task_tracker/app/tasks/task.h",
+      "path": "applications/union/flipper_task_tracker/app/tasks/task.h",
+      "sha256": "e5ab44ae4eb871966fa3e03fcf3dbeae1597ae2e728547c1713b5119db1d4d3a"
+    },
+    {
+      "upstream_path": "non_catalog_apps/flipper_task_tracker/application.fam",
+      "path": "applications/union/flipper_task_tracker/application.fam",
+      "sha256": "315d4e070bc57ad92ecd5810968c39ee064e4973de50f3b5650775ea15a0f5aa"
+    },
+    {
+      "upstream_path": "non_catalog_apps/flipper_task_tracker/flipper_time_tracker.png",
+      "path": "applications/union/flipper_task_tracker/flipper_time_tracker.png",
+      "sha256": "37131e083990789438a46f1b03ed7aae528371d567daf94a847eb8947b3b06b2"
+    },
+    {
+      "upstream_path": "non_catalog_apps/flipper_task_tracker/images/.gitkeep",
+      "path": "applications/union/flipper_task_tracker/images/.gitkeep",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "upstream_path": "non_catalog_apps/flipper_task_tracker/images/Clock_14/frame_01.png",
+      "path": "applications/union/flipper_task_tracker/images/Clock_14/frame_01.png",
+      "sha256": "103d96b412de467c7a51dbdf0f038229f0497a5fa5af19634eccc4b02b37d43b"
+    },
+    {
+      "upstream_path": "non_catalog_apps/flipper_task_tracker/images/Clock_14/frame_02.png",
+      "path": "applications/union/flipper_task_tracker/images/Clock_14/frame_02.png",
+      "sha256": "c40f5bd5c8248e363c573240bc78bc1c038496cb881cc4920dc89d0e36b0ee21"
+    },
+    {
+      "upstream_path": "non_catalog_apps/flipper_task_tracker/images/Clock_14/frame_03.png",
+      "path": "applications/union/flipper_task_tracker/images/Clock_14/frame_03.png",
+      "sha256": "ff2576482197b5ee2f899a9654d902df49672f7e7790e12949472e92c37a42c1"
+    },
+    {
+      "upstream_path": "non_catalog_apps/flipper_task_tracker/images/Clock_14/frame_04.png",
+      "path": "applications/union/flipper_task_tracker/images/Clock_14/frame_04.png",
+      "sha256": "ce3acbabbf1769eeb7c0263a41322c51defcb7d3b594794460b26558cd3ea274"
+    },
+    {
+      "upstream_path": "non_catalog_apps/flipper_task_tracker/images/Clock_14/frame_05.png",
+      "path": "applications/union/flipper_task_tracker/images/Clock_14/frame_05.png",
+      "sha256": "a287e93c445c0afe8ea378c3abc87639a6d312fe2598feeaece22f85ec82509e"
+    },
+    {
+      "upstream_path": "non_catalog_apps/flipper_task_tracker/images/Clock_14/frame_06.png",
+      "path": "applications/union/flipper_task_tracker/images/Clock_14/frame_06.png",
+      "sha256": "03bbbfede8de650e6b5468c49dd9a97c385b5715721a77fc6a316575f0943a54"
+    },
+    {
+      "upstream_path": "non_catalog_apps/flipper_task_tracker/images/Clock_14/frame_07.png",
+      "path": "applications/union/flipper_task_tracker/images/Clock_14/frame_07.png",
+      "sha256": "014f6a7db281cd1f16653ebd7f3f963756bc59594fcf0844fd6f326902e488e2"
+    },
+    {
+      "upstream_path": "non_catalog_apps/flipper_task_tracker/images/Clock_14/frame_08.png",
+      "path": "applications/union/flipper_task_tracker/images/Clock_14/frame_08.png",
+      "sha256": "faca769f1c17a8e3e38261924629ca7fca9fd249fde0aeea715d963dda8a8022"
+    },
+    {
+      "upstream_path": "non_catalog_apps/flipper_task_tracker/images/Clock_14/frame_rate",
+      "path": "applications/union/flipper_task_tracker/images/Clock_14/frame_rate",
+      "sha256": "4e07408562bedb8b60ce05c1decfe3ad16b72230967de01f640b7e4729b49fce"
+    },
+    {
+      "upstream_path": "non_catalog_apps/flipper_task_tracker/images/DolphinDone_80x58.png",
+      "path": "applications/union/flipper_task_tracker/images/DolphinDone_80x58.png",
+      "sha256": "e092b0f28f7ce67e697c4fda899964cf428cc24d1b54551b8d281ab70450a92a"
+    },
+    {
+      "upstream_path": "non_catalog_apps/flipper_task_tracker/images/DolphinReadingSuccess_59x63.png",
+      "path": "applications/union/flipper_task_tracker/images/DolphinReadingSuccess_59x63.png",
+      "sha256": "ae7952b854b0ff6dae2cbf589244b67cfbd7f67286b188cdedbf6d57515eeab4"
+    },
+    {
+      "upstream_path": "non_catalog_apps/flipper_task_tracker/images/ViewTasks_14/frame_01.png",
+      "path": "applications/union/flipper_task_tracker/images/ViewTasks_14/frame_01.png",
+      "sha256": "3ded9034f7cd4c3014504869deee38ca2db9a958ca6a6871f2d20b2874d0c047"
+    },
+    {
+      "upstream_path": "non_catalog_apps/flipper_task_tracker/images/ViewTasks_14/frame_02.png",
+      "path": "applications/union/flipper_task_tracker/images/ViewTasks_14/frame_02.png",
+      "sha256": "983c488f731a9f3896ec0dc7ef94b9cd5a352363ce27202351fb8aea6bdd8b96"
+    },
+    {
+      "upstream_path": "non_catalog_apps/flipper_task_tracker/images/ViewTasks_14/frame_03.png",
+      "path": "applications/union/flipper_task_tracker/images/ViewTasks_14/frame_03.png",
+      "sha256": "5df5226a0b554227ee47c85afee8774873cdef5a8ff361ac639c88f8068f9756"
+    },
+    {
+      "upstream_path": "non_catalog_apps/flipper_task_tracker/images/ViewTasks_14/frame_04.png",
+      "path": "applications/union/flipper_task_tracker/images/ViewTasks_14/frame_04.png",
+      "sha256": "db817715798f06dc5407068a03f90a1d10ab7d427267780dbc4e52c91b31e7c0"
+    },
+    {
+      "upstream_path": "non_catalog_apps/flipper_task_tracker/images/ViewTasks_14/frame_05.png",
+      "path": "applications/union/flipper_task_tracker/images/ViewTasks_14/frame_05.png",
+      "sha256": "e4f9b04212d290dabe3a30adc8cd63d31daabdc90574337bb66759fe172f8b63"
+    },
+    {
+      "upstream_path": "non_catalog_apps/flipper_task_tracker/images/ViewTasks_14/frame_06.png",
+      "path": "applications/union/flipper_task_tracker/images/ViewTasks_14/frame_06.png",
+      "sha256": "dad9a82d4f6830fc8cfa1c9eea90918ddf65bdf3bef7ac0625df42410463374a"
+    },
+    {
+      "upstream_path": "non_catalog_apps/flipper_task_tracker/images/ViewTasks_14/frame_07.png",
+      "path": "applications/union/flipper_task_tracker/images/ViewTasks_14/frame_07.png",
+      "sha256": "e4f9b04212d290dabe3a30adc8cd63d31daabdc90574337bb66759fe172f8b63"
+    },
+    {
+      "upstream_path": "non_catalog_apps/flipper_task_tracker/images/ViewTasks_14/frame_08.png",
+      "path": "applications/union/flipper_task_tracker/images/ViewTasks_14/frame_08.png",
+      "sha256": "db817715798f06dc5407068a03f90a1d10ab7d427267780dbc4e52c91b31e7c0"
+    },
+    {
+      "upstream_path": "non_catalog_apps/flipper_task_tracker/images/ViewTasks_14/frame_09.png",
+      "path": "applications/union/flipper_task_tracker/images/ViewTasks_14/frame_09.png",
+      "sha256": "5df5226a0b554227ee47c85afee8774873cdef5a8ff361ac639c88f8068f9756"
+    },
+    {
+      "upstream_path": "non_catalog_apps/flipper_task_tracker/images/ViewTasks_14/frame_10.png",
+      "path": "applications/union/flipper_task_tracker/images/ViewTasks_14/frame_10.png",
+      "sha256": "983c488f731a9f3896ec0dc7ef94b9cd5a352363ce27202351fb8aea6bdd8b96"
+    },
+    {
+      "upstream_path": "non_catalog_apps/flipper_task_tracker/images/ViewTasks_14/frame_rate",
+      "path": "applications/union/flipper_task_tracker/images/ViewTasks_14/frame_rate",
+      "sha256": "4e07408562bedb8b60ce05c1decfe3ad16b72230967de01f640b7e4729b49fce"
+    },
+    {
+      "upstream_path": "non_catalog_apps/flipper_task_tracker/images/dolphinMafia_119x62.png",
+      "path": "applications/union/flipper_task_tracker/images/dolphinMafia_119x62.png",
+      "sha256": "fe86a7971071b5acdb2af316e7e4724159fabfc43035bcf664711ccb5a995caa"
+    },
+    {
+      "upstream_path": "non_catalog_apps/flipper_task_tracker/images/dolphinWait_59x54.png",
+      "path": "applications/union/flipper_task_tracker/images/dolphinWait_59x54.png",
+      "sha256": "4b2edb66c8a3d602b20f25bc227a6eae156aaace74c0cfdffbf0352f49b53b8d"
+    },
+    {
+      "upstream_path": "non_catalog_apps/flipper_task_tracker/main.c",
+      "path": "applications/union/flipper_task_tracker/main.c",
+      "sha256": "c737d42984a03d67186a98fbe145cc2ad3fee1b1a73390732f9d98ad454cf772"
+    },
+    {
+      "upstream_path": "base_pack/flipnote/LICENSE",
+      "path": "applications/union/flipnote/LICENSE",
+      "sha256": "1eb4d65479a94c5bebb1dc7cc9973fe4058cfd3c29abce73a37ee6a553aadcdc"
+    },
+    {
+      "upstream_path": "base_pack/flipnote/README.md",
+      "path": "applications/union/flipnote/README.md",
+      "sha256": "06fbf88733cb11974d9c6b5f97d0502ffae4a11738e44304cc1d5f9b49f04355"
+    },
+    {
+      "upstream_path": "base_pack/flipnote/application.fam",
+      "path": "applications/union/flipnote/application.fam",
+      "sha256": "761e1d20d6ab3f49dce27d76cf5c558265a1d0a42ec37e7a09ed57e770a76426"
+    },
+    {
+      "upstream_path": "base_pack/flipnote/changelog.md",
+      "path": "applications/union/flipnote/changelog.md",
+      "sha256": "32465e8d0fba60e69997a326dc23f262e9fc0af4b66efc5cd0bc186c0f47633f"
+    },
+    {
+      "upstream_path": "base_pack/flipnote/flipnote.c",
+      "path": "applications/union/flipnote/flipnote.c",
+      "sha256": "3d56cd4a00898417b6e17cc376f59ad15cd45f26e474f854477a5a3b088c1dc2"
+    },
+    {
+      "upstream_path": "base_pack/flipnote/fznote_text_input.c",
+      "path": "applications/union/flipnote/fznote_text_input.c",
+      "sha256": "d7c72843b9806cc33c863075382158ff1b2dec124123ee0d95f675ad5a1d6555"
+    },
+    {
+      "upstream_path": "base_pack/flipnote/fznote_text_input.h",
+      "path": "applications/union/flipnote/fznote_text_input.h",
+      "sha256": "9c51cffd333e0816cc1ab28a79c361e6f78a7c09f1d63f3fc0991dc964d24cad"
+    },
+    {
+      "upstream_path": "base_pack/flipnote/fznote_validators.c",
+      "path": "applications/union/flipnote/fznote_validators.c",
+      "sha256": "13b8a2a61f67c38ef638c25a1cbffa94707aebabda3c1a61943285192ce6e159"
+    },
+    {
+      "upstream_path": "base_pack/flipnote/fznote_validators.h",
+      "path": "applications/union/flipnote/fznote_validators.h",
+      "sha256": "7d087ca44114b959f40c203be7f6319695b1435d4fd9c25d23d4f35221f90701"
+    },
+    {
+      "upstream_path": "base_pack/flipnote/icon.png",
+      "path": "applications/union/flipnote/icon.png",
+      "sha256": "8b580f1f66dd46ec5d18709c88a51f69c85d3e0fc243a101bfe06143b3feda38"
+    },
+    {
+      "upstream_path": "base_pack/flipnote/icons/KeyBackspaceSelected_16x9.png",
+      "path": "applications/union/flipnote/icons/KeyBackspaceSelected_16x9.png",
+      "sha256": "09196105ce77b8ac25156a3f3b6586c322588f9cacb7556a841baa3cbcf92862"
+    },
+    {
+      "upstream_path": "base_pack/flipnote/icons/KeyBackspace_16x9.png",
+      "path": "applications/union/flipnote/icons/KeyBackspace_16x9.png",
+      "sha256": "7bc8f61d2d088dbdd7774d43accf793876eb89cdf909b33aec92fff96c334a6b"
+    },
+    {
+      "upstream_path": "base_pack/flipnote/icons/KeyKeyboardSelected_10x11.png",
+      "path": "applications/union/flipnote/icons/KeyKeyboardSelected_10x11.png",
+      "sha256": "06f410d209c58aef25477f81e623c86cfb37c7ff52112b286e2cd3b731e79413"
+    },
+    {
+      "upstream_path": "base_pack/flipnote/icons/KeyKeyboard_10x11.png",
+      "path": "applications/union/flipnote/icons/KeyKeyboard_10x11.png",
+      "sha256": "fb48c0d7d6c0e2601f2984734a0e9b5088e390c9afc2dfd040411ad4af8544fa"
+    },
+    {
+      "upstream_path": "base_pack/flipnote/icons/KeySaveSelected_24x11.png",
+      "path": "applications/union/flipnote/icons/KeySaveSelected_24x11.png",
+      "sha256": "47af0aa7e34197ed052c9f853b4f93502c1b76ad5f2ee0c7ec55d9479e336f06"
+    },
+    {
+      "upstream_path": "base_pack/flipnote/icons/KeySave_24x11.png",
+      "path": "applications/union/flipnote/icons/KeySave_24x11.png",
+      "sha256": "1667f263f870a8e64940a0a89f0f6f2eb6eb377137182d21cb60c587516bdc94"
+    },
+    {
+      "upstream_path": "base_pack/flipnote/icons/Text_10x10.png",
+      "path": "applications/union/flipnote/icons/Text_10x10.png",
+      "sha256": "f3b1fa8a334adc1134657459b93f64d7ddbb63aa5441de49a77d8dd734013e54"
+    },
+    {
+      "upstream_path": "base_pack/flipnote/icons/WarningDolphin_45x42.png",
+      "path": "applications/union/flipnote/icons/WarningDolphin_45x42.png",
+      "sha256": "968cb15f554d5c09800bea9c310fb150a910dc36f347ff87cd6934b9b951398f"
+    },
+    {
+      "upstream_path": "base_pack/flipnote/screenshots/0.png",
+      "path": "applications/union/flipnote/screenshots/0.png",
+      "sha256": "0d2356db7d2f19b2588241f2ab87b1b8afba0af4d3516f888bae3fd5199431bb"
+    },
+    {
+      "upstream_path": "base_pack/flipnote/screenshots/1.png",
+      "path": "applications/union/flipnote/screenshots/1.png",
+      "sha256": "9aa08facb4913c6bcf44eba9936ddfed7c114210d42d7271e01f16a4f647cb18"
+    },
+    {
+      "upstream_path": "base_pack/flipnote/screenshots/2.png",
+      "path": "applications/union/flipnote/screenshots/2.png",
+      "sha256": "39663cb983c9974528c0e4b72b11c8bc5df32c5b1f38e5aead08beed7539d0e0"
+    },
+    {
+      "upstream_path": "non_catalog_apps/gps_rpc/LICENSE",
+      "path": "applications/union/gps_rpc/LICENSE",
+      "sha256": "3972dc9744f6499f0f9b2dbf76696f2ae7ad8af9b23dde66d6af86c9dfb36986"
+    },
+    {
+      "upstream_path": "non_catalog_apps/gps_rpc/application.fam",
+      "path": "applications/union/gps_rpc/application.fam",
+      "sha256": "37bd193c963cd86039eafa4e29ccf4a6f3655261fc9dbedcfe983faf308ba877"
+    },
+    {
+      "upstream_path": "non_catalog_apps/gps_rpc/gps.c",
+      "path": "applications/union/gps_rpc/gps.c",
+      "sha256": "0c834ede344d161116effe03fe0d5464d511df79073d89c189f4ad1bfd348830"
+    },
+    {
+      "upstream_path": "non_catalog_apps/gps_rpc/gps_10px.png",
+      "path": "applications/union/gps_rpc/gps_10px.png",
+      "sha256": "15a1386a888dd397a9f77f6f20a49d3e7bcac88150f0dba59775112217b51aa8"
+    },
+    {
+      "upstream_path": "non_catalog_apps/chess_clock/application.fam",
+      "path": "applications/union/chess_clock/application.fam",
+      "sha256": "53191e3f5920a988bacf52475064d441c72a6014e8d7bc46c34ddb33fa51ee8f"
+    },
+    {
+      "upstream_path": "non_catalog_apps/chess_clock/chess_clock.c",
+      "path": "applications/union/chess_clock/chess_clock.c",
+      "sha256": "7df8303366fd8c013efd6a352359ed53bb5d671848fdee784e117f48e7e4274b"
+    },
+    {
+      "upstream_path": "non_catalog_apps/chess_clock/chess_clock.png",
+      "path": "applications/union/chess_clock/chess_clock.png",
+      "sha256": "374928161fb6114eb53aabecd34a620067e3b1bf804145dad399437a2f857eb1"
+    },
+    {
+      "upstream_path": "non_catalog_apps/pause_timer/LICENSE",
+      "path": "applications/union/pause_timer/LICENSE",
+      "sha256": "3972dc9744f6499f0f9b2dbf76696f2ae7ad8af9b23dde66d6af86c9dfb36986"
+    },
+    {
+      "upstream_path": "non_catalog_apps/pause_timer/application.fam",
+      "path": "applications/union/pause_timer/application.fam",
+      "sha256": "6d275c0f0778c71549d6f6ad67d5d8e9741f8460afd00340729327163c8e65b2"
+    },
+    {
+      "upstream_path": "non_catalog_apps/pause_timer/pause_timer.c",
+      "path": "applications/union/pause_timer/pause_timer.c",
+      "sha256": "9db10f80721a5af45953da84bf3944b00298711bc48389104f59e5e2ad6c2faa"
+    },
+    {
+      "upstream_path": "non_catalog_apps/pause_timer/pause_timer.h",
+      "path": "applications/union/pause_timer/pause_timer.h",
+      "sha256": "14493a8387046d584beb94f82ecabdd0cede1a91807b89be8534c1d10e734408"
+    },
+    {
+      "upstream_path": "non_catalog_apps/pause_timer/pause_timer_10px.png",
+      "path": "applications/union/pause_timer/pause_timer_10px.png",
+      "sha256": "42fcb0c0402a5a67990c046cb687c9e31b97448429888167a1432e32cfe879d9"
+    },
+    {
+      "upstream_path": "non_catalog_apps/pause_timer/scenes/scene.c",
+      "path": "applications/union/pause_timer/scenes/scene.c",
+      "sha256": "63e34d52ef87cb369a75bbbbb28694cf917e5eb031c97d8bd8e1f4da8870e5fc"
+    },
+    {
+      "upstream_path": "non_catalog_apps/pause_timer/scenes/scene.h",
+      "path": "applications/union/pause_timer/scenes/scene.h",
+      "sha256": "7bb91c92ee16a399bfbd34e3d8299dcb3152c82a91fdf4ca4831cc15f0798f54"
+    },
+    {
+      "upstream_path": "non_catalog_apps/pause_timer/scenes/scene_config.h",
+      "path": "applications/union/pause_timer/scenes/scene_config.h",
+      "sha256": "e7263b8ced931a45f6990242ee8f8499b962ecd263d62a322b8dbc90995b1f81"
+    },
+    {
+      "upstream_path": "non_catalog_apps/pause_timer/scenes/scene_countdown.c",
+      "path": "applications/union/pause_timer/scenes/scene_countdown.c",
+      "sha256": "fbd556a7ce5395991aea0e1b19cd630a0dc66bb76b94d33ea6bdd159322b37b0"
+    },
+    {
+      "upstream_path": "non_catalog_apps/pause_timer/scenes/scene_ir_learn.c",
+      "path": "applications/union/pause_timer/scenes/scene_ir_learn.c",
+      "sha256": "311b0f9ec9081de4a4110decdf0bc1e4f68232049bd92bfdbfbeeaeb902e43a7"
+    },
+    {
+      "upstream_path": "non_catalog_apps/pause_timer/scenes/scene_main.c",
+      "path": "applications/union/pause_timer/scenes/scene_main.c",
+      "sha256": "624864e38608d675b42c3548977575bcee16a87cdb1a18cf7496b433ca8a6c7a"
+    },
+    {
+      "upstream_path": "non_catalog_apps/pause_timer/views.h",
+      "path": "applications/union/pause_timer/views.h",
+      "sha256": "bb8740350d9673b2b40800528f6f8e6b9725aff393b65f99ab08044ff87486e3"
+    },
+    {
+      "upstream_path": "non_catalog_apps/pause_timer/views/countdown.c",
+      "path": "applications/union/pause_timer/views/countdown.c",
+      "sha256": "faeffa32d484d5abbe3a131bd47745da69531a5bd7c3718bd74d899524592df8"
+    },
+    {
+      "upstream_path": "non_catalog_apps/pause_timer/views/countdown.h",
+      "path": "applications/union/pause_timer/views/countdown.h",
+      "sha256": "c77beb227f7d98068006d6c4a1cb1bf5a5c84e32d3f965db2cd14dc38cde1819"
+    },
+    {
+      "upstream_path": "non_catalog_apps/pause_timer/views/ir_learn.c",
+      "path": "applications/union/pause_timer/views/ir_learn.c",
+      "sha256": "781a319981aac040adbd8a423ab212512280e8682a3d6bad2247bc156e25ce60"
+    },
+    {
+      "upstream_path": "non_catalog_apps/pause_timer/views/ir_learn.h",
+      "path": "applications/union/pause_timer/views/ir_learn.h",
+      "sha256": "830ab4cd5778e3ad6c15dce97be7b1b03a5855e4e701a78ca21ab0d7ea597482"
+    },
+    {
+      "upstream_path": "non_catalog_apps/pause_timer/views/time_input.c",
+      "path": "applications/union/pause_timer/views/time_input.c",
+      "sha256": "5b90fe4a31a866e3171f5c89b90c8cc4852ecf2075544a5eef36f4d9db517805"
+    },
+    {
+      "upstream_path": "non_catalog_apps/pause_timer/views/time_input.h",
+      "path": "applications/union/pause_timer/views/time_input.h",
+      "sha256": "c0405f7be63fdd089c39ef98b3df9a58ab625e98ab9444e4884eca287cd406d8"
+    },
+    {
+      "upstream_path": "apps_source_code/mandelbrot/CHANGELOG.md",
+      "path": "applications/union/mandelbrot/CHANGELOG.md",
+      "sha256": "c6a02a166ffbb685be18c52bb3551f73d3a3d396cb4df8c1c96f7f72438ce985"
+    },
+    {
+      "upstream_path": "apps_source_code/mandelbrot/Mandelbrot.png",
+      "path": "applications/union/mandelbrot/Mandelbrot.png",
+      "sha256": "7d77f3a2921bc04d8688e00fbe4a802dc8facf0db63a11f3b7310cd940b37444"
+    },
+    {
+      "upstream_path": "apps_source_code/mandelbrot/application.fam",
+      "path": "applications/union/mandelbrot/application.fam",
+      "sha256": "df804e42fd5e90c100510554e74b0bc1a2472ca46ccecda72ee5693df6c83b17"
+    },
+    {
+      "upstream_path": "apps_source_code/mandelbrot/img/1.png",
+      "path": "applications/union/mandelbrot/img/1.png",
+      "sha256": "26b28e35d9a07d7ae276b84c5ab49d8cfd35f636a85e3b9a422d658541b6a615"
+    },
+    {
+      "upstream_path": "apps_source_code/mandelbrot/img/2.png",
+      "path": "applications/union/mandelbrot/img/2.png",
+      "sha256": "3ce4416124f9e2dbf2023ba509d4c9eec953dd61ae928365f4d55963e5e72b87"
+    },
+    {
+      "upstream_path": "apps_source_code/mandelbrot/mandelbrot.c",
+      "path": "applications/union/mandelbrot/mandelbrot.c",
+      "sha256": "b2e2a121842b2c96b3dd7faf24cc68de6df56e601005afae3d758e1dc2d52d62"
+    },
+    {
+      "upstream_path": "apps_source_code/fz-reaction-game/.flipcorg/gallery/Screenshot-20230226-160738.png",
+      "path": "applications/union/fz_reaction_game/.flipcorg/gallery/Screenshot-20230226-160738.png",
+      "sha256": "f4c3f70260188efe806d925984ffdabc198d4eae87852b67e940fe22e2a78f30"
+    },
+    {
+      "upstream_path": "apps_source_code/fz-reaction-game/.flipcorg/gallery/Screenshot-20230226-160750.png",
+      "path": "applications/union/fz_reaction_game/.flipcorg/gallery/Screenshot-20230226-160750.png",
+      "sha256": "b6d23d51cc498f2db4726856775621e76b3ec49e70ecb1eba483537a6c2515d1"
+    },
+    {
+      "upstream_path": "apps_source_code/fz-reaction-game/LICENSE",
+      "path": "applications/union/fz_reaction_game/LICENSE",
+      "sha256": "904feef4eaf87b4164a56591f4d82410fdacf253aed60a356d9abbc7a45773de"
+    },
+    {
+      "upstream_path": "apps_source_code/fz-reaction-game/README.md",
+      "path": "applications/union/fz_reaction_game/README.md",
+      "sha256": "35d10163c521e6a89b0c3a155d7679987b9799f35cd4359d4ca1b81683e0e93f"
+    },
+    {
+      "upstream_path": "apps_source_code/fz-reaction-game/application.fam",
+      "path": "applications/union/fz_reaction_game/application.fam",
+      "sha256": "947b35d8534b16b25b23e979c5a0d9020ea63a8d00e4bdc21f6c97d0f854013d"
+    },
+    {
+      "upstream_path": "apps_source_code/fz-reaction-game/icon.png",
+      "path": "applications/union/fz_reaction_game/icon.png",
+      "sha256": "8d8c762fcf0aafb33da14311796cc5c60a6698d9757d2fc4a4bec3853c96dd5b"
+    },
+    {
+      "upstream_path": "apps_source_code/fz-reaction-game/img/1.png",
+      "path": "applications/union/fz_reaction_game/img/1.png",
+      "sha256": "f65fb1d120113f7d662de5ecf0eafd867ef18cb48c37e680f96be799c5c1629c"
+    },
+    {
+      "upstream_path": "apps_source_code/fz-reaction-game/reaction.c",
+      "path": "applications/union/fz_reaction_game/reaction.c",
+      "sha256": "0db8dc85af3f82d30a99219d141f6e0e7f163baa6c6e75b31cfdfea74a8c1523"
+    },
+    {
+      "upstream_path": "apps_source_code/brainfuck/application.fam",
+      "path": "applications/union/brainfuck/application.fam",
+      "sha256": "756df97e0bff35e140b164092a31d8b5f647a900e3d03503e78ea150fdaa0d15"
+    },
+    {
+      "upstream_path": "apps_source_code/brainfuck/bfico.png",
+      "path": "applications/union/brainfuck/bfico.png",
+      "sha256": "3fb9f037c7b792d6672ca9dd2a40ea9051c955aaa0a6d3347e7f61ff219c1170"
+    },
+    {
+      "upstream_path": "apps_source_code/brainfuck/brainfuck.c",
+      "path": "applications/union/brainfuck/brainfuck.c",
+      "sha256": "50daac935407b7207e8470d03bde08e51e66ff9554fad7448adc6e86e51a9f13"
+    },
+    {
+      "upstream_path": "apps_source_code/brainfuck/brainfuck.h",
+      "path": "applications/union/brainfuck/brainfuck.h",
+      "sha256": "9c447aa9359f8bc199688a237077f1239179bb51ba2900fa077800ca6aa5ff0d"
+    },
+    {
+      "upstream_path": "apps_source_code/brainfuck/brainfuck_i.h",
+      "path": "applications/union/brainfuck/brainfuck_i.h",
+      "sha256": "983d661c55a17be0099ae7808b62a85660e8e1f4669ed1bf229984eb06610bae"
+    },
+    {
+      "upstream_path": "apps_source_code/brainfuck/icons/ButtonRightSmall_3x5.png",
+      "path": "applications/union/brainfuck/icons/ButtonRightSmall_3x5.png",
+      "sha256": "b252a2d86bb65da802a382267e4acb24bf37fb719aafec2a6a5cc60bd8099bfd"
+    },
+    {
+      "upstream_path": "apps_source_code/brainfuck/icons/KeyBackspaceSelected_24x11.png",
+      "path": "applications/union/brainfuck/icons/KeyBackspaceSelected_24x11.png",
+      "sha256": "300189984806bacba0343c79923157a34ac4e5ffdd64a1046ee80b1ce21f501b"
+    },
+    {
+      "upstream_path": "apps_source_code/brainfuck/icons/KeyBackspace_24x11.png",
+      "path": "applications/union/brainfuck/icons/KeyBackspace_24x11.png",
+      "sha256": "6262f87220a7c1e9a79072045f1a9308c64e3b89339889faebe65d90d7999446"
+    },
+    {
+      "upstream_path": "apps_source_code/brainfuck/icons/KeyInputSelected_30x11.png",
+      "path": "applications/union/brainfuck/icons/KeyInputSelected_30x11.png",
+      "sha256": "6c2ea83d0e6e638663b39904fb27d154ebf56f123d1b201b1a0570b3f3fc591c"
+    },
+    {
+      "upstream_path": "apps_source_code/brainfuck/icons/KeyInput_30x11.png",
+      "path": "applications/union/brainfuck/icons/KeyInput_30x11.png",
+      "sha256": "6f3f42728e016bf955c79d4dc9e111ebb9d29fddb52b19ba0dbe27b73dc16cda"
+    },
+    {
+      "upstream_path": "apps_source_code/brainfuck/icons/KeyRunSelected_24x11.png",
+      "path": "applications/union/brainfuck/icons/KeyRunSelected_24x11.png",
+      "sha256": "758f2e0c9796dbc23eab347386a24c9e5fab8d8c79a4577e319c5fd374efb853"
+    },
+    {
+      "upstream_path": "apps_source_code/brainfuck/icons/KeyRun_24x11.png",
+      "path": "applications/union/brainfuck/icons/KeyRun_24x11.png",
+      "sha256": "f285c466d32063f1aa889d6313bb0eda313de932cb8dbe4029364a5a8bee3d1f"
+    },
+    {
+      "upstream_path": "apps_source_code/brainfuck/icons/KeySaveSelected_24x11.png",
+      "path": "applications/union/brainfuck/icons/KeySaveSelected_24x11.png",
+      "sha256": "63d67e16cf917cf62de7c0409818b79b40a25307541f1588d7a79ed4100bfd38"
+    },
+    {
+      "upstream_path": "apps_source_code/brainfuck/icons/KeySave_24x11.png",
+      "path": "applications/union/brainfuck/icons/KeySave_24x11.png",
+      "sha256": "8d800136a9000502892450ef76105c10f2bdacae355fc3cdba20c38da02ac05c"
+    },
+    {
+      "upstream_path": "apps_source_code/brainfuck/icons/bfico.png",
+      "path": "applications/union/brainfuck/icons/bfico.png",
+      "sha256": "3fb9f037c7b792d6672ca9dd2a40ea9051c955aaa0a6d3347e7f61ff219c1170"
+    },
+    {
+      "upstream_path": "apps_source_code/brainfuck/img/1.png",
+      "path": "applications/union/brainfuck/img/1.png",
+      "sha256": "0eb2983ccc2fe60226a0ba596522fd41d69add5bddac7c0200e29e5ca0c22f3a"
+    },
+    {
+      "upstream_path": "apps_source_code/brainfuck/img/2.png",
+      "path": "applications/union/brainfuck/img/2.png",
+      "sha256": "a064bfa9131a01d8682fb8d55787f6cf4485d16663f85abdd9a04c837fb90afc"
+    },
+    {
+      "upstream_path": "apps_source_code/brainfuck/img/3.png",
+      "path": "applications/union/brainfuck/img/3.png",
+      "sha256": "e7dfb910ca32c5ee33df2b80629c93149a5064deb44e71fec33d361cedc3436c"
+    },
+    {
+      "upstream_path": "apps_source_code/brainfuck/scenes/brainfuck_scene.c",
+      "path": "applications/union/brainfuck/scenes/brainfuck_scene.c",
+      "sha256": "473725e29809da64325de3bde3e644c6b29909e9d32e7b854c58991b121b99d8"
+    },
+    {
+      "upstream_path": "apps_source_code/brainfuck/scenes/brainfuck_scene.h",
+      "path": "applications/union/brainfuck/scenes/brainfuck_scene.h",
+      "sha256": "9f27773f53035954fa7a18ea9e7d7b9b0e91e3602f4f5410a8a5777362314601"
+    },
+    {
+      "upstream_path": "apps_source_code/brainfuck/scenes/brainfuck_scene_config.h",
+      "path": "applications/union/brainfuck/scenes/brainfuck_scene_config.h",
+      "sha256": "812a6dd64609fb06f742a5a828e2e52b31ca512525a78adf495bf234b1768cf3"
+    },
+    {
+      "upstream_path": "apps_source_code/brainfuck/scenes/brainfuck_scene_dev.c",
+      "path": "applications/union/brainfuck/scenes/brainfuck_scene_dev.c",
+      "sha256": "8299b7dd4f8d702e6a7c0e7c54ef761466c94cfae8b30adbeee404a79b8e2ae6"
+    },
+    {
+      "upstream_path": "apps_source_code/brainfuck/scenes/brainfuck_scene_exec.c",
+      "path": "applications/union/brainfuck/scenes/brainfuck_scene_exec.c",
+      "sha256": "19501e7445a6a8152ee15589a940c6e91aaeb59660e6c60787b9bac17ae58433"
+    },
+    {
+      "upstream_path": "apps_source_code/brainfuck/scenes/brainfuck_scene_file_create.c",
+      "path": "applications/union/brainfuck/scenes/brainfuck_scene_file_create.c",
+      "sha256": "5c445c84f6981e9cdc6a8511b8c190213428a08c32c6ac179e8194929df94e4f"
+    },
+    {
+      "upstream_path": "apps_source_code/brainfuck/scenes/brainfuck_scene_file_select.c",
+      "path": "applications/union/brainfuck/scenes/brainfuck_scene_file_select.c",
+      "sha256": "b636add994e516aa475f92b978e9b0d0dcd2dff4ceeee8c7121f9c899073d600"
+    },
+    {
+      "upstream_path": "apps_source_code/brainfuck/scenes/brainfuck_scene_set_input.c",
+      "path": "applications/union/brainfuck/scenes/brainfuck_scene_set_input.c",
+      "sha256": "692826787efc9c846e47cf2259d1a67d5b1f69690cc81a2a073b1e538a46b15c"
+    },
+    {
+      "upstream_path": "apps_source_code/brainfuck/scenes/brainfuck_scene_start.c",
+      "path": "applications/union/brainfuck/scenes/brainfuck_scene_start.c",
+      "sha256": "d33727b7066930824a2c71bba619153d614bb7a450da01b5249eeb16f2dfbd6f"
+    },
+    {
+      "upstream_path": "apps_source_code/brainfuck/views/bf_dev_env.c",
+      "path": "applications/union/brainfuck/views/bf_dev_env.c",
+      "sha256": "82a5ff8d63a4d097411146874def97212de8bdf20fd3f49840041982d5a4ebe4"
+    },
+    {
+      "upstream_path": "apps_source_code/brainfuck/views/bf_dev_env.h",
+      "path": "applications/union/brainfuck/views/bf_dev_env.h",
+      "sha256": "aa1916d554e4aa2a0f766c7d9e822c4a422358e36470f65af1a57e09d17d746e"
+    },
+    {
+      "upstream_path": "apps_source_code/brainfuck/worker.c",
+      "path": "applications/union/brainfuck/worker.c",
+      "sha256": "91b0513d20911024f8e02f6dc803519365b9a01fad217e50be5146676ff43899"
+    },
+    {
+      "upstream_path": "apps_source_code/brainfuck/worker.h",
+      "path": "applications/union/brainfuck/worker.h",
+      "sha256": "82d79bb7304bef7ef3f5e721b551b839620b786569a221d957f89bd25f8fbe48"
+    },
+    {
+      "upstream_path": "apps_source_code/dice/CHANGELOG.md",
+      "path": "applications/union/dice/CHANGELOG.md",
+      "sha256": "8b70f26cd8077bd09a7bfaca74c9ec4afbfcbb6e6c16c5eed0cfdbc58f78fac7"
+    },
+    {
+      "upstream_path": "apps_source_code/dice/LICENSE.md",
+      "path": "applications/union/dice/LICENSE.md",
+      "sha256": "3972dc9744f6499f0f9b2dbf76696f2ae7ad8af9b23dde66d6af86c9dfb36986"
+    },
+    {
+      "upstream_path": "apps_source_code/dice/README.md",
+      "path": "applications/union/dice/README.md",
+      "sha256": "54db443bc6049a2bb7df9e81fd1cc8ed12ee37835c55fb2ac04313e30dedf2d2"
+    },
+    {
+      "upstream_path": "apps_source_code/dice/application.fam",
+      "path": "applications/union/dice/application.fam",
+      "sha256": "46f65e4240945e59b3a3d3bc00b77892138e2930f7bb448a0d2df0fd66cbe35a"
+    },
+    {
+      "upstream_path": "apps_source_code/dice/assets/coin_1.png",
+      "path": "applications/union/dice/assets/coin_1.png",
+      "sha256": "469343880b9b7b1bb75452b4dbf130d5b7b5b5785bf2c7e1d86091f5040899cd"
+    },
+    {
+      "upstream_path": "apps_source_code/dice/assets/coin_2.png",
+      "path": "applications/union/dice/assets/coin_2.png",
+      "sha256": "9e25441415b46cd4134f97d5505dea99bbb2d9f3741751ea267cb18177840c47"
+    },
+    {
+      "upstream_path": "apps_source_code/dice/assets/coin_3.png",
+      "path": "applications/union/dice/assets/coin_3.png",
+      "sha256": "f4c384a0cfe60d5b82974f5ad32004882023d9204d05cf7d13ec7ccef373015b"
+    },
+    {
+      "upstream_path": "apps_source_code/dice/assets/coin_4.png",
+      "path": "applications/union/dice/assets/coin_4.png",
+      "sha256": "39ee228a8102a88617ba667c21cd7d1aa0651dac136718500e0670b182d83b0b"
+    },
+    {
+      "upstream_path": "apps_source_code/dice/assets/coin_5.png",
+      "path": "applications/union/dice/assets/coin_5.png",
+      "sha256": "11595032babac1808e0ffdc29205e9ef8b4bbb44c67d720d2b4ddeb91ef3bbe6"
+    },
+    {
+      "upstream_path": "apps_source_code/dice/assets/coin_6.png",
+      "path": "applications/union/dice/assets/coin_6.png",
+      "sha256": "0e3e3c327cef4cb790ff281ac60320592e4cc6c6b5718292820f1f26ced8df18"
+    },
+    {
+      "upstream_path": "apps_source_code/dice/assets/coin_7.png",
+      "path": "applications/union/dice/assets/coin_7.png",
+      "sha256": "8a46615910ae32ff9aac716507c5bb5b0d47c58546599c1aa2fba7fd22491482"
+    },
+    {
+      "upstream_path": "apps_source_code/dice/assets/d100_1.png",
+      "path": "applications/union/dice/assets/d100_1.png",
+      "sha256": "08315941dd105ba5980ffb3fab725688ffb6193638f9054637ecfe430d5cee09"
+    },
+    {
+      "upstream_path": "apps_source_code/dice/assets/d100_2.png",
+      "path": "applications/union/dice/assets/d100_2.png",
+      "sha256": "bb5f5f3c5aa5c577651ceefbf9fd83f5e78c74fd9c4dc6594fe407f68acf3cb8"
+    },
+    {
+      "upstream_path": "apps_source_code/dice/assets/d100_3.png",
+      "path": "applications/union/dice/assets/d100_3.png",
+      "sha256": "5d3d609654e67d76e8737246d4ef129c06e23b9f2a69a475430b65be8dfb2c24"
+    },
+    {
+      "upstream_path": "apps_source_code/dice/assets/d100_4.png",
+      "path": "applications/union/dice/assets/d100_4.png",
+      "sha256": "6ab2ef98b4ec1b957ac04a07e6b48dedbfbf32e842136c5adb724e99a62c267a"
+    },
+    {
+      "upstream_path": "apps_source_code/dice/assets/d10_1.png",
+      "path": "applications/union/dice/assets/d10_1.png",
+      "sha256": "b19b7b778d1bd2bec9fe2f99301592be9798da819924e5a723f04ab855157bec"
+    },
+    {
+      "upstream_path": "apps_source_code/dice/assets/d10_2.png",
+      "path": "applications/union/dice/assets/d10_2.png",
+      "sha256": "35b6276ab83d54423ddeb1d74e6291de0f5ffa1ffe1be34d13887d4bd9f47a04"
+    },
+    {
+      "upstream_path": "apps_source_code/dice/assets/d10_3.png",
+      "path": "applications/union/dice/assets/d10_3.png",
+      "sha256": "5e3c43ccdc4c0b51ac118b9f003de1d82d33ee428c726ba757ab169a37b0d98f"
+    },
+    {
+      "upstream_path": "apps_source_code/dice/assets/d10_4.png",
+      "path": "applications/union/dice/assets/d10_4.png",
+      "sha256": "68de723939dfb12469881920a2a0df341db212083b91226cb7e5dd04d1e30863"
+    },
+    {
+      "upstream_path": "apps_source_code/dice/assets/d12_1.png",
+      "path": "applications/union/dice/assets/d12_1.png",
+      "sha256": "e2f60f2db7b71c1cd2cf405bdf3fa4d1b34ac944b0e60b0b3ba31c5fdf8840ea"
+    },
+    {
+      "upstream_path": "apps_source_code/dice/assets/d12_2.png",
+      "path": "applications/union/dice/assets/d12_2.png",
+      "sha256": "f2079674d442538e6ef35426c7061556ffa880b2939a28c254f5c3b797ec8e50"
+    },
+    {
+      "upstream_path": "apps_source_code/dice/assets/d12_3.png",
+      "path": "applications/union/dice/assets/d12_3.png",
+      "sha256": "761d300c55b922de8858521413fabd94c439add2c58317572632fb4a1727eabc"
+    },
+    {
+      "upstream_path": "apps_source_code/dice/assets/d12_4.png",
+      "path": "applications/union/dice/assets/d12_4.png",
+      "sha256": "5b29d72c7cbbff3e4d4fb722c5119277c25413c5bcc47d4d45e90f0278470c10"
+    },
+    {
+      "upstream_path": "apps_source_code/dice/assets/d20_1.png",
+      "path": "applications/union/dice/assets/d20_1.png",
+      "sha256": "c092c4364b3708c07134f5dcbe92756d71c0311250ec6b909f0e319bf5b13ed0"
+    },
+    {
+      "upstream_path": "apps_source_code/dice/assets/d20_2.png",
+      "path": "applications/union/dice/assets/d20_2.png",
+      "sha256": "22ea5b9d43d174a7529dc71b58c31dfd7d897d5f977bc92b9054c8ab0bf3e315"
+    },
+    {
+      "upstream_path": "apps_source_code/dice/assets/d20_3.png",
+      "path": "applications/union/dice/assets/d20_3.png",
+      "sha256": "a488a20dd76b392407655cd857d671027afe771e8beb9fc5c5571b4f9fde2a4d"
+    },
+    {
+      "upstream_path": "apps_source_code/dice/assets/d20_4.png",
+      "path": "applications/union/dice/assets/d20_4.png",
+      "sha256": "999ff917f9c05ab990798ff1722655b326b794e0d7d4451fa6dfb9f5bc5f6775"
+    },
+    {
+      "upstream_path": "apps_source_code/dice/assets/d4_1.png",
+      "path": "applications/union/dice/assets/d4_1.png",
+      "sha256": "2b8ab1beaab64011b176be12b1349d3388871a829c82393fa22bd76c0dae6cc9"
+    },
+    {
+      "upstream_path": "apps_source_code/dice/assets/d4_2.png",
+      "path": "applications/union/dice/assets/d4_2.png",
+      "sha256": "333b98ff7858acade77cfc2f6f9fe1a02e801a2771ccb72e1bf35f190998008c"
+    },
+    {
+      "upstream_path": "apps_source_code/dice/assets/d4_3.png",
+      "path": "applications/union/dice/assets/d4_3.png",
+      "sha256": "e71dbcbe3bb6e8bad04b26f1f4b6b3644d3a9b0612498b036c6bf1b022f7d11f"
+    },
+    {
+      "upstream_path": "apps_source_code/dice/assets/d6_1.png",
+      "path": "applications/union/dice/assets/d6_1.png",
+      "sha256": "787ffde6a39b023377cbeda958019bce085381682befe221ecb196620d5e2b5b"
+    },
+    {
+      "upstream_path": "apps_source_code/dice/assets/d6_2.png",
+      "path": "applications/union/dice/assets/d6_2.png",
+      "sha256": "076ddbb2a26e75fa0973732996dd5a3663518220d53df90ea78ee9e2772351c7"
+    },
+    {
+      "upstream_path": "apps_source_code/dice/assets/d6_3.png",
+      "path": "applications/union/dice/assets/d6_3.png",
+      "sha256": "1f587ee6e75519a55c8cf18de854f676d63657189ca93b084de95e6fbdbb7bf8"
+    },
+    {
+      "upstream_path": "apps_source_code/dice/assets/d6_4.png",
+      "path": "applications/union/dice/assets/d6_4.png",
+      "sha256": "d72e51c2e9bbffa1fdb76613082a1a5a9d47520846729f2468668fba187b3563"
+    },
+    {
+      "upstream_path": "apps_source_code/dice/assets/d8_1.png",
+      "path": "applications/union/dice/assets/d8_1.png",
+      "sha256": "0ea1290552e7cbe8357d5dbbd6397c29e464c7faaca836a0393ad54885b18964"
+    },
+    {
+      "upstream_path": "apps_source_code/dice/assets/d8_2.png",
+      "path": "applications/union/dice/assets/d8_2.png",
+      "sha256": "5f4c9f2032fc7a324cc23c3f4ecefa5f754ad9d35a96ea7473a2079ff1e66bce"
+    },
+    {
+      "upstream_path": "apps_source_code/dice/assets/d8_3.png",
+      "path": "applications/union/dice/assets/d8_3.png",
+      "sha256": "3b17781d572b70b5bbb348f5803abf1809e573b18cd7f5b9f61a17adebecb44c"
+    },
+    {
+      "upstream_path": "apps_source_code/dice/assets/d8_4.png",
+      "path": "applications/union/dice/assets/d8_4.png",
+      "sha256": "1d35885b320b9d93eba19a47e2f988dafc0079c63476a38d034a5b01752a5e8a"
+    },
+    {
+      "upstream_path": "apps_source_code/dice/assets/ui_button_back.png",
+      "path": "applications/union/dice/assets/ui_button_back.png",
+      "sha256": "af9e447598d1a992313be8b958177bd56db14fe6496e775f17c602647eb461c6"
+    },
+    {
+      "upstream_path": "apps_source_code/dice/assets/ui_button_down.png",
+      "path": "applications/union/dice/assets/ui_button_down.png",
+      "sha256": "f3c18dbb7a95f5d089373017cc8dddaa7d9df22aaf2d8bd3831f832a7e31e001"
+    },
+    {
+      "upstream_path": "apps_source_code/dice/assets/ui_button_exit.png",
+      "path": "applications/union/dice/assets/ui_button_exit.png",
+      "sha256": "c01cbfbb91f9d2ae4da3a967db71ef7a096bc5babd63ac5aed19e598b080cae6"
+    },
+    {
+      "upstream_path": "apps_source_code/dice/assets/ui_button_history.png",
+      "path": "applications/union/dice/assets/ui_button_history.png",
+      "sha256": "d21effc7058d677fce82e141415fe5190140ad1203987ae8fdcc98159d4fd96b"
+    },
+    {
+      "upstream_path": "apps_source_code/dice/assets/ui_button_left.png",
+      "path": "applications/union/dice/assets/ui_button_left.png",
+      "sha256": "a1b5df6e1cd06d6a3834b5d748cad0c33d85ddb4a25b87ed503bfd704571e061"
+    },
+    {
+      "upstream_path": "apps_source_code/dice/assets/ui_button_right.png",
+      "path": "applications/union/dice/assets/ui_button_right.png",
+      "sha256": "3b94ea015f5ea5a765531499304fe4f93c583c592ac6e15076b286752e496c75"
+    },
+    {
+      "upstream_path": "apps_source_code/dice/assets/ui_button_roll.png",
+      "path": "applications/union/dice/assets/ui_button_roll.png",
+      "sha256": "45d439c535e05e174eda439b75d431623033a404cf78005439b42f9f0fe5104d"
+    },
+    {
+      "upstream_path": "apps_source_code/dice/assets/ui_button_up.png",
+      "path": "applications/union/dice/assets/ui_button_up.png",
+      "sha256": "cc3864df92311f5392067ab42fe105ea5d7028a3eba4347ffaf28a854a65086b"
+    },
+    {
+      "upstream_path": "apps_source_code/dice/assets/ui_count.png",
+      "path": "applications/union/dice/assets/ui_count.png",
+      "sha256": "8e82c0b5332caace9178150c3ef2ac828c9cea7d85bafbf4cab34db281f359b7"
+    },
+    {
+      "upstream_path": "apps_source_code/dice/assets/ui_count_1.png",
+      "path": "applications/union/dice/assets/ui_count_1.png",
+      "sha256": "47439f45d306214b06c2dee8049a9ff83ec27c2226492f1760b6233b57dd45e6"
+    },
+    {
+      "upstream_path": "apps_source_code/dice/assets/ui_result_border.png",
+      "path": "applications/union/dice/assets/ui_result_border.png",
+      "sha256": "e5354c24cfb334239372e04a8190fdd23544016f594811f6a143469cb36b1fc9"
+    },
+    {
+      "upstream_path": "apps_source_code/dice/constants.h",
+      "path": "applications/union/dice/constants.h",
+      "sha256": "e5e0268a6a53e00efaf1998ebc97b8d9ca43059df41c4a2524f451ff75c93080"
+    },
+    {
+      "upstream_path": "apps_source_code/dice/dice_app.c",
+      "path": "applications/union/dice/dice_app.c",
+      "sha256": "230e39a9a7d2bbe69c7e88ecd8751a76c35a7abce1bfcf392698c7993dcf6f18"
+    },
+    {
+      "upstream_path": "apps_source_code/dice/icon.png",
+      "path": "applications/union/dice/icon.png",
+      "sha256": "c324c26a6030b94dd560d77609f11ceb63eae454b0b21e19279b8f8661f19d76"
+    },
+    {
+      "upstream_path": "apps_source_code/dice/img/1.png",
+      "path": "applications/union/dice/img/1.png",
+      "sha256": "7798657bc39978c705c57dea14b3d090d44c29edeb38e9d8f07dc77746b7286f"
+    },
+    {
+      "upstream_path": "apps_source_code/dice/img/2.png",
+      "path": "applications/union/dice/img/2.png",
+      "sha256": "16eaa3c10791c1be0b5b8b8a7eea5aaf9866f4865fc8f7a0ae26299e7377b190"
+    },
+    {
+      "upstream_path": "apps_source_code/montyhall/Monty.png",
+      "path": "applications/union/montyhall/Monty.png",
+      "sha256": "73d93151353f67b9f5f77455d6b2c362e2149927cfbe0a4b7b70464ebec7172b"
+    },
+    {
+      "upstream_path": "apps_source_code/montyhall/application.fam",
+      "path": "applications/union/montyhall/application.fam",
+      "sha256": "29ab832847eec41f1221e411f8dd6c9009acee31a8b4ef5e3b7ff758491d6d26"
+    },
+    {
+      "upstream_path": "apps_source_code/montyhall/img/1.png",
+      "path": "applications/union/montyhall/img/1.png",
+      "sha256": "5fcc3cb9889993a9f45d7aad555dc46e26c54538ec98cb8d873da19b3ee5612a"
+    },
+    {
+      "upstream_path": "apps_source_code/montyhall/img/2.png",
+      "path": "applications/union/montyhall/img/2.png",
+      "sha256": "4cc65fa7348135a07b6746cabc490b8f762373ca1b13949849baab00a08909ae"
+    },
+    {
+      "upstream_path": "apps_source_code/montyhall/img/3.png",
+      "path": "applications/union/montyhall/img/3.png",
+      "sha256": "d32f5c4f696b03ed3ed5ade250f60d8d71adc2e2f492b090638a9d5e91f755d4"
+    },
+    {
+      "upstream_path": "apps_source_code/montyhall/monteyhall.c",
+      "path": "applications/union/montyhall/monteyhall.c",
+      "sha256": "467654375b5a2b4c0c70d958c76320cebc5c35664da0d2d0251749b49b11c467"
+    },
+    {
+      "upstream_path": "apps_source_code/ocarina/README.md",
+      "path": "applications/union/ocarina/README.md",
+      "sha256": "f98435650734c488da8b8221baadff42c68fe12aad95e2c5b6ed170d525a991e"
+    },
+    {
+      "upstream_path": "apps_source_code/ocarina/application.fam",
+      "path": "applications/union/ocarina/application.fam",
+      "sha256": "02069185ca8927fa38ff36d57e9e3204e85e88ccf58d1dea479e0162cc99bc5a"
+    },
+    {
+      "upstream_path": "apps_source_code/ocarina/icons/music_10px.png",
+      "path": "applications/union/ocarina/icons/music_10px.png",
+      "sha256": "d318ed95c1ac3c2ee2ebc13e1c2ba86c729a76d3389f8d512aa57f3a143110ab"
+    },
+    {
+      "upstream_path": "apps_source_code/ocarina/img/1.png",
+      "path": "applications/union/ocarina/img/1.png",
+      "sha256": "3a94a846ba0ec019bfa4fa9754bbdbb7f06e1b40b75f562a33fc947ae244dabf"
+    },
+    {
+      "upstream_path": "apps_source_code/ocarina/music_10px.png",
+      "path": "applications/union/ocarina/music_10px.png",
+      "sha256": "d318ed95c1ac3c2ee2ebc13e1c2ba86c729a76d3389f8d512aa57f3a143110ab"
+    },
+    {
+      "upstream_path": "apps_source_code/ocarina/ocarina.c",
+      "path": "applications/union/ocarina/ocarina.c",
+      "sha256": "0b7e6e9397d239fcc4fe030f2683afb3c505f112257733fb6cc0d005401b5e10"
+    },
+    {
+      "upstream_path": "apps_source_code/racegame/LICENSE",
+      "path": "applications/union/racegame/LICENSE",
+      "sha256": "3972dc9744f6499f0f9b2dbf76696f2ae7ad8af9b23dde66d6af86c9dfb36986"
+    },
+    {
+      "upstream_path": "apps_source_code/racegame/README.md",
+      "path": "applications/union/racegame/README.md",
+      "sha256": "2a92b2fcf4a7d9495cc1b85322c5d652e9016fe035f5fa4da23229efd4f669bb"
+    },
+    {
+      "upstream_path": "apps_source_code/racegame/application.fam",
+      "path": "applications/union/racegame/application.fam",
+      "sha256": "f35b039dcd559beaeb73246d97afe278ab0c6766bad65726f4ae027225746342"
+    },
+    {
+      "upstream_path": "apps_source_code/racegame/icon.png",
+      "path": "applications/union/racegame/icon.png",
+      "sha256": "68fc3aa78f4c4df101905c30005fd9823e9f906d3c02144b69801da978d546a4"
+    },
+    {
+      "upstream_path": "apps_source_code/racegame/img/1.png",
+      "path": "applications/union/racegame/img/1.png",
+      "sha256": "3c823a36bc14b13b4395cb95955da0c52c6059f4ce4bd7079f2473d61787f685"
+    },
+    {
+      "upstream_path": "apps_source_code/racegame/img/2.png",
+      "path": "applications/union/racegame/img/2.png",
+      "sha256": "9d81b4ba7ca4b14d96965fae121dfc3340d5b47f496bc1c5c6369c375f20cf46"
+    },
+    {
+      "upstream_path": "apps_source_code/racegame/race.c",
+      "path": "applications/union/racegame/race.c",
+      "sha256": "4b79dcb15579e509765cb4ac268efd47c1d426e9f6fb26d799945dfd8bbac69c"
+    },
+    {
+      "upstream_path": "non_catalog_apps/bounce/LICENSE",
+      "path": "applications/union/bounce/LICENSE",
+      "sha256": "60bee27f5d9e2044a6bebd4aba7784a045e0dc8d0777ee062bc029fcb85a4a49"
+    },
+    {
+      "upstream_path": "non_catalog_apps/bounce/application.fam",
+      "path": "applications/union/bounce/application.fam",
+      "sha256": "587d2f48d66b74c9a306649ec0b68775249bbabb99709a6c3a4edfe352ef0711"
+    },
+    {
+      "upstream_path": "non_catalog_apps/bounce/bounce.c",
+      "path": "applications/union/bounce/bounce.c",
+      "sha256": "1a1d014594b3c973d06c6b19e4b848e7d0e4279ab2dd71440e76048468a75999"
+    },
+    {
+      "upstream_path": "non_catalog_apps/bounce/bounce_10px.png",
+      "path": "applications/union/bounce/bounce_10px.png",
+      "sha256": "ccb751b994bc295c8ec5931532bb1897c8432830004f08e9cd034714761613ad"
+    },
+    {
+      "upstream_path": "non_catalog_apps/bounce/levels.h",
+      "path": "applications/union/bounce/levels.h",
+      "sha256": "5c747229d520bb08c2dfac1261d0ee0f51126e93c14c4a26a435f2271c414e6b"
+    },
+    {
+      "upstream_path": "non_catalog_apps/stack_attack/LICENSE",
+      "path": "applications/union/stack_attack/LICENSE",
+      "sha256": "b037c26cb1e350369a49d5befae5e721017839d5721915b754501f9af96e03ac"
+    },
+    {
+      "upstream_path": "non_catalog_apps/stack_attack/application.fam",
+      "path": "applications/union/stack_attack/application.fam",
+      "sha256": "89c5ca570dee595730f49c28910f8c0f41a53f6134f44ac965c9e8d25ab04d53"
+    },
+    {
+      "upstream_path": "non_catalog_apps/stack_attack/game.c",
+      "path": "applications/union/stack_attack/game.c",
+      "sha256": "ebe0585afa9afebdf0ba8e473db41ac053d0e17cc7738ded1b8f83f47701ec18"
+    },
+    {
+      "upstream_path": "non_catalog_apps/stack_attack/game.h",
+      "path": "applications/union/stack_attack/game.h",
+      "sha256": "fbed16ba1c5404d66983bb824d84d744df33dfce3d25c1e6c52b3e2c7216e17b"
+    },
+    {
+      "upstream_path": "non_catalog_apps/stack_attack/icon.png",
+      "path": "applications/union/stack_attack/icon.png",
+      "sha256": "0c32f29e58791e28f8833719eb0237109d280c6fb05020b1b29324de29c34a37"
+    },
+    {
+      "upstream_path": "non_catalog_apps/stack_attack/render.c",
+      "path": "applications/union/stack_attack/render.c",
+      "sha256": "a00cb1408fda0cc0aee6c24bd408322045dd78f307ca18965d754c389088279f"
+    },
+    {
+      "upstream_path": "non_catalog_apps/stack_attack/render.h",
+      "path": "applications/union/stack_attack/render.h",
+      "sha256": "2b68d4139c7a15dcf82efce6953033401ee9b1c5d311c28844d7a72436d03b97"
+    },
+    {
+      "upstream_path": "non_catalog_apps/stack_attack/sprites.h",
+      "path": "applications/union/stack_attack/sprites.h",
+      "sha256": "76608d837ff6ab8994d160dd8b977a13248b205d5a55eba6b6712d9e6f62ea07"
+    },
+    {
+      "upstream_path": "non_catalog_apps/stack_attack/stack_attack.c",
+      "path": "applications/union/stack_attack/stack_attack.c",
+      "sha256": "4ef94ac4c5b6f6c7ab866186be938effa7518add3a4d5f2f631bd406e830abb7"
+    },
+    {
+      "upstream_path": "non_catalog_apps/sudoku/LICENSE",
+      "path": "applications/union/sudoku/LICENSE",
+      "sha256": "b65e22a506115b1466b23a0a5590406ff1360e6d93482b833bae57984de63758"
+    },
+    {
+      "upstream_path": "non_catalog_apps/sudoku/application.fam",
+      "path": "applications/union/sudoku/application.fam",
+      "sha256": "f02f962c3d9a20e2151481807ef5dc6a4cc126cb28e55019fcfb0aecfffe92f7"
+    },
+    {
+      "upstream_path": "non_catalog_apps/sudoku/sudoku.c",
+      "path": "applications/union/sudoku/sudoku.c",
+      "sha256": "226fdf0a5d25608d5276027edba0b326cb8d8785b758008954ba5e7e3dd9d235"
+    },
+    {
+      "upstream_path": "non_catalog_apps/sudoku/sudoku.png",
+      "path": "applications/union/sudoku/sudoku.png",
+      "sha256": "7c1995ecee61c07f36ee02aa61c3c85f84f9797c0c5d454a81edd6a6a94de96e"
+    },
+    {
+      "upstream_path": "non_catalog_apps/name-gen/LICENSE",
+      "path": "applications/union/nickname_generator/LICENSE",
+      "sha256": "3376acd6e9b9ad069f0c6ab59fc91e1e6447101af59be4f6465d54f5451d5e72"
+    },
+    {
+      "upstream_path": "non_catalog_apps/name-gen/application.fam",
+      "path": "applications/union/nickname_generator/application.fam",
+      "sha256": "5fbf38c7cd1c7188a5588415643e7dc70d3321580e91eb364781fd1205a1301a"
+    },
+    {
+      "upstream_path": "non_catalog_apps/name-gen/icon.png",
+      "path": "applications/union/nickname_generator/icon.png",
+      "sha256": "5f1e6b1415ac3d6dd904aaa24ca38bc17f62c7c439591891a0e76131b77b2a8f"
+    },
+    {
+      "upstream_path": "non_catalog_apps/name-gen/main.c",
+      "path": "applications/union/nickname_generator/main.c",
+      "sha256": "8ecfea6412686a20cb534153902305e68e4543252a28fc12c00dac0bcdeea8d3"
+    }
+  ]
+}

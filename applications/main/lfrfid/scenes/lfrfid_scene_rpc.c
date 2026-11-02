@@ -45,6 +45,7 @@ bool lfrfid_scene_rpc_on_event(void* context, SceneManagerEvent event) {
                     result = true;
                 } else {
                     rpc_system_app_set_error_code(app->rpc_ctx, RpcAppSystemErrorCodeParseFile);
+                    // RPC error text is sent to the companion app, kept in English
                     rpc_system_app_set_error_text(app->rpc_ctx, "Cannot load key file");
                 }
             }

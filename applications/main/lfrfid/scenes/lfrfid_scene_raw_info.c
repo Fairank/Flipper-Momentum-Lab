@@ -15,8 +15,8 @@ void lfrfid_scene_raw_info_on_enter(void* context) {
             AlignLeft,
             AlignTop,
             FontSecondary,
-            "Insert an SD card\n"
-            "to use this function");
+            "Insert an SD card\nto use this function"
+            "");
 
     } else {
         widget_add_text_box_element(
@@ -27,10 +27,10 @@ void lfrfid_scene_raw_info_on_enter(void* context) {
             64,
             AlignLeft,
             AlignTop,
-            "\e#RAW RFID Data Reader\e#\n"
-            "1. Hold card next to Flipper\n"
-            "2. Press OK\n"
-            "3. Wait until data is read",
+            "\033#RAW RFID Data Reader\033#\n1. Hold card next to Flipper\n2. Press OK\n3. Wait until data is read"
+            ""
+            ""
+            "",
             false);
 
         widget_add_button_element(widget, GuiButtonTypeCenter, "OK", lfrfid_widget_callback, app);

@@ -19,12 +19,6 @@ extern const SubGhzProtocol subghz_protocol_phoenix_v2;
 void* subghz_protocol_encoder_phoenix_v2_alloc(SubGhzEnvironment* environment);
 
 /**
- * Free SubGhzProtocolEncoderPhoenix_V2.
- * @param context Pointer to a SubGhzProtocolEncoderPhoenix_V2 instance
- */
-void subghz_protocol_encoder_phoenix_v2_free(void* context);
-
-/**
  * Deserialize and generating an upload to send.
  * @param context Pointer to a SubGhzProtocolEncoderPhoenix_V2 instance
  * @param flipper_format Pointer to a FlipperFormat instance
@@ -34,36 +28,11 @@ SubGhzProtocolStatus
     subghz_protocol_encoder_phoenix_v2_deserialize(void* context, FlipperFormat* flipper_format);
 
 /**
- * Forced transmission stop.
- * @param context Pointer to a SubGhzProtocolEncoderPhoenix_V2 instance
- */
-void subghz_protocol_encoder_phoenix_v2_stop(void* context);
-
-/**
- * Getting the level and duration of the upload to be loaded into DMA.
- * @param context Pointer to a SubGhzProtocolEncoderPhoenix_V2 instance
- * @return LevelDuration 
- */
-LevelDuration subghz_protocol_encoder_phoenix_v2_yield(void* context);
-
-/**
  * Allocate SubGhzProtocolDecoderPhoenix_V2.
  * @param environment Pointer to a SubGhzEnvironment instance
  * @return SubGhzProtocolDecoderPhoenix_V2* pointer to a SubGhzProtocolDecoderPhoenix_V2 instance
  */
 void* subghz_protocol_decoder_phoenix_v2_alloc(SubGhzEnvironment* environment);
-
-/**
- * Free SubGhzProtocolDecoderPhoenix_V2.
- * @param context Pointer to a SubGhzProtocolDecoderPhoenix_V2 instance
- */
-void subghz_protocol_decoder_phoenix_v2_free(void* context);
-
-/**
- * Reset decoder SubGhzProtocolDecoderPhoenix_V2.
- * @param context Pointer to a SubGhzProtocolDecoderPhoenix_V2 instance
- */
-void subghz_protocol_decoder_phoenix_v2_reset(void* context);
 
 /**
  * Parse a raw sequence of levels and durations received from the air.

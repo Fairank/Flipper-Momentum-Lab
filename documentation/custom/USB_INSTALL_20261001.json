@@ -1,0 +1,29 @@
+{
+  "verified_at": "2026-10-01T14:12:20+08:00",
+  "installed_build": "ee43b2c2",
+  "source_commit": "52f236fda19990e4587c4c82ea28cd2a63d40e46",
+  "api": "89.0",
+  "rpc": "0.29",
+  "wireless_stack": "LIGHT 1.20.0",
+  "applications_verified": 295,
+  "plugins_verified": 121,
+  "verification_method": "USB readback, size and MD5 comparison against the clean CI package",
+  "launch_and_exit_verified": [
+    "Clock",
+    "Flipper Lab",
+    "SD Info"
+  ],
+  "speaker_volume_percent": 0,
+  "mute_verified_after_reboot": true,
+  "card_format": "exFAT",
+  "card_capacity_bytes": 128160104448,
+  "hardware_acceptance_pending": [
+    "official iPhone App BLE pairing, files and remote control",
+    "AIO Board 1.4 chipset, board firmware and UART protocol",
+    "individual hardware-dependent applications"
+  ],
+  "complete_momentum_unleashed_union": false,
+  "ci_zip_sha256": "79d17087855e04ca81cfefc40b351f239153d53fdd3c7c021ac628d057ffcdfd",
+  "updater_tgz_sha256": "7cab7ff698a184528c67df0ae92607248ff12eb09a9e22c03a7c2c6274d43d24",
+  "device_identifiers_and_private_backups_published": false
+}

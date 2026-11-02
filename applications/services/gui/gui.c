@@ -1,4 +1,5 @@
 #include "gui_i.h"
+#include "native_zh_resource.h"
 #include <assets_icons.h>
 
 #include <storage/storage.h>
@@ -655,11 +656,20 @@ Gui* gui_alloc(void) {
     return gui;
 }
 
+#ifndef FURI_RAM_EXEC
+static void gui_zh_redraw(void* context) {
+    gui_update(context);
+}
+#endif
+
 int32_t gui_srv(void* p) {
     UNUSED(p);
     Gui* gui = gui_alloc();
 
     furi_record_create(RECORD_GUI, gui);
+#ifndef FURI_RAM_EXEC
+    native_zh_resource_start(gui_zh_redraw, gui);
+#endif
 
     while(1) {
         uint32_t flags =

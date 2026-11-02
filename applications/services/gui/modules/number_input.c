@@ -1,6 +1,7 @@
 #include "number_input.h"
 
 #include <gui/elements.h>
+#include <gui/utf8_internal.h>
 #include <furi.h>
 #include <assets_icons.h>
 #include <lib/toolbox/strint.h>
@@ -163,10 +164,18 @@ static void number_input_handle_right(NumberInputModel* model) {
     }
 }
 
+static bool number_input_parse(NumberInputModel* model, int64_t* value) {
+    const char* text = furi_string_get_cstr(model->text_buffer);
+    if(text[0] == '\0') {
+        *value = 0; //empty text is how 0 is shown
+        return true;
+    }
+    return strint_to_int64(text, NULL, value, 10) == StrintParseNoError;
+}
+
 static bool is_number_too_large(NumberInputModel* model) {
     int64_t value;
-    if(strint_to_int64(furi_string_get_cstr(model->text_buffer), NULL, &value, 10) !=
-       StrintParseNoError) {
+    if(!number_input_parse(model, &value)) {
         return true;
     }
     if(value > (int64_t)model->max_value) {
@@ -177,8 +186,7 @@ static bool is_number_too_large(NumberInputModel* model) {
 
 static bool is_number_too_small(NumberInputModel* model) {
     int64_t value;
-    if(strint_to_int64(furi_string_get_cstr(model->text_buffer), NULL, &value, 10) !=
-       StrintParseNoError) {
+    if(!number_input_parse(model, &value)) {
         return true;
     }
     if(value < (int64_t)model->min_value) {
@@ -188,18 +196,22 @@ static bool is_number_too_small(NumberInputModel* model) {
 }
 
 static void number_input_sign(NumberInputModel* model) {
-    int32_t number = strtol(furi_string_get_cstr(model->text_buffer), NULL, 10);
+    int64_t number = 0;
+    if(!number_input_parse(model, &number) && furi_string_cmp_str(model->text_buffer, "-") != 0) {
+        return;
+    }
     if(number == 0 && furi_string_cmp_str(model->text_buffer, "-") != 0) {
         furi_string_set_str(model->text_buffer, "-");
         return;
     }
-    number = number * -1;
-    furi_string_printf(model->text_buffer, "%ld", number);
-    if(is_number_too_large(model) || is_number_too_small(model)) {
+    // Negate in the wider type: -INT32_MIN does not fit in int32_t.
+    if(number < INT32_MIN || number > INT32_MAX || -number < model->min_value ||
+       -number > model->max_value) {
         furi_string_printf(model->text_buffer, "%ld", model->current_number);
         return;
     }
-    model->current_number = strtol(furi_string_get_cstr(model->text_buffer), NULL, 10);
+    model->current_number = (int32_t)-number;
+    furi_string_printf(model->text_buffer, "%ld", model->current_number);
     if(model->current_number == 0) {
         furi_string_set_str(model->text_buffer, ""); //show empty if 0, better for usability
     }
@@ -223,10 +235,12 @@ static void number_input_handle_ok(NumberInputModel* model) {
     char selected = number_input_get_row(model->selected_row)[model->selected_column].text;
     char temp_str[2] = {selected, '\0'};
     if(selected == enter_symbol) {
-        if(is_number_too_large(model) || is_number_too_small(model)) {
+        int64_t value;
+        if(!number_input_parse(model, &value) || value < (int64_t)model->min_value ||
+           value > (int64_t)model->max_value) {
             return; //Do nothing if number outside allowed range
         }
-        model->current_number = strtol(furi_string_get_cstr(model->text_buffer), NULL, 10);
+        model->current_number = (int32_t)value;
         model->callback(model->callback_context, model->current_number);
     } else if(selected == backspace_symbol) {
         number_input_backspace_cb(model);
@@ -244,7 +258,8 @@ static void number_input_view_draw_callback(Canvas* canvas, void* _model) {
 
     if(!furi_string_empty(model->header)) {
         canvas_set_font(canvas, FontSecondary);
-        canvas_draw_str(canvas, 2, 9, furi_string_get_cstr(model->header));
+        const char* header = furi_string_get_cstr(model->header);
+        canvas_draw_str(canvas, 2, gui_utf8_has_cjk(header) ? 11 : 9, header);
     }
     canvas_set_font(canvas, FontKeyboard);
     // Draw keyboard
@@ -426,9 +441,7 @@ void number_input_set_result_callback(
     int32_t max_value) {
     furi_check(number_input);
 
-    if(current_number != 0) {
-        current_number = CLAMP(current_number, max_value, min_value);
-    }
+    current_number = CLAMP(current_number, max_value, min_value);
 
     with_view_model(
         number_input->view,

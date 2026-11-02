@@ -1,3 +1,4 @@
+#include <locale/locale_ui.h>
 #include "../archive_i.h"
 #include "../helpers/archive_favorites.h"
 #include "../helpers/archive_files.h"
@@ -92,7 +93,9 @@ bool archive_scene_rename_on_event(void* context, SceneManagerEvent event) {
                 FuriString* dialog_msg;
                 dialog_msg = furi_string_alloc();
                 furi_string_cat_printf(
-                    dialog_msg, "Cannot rename:\n%s", storage_error_get_desc(error));
+                    dialog_msg,
+                    "Cannot rename:\n%s",
+                    locale_ui_storage_error(storage_error_get_desc(error)));
                 dialog_message_show_storage_error(
                     archive->dialogs, furi_string_get_cstr(dialog_msg));
                 furi_string_free(dialog_msg);

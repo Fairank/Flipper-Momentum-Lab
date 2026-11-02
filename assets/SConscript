@@ -36,7 +36,17 @@ if assetsenv["IS_BASE_FIRMWARE"]:
 
 
 # Protobuf .proto -> .c + .h
-proto_src = assetsenv.Glob("protobuf/*.proto", source=True)
+proto_by_name = {
+    node.name: node for node in assetsenv.Glob("protobuf/*.proto", source=True)
+}
+# Keep Momentum's ASCII input extension alongside the newer companion schema.
+proto_by_name.update(
+    {
+        node.name: node
+        for node in assetsenv.Glob("protobuf_overrides/*.proto", source=True)
+    }
+)
+proto_src = [proto_by_name[name] for name in sorted(proto_by_name)]
 proto_options = assetsenv.Glob("protobuf/*.options", source=True)
 proto = assetsenv.ProtoBuilder(assetsenv["ASSETS_WORK_DIR"], proto_src)
 assetsenv.Depends(proto, proto_options)

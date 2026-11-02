@@ -19,12 +19,6 @@ extern const SubGhzProtocol subghz_protocol_nord_ice;
 void* subghz_protocol_encoder_nord_ice_alloc(SubGhzEnvironment* environment);
 
 /**
- * Free SubGhzProtocolEncoderNord_Ice.
- * @param context Pointer to a SubGhzProtocolEncoderNord_Ice instance
- */
-void subghz_protocol_encoder_nord_ice_free(void* context);
-
-/**
  * Deserialize and generating an upload to send.
  * @param context Pointer to a SubGhzProtocolEncoderNord_Ice instance
  * @param flipper_format Pointer to a FlipperFormat instance
@@ -34,36 +28,11 @@ SubGhzProtocolStatus
     subghz_protocol_encoder_nord_ice_deserialize(void* context, FlipperFormat* flipper_format);
 
 /**
- * Forced transmission stop.
- * @param context Pointer to a SubGhzProtocolEncoderNord_Ice instance
- */
-void subghz_protocol_encoder_nord_ice_stop(void* context);
-
-/**
- * Getting the level and duration of the upload to be loaded into DMA.
- * @param context Pointer to a SubGhzProtocolEncoderNord_Ice instance
- * @return LevelDuration 
- */
-LevelDuration subghz_protocol_encoder_nord_ice_yield(void* context);
-
-/**
  * Allocate SubGhzProtocolDecoderNord_Ice.
  * @param environment Pointer to a SubGhzEnvironment instance
  * @return SubGhzProtocolDecoderNord_Ice* pointer to a SubGhzProtocolDecoderNord_Ice instance
  */
 void* subghz_protocol_decoder_nord_ice_alloc(SubGhzEnvironment* environment);
-
-/**
- * Free SubGhzProtocolDecoderNord_Ice.
- * @param context Pointer to a SubGhzProtocolDecoderNord_Ice instance
- */
-void subghz_protocol_decoder_nord_ice_free(void* context);
-
-/**
- * Reset decoder SubGhzProtocolDecoderNord_Ice.
- * @param context Pointer to a SubGhzProtocolDecoderNord_Ice instance
- */
-void subghz_protocol_decoder_nord_ice_reset(void* context);
 
 /**
  * Parse a raw sequence of levels and durations received from the air.

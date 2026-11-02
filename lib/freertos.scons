@@ -18,6 +18,7 @@ sources = libenv.Glob("FreeRTOS-Kernel/*.c", source=True)
 sources += [
     "FreeRTOS-Kernel/portable/GCC/ARM_CM4F/port.c",
 ]
+sources = libenv.KeepAssemblyUnits(sources, ["port.c"])
 
 lib = libenv.StaticLibrary("${FW_LIB_NAME}", sources)
 libenv.Install("${LIB_DIST_DIR}", lib)

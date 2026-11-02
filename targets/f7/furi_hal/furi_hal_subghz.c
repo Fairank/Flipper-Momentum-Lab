@@ -921,6 +921,7 @@ void furi_hal_subghz_stop_async_tx(void) {
 
     free(furi_hal_subghz_async_tx.buffer);
 
+#ifndef LOGS_RELEASE_BUILD
     float duty_cycle =
         100.0f * (float)furi_hal_subghz_async_tx.duty_high /
         ((float)furi_hal_subghz_async_tx.duty_low + (float)furi_hal_subghz_async_tx.duty_high);
@@ -930,6 +931,7 @@ void furi_hal_subghz_stop_async_tx(void) {
         (double)furi_hal_subghz_async_tx.duty_high,
         (double)furi_hal_subghz_async_tx.duty_low,
         (double)duty_cycle);
+#endif
 
     furi_hal_subghz.state = SubGhzStateIdle;
 }

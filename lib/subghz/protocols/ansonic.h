@@ -19,12 +19,6 @@ extern const SubGhzProtocol subghz_protocol_ansonic;
 void* subghz_protocol_encoder_ansonic_alloc(SubGhzEnvironment* environment);
 
 /**
- * Free SubGhzProtocolEncoderAnsonic.
- * @param context Pointer to a SubGhzProtocolEncoderAnsonic instance
- */
-void subghz_protocol_encoder_ansonic_free(void* context);
-
-/**
  * Deserialize and generating an upload to send.
  * @param context Pointer to a SubGhzProtocolEncoderAnsonic instance
  * @param flipper_format Pointer to a FlipperFormat instance
@@ -34,36 +28,11 @@ SubGhzProtocolStatus
     subghz_protocol_encoder_ansonic_deserialize(void* context, FlipperFormat* flipper_format);
 
 /**
- * Forced transmission stop.
- * @param context Pointer to a SubGhzProtocolEncoderAnsonic instance
- */
-void subghz_protocol_encoder_ansonic_stop(void* context);
-
-/**
- * Getting the level and duration of the upload to be loaded into DMA.
- * @param context Pointer to a SubGhzProtocolEncoderAnsonic instance
- * @return LevelDuration 
- */
-LevelDuration subghz_protocol_encoder_ansonic_yield(void* context);
-
-/**
  * Allocate SubGhzProtocolDecoderAnsonic.
  * @param environment Pointer to a SubGhzEnvironment instance
  * @return SubGhzProtocolDecoderAnsonic* pointer to a SubGhzProtocolDecoderAnsonic instance
  */
 void* subghz_protocol_decoder_ansonic_alloc(SubGhzEnvironment* environment);
-
-/**
- * Free SubGhzProtocolDecoderAnsonic.
- * @param context Pointer to a SubGhzProtocolDecoderAnsonic instance
- */
-void subghz_protocol_decoder_ansonic_free(void* context);
-
-/**
- * Reset decoder SubGhzProtocolDecoderAnsonic.
- * @param context Pointer to a SubGhzProtocolDecoderAnsonic instance
- */
-void subghz_protocol_decoder_ansonic_reset(void* context);
 
 /**
  * Parse a raw sequence of levels and durations received from the air.

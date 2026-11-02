@@ -121,5 +121,6 @@ bool infrared_scene_remote_on_event(void* context, SceneManagerEvent event) {
 
 void infrared_scene_remote_on_exit(void* context) {
     InfraredApp* infrared = context;
+    infrared_tx_stop(infrared);
     button_menu_reset(infrared->button_menu);
 }

@@ -1,6 +1,7 @@
 #pragma once
 
 #include "base.h"
+#include "public_api.h"
 
 #define SUBGHZ_PROTOCOL_MARANTEC_NAME "Marantec"
 
@@ -19,12 +20,6 @@ extern const SubGhzProtocol subghz_protocol_marantec;
 void* subghz_protocol_encoder_marantec_alloc(SubGhzEnvironment* environment);
 
 /**
- * Free SubGhzProtocolEncoderMarantec.
- * @param context Pointer to a SubGhzProtocolEncoderMarantec instance
- */
-void subghz_protocol_encoder_marantec_free(void* context);
-
-/**
  * Deserialize and generating an upload to send.
  * @param context Pointer to a SubGhzProtocolEncoderMarantec instance
  * @param flipper_format Pointer to a FlipperFormat instance
@@ -40,24 +35,11 @@ SubGhzProtocolStatus
 void subghz_protocol_encoder_marantec_stop(void* context);
 
 /**
- * Getting the level and duration of the upload to be loaded into DMA.
- * @param context Pointer to a SubGhzProtocolEncoderMarantec instance
- * @return LevelDuration 
- */
-LevelDuration subghz_protocol_encoder_marantec_yield(void* context);
-
-/**
  * Allocate SubGhzProtocolDecoderMarantec.
  * @param environment Pointer to a SubGhzEnvironment instance
  * @return SubGhzProtocolDecoderMarantec* pointer to a SubGhzProtocolDecoderMarantec instance
  */
 void* subghz_protocol_decoder_marantec_alloc(SubGhzEnvironment* environment);
-
-/**
- * Free SubGhzProtocolDecoderMarantec.
- * @param context Pointer to a SubGhzProtocolDecoderMarantec instance
- */
-void subghz_protocol_decoder_marantec_free(void* context);
 
 /**
  * Reset decoder SubGhzProtocolDecoderMarantec.

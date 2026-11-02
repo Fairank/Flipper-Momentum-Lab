@@ -1,0 +1,21 @@
+{
+  "source_commit": "65c05a2020a5ea3f6f8f17a230573df3932226f9",
+  "workflow_run": 36689632548,
+  "artifact_id": 11085521113,
+  "archive_sha256": "bc9a17a494afde0ef35b54c2ddc42046aa709e7935201f1b1474c4d71db90734",
+  "source": "Original CI renderings of production source; not device screenshots",
+  "images": [
+    {
+      "file": "flipper-native-english.png",
+      "source_file": "native/native-contact-sheet.png",
+      "bytes": 3743,
+      "sha256": "399e541974f6df29bdf73c3d0c9aa0da17f354302a7c79a4cf637e59c893a743"
+    },
+    {
+      "file": "flipper-guide-english.png",
+      "source_file": "menu-about.png",
+      "bytes": 1338,
+      "sha256": "cd4e8d9c95eda93dcf6d245032175e7c568dfef18ae9eb31963854655a359c34"
+    }
+  ]
+}

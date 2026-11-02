@@ -1,5 +1,7 @@
 
 #include "one_shot_animation_view.h"
+#include "animation_caption.h"
+#include <assets_icons.h>
 #include <furi.h>
 #include <gui/canvas.h>
 #include <gui/view.h>
@@ -21,6 +23,7 @@ typedef struct {
     const Icon* icon;
     uint32_t index;
     bool block_input;
+    bool stock_levelup;
 } OneShotViewModel;
 
 static void one_shot_view_update_timer_callback(void* context) {
@@ -50,6 +53,7 @@ static void one_shot_view_draw(Canvas* canvas, void* model_) {
         model->icon->width,
         model->icon->height,
         model->icon->frames[model->index]);
+    if(model->stock_levelup && model->index >= 8) animation_caption_draw_levelup(canvas);
 }
 
 static bool one_shot_view_input(InputEvent* event, void* context) {
@@ -119,6 +123,7 @@ void one_shot_view_start_animation(OneShotView* view, const Icon* icon) {
     OneShotViewModel* model = view_get_model(view->view);
     model->index = 0;
     model->icon = asset_packs_swap_icon(icon);
+    model->stock_levelup = icon == &A_Levelup_128x64 && model->icon == icon;
     model->block_input = true;
     view_commit_model(view->view, true);
     furi_timer_start(view->update_timer, 1000 / model->icon->frame_rate);

@@ -47,10 +47,10 @@ void nfc_scene_start_on_enter(void* context) {
         nfc_scene_start_submenu_callback,
         nfc,
         !furi_hal_rtc_is_flag_set(FuriHalRtcFlagDebug),
-        "Enable\n"
-        "Settings >\n"
-        "System >\n"
-        "Debug");
+        "Enable\nSettings >\nSystem >\nDebug"
+        ""
+        ""
+        "");
 
     submenu_set_selected_item(
         submenu, scene_manager_get_scene_state(nfc->scene_manager, NfcSceneStart));

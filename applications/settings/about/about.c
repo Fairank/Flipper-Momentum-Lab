@@ -18,8 +18,8 @@ static DialogMessageButton about_screen_product(DialogsApp* dialogs, DialogMessa
     DialogMessageButton result;
 
     FuriString* screen_header = furi_string_alloc_printf(
-        "Product: %s\n"
-        "Model: %s",
+        "Product: %s\nModel: %s"
+        "",
         furi_hal_version_get_model_name(),
         furi_hal_version_get_model_code());
 
@@ -58,9 +58,10 @@ static DialogMessageButton about_screen_address(DialogsApp* dialogs, DialogMessa
 static DialogMessageButton about_screen_compliance(DialogsApp* dialogs, DialogMessage* message) {
     DialogMessageButton result;
 
-    const char* screen_text = "For all compliance\n"
-                              "certificates, please visit:\n"
-                              "www.flipp.dev/compliance";
+    const char* screen_text =
+        "For all compliance\ncertificates, please visit:\nwww.flipp.dev/compliance"
+        ""
+        "";
 
     dialog_message_set_text(message, screen_text, 0, 0, AlignLeft, AlignTop);
     result = dialog_message_show(dialogs, message);

@@ -19,12 +19,6 @@ extern const SubGhzProtocol subghz_protocol_honeywell_wdb;
 void* subghz_protocol_encoder_honeywell_wdb_alloc(SubGhzEnvironment* environment);
 
 /**
- * Free SubGhzProtocolEncoderHoneywell_WDB.
- * @param context Pointer to a SubGhzProtocolEncoderHoneywell_WDB instance
- */
-void subghz_protocol_encoder_honeywell_wdb_free(void* context);
-
-/**
  * Deserialize and generating an upload to send.
  * @param context Pointer to a SubGhzProtocolEncoderHoneywell_WDB instance
  * @param flipper_format Pointer to a FlipperFormat instance
@@ -34,36 +28,11 @@ SubGhzProtocolStatus
     subghz_protocol_encoder_honeywell_wdb_deserialize(void* context, FlipperFormat* flipper_format);
 
 /**
- * Forced transmission stop.
- * @param context Pointer to a SubGhzProtocolEncoderHoneywell_WDB instance
- */
-void subghz_protocol_encoder_honeywell_wdb_stop(void* context);
-
-/**
- * Getting the level and duration of the upload to be loaded into DMA.
- * @param context Pointer to a SubGhzProtocolEncoderHoneywell_WDB instance
- * @return LevelDuration 
- */
-LevelDuration subghz_protocol_encoder_honeywell_wdb_yield(void* context);
-
-/**
  * Allocate SubGhzProtocolDecoderHoneywell_WDB.
  * @param environment Pointer to a SubGhzEnvironment instance
  * @return SubGhzProtocolDecoderHoneywell_WDB* pointer to a SubGhzProtocolDecoderHoneywell_WDB instance
  */
 void* subghz_protocol_decoder_honeywell_wdb_alloc(SubGhzEnvironment* environment);
-
-/**
- * Free SubGhzProtocolDecoderHoneywell_WDB.
- * @param context Pointer to a SubGhzProtocolDecoderHoneywell_WDB instance
- */
-void subghz_protocol_decoder_honeywell_wdb_free(void* context);
-
-/**
- * Reset decoder SubGhzProtocolDecoderHoneywell_WDB.
- * @param context Pointer to a SubGhzProtocolDecoderHoneywell_WDB instance
- */
-void subghz_protocol_decoder_honeywell_wdb_reset(void* context);
 
 /**
  * Parse a raw sequence of levels and durations received from the air.

@@ -65,6 +65,16 @@ void file_browser_worker_folder_exit(BrowserWorker* browser);
 
 void file_browser_worker_folder_refresh(BrowserWorker* browser, int32_t item_idx);
 
+/** Keep or select a named entry when refreshing a directory. */
+void file_browser_worker_folder_refresh_sel(BrowserWorker* browser, const char* item_name);
+
+const char* file_browser_worker_get_filter_ext(BrowserWorker* browser);
+
+void file_browser_worker_set_filter_ext(
+    BrowserWorker* browser,
+    FuriString* path,
+    const char* filter_ext);
+
 void file_browser_worker_load(BrowserWorker* browser, uint32_t offset, uint32_t count);
 
 #ifdef __cplusplus

@@ -1,6 +1,7 @@
 
 #include "../animation_manager.h"
 #include "bubble_animation_view.h"
+#include "animation_caption.h"
 
 #include <furi_hal.h>
 #include <furi.h>
@@ -24,6 +25,7 @@ typedef struct {
     uint8_t active_shift;
     uint32_t active_ended_at;
     Icon* freeze_frame;
+    AnimationCaption caption;
 } BubbleAnimationViewModel;
 
 struct BubbleAnimationView {
@@ -63,6 +65,7 @@ static void bubble_animation_draw_callback(Canvas* canvas, void* model_) {
     if(model->freeze_frame) {
         uint8_t y_offset = canvas_height(canvas) - icon_get_height(model->freeze_frame);
         canvas_draw_icon(canvas, 0, y_offset, model->freeze_frame);
+        animation_caption_draw(canvas, model->caption, y_offset);
         return;
     }
 
@@ -78,6 +81,7 @@ static void bubble_animation_draw_callback(Canvas* canvas, void* model_) {
     uint8_t y_offset = canvas_height(canvas) - height;
     canvas_draw_bitmap(
         canvas, 0, y_offset, width, height, animation->icon_animation.frames[index]);
+    animation_caption_draw(canvas, model->caption, y_offset);
 
     const FrameBubble* bubble = model->current_bubble;
     if(bubble) {
@@ -351,13 +355,15 @@ void bubble_animation_view_set_interact_callback(
 
 void bubble_animation_view_set_animation(
     BubbleAnimationView* view,
-    const BubbleAnimation* new_animation) {
+    const BubbleAnimation* new_animation,
+    const char* builtin_name) {
     furi_assert(view);
     furi_assert(new_animation);
 
     BubbleAnimationViewModel* model = view_get_model(view->view);
     furi_assert(model);
     model->current = new_animation;
+    model->caption = animation_caption_for_builtin(builtin_name);
 
     model->active_ended_at = furi_get_tick() - (model->current->active_cooldown * 1000);
     model->active_bubbles = 0;

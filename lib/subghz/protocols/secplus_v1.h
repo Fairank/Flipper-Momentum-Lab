@@ -20,12 +20,6 @@ extern const SubGhzProtocol subghz_protocol_secplus_v1;
 void* subghz_protocol_encoder_secplus_v1_alloc(SubGhzEnvironment* environment);
 
 /**
- * Free SubGhzProtocolEncoderSecPlus_v1.
- * @param context Pointer to a SubGhzProtocolEncoderSecPlus_v1 instance
- */
-void subghz_protocol_encoder_secplus_v1_free(void* context);
-
-/**
  * Deserialize and generating an upload to send.
  * @param context Pointer to a SubGhzProtocolEncoderSecPlus_v1 instance
  * @param flipper_format Pointer to a FlipperFormat instance
@@ -35,30 +29,11 @@ SubGhzProtocolStatus
     subghz_protocol_encoder_secplus_v1_deserialize(void* context, FlipperFormat* flipper_format);
 
 /**
- * Forced transmission stop.
- * @param context Pointer to a SubGhzProtocolEncoderSecPlus_v1 instance
- */
-void subghz_protocol_encoder_secplus_v1_stop(void* context);
-
-/**
- * Getting the level and duration of the upload to be loaded into DMA.
- * @param context Pointer to a SubGhzProtocolEncoderSecPlus_v1 instance
- * @return LevelDuration 
- */
-LevelDuration subghz_protocol_encoder_secplus_v1_yield(void* context);
-
-/**
  * Allocate SubGhzProtocolDecoderSecPlus_v1.
  * @param environment Pointer to a SubGhzEnvironment instance
  * @return SubGhzProtocolDecoderSecPlus_v1* pointer to a SubGhzProtocolDecoderSecPlus_v1 instance
  */
 void* subghz_protocol_decoder_secplus_v1_alloc(SubGhzEnvironment* environment);
-
-/**
- * Free SubGhzProtocolDecoderSecPlus_v1.
- * @param context Pointer to a SubGhzProtocolDecoderSecPlus_v1 instance
- */
-void subghz_protocol_decoder_secplus_v1_free(void* context);
 
 /**
  * Reset decoder SubGhzProtocolDecoderSecPlus_v1.

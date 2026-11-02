@@ -1,6 +1,7 @@
 #include "../desktop_settings_app.h"
 #include "applications.h"
 #include "desktop_settings_scene.h"
+#include <locale/locale_ui.h>
 
 static void
     desktop_settings_scene_keybinds_action_submenu_callback(void* context, uint32_t index) {
@@ -25,7 +26,7 @@ void desktop_settings_scene_keybinds_action_on_enter(void* context) {
         for(size_t i = 0; i < FLIPPER_APPS_COUNT; i++) {
             submenu_add_item(
                 submenu,
-                FLIPPER_APPS[i].name,
+                locale_ui_label(FLIPPER_APPS[i].name),
                 (uint32_t)FLIPPER_APPS[i].name,
                 desktop_settings_scene_keybinds_action_submenu_callback,
                 app);
@@ -38,7 +39,7 @@ void desktop_settings_scene_keybinds_action_on_enter(void* context) {
         for(size_t i = 0; i < FLIPPER_EXTERNAL_APPS_COUNT; i++) {
             submenu_add_item(
                 submenu,
-                FLIPPER_EXTERNAL_APPS[i].name,
+                locale_ui_label(FLIPPER_EXTERNAL_APPS[i].name),
                 (uint32_t)FLIPPER_EXTERNAL_APPS[i].name,
                 desktop_settings_scene_keybinds_action_submenu_callback,
                 app);
@@ -52,7 +53,7 @@ void desktop_settings_scene_keybinds_action_on_enter(void* context) {
         for(size_t i = 0; i < EXTRA_KEYBINDS_COUNT; i++) {
             submenu_add_item(
                 submenu,
-                EXTRA_KEYBINDS[i],
+                locale_ui_label(EXTRA_KEYBINDS[i]),
                 (uint32_t)EXTRA_KEYBINDS[i],
                 desktop_settings_scene_keybinds_action_submenu_callback,
                 app);

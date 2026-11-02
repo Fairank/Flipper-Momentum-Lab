@@ -19,6 +19,9 @@ env:
 
 jobs:
   build:
+    # This job publishes through Momentum's infrastructure and checks its live API.
+    # The personal fork builds the pinned SDK through lab-firmware.yml instead.
+    if: github.repository == 'Next-Flip/Momentum-Firmware'
     permissions:
       issues: write
       pull-requests: write

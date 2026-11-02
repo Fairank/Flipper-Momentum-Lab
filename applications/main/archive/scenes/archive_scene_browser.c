@@ -1,3 +1,4 @@
+#include <locale/locale_ui.h>
 #include "../archive_i.h"
 #include "../helpers/archive_files.h"
 #include "../helpers/archive_favorites.h"
@@ -55,6 +56,8 @@ const char* archive_get_flipper_app_name(ArchiveFileTypeEnum file_type) {
 #else
         return "JS Runner";
 #endif
+    case ArchiveFileTypeFolder:
+        return "Archive";
     default:
         return NULL;
     }
@@ -354,7 +357,7 @@ bool archive_scene_browser_on_event(void* context, SceneManagerEvent event) {
                             dialog_msg,
                             "Cannot %s:\n%s",
                             copy ? "copy" : "move",
-                            storage_error_get_desc(error));
+                            locale_ui_storage_error(storage_error_get_desc(error)));
                         dialog_message_show_storage_error(
                             archive->dialogs, furi_string_get_cstr(dialog_msg));
                         furi_string_free(dialog_msg);

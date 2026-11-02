@@ -10,4 +10,19 @@ App(
     sdk_headers=[
         "helpers/archive_helpers_ext.h",
     ],
+    # Retain shared favorites APIs in firmware; map the full UI from SD on use.
+    sources=["archive_loader.c", "helpers/*.c", "scenes/archive_scene_browser.c"],
+)
+
+App(
+    appid="archive_ui",
+    name="Archive UI",
+    apptype=FlipperAppType.PLUGIN,
+    entry_point="archive_ui_plugin_entry",
+    requires=["archive"],
+    sources=["*.c*", "!archive_loader.c"],
+    fap_version="1.0",
+    fap_strict_imports=True,
+    fap_libs=["mbedtls"],
+    fap_description="Complete file manager UI loaded by the built-in Archive entry",
 )

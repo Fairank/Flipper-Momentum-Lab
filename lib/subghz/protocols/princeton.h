@@ -23,12 +23,6 @@ extern const SubGhzProtocol subghz_protocol_princeton;
 void* subghz_protocol_encoder_princeton_alloc(SubGhzEnvironment* environment);
 
 /**
- * Free SubGhzProtocolEncoderPrinceton.
- * @param context Pointer to a SubGhzProtocolEncoderPrinceton instance
- */
-void subghz_protocol_encoder_princeton_free(void* context);
-
-/**
  * Deserialize and generating an upload to send.
  * @param context Pointer to a SubGhzProtocolEncoderPrinceton instance
  * @param flipper_format Pointer to a FlipperFormat instance
@@ -38,30 +32,11 @@ SubGhzProtocolStatus
     subghz_protocol_encoder_princeton_deserialize(void* context, FlipperFormat* flipper_format);
 
 /**
- * Forced transmission stop.
- * @param context Pointer to a SubGhzProtocolEncoderPrinceton instance
- */
-void subghz_protocol_encoder_princeton_stop(void* context);
-
-/**
- * Getting the level and duration of the upload to be loaded into DMA.
- * @param context Pointer to a SubGhzProtocolEncoderPrinceton instance
- * @return LevelDuration 
- */
-LevelDuration subghz_protocol_encoder_princeton_yield(void* context);
-
-/**
  * Allocate SubGhzProtocolDecoderPrinceton.
  * @param environment Pointer to a SubGhzEnvironment instance
  * @return SubGhzProtocolDecoderPrinceton* pointer to a SubGhzProtocolDecoderPrinceton instance
  */
 void* subghz_protocol_decoder_princeton_alloc(SubGhzEnvironment* environment);
-
-/**
- * Free SubGhzProtocolDecoderPrinceton.
- * @param context Pointer to a SubGhzProtocolDecoderPrinceton instance
- */
-void subghz_protocol_decoder_princeton_free(void* context);
 
 /**
  * Reset decoder SubGhzProtocolDecoderPrinceton.

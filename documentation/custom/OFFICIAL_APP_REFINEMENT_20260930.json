@@ -1,0 +1,342 @@
+{
+  "date": "2026-09-30",
+  "source_commit": "1dbdd4a2fe1e8212c46ce42e71ec5ee3fc28a111",
+  "implementation_commit": "2b0013a3afe8d6d4a2578a75a19fe0de5c48299a",
+  "last_production_change_commit": "1715e344df88c96e4ca6f7e410a673c8c9b55be9",
+  "following_delivery": "Documentation and original images only; no production or test changes",
+  "language_target": {
+    "device": "English, with Chinese user-file compatibility",
+    "phone": "Simplified Chinese"
+  },
+  "official_app": {
+    "reference_commit": "46074e4c92895ab566a3ef5c599f066b1d507063",
+    "reference_repository": "https://github.com/flipperdevices/Flipper-iOS-App",
+    "reference_license": "MIT",
+    "standard_ble_rpc": "Source-reviewed compatibility expected; not hardware validated",
+    "protocol_version": "0.29",
+    "firmware_api": "89.0",
+    "standard_controls_retained": [
+      "Device information",
+      "File storage",
+      "App.Start",
+      "Screen stream",
+      "Virtual buttons"
+    ],
+    "custom_phone_extensions_automatically_available": false,
+    "all_official_catalog_apps_compatible": "Not established; target/API build must match",
+    "official_app_hardware_acceptance": false,
+    "official_images_copied": false
+  },
+  "validation": {
+    "run_id": 36703025197,
+    "url": "https://github.com/Fairank/Flipper-Momentum-Lab/actions/runs/36703025197",
+    "status": "success",
+    "ios_job_id": 109846997110,
+    "host_job_id": 109846997604,
+    "swift_core": {
+      "passed": 196,
+      "failed": 0,
+      "seconds": 12.834
+    },
+    "host_python_and_production_c": {
+      "passed": 129,
+      "failed": 0,
+      "seconds": 15.836
+    },
+    "ui": {
+      "passed": 10,
+      "failed": 0,
+      "seconds": 650.853,
+      "old_tests": 7,
+      "new_tests": 3
+    },
+    "new_catalog_core_tests": 12,
+    "new_recovery_policy_tests": 6,
+    "font_checks": "passed",
+    "mac_prepare_only": "passed",
+    "unsigned_simulator_build": "passed",
+    "xcode": "26.6",
+    "swift": "6.3.3",
+    "simulator": "iPhone 17 Pro Max",
+    "simulator_ios": "26.5",
+    "ui_retries_or_repeated_actions_added": false,
+    "existing_assertions_removed": false,
+    "hardware_validation": false,
+    "full_xcresult_artifact": {
+      "id": 11091253384,
+      "bytes": 13259890,
+      "sha256": "43fb12071f1e82f24b07c1c9f43b02c2665cd44653571ffa6600b43f1b1d02ca",
+      "downloaded": false,
+      "metadata_checked": true
+    }
+  },
+  "firmware": {
+    "source_commit": "1dbdd4a2fe1e8212c46ce42e71ec5ee3fc28a111",
+    "workflow_run": 36703025418,
+    "artifact_id": 11091335787,
+    "input_sha256": "bfffb0dc4bd7c7e7aff8a4118b5a90b6c1f138f1b6ad73427ae9ad7635e40cb6",
+    "package_name": "flipper-z-f7-update-mntm-HEAD-4d836d13.tgz",
+    "package_bytes": 13005998,
+    "package_sha256": "ef0fc121c55ca62b8042cf727950fc32078b30090dc2defa689840d613e7f391",
+    "updater_bytes": 120217,
+    "firmware_bytes": 868800,
+    "radio_address": "0x80d7000",
+    "flash_gap_before_radio_bytes": 11840,
+    "dfu_crc_verified": true,
+    "packaged_fap_count": 295,
+    "packaged_fal_count": 121,
+    "required_apps": [
+      {
+        "path": "apps/Tools/lab.fap",
+        "display_name": "Flipper Lab",
+        "api_version": 5832704,
+        "bytes": 13240,
+        "sha256": "0a6458935e994f873948a8746934e4aa9b51b8119b88d98b28939619679ba573"
+      },
+      {
+        "path": "apps/Tools/lab_bridge.fap",
+        "display_name": "Lab Bridge",
+        "api_version": 5832704,
+        "bytes": 7164,
+        "sha256": "e9fd025889633653316c1740d94100052784411e554ffc7c15769abd08e09942"
+      },
+      {
+        "path": "apps/Tools/clock.fap",
+        "display_name": "Clock",
+        "api_version": 5832704,
+        "bytes": 12844,
+        "sha256": "b5c3b64a90849c0e273ea815224db77a7a9c7bf4e9a9c02ca3b76758851a81dc"
+      },
+      {
+        "path": "apps/Tools/pomodoro_timer.fap",
+        "display_name": "Pomodoro Timer",
+        "api_version": 5832704,
+        "bytes": 10872,
+        "sha256": "3acf2c1a7504199ba7b3d9fba3a17eda078e2cc9a51a90e1655d3af4fa906a0f"
+      },
+      {
+        "path": "apps/Tools/analog_clock.fap",
+        "display_name": "Analog Clock",
+        "api_version": 5832704,
+        "bytes": 15460,
+        "sha256": "d43467cad98af224d18a0d849c804f359022a74e84e82deb655f427759b2052c"
+      },
+      {
+        "path": "apps/Tools/segment_clock.fap",
+        "display_name": "Segment Clock",
+        "api_version": 5832704,
+        "bytes": 9364,
+        "sha256": "bfb855258c63458ac0a82599ee5bbecf7fec5ebceae1840e19f86cc68ace45f1"
+      },
+      {
+        "path": "apps/Tools/calendar.fap",
+        "display_name": "Calendar",
+        "api_version": 5832704,
+        "bytes": 10672,
+        "sha256": "b8069e8577431a0704be6902d94fd4c6ae840c6a948c5a796e001cb76e7cecf1"
+      },
+      {
+        "path": "apps/Tools/net_calculator.fap",
+        "display_name": "Net Calculator",
+        "api_version": 5832704,
+        "bytes": 6880,
+        "sha256": "edda17a8a974b892e53008e157f3554ca5eca32a974087aa308bd61b16a4c67d"
+      },
+      {
+        "path": "apps/Tools/multi_counter.fap",
+        "display_name": "Multi Counter",
+        "api_version": 5832704,
+        "bytes": 6596,
+        "sha256": "1b190b8234122d294f4328c7673276097379233b06326124261d1b4afd40fc11"
+      },
+      {
+        "path": "apps/Tools/sd_info.fap",
+        "display_name": "SD Info",
+        "api_version": 5832704,
+        "bytes": 11384,
+        "sha256": "fae011ba6f3708e6fde873310c15a07bbce2df5bb8f3f4ebec909f295d2aeb43"
+      },
+      {
+        "path": "apps/Tools/flipper_chronometer.fap",
+        "display_name": "Chronometer",
+        "api_version": 5832704,
+        "bytes": 3384,
+        "sha256": "6c8d34b658724dd747ff95bc60401ceaa5505384c8356e72c5ef37ba7d87e55f"
+      },
+      {
+        "path": "apps/Tools/trackerflipx.fap",
+        "display_name": "Flipper Time Tracker",
+        "api_version": 5832704,
+        "bytes": 39008,
+        "sha256": "e377357a940e92ad8bab2bc053b03dd1647f8cf7750b8b9c8cad7bc353ecae0a"
+      },
+      {
+        "path": "apps/Tools/flipnote.fap",
+        "display_name": "FlipNote",
+        "api_version": 5832704,
+        "bytes": 27848,
+        "sha256": "9e1dc1b6a3fae8037caa2910eb59ddd0855e8096e3d83fee403aaa0114591a42"
+      },
+      {
+        "path": "apps/Tools/gps_rpc.fap",
+        "display_name": "[RPC] GPS",
+        "api_version": 5832704,
+        "bytes": 5436,
+        "sha256": "1eeaa4f5e13b47140ca8f29a862ae485e0b474385d62fa7d160da2b8562cffa6"
+      },
+      {
+        "path": "apps/Tools/example_network.fap",
+        "display_name": "[RPC] Network",
+        "api_version": 5832704,
+        "bytes": 4272,
+        "sha256": "f44a6b73df248efc03b4ae93c3a8b50c4f596f4185f687cc78f403873038c4a5"
+      },
+      {
+        "path": "apps/Tools/brainfuck.fap",
+        "display_name": "Brainfuck",
+        "api_version": 5832704,
+        "bytes": 20828,
+        "sha256": "fba2ff1ad21fb8d1494ca2a85a1d58183ebe6de23bfc24dc3b428b99602bf511"
+      },
+      {
+        "path": "apps/Games/chess_clock.fap",
+        "display_name": "Chess Clock",
+        "api_version": 5832704,
+        "bytes": 3324,
+        "sha256": "0ea158996a524ee3ef805875208182d49f7b1263c060578696e09e749d1df984"
+      },
+      {
+        "path": "apps/Infrared/pause_timer.fap",
+        "display_name": "Pause Timer",
+        "api_version": 5832704,
+        "bytes": 16392,
+        "sha256": "285f4b19f2441684a23845f6c7c97ac9a379555a0bf4bcf647a749b90a27ff41"
+      },
+      {
+        "path": "apps/Games/mandelbrotset.fap",
+        "display_name": "Mandelbrot Set",
+        "api_version": 5832704,
+        "bytes": 5576,
+        "sha256": "3a56ca449fccaf1e8a66601f7c1f758909d353b5bdf76e65e35cc3cf81201239"
+      },
+      {
+        "path": "apps/Games/reaction.fap",
+        "display_name": "Reaction test",
+        "api_version": 5832704,
+        "bytes": 3892,
+        "sha256": "eecdc2bb11a86791ce24c1ace23c81008777ce8e8c5f1b1c98bd18821af6eb81"
+      },
+      {
+        "path": "apps/Games/dice_app.fap",
+        "display_name": "Dice D&D",
+        "api_version": 5832704,
+        "bytes": 21928,
+        "sha256": "28745c50636c1d0b8634b29c16282b2be7d61fd077a59024c94749af6e0c967d"
+      },
+      {
+        "path": "apps/Games/montyhall.fap",
+        "display_name": "Monty Hall",
+        "api_version": 5832704,
+        "bytes": 5908,
+        "sha256": "eb619e13ead97bb326c3a56bd21655cc2ebf29e794d5c5febe5f07fc7990b18d"
+      },
+      {
+        "path": "apps/Media/ocarina.fap",
+        "display_name": "Ocarina",
+        "api_version": 5832704,
+        "bytes": 7944,
+        "sha256": "d49ad1f9eb515e6b111b83d465db11f35023799675e4bc3db3df6a44797d5c91"
+      },
+      {
+        "path": "apps/Games/racegame.fap",
+        "display_name": "Race",
+        "api_version": 5832704,
+        "bytes": 5036,
+        "sha256": "2949cfc1973b25ba59cd4daac5256e04b714057a24ef81de843b4f3bd3fd4681"
+      },
+      {
+        "path": "apps/Games/bounce.fap",
+        "display_name": "Bounce",
+        "api_version": 5832704,
+        "bytes": 29596,
+        "sha256": "1d9a62b5a290292941c63db2355cf39f17555b011c14cc2e5725d872a25662e1"
+      },
+      {
+        "path": "apps/Games/stack_attack.fap",
+        "display_name": "Stack Attack",
+        "api_version": 5832704,
+        "bytes": 22700,
+        "sha256": "6c226134a7c3475097c25ac349cf32eef8d6792f347ba941b3126839274029d9"
+      },
+      {
+        "path": "apps/Games/sudoku.fap",
+        "display_name": "Sudoku",
+        "api_version": 5832704,
+        "bytes": 9268,
+        "sha256": "a42a4bb486f7234a1f22ca44320da169ab963d91cc02306beb7ebc041c2b30e2"
+      },
+      {
+        "path": "apps/Tools/nickname_generator.fap",
+        "display_name": "NickName Generator",
+        "api_version": 5832704,
+        "bytes": 13364,
+        "sha256": "8eea6b33db689aa17bd834e2597de2842ff87b619e78d3efcd62de4b3570207c"
+      }
+    ],
+    "chinese_glyph_resource": {
+      "path": "locale/zh_cn.glyphs",
+      "bytes": 925216,
+      "sha256": "ef3423813e6843dffd6f4bcee0c329f93802104db12325fe0f802ca9f6498eaa",
+      "matches_source": true
+    }
+  },
+  "firmware_archive": {
+    "bytes": 13021334,
+    "sha256": "bfffb0dc4bd7c7e7aff8a4118b5a90b6c1f138f1b6ad73427ae9ad7635e40cb6",
+    "merge_checkout": "4d836d13d30cd4f3703d2b94ddb7f05e2a6aab25",
+    "expires_at": "2026-10-14T10:39:21Z",
+    "downloaded_and_verified": true
+  },
+  "lint": {
+    "run_id": 36703025291,
+    "status": "success"
+  },
+  "phone_images": {
+    "manifest": "previews/official-app-20260930/phone-manifest.json",
+    "count": 7,
+    "archive_bytes": 10432422,
+    "archive_sha256": "31a79d1d0518729422b694c0994d0c92d907a0b1e3b005a1ee61adb002e739c5",
+    "original_png_bytes_preserved": true,
+    "includes_debug_preview_fixtures": true,
+    "hardware_validation": false
+  },
+  "device_images": {
+    "manifest": "previews/official-app-20260930/flipper-manifest.json",
+    "count": 2,
+    "source_commit": "65c05a2020a5ea3f6f8f17a230573df3932226f9",
+    "production_source_renderings": true,
+    "real_device_screenshots": false
+  },
+  "claude": {
+    "task": "fable-app-catalog-components-retry-20260930",
+    "requested_model": "claude-fable-5-1",
+    "returned_model": "claude-fable-5-1",
+    "effort": "max",
+    "exit_code": 0,
+    "elapsed_seconds": 841.2,
+    "scope": "Two pure display components; primary assistant reviewed before adoption",
+    "first_call": {
+      "completion_event_received": false,
+      "exit_code": null,
+      "counted_as_completed": false
+    },
+    "new_call_after_user_requested_direct_work": false
+  },
+  "pending": [
+    "Real BLE/device callback ordering and app control",
+    "AIO board hardware/firmware identification and live acceptance",
+    "Personal iPhone signing and installation",
+    "Full Momentum/Unleashed functionality union"
+  ],
+  "signed_ipa_available": false
+}

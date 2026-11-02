@@ -9,6 +9,7 @@ from fbt.appmanifest import FlipperApplication, FlipperAppType, FlipperManifestE
 from fbt.elfmanifest import assemble_manifest_data
 from fbt.fapassets import FileBundler
 from fbt.sdk.cache import SdkCache
+from fbt.sdk.app_api import declared_api_symbols
 from fbt.util import resolve_real_dir_node
 from SCons.Action import Action
 from SCons.Builder import Builder
@@ -150,6 +151,15 @@ class AppBuilder:
             CPPPATH=[self.app_env.Dir(self.app_work_dir), self.app._appdir],
         )
 
+        if self.app.fap_exclude_libs:
+            # Drop toolchain libs this app opts out of, so the symbols they
+            # provide stay undefined and get resolved from the firmware API
+            # table by the loader instead of being duplicated into the binary.
+            excluded = set(self.app.fap_exclude_libs)
+            self.app_env.Replace(
+                LIBS=[lib for lib in self.app_env["LIBS"] if lib not in excluded]
+            )
+
         app_sources = self.app_env.GatherSources(
             [self.app.sources, "!lib"], self.app_work_dir
         )
@@ -180,11 +190,20 @@ class AppBuilder:
         if self.app.embeds_plugins:
             self.app._assets_dirs.append(self.app_work_dir.Dir("assets"))
 
+        private_api_tables = []
+        if self.app.apptype == FlipperAppType.PLUGIN and "nfc" in self.app.requires:
+            parent_app = self.app._appmanager.get("nfc")
+            private_api_tables.append(
+                parent_app._appdir.File("api/nfc_app_api_table_i.h")
+            )
+
         app_artifacts.validator = self.app_env.ValidateAppImports(
             app_artifacts.compact,
+            _APP_API_TABLES=private_api_tables,
             _CHECK_APP=self.app.do_strict_import_checks
             and self.app_env.get("STRICT_FAP_IMPORT_CHECK"),
         )[0]
+        self.app_env.Depends(app_artifacts.validator, private_api_tables)
 
         if self.app.apptype == FlipperAppType.PLUGIN:
             for parent_app_id in self.app.requires:
@@ -292,6 +311,12 @@ def _validate_app_imports(target, source, env):
         for line in f:
             app_syms.add(line.split()[0])
     unresolved_syms = app_syms - sdk_cache.get_valid_names()
+    # NFC plugins also resolve against their owning app's exact private API.
+    # Do not accept a symbol merely because its name starts with an NFC prefix.
+    for table in env.get("_APP_API_TABLES", []):
+        unresolved_syms -= declared_api_symbols(
+            pathlib.Path(table.abspath).read_text(encoding="utf-8")
+        )
     known_syms = {
         # example_advanced_plugins app_api_table
         ("advanced_plugin",): (
@@ -362,25 +387,6 @@ def _validate_app_imports(target, source, env):
             "mosgortrans_parse_transport_block",
             "render_section_header",
             "I_Suica_",
-        ),
-        # nfc_app_api_table
-        (
-            "nfc_",
-            "gallagher",
-            "social_moscow",
-            "troika",
-        ): (
-            "gallagher_deobfuscate_and_parse_credential",
-            "GALLAGHER_CARDAX_ASCII",
-            "mosgortrans_parse_transport_block",
-            "render_section_header",
-            "nfc_append_filename_string_when_present",
-            "nfc_protocol_support_common_submenu_callback",
-            "nfc_protocol_support_common_widget_callback",
-            "nfc_protocol_support_common_on_enter_empty",
-            "nfc_protocol_support_common_on_event_empty",
-            "nfc_unlock_helper_setup_from_state",
-            "nfc_unlock_helper_card_detected_handler",
         ),
         # totp app_api_table
         ("totp_",): (

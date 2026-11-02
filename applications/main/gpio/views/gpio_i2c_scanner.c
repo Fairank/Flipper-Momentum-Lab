@@ -22,28 +22,26 @@ static void gpio_i2c_scanner_draw_callback(Canvas* canvas, void* _model) {
 
     char temp_str[25];
     elements_button_center(canvas, "Start scan");
-    canvas_draw_line(canvas, 2, 10, 125, 10);
+    canvas_draw_line(canvas, 2, 14, 125, 14);
     canvas_draw_line(canvas, 2, 52, 125, 52);
 
     canvas_set_font(canvas, FontPrimary);
-    canvas_draw_str(canvas, 2, 9, "I2C-Scanner");
-    canvas_draw_str(canvas, 3, 25, "SDA:");
-    canvas_draw_str(canvas, 3, 42, "SCL:");
+    canvas_draw_str(canvas, 2, 11, "I2C Scanner");
+    canvas_draw_str(canvas, 3, 27, "SDA:15");
+    canvas_draw_str(canvas, 3, 42, "SCL:16");
 
     canvas_set_font(canvas, FontSecondary);
     snprintf(temp_str, 25, "Slaves: %u", model->items);
-    canvas_draw_str_aligned(canvas, 126, 8, AlignRight, AlignBottom, temp_str);
-
-    canvas_draw_str(canvas, 29, 25, "Pin 15");
-    canvas_draw_str(canvas, 29, 42, "Pin 16");
+    canvas_draw_str_aligned(canvas, 126, 11, AlignRight, AlignBottom, temp_str);
+    canvas_draw_str(canvas, 48, 26, "Pin 16");
 
     canvas_set_font(canvas, FontSecondary);
 
     char temp_str2[6];
     if(model->items > 0) {
-        snprintf(temp_str, 25, "Addr: ");
+        temp_str[0] = '\0';
         for(int i = 0; i < model->items; i++) {
-            snprintf(temp_str2, 6, "0x%x ", model->responding_address[i]);
+            snprintf(temp_str2, 6, "%02X ", model->responding_address[i]);
             strcat(temp_str, temp_str2);
 
             if(i == 1 || model->items == 1) { //Draw a maximum of two addresses in the first line

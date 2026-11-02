@@ -1,0 +1,82 @@
+Filetype: IR signals file
+Version: 1
+#
+# Sony RM-PJ30 projector (4 of 4)
+#
+name: Picture Mode
+type: parsed
+protocol: SIRC20
+address: FA 1A 00 00
+command: 5B 00 00 00
+#
+name: Return
+type: parsed
+protocol: SIRC20
+address: FA 1B 00 00
+command: 6F 00 00 00
+#
+name: Focus
+type: parsed
+protocol: SIRC20
+address: FA 1A 00 00
+command: 64 00 00 00
+#
+name: Zoom
+type: parsed
+protocol: SIRC20
+address: FA 1A 00 00
+command: 62 00 00 00
+#
+name: Lens Shift
+type: parsed
+protocol: SIRC20
+address: FA 1A 00 00
+command: 63 00 00 00
+#
+name: Position
+type: parsed
+protocol: SIRC20
+address: FA 1B 00 00
+command: 18 00 00 00
+#
+name: Keystone
+type: parsed
+protocol: SIRC20
+address: FA 1A 00 00
+command: 3A 00 00 00
+#
+name: Freeze
+type: parsed
+protocol: SIRC20
+address: FA 1A 00 00
+command: 67 00 00 00
+#
+name: + D Zoom
+type: parsed
+protocol: SIRC20
+address: FA 1A 00 00
+command: 6A 00 00 00
+#
+name: - D Zoom
+type: parsed
+protocol: SIRC20
+address: FA 1A 00 00
+command: 6B 00 00 00
+#
+name: Aspect
+type: parsed
+protocol: SIRC20
+address: FA 1A 00 00
+command: 6E 00 00 00
+#
+name: APA
+type: parsed
+protocol: SIRC20
+address: FA 1A 00 00
+command: 60 00 00 00
+#
+name: G
+type: parsed
+protocol: SIRC20
+address: FA 1B 00 00
+command: 60 00 00 00

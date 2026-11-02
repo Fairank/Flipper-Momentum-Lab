@@ -1,0 +1,52 @@
+{
+  "client_date": "2026-11-02",
+  "passed": true,
+  "data_source_commit": "1e8cb923a89e28295c7470bce3360d786a63c572",
+  "coverage": {
+    "categories": 28,
+    "remote_files": 1648,
+    "signals": 31854,
+    "parsed": 25249,
+    "raw": 6605,
+    "tv_files": 397,
+    "ac_files": 158,
+    "tv_brand_directories": 117,
+    "ac_brand_directories": 96
+  },
+  "host_tests": {
+    "passed": 233,
+    "skipped": 0,
+    "seconds": 300.189
+  },
+  "build": {
+    "full_firmware_and_apps": true,
+    "lint_all": true,
+    "package_sha256": "ce89c6514dd0122f42efe1937bbf2c9ab60e55bf86f82a6028a0eb4eeb0398f1",
+    "faps": 297,
+    "fals": 122,
+    "resources": 3799,
+    "sdk_entries": 3306,
+    "flash_margin_bytes": 5240
+  },
+  "device": {
+    "data_only": true,
+    "primary_unchanged": "c6daa25d",
+    "radio_unchanged": "Full1.20.0",
+    "installed_directory": "/ext/infrared/More_Remotes",
+    "all_files_md5_verified_twice": 1651,
+    "native_parser_read_all_signals": 31854,
+    "original_universal_tv_815_ac_322_preserved": true,
+    "radar_apps_and_settings_preserved": true,
+    "mute_preserved": true,
+    "native_menu_screens_reviewed": [
+      "new categories",
+      "ACs/GREE/GREE_YAPOF.ir",
+      "TVs/TCL/TCL_32S327.ir"
+    ]
+  },
+  "limitations": {
+    "infrared_transmission_performed": false,
+    "real_appliance_compatibility_verified": false,
+    "new_protocol_decoders_added": false
+  }
+}

@@ -4,6 +4,7 @@
 
 #include <gui/canvas.h>
 #include <gui/elements.h>
+#include <gui/utf8_internal.h>
 
 #include <toolbox/m_cstr_dup.h>
 
@@ -59,13 +60,14 @@ static void infrared_move_view_draw_callback(Canvas* canvas, void* _model) {
             canvas_draw_dot(canvas, box_end_x - 1, y_offset);
             canvas_draw_dot(canvas, box_end_x - 1, y_offset + LIST_LINE_H - 1);
         }
+        const char* label = *InfraredMoveViewItemArray_cget(model->labels, idx);
         canvas_draw_str_aligned(
             canvas,
             x_offset + 3,
-            y_offset + 3,
+            y_offset + (gui_utf8_has_cjk(label) ? 0 : 3),
             AlignLeft,
             AlignTop,
-            *InfraredMoveViewItemArray_cget(model->labels, idx));
+            label);
     }
 
     if(show_scrollbar) {

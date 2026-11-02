@@ -1,3 +1,4 @@
+#include <locale/locale_ui.h>
 #include "loader_menu_storage_i.h"
 
 #include <core/thread.h>
@@ -46,16 +47,16 @@ int32_t loader_menu_storage_settings(void* context) {
         dialog_ex_set_header(dialog_ex, "Update needed", 64, 0, AlignCenter, AlignTop);
         dialog_ex_set_text(
             dialog_ex,
-            "Reinstall firmware\n"
-            "to run this app.\n"
-            "Can format SD\n"
-            "here if needed.",
+            "Reinstall firmware\nto run this app.\nCan format SD\nhere if needed."
+            ""
+            ""
+            "",
             3,
             17,
             AlignLeft,
             AlignTop);
         dialog_ex_set_icon(dialog_ex, 83, 11, &I_WarningDolphinFlip_45x42);
-        dialog_ex_set_right_button_text(dialog_ex, "Format SD");
+        dialog_ex_set_right_button_text(dialog_ex, "Format");
 
         FormatFlag flag = furi_thread_flags_wait(FormatFlagAll, FuriFlagWaitAny, FuriWaitForever);
         if(flag == FormatFlagContinue) {
@@ -85,7 +86,7 @@ int32_t loader_menu_storage_settings(void* context) {
                         dialog_ex_set_icon(dialog_ex, 0, 0, NULL);
                         dialog_ex_set_text(
                             dialog_ex,
-                            storage_error_get_desc(error),
+                            locale_ui_storage_error(storage_error_get_desc(error)),
                             64,
                             32,
                             AlignCenter,

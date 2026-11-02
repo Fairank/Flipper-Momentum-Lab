@@ -1,0 +1,2019 @@
+{
+  "date": "2026-09-29",
+  "base_commit": "f8969ee04",
+  "code_commit": "41fd31347eaff40663d9760cd9f5062e67fa418d",
+  "status": "Implemented and automatically checked batch; complete union, complete Chinese coverage and hardware acceptance remain incomplete.",
+  "upstreams": {
+    "momentum": "d3f89dfe2ef6b01839201598e9be1590cba80322",
+    "unleashed": "15bca58e644c8e75fcac42a1929b3d37cbea208f",
+    "all_the_plugins": "eb87c158c7dbc930d74c3ae3ccb6b59cad5fc833"
+  },
+  "claude_tasks": [
+    {
+      "name": "opus-companion-wire-20260929-next",
+      "requested_model": "claude-opus-5-5",
+      "requested_effort": "max",
+      "returned_models": [
+        "claude-opus-5-5"
+      ],
+      "exit_code": 0,
+      "seconds": 2288.6,
+      "adopted_after_primary_review": true
+    },
+    {
+      "name": "opus-native-dynamic-zh-20260929-next",
+      "requested_model": "claude-opus-5-5",
+      "requested_effort": "max",
+      "returned_models": [
+        "claude-opus-5-5"
+      ],
+      "exit_code": 0,
+      "seconds": 1905.3,
+      "adopted_after_primary_review": true
+    },
+    {
+      "name": "opus-union-inventory-20260929-next",
+      "requested_model": "claude-opus-5-5",
+      "requested_effort": "max",
+      "returned_models": [
+        "<synthetic>",
+        "claude-opus-5-5"
+      ],
+      "exit_code": 1,
+      "seconds": 972.7,
+      "adopted_after_primary_review": false,
+      "status_note": "Model refused this source-analysis task; not counted as completed and not re-delegated to bypass refusal. <synthetic> is a service marker, not an alternative model."
+    },
+    {
+      "name": "opus-companion-network-20260929-next",
+      "requested_model": "claude-opus-5-5",
+      "requested_effort": "max",
+      "returned_models": [
+        "claude-opus-5-5"
+      ],
+      "exit_code": 0,
+      "seconds": 3364.8,
+      "adopted_after_primary_review": true
+    },
+    {
+      "name": "fable-glyph-cache-tests-20260929",
+      "requested_model": "claude-fable-5-1",
+      "requested_effort": "max",
+      "returned_models": [
+        "claude-fable-5-1"
+      ],
+      "exit_code": 0,
+      "seconds": 2963.8,
+      "adopted_after_primary_review": true
+    },
+    {
+      "name": "fable-union-tools-zh-20260929",
+      "requested_model": "claude-fable-5-1",
+      "requested_effort": "max",
+      "returned_models": [
+        "claude-fable-5-1"
+      ],
+      "exit_code": 0,
+      "seconds": 1263.5,
+      "adopted_after_primary_review": true
+    },
+    {
+      "name": "fable-phone-guide-20260929",
+      "requested_model": "claude-fable-5-1",
+      "requested_effort": "max",
+      "returned_models": [
+        "claude-fable-5-1"
+      ],
+      "exit_code": 0,
+      "seconds": 727.4,
+      "adopted_after_primary_review": true
+    }
+  ],
+  "local_tests": {
+    "python_and_actual_c": 112,
+    "skipped": 0,
+    "glyph_round_trips": 7097,
+    "cache_scenarios": 12,
+    "firmware_package": "passed",
+    "all_faps": "passed",
+    "lint_all": "passed"
+  },
+  "intermediate_failures": [
+    "344bf0381: one Swift protocol test used the strict frame decoder to create deliberately invalid envelopes; fixed the test fixture without weakening production decoding.",
+    "92c1d7d91: all 148 Swift tests passed but app build found an optional resolved-IP type mismatch; fixed in bcc0deaf7.",
+    "bcc0deaf7: 5 of 6 UI tests passed. In dark accessibility navigation, the recorded tap was inside Tasks but the native tab stayed on Library. Added explicit native tab selection and stable tags in 41fd31347, keeping the single-tap assertion and adding a selected-state check. Hardware behavior remains unverified.",
+    "Windows full test run had one child process with exit 0 and no expected stdout. No assertion was relaxed: all 12 cache tests and the full 112-test suite subsequently passed, as did the Linux sanitizer run. The isolated empty-output cause was not reproduced."
+  ],
+  "local_package": {
+    "source_commit": "working-tree-before-92c1d7d91",
+    "workflow_run": null,
+    "artifact_id": null,
+    "input_sha256": "03ca702f3ffc61c74eea9b28115d7483eeed19e0bdccc9b0db11d870a4de253f",
+    "package_name": "flipper-z-f7-update-mntm-codex-iphone-zh-architecture-344bf038.tgz",
+    "package_bytes": 12987554,
+    "package_sha256": "03ca702f3ffc61c74eea9b28115d7483eeed19e0bdccc9b0db11d870a4de253f",
+    "updater_bytes": 123857,
+    "firmware_bytes": 871528,
+    "radio_address": "0x80d7000",
+    "flash_gap_before_radio_bytes": 9112,
+    "dfu_crc_verified": true,
+    "packaged_fap_count": 291,
+    "packaged_fal_count": 121,
+    "required_apps": [
+      {
+        "path": "apps/Tools/lab.fap",
+        "bytes": 22880,
+        "sha256": "071303a95b124c4a6de26cbe6c56f37d371dca9fafd89c101dfba0e6f1221247"
+      },
+      {
+        "path": "apps/Tools/lab_bridge.fap",
+        "bytes": 7176,
+        "sha256": "efb2782d549188c271aa6f6739d847b2f13a4809522e1d615dda1f5de966c2b8"
+      },
+      {
+        "path": "apps/Tools/clock.fap",
+        "bytes": 12860,
+        "sha256": "cd49d0d5e3ad39d38860304a31671999f2befb5665a72573064e1e3b68059f4e"
+      },
+      {
+        "path": "apps/Tools/pomodoro_timer.fap",
+        "bytes": 10888,
+        "sha256": "aab32d97e30920553695f6f402e7f951420e32d03e6dba4055858fd28f2a3674"
+      },
+      {
+        "path": "apps/Tools/analog_clock.fap",
+        "bytes": 15460,
+        "sha256": "3d5226c1b3fc54e6599fab2bab1ad23d0372d5ee0152c0e7119d471c03198652"
+      },
+      {
+        "path": "apps/Tools/segment_clock.fap",
+        "bytes": 9372,
+        "sha256": "0a88120b139d3703a46f3e05575ef96a4da4002fafc74fa2fbfa657a9cf21de3"
+      },
+      {
+        "path": "apps/Tools/calendar.fap",
+        "bytes": 10692,
+        "sha256": "c1b8aa2121deded8775eae2dfef2736883520909164b544d714111dbb47d08f9"
+      },
+      {
+        "path": "apps/Tools/net_calculator.fap",
+        "bytes": 6936,
+        "sha256": "e65e847f2213ee3d704fe4f0e71e701f17001de5f8d053118629373531db9782"
+      },
+      {
+        "path": "apps/Tools/multi_counter.fap",
+        "bytes": 6596,
+        "sha256": "f6d022b64f644828efcbb0ab34e2c72a11af663ccd61dddfb7874dbfbc9272f4"
+      },
+      {
+        "path": "apps/Tools/sd_info.fap",
+        "bytes": 11408,
+        "sha256": "c74a5f8defe23a8910edd12605a64ad666c316442245cb47b99abbe339b871c1"
+      },
+      {
+        "path": "apps/Tools/flipper_chronometer.fap",
+        "bytes": 3384,
+        "sha256": "7a993fdabbe6b5a71d2ccaa8bf58a400ce23afa6795e896a083478a5c29f79c0"
+      },
+      {
+        "path": "apps/Tools/trackerflipx.fap",
+        "bytes": 39060,
+        "sha256": "13be6539526881419453d34657fb1e3c837e9a3612db2f338fabb643a343b29e"
+      },
+      {
+        "path": "apps/Tools/flipnote.fap",
+        "bytes": 24348,
+        "sha256": "980662f386b831eb06b51542e5ad81e3eb06e9cac85239480db95d64fe2b78c3"
+      },
+      {
+        "path": "apps/Tools/gps_rpc.fap",
+        "bytes": 5420,
+        "sha256": "4a9b84c93ea1bb5cd1df4862f2fb815106d26a3e97168d2b6a674349652131c1"
+      },
+      {
+        "path": "apps/Tools/example_network.fap",
+        "bytes": 4316,
+        "sha256": "0b64bdbd6a1a7facb4ba299e397fd947d1f75d9754eb4d84480613feb52d8071"
+      },
+      {
+        "path": "apps/Tools/brainfuck.fap",
+        "bytes": 22464,
+        "sha256": "4ef069d3eec437a6285bd74f7b6f3c4b2242f0d2fafff6a2ce4171a7cf2fbaf4"
+      },
+      {
+        "path": "apps/Games/chess_clock.fap",
+        "bytes": 3324,
+        "sha256": "8c03e552c486106c8294a4157eddc580698bb0ba4e26bd1e15fd795ad48afd79"
+      },
+      {
+        "path": "apps/Infrared/pause_timer.fap",
+        "bytes": 16396,
+        "sha256": "5fc4e99226c4b6cebe7cd5471b6154d733213b9e308d234b33d8afbc1d709a35"
+      },
+      {
+        "path": "apps/Games/mandelbrotset.fap",
+        "bytes": 5572,
+        "sha256": "a407271fe492ed59b375b0284758aa18a959084a5f5eea50c1ad0528280939bf"
+      },
+      {
+        "path": "apps/Games/reaction.fap",
+        "bytes": 3896,
+        "sha256": "a42a48fdfa7d802292dbfb828cc5a40a63860ce606c3140773a787bf99f1a734"
+      },
+      {
+        "path": "apps/Games/dice_app.fap",
+        "bytes": 22692,
+        "sha256": "df525e1a45683e4fc1a4cac1c708aaea3ced917f2c4acbe5bf3773e00c20618d"
+      },
+      {
+        "path": "apps/Games/montyhall.fap",
+        "bytes": 5912,
+        "sha256": "471e16d92b0fdfb4edc93c4de9048a76c38755592c533f169f81f15c749853eb"
+      },
+      {
+        "path": "apps/Media/ocarina.fap",
+        "bytes": 7928,
+        "sha256": "f5679b99741e8ab04531f732dbe48a8ca062e8229064c6e411ee015d7a1ff9c8"
+      },
+      {
+        "path": "apps/Games/racegame.fap",
+        "bytes": 5040,
+        "sha256": "938d5529f765ab5e5f3a31b8702c41fc0e0099cb6b00e8e576b8828e07fa0b04"
+      }
+    ],
+    "chinese_glyph_resource": {
+      "path": "locale/zh_cn.glyphs",
+      "bytes": 925216,
+      "sha256": "ef3423813e6843dffd6f4bcee0c329f93802104db12325fe0f802ca9f6498eaa",
+      "matches_source": true
+    }
+  },
+  "ci_package": {
+    "source_commit": "41fd31347eaff40663d9760cd9f5062e67fa418d",
+    "workflow_run": 36553662871,
+    "artifact_id": 11026840499,
+    "input_sha256": "067eecee277c886472ce18e3f8524ba1b69fa3287724c32c048f24a6b78d8c52",
+    "package_name": "flipper-z-f7-update-mntm-HEAD-0f6dff61.tgz",
+    "package_bytes": 12986459,
+    "package_sha256": "1b9fad699ed6da74901974055e45ee4d9464c3d1d8f16e6fbfb23efa8407db39",
+    "updater_bytes": 123829,
+    "firmware_bytes": 871504,
+    "radio_address": "0x80d7000",
+    "flash_gap_before_radio_bytes": 9136,
+    "dfu_crc_verified": true,
+    "packaged_fap_count": 291,
+    "packaged_fal_count": 121,
+    "required_apps": [
+      {
+        "path": "apps/Tools/lab.fap",
+        "display_name": "Flipper Lab",
+        "api_version": 5832704,
+        "bytes": 22880,
+        "sha256": "36613318ba5890f1677f12ddd3d287bf976eb52c3c25c2c3a3a7771444cf463a"
+      },
+      {
+        "path": "apps/Tools/lab_bridge.fap",
+        "display_name": "Lab Bridge",
+        "api_version": 5832704,
+        "bytes": 7176,
+        "sha256": "3242e2fc4f49a439fd82872496e696d35a85c581aaeaeca2e3f035545f7022d7"
+      },
+      {
+        "path": "apps/Tools/clock.fap",
+        "display_name": "床头时钟",
+        "api_version": 5832704,
+        "bytes": 12860,
+        "sha256": "eaad504695b18943d9eacc9d5fe7584e5b3d09b26e8ccd88dd8594569f967db2"
+      },
+      {
+        "path": "apps/Tools/pomodoro_timer.fap",
+        "display_name": "番茄钟",
+        "api_version": 5832704,
+        "bytes": 10888,
+        "sha256": "20a7f7accb58158282b702673d0f8f62b4438eb3ccc0a2b1e3383f4291cf32f9"
+      },
+      {
+        "path": "apps/Tools/analog_clock.fap",
+        "display_name": "指针时钟",
+        "api_version": 5832704,
+        "bytes": 15460,
+        "sha256": "204595d6c7044cda2c854396105c1a72cf60acc67067c5ccae835c2912d5feb1"
+      },
+      {
+        "path": "apps/Tools/segment_clock.fap",
+        "display_name": "数码管时钟",
+        "api_version": 5832704,
+        "bytes": 9372,
+        "sha256": "13cee2dd0736ea207bc61a7bc86e4ebb6edb35da56f8b0eb6d4b99dc47099269"
+      },
+      {
+        "path": "apps/Tools/calendar.fap",
+        "display_name": "日历",
+        "api_version": 5832704,
+        "bytes": 10692,
+        "sha256": "6267a8065ddf9cb786829686d3a3c97176d5395ed02bb07f7375f176450d0602"
+      },
+      {
+        "path": "apps/Tools/net_calculator.fap",
+        "display_name": "子网计算器",
+        "api_version": 5832704,
+        "bytes": 6936,
+        "sha256": "9fe3258558c9871595de6ee039e8110c69ad6a68be657c7f0aa92f43c86af0ee"
+      },
+      {
+        "path": "apps/Tools/multi_counter.fap",
+        "display_name": "多人计数器",
+        "api_version": 5832704,
+        "bytes": 6596,
+        "sha256": "9b2e09d0145764b65f37a024dde90c6497235efc41beeb83c38e9d094af50b34"
+      },
+      {
+        "path": "apps/Tools/sd_info.fap",
+        "display_name": "SD卡信息",
+        "api_version": 5832704,
+        "bytes": 11408,
+        "sha256": "b444337e38550b908a668858122f71239390c7d83124250ab66bd58f8296e8df"
+      },
+      {
+        "path": "apps/Tools/flipper_chronometer.fap",
+        "display_name": "秒表",
+        "api_version": 5832704,
+        "bytes": 3384,
+        "sha256": "df14ed860ceee9475cbf801201989af8e15659fd2a22fcff317b6017dcba0914"
+      },
+      {
+        "path": "apps/Tools/trackerflipx.fap",
+        "display_name": "任务计时器",
+        "api_version": 5832704,
+        "bytes": 39060,
+        "sha256": "a8c45b4566e21db5714e3a0fbfbe10f9a8a544caa53cc9971fd67ed847c9379b"
+      },
+      {
+        "path": "apps/Tools/flipnote.fap",
+        "display_name": "FlipNote记事本",
+        "api_version": 5832704,
+        "bytes": 24348,
+        "sha256": "96b22ae6a92a3423a2c9f4c86f7c8cd0d6656255f8fa9c7807db8aa45fa27f9d"
+      },
+      {
+        "path": "apps/Tools/gps_rpc.fap",
+        "display_name": "手机 GPS",
+        "api_version": 5832704,
+        "bytes": 5420,
+        "sha256": "4fe48d5682b28ac150722d4bb18f197eac987288a4209f31d537cdfdbd8aa4a5"
+      },
+      {
+        "path": "apps/Tools/example_network.fap",
+        "display_name": "手机联网测试",
+        "api_version": 5832704,
+        "bytes": 4316,
+        "sha256": "5d406c893a165cd1b64ce9457ba38fff4c27d1ff1ba346cd31d3a5b62c6c6e3d"
+      },
+      {
+        "path": "apps/Tools/brainfuck.fap",
+        "display_name": "Brainfuck",
+        "api_version": 5832704,
+        "bytes": 22464,
+        "sha256": "a0bdb5645e256b8eb5e3ac6814227cc85684c6f34c4208a1b429e5a48707b171"
+      },
+      {
+        "path": "apps/Games/chess_clock.fap",
+        "display_name": "棋钟",
+        "api_version": 5832704,
+        "bytes": 3324,
+        "sha256": "67d76c9e891c338719273b6aa4d26dfd3974a6e997115417d248929f3056f175"
+      },
+      {
+        "path": "apps/Infrared/pause_timer.fap",
+        "display_name": "暂停定时器",
+        "api_version": 5832704,
+        "bytes": 16396,
+        "sha256": "057c412e0607e01dad3bd6055522c18da594b0f5a1e4e8707141385ad4568223"
+      },
+      {
+        "path": "apps/Games/mandelbrotset.fap",
+        "display_name": "曼德勃罗集",
+        "api_version": 5832704,
+        "bytes": 5572,
+        "sha256": "e32079a1b10be112b151193f78ad5168da1084f5bc7f7f2d5a71a29541c0da7a"
+      },
+      {
+        "path": "apps/Games/reaction.fap",
+        "display_name": "反应测试",
+        "api_version": 5832704,
+        "bytes": 3896,
+        "sha256": "df84321c2914b695ef85514ce75bec50f23e0b07d2f6e2b7132651a9bb7ed60e"
+      },
+      {
+        "path": "apps/Games/dice_app.fap",
+        "display_name": "D&D 骰子",
+        "api_version": 5832704,
+        "bytes": 22692,
+        "sha256": "3e9ed2cfb8975121cc5e72823ef800320d62d12b512aa69a3de64031bbd46659"
+      },
+      {
+        "path": "apps/Games/montyhall.fap",
+        "display_name": "三门问题",
+        "api_version": 5832704,
+        "bytes": 5912,
+        "sha256": "6ad4536be4f96fa27665beccb91cbf967bfb4172fa3d8656bbc3d9b540caa47b"
+      },
+      {
+        "path": "apps/Media/ocarina.fap",
+        "display_name": "陶笛",
+        "api_version": 5832704,
+        "bytes": 7928,
+        "sha256": "654c7ea7b06b7563381f3504c1409ebfe3d6fe877af4268ff39ee1d970d07ecd"
+      },
+      {
+        "path": "apps/Games/racegame.fap",
+        "display_name": "赛车",
+        "api_version": 5832704,
+        "bytes": 5040,
+        "sha256": "3b278441e88b467b733ed02d95854e9f20d2c42d43cdb2181a336440eea356d8"
+      }
+    ],
+    "chinese_glyph_resource": {
+      "path": "locale/zh_cn.glyphs",
+      "bytes": 925216,
+      "sha256": "ef3423813e6843dffd6f4bcee0c329f93802104db12325fe0f802ca9f6498eaa",
+      "matches_source": true
+    }
+  },
+  "ci_validation": {
+    "status": "passed",
+    "code_commit": "41fd31347eaff40663d9760cd9f5062e67fa418d",
+    "merge_checkout": "0f6dff61e1cdd614d8ea2e0e18e3f450fcae7733",
+    "validation": {
+      "run": 36553662778,
+      "conclusion": "success",
+      "ios_job": 109357925362,
+      "host_job": 109357925803,
+      "swift_tests": 148,
+      "iphone_ui_tests": 6,
+      "python_c_tests": 112,
+      "simulator_build": "passed",
+      "xcode": "26.6",
+      "simulator": "iPhone 17 Pro Max / iOS 26.5",
+      "screenshots": 24
+    },
+    "firmware": {
+      "run": 36553662871,
+      "job": 109357556125,
+      "conclusion": "success",
+      "downloaded_and_verified": true
+    },
+    "lint": {
+      "run": 36553662867,
+      "conclusion": "success"
+    },
+    "artifacts": [
+      {
+        "id": 11027190970,
+        "name": "simulator-test-evidence-1",
+        "bytes": 9346617,
+        "digest": "sha256:66af2be1f34fb7009bbafe578f354eda33474904a9b345af5582810da7e9ca5a",
+        "expires_at": "2026-10-06T10:16:55Z",
+        "downloaded_and_digest_verified": false
+      },
+      {
+        "id": 11027180933,
+        "name": "iphone-screenshots-1",
+        "bytes": 7933301,
+        "digest": "sha256:e85b1852e268d163f7f39f4302522a3e3c49a5751acf32f8d911d5fa4ed17c1c",
+        "expires_at": "2026-10-13T10:16:53Z",
+        "downloaded_and_digest_verified": true
+      },
+      {
+        "id": 11025776691,
+        "name": "flipper-source-previews-1",
+        "bytes": 538329,
+        "digest": "sha256:f4b767aef7c0dce5e6088c3f1454b62982ee3d785440f7ccdf2dc2d370e9591a",
+        "expires_at": "2026-10-13T10:10:38Z",
+        "downloaded_and_digest_verified": false
+      },
+      {
+        "id": 11026840499,
+        "name": "flipper-lab-firmware-0f6dff61e1cdd614d8ea2e0e18e3f450fcae7733",
+        "bytes": 13010280,
+        "digest": "sha256:067eecee277c886472ce18e3f8524ba1b69fa3287724c32c048f24a6b78d8c52",
+        "expires_at": "2026-10-13T10:17:08Z",
+        "downloaded_and_digest_verified": true
+      }
+    ],
+    "notes": [
+      "Firmware and screenshot ZIPs downloaded and verified against GitHub SHA-256 metadata. Source-preview and full test-evidence artifacts listed from GitHub but not downloaded in this final run.",
+      "The Tasks tab failure seen in bcc0deaf7 passed in 41fd31347 without retries; the original single-tap navigation check remains and an isSelected assertion was added.",
+      "No hardware connection, flashing, BLE or AIO acceptance performed."
+    ]
+  },
+  "hardware": {
+    "serial_ports_observed": [],
+    "flipper_connected": false,
+    "iphone_ble_tested": false,
+    "aio_tested": false,
+    "note": "User clarified the new connection was GitHub only. No flashing or hardware acceptance performed."
+  },
+  "app_inventory_counts": {
+    "app_local_source_identical": 36,
+    "unmatched_application": 138,
+    "matched_source_differs_review_required": 228,
+    "unmatched_plugin": 19
+  },
+  "ui_audit": {
+    "note": "Counts cover only the text parameters of the functions listed in apis. Custom drawing, macro wrappers, string tables, formatted FuriStrings and other indirect text are not followed, so these counts are not a translation coverage percentage.",
+    "totals": {
+      "overall": {
+        "files_scanned": 7649,
+        "skipped": 12,
+        "files_with_entries": 1474,
+        "calls": 9769,
+        "entries": 9886,
+        "needing-review": 4478,
+        "chinese": 1141,
+        "neutral": 501,
+        "dynamic": 3766,
+        "chinese_with_latin_words": 191
+      },
+      "by_scope": {
+        "applications/main": {
+          "files_scanned": 667,
+          "skipped": 1,
+          "files_with_entries": 240,
+          "calls": 1267,
+          "entries": 1280,
+          "needing-review": 32,
+          "chinese": 702,
+          "neutral": 67,
+          "dynamic": 479,
+          "chinese_with_latin_words": 122
+        },
+        "applications/settings": {
+          "files_scanned": 93,
+          "skipped": 0,
+          "files_with_entries": 37,
+          "calls": 261,
+          "entries": 269,
+          "needing-review": 0,
+          "chinese": 160,
+          "neutral": 9,
+          "dynamic": 100,
+          "chinese_with_latin_words": 37
+        },
+        "applications/services": {
+          "files_scanned": 283,
+          "skipped": 3,
+          "files_with_entries": 41,
+          "calls": 186,
+          "entries": 199,
+          "needing-review": 2,
+          "chinese": 63,
+          "neutral": 24,
+          "dynamic": 110,
+          "chinese_with_latin_words": 9
+        },
+        "applications/system": {
+          "files_scanned": 142,
+          "skipped": 1,
+          "files_with_entries": 40,
+          "calls": 171,
+          "entries": 173,
+          "needing-review": 11,
+          "chinese": 97,
+          "neutral": 6,
+          "dynamic": 59,
+          "chinese_with_latin_words": 6
+        },
+        "applications/external": {
+          "files_scanned": 6352,
+          "skipped": 7,
+          "files_with_entries": 1078,
+          "calls": 7664,
+          "entries": 7745,
+          "needing-review": 4433,
+          "chinese": 1,
+          "neutral": 385,
+          "dynamic": 2926,
+          "chinese_with_latin_words": 0
+        },
+        "applications/union": {
+          "files_scanned": 112,
+          "skipped": 0,
+          "files_with_entries": 38,
+          "calls": 220,
+          "entries": 220,
+          "needing-review": 0,
+          "chinese": 118,
+          "neutral": 10,
+          "dynamic": 92,
+          "chinese_with_latin_words": 17
+        },
+        "applications_user": {
+          "files_scanned": 0,
+          "skipped": 0,
+          "files_with_entries": 0,
+          "calls": 0,
+          "entries": 0,
+          "needing-review": 0,
+          "chinese": 0,
+          "neutral": 0,
+          "dynamic": 0,
+          "chinese_with_latin_words": 0
+        }
+      },
+      "by_function": {
+        "button_menu_add_item": {
+          "calls": 13,
+          "entries": 13,
+          "needing-review": 4,
+          "chinese": 1,
+          "neutral": 2,
+          "dynamic": 6,
+          "chinese_with_latin_words": 0
+        },
+        "button_menu_set_header": {
+          "calls": 7,
+          "entries": 7,
+          "needing-review": 3,
+          "chinese": 0,
+          "neutral": 0,
+          "dynamic": 4,
+          "chinese_with_latin_words": 0
+        },
+        "button_panel_add_label": {
+          "calls": 11,
+          "entries": 11,
+          "needing-review": 0,
+          "chinese": 9,
+          "neutral": 0,
+          "dynamic": 2,
+          "chinese_with_latin_words": 1
+        },
+        "byte_input_set_header_text": {
+          "calls": 85,
+          "entries": 85,
+          "needing-review": 28,
+          "chinese": 20,
+          "neutral": 25,
+          "dynamic": 12,
+          "chinese_with_latin_words": 8
+        },
+        "canvas_draw_str": {
+          "calls": 1787,
+          "entries": 1787,
+          "needing-review": 888,
+          "chinese": 41,
+          "neutral": 153,
+          "dynamic": 705,
+          "chinese_with_latin_words": 6
+        },
+        "canvas_draw_str_aligned": {
+          "calls": 1349,
+          "entries": 1349,
+          "needing-review": 478,
+          "chinese": 74,
+          "neutral": 60,
+          "dynamic": 737,
+          "chinese_with_latin_words": 14
+        },
+        "dialog_ex_set_center_button_text": {
+          "calls": 88,
+          "entries": 88,
+          "needing-review": 57,
+          "chinese": 13,
+          "neutral": 3,
+          "dynamic": 15,
+          "chinese_with_latin_words": 0
+        },
+        "dialog_ex_set_header": {
+          "calls": 108,
+          "entries": 108,
+          "needing-review": 29,
+          "chinese": 47,
+          "neutral": 2,
+          "dynamic": 30,
+          "chinese_with_latin_words": 20
+        },
+        "dialog_ex_set_left_button_text": {
+          "calls": 121,
+          "entries": 121,
+          "needing-review": 73,
+          "chinese": 29,
+          "neutral": 1,
+          "dynamic": 18,
+          "chinese_with_latin_words": 0
+        },
+        "dialog_ex_set_right_button_text": {
+          "calls": 126,
+          "entries": 126,
+          "needing-review": 77,
+          "chinese": 27,
+          "neutral": 3,
+          "dynamic": 19,
+          "chinese_with_latin_words": 0
+        },
+        "dialog_ex_set_text": {
+          "calls": 146,
+          "entries": 146,
+          "needing-review": 17,
+          "chinese": 31,
+          "neutral": 1,
+          "dynamic": 97,
+          "chinese_with_latin_words": 9
+        },
+        "dialog_message_set_buttons": {
+          "calls": 51,
+          "entries": 153,
+          "needing-review": 50,
+          "chinese": 23,
+          "neutral": 75,
+          "dynamic": 5,
+          "chinese_with_latin_words": 0
+        },
+        "dialog_message_set_header": {
+          "calls": 64,
+          "entries": 64,
+          "needing-review": 29,
+          "chinese": 13,
+          "neutral": 2,
+          "dynamic": 20,
+          "chinese_with_latin_words": 2
+        },
+        "dialog_message_set_text": {
+          "calls": 77,
+          "entries": 77,
+          "needing-review": 27,
+          "chinese": 9,
+          "neutral": 1,
+          "dynamic": 40,
+          "chinese_with_latin_words": 3
+        },
+        "dialog_message_show_storage_error": {
+          "calls": 124,
+          "entries": 124,
+          "needing-review": 93,
+          "chinese": 18,
+          "neutral": 0,
+          "dynamic": 13,
+          "chinese_with_latin_words": 0
+        },
+        "elements_bubble_str": {
+          "calls": 3,
+          "entries": 3,
+          "needing-review": 0,
+          "chinese": 2,
+          "neutral": 0,
+          "dynamic": 1,
+          "chinese_with_latin_words": 0
+        },
+        "elements_button_center": {
+          "calls": 107,
+          "entries": 107,
+          "needing-review": 75,
+          "chinese": 25,
+          "neutral": 1,
+          "dynamic": 6,
+          "chinese_with_latin_words": 0
+        },
+        "elements_button_down": {
+          "calls": 2,
+          "entries": 2,
+          "needing-review": 2,
+          "chinese": 0,
+          "neutral": 0,
+          "dynamic": 0,
+          "chinese_with_latin_words": 0
+        },
+        "elements_button_left": {
+          "calls": 74,
+          "entries": 74,
+          "needing-review": 41,
+          "chinese": 15,
+          "neutral": 11,
+          "dynamic": 7,
+          "chinese_with_latin_words": 0
+        },
+        "elements_button_right": {
+          "calls": 69,
+          "entries": 69,
+          "needing-review": 35,
+          "chinese": 12,
+          "neutral": 16,
+          "dynamic": 6,
+          "chinese_with_latin_words": 0
+        },
+        "elements_button_up": {
+          "calls": 4,
+          "entries": 4,
+          "needing-review": 4,
+          "chinese": 0,
+          "neutral": 0,
+          "dynamic": 0,
+          "chinese_with_latin_words": 0
+        },
+        "elements_multiline_text": {
+          "calls": 39,
+          "entries": 39,
+          "needing-review": 9,
+          "chinese": 9,
+          "neutral": 0,
+          "dynamic": 21,
+          "chinese_with_latin_words": 2
+        },
+        "elements_multiline_text_aligned": {
+          "calls": 190,
+          "entries": 190,
+          "needing-review": 52,
+          "chinese": 68,
+          "neutral": 6,
+          "dynamic": 64,
+          "chinese_with_latin_words": 6
+        },
+        "elements_multiline_text_framed": {
+          "calls": 3,
+          "entries": 3,
+          "needing-review": 2,
+          "chinese": 0,
+          "neutral": 0,
+          "dynamic": 1,
+          "chinese_with_latin_words": 0
+        },
+        "elements_progress_bar_with_text": {
+          "calls": 21,
+          "entries": 21,
+          "needing-review": 0,
+          "chinese": 0,
+          "neutral": 0,
+          "dynamic": 21,
+          "chinese_with_latin_words": 0
+        },
+        "elements_text_box": {
+          "calls": 17,
+          "entries": 17,
+          "needing-review": 5,
+          "chinese": 0,
+          "neutral": 0,
+          "dynamic": 12,
+          "chinese_with_latin_words": 0
+        },
+        "loading_set_text": {
+          "calls": 1,
+          "entries": 1,
+          "needing-review": 0,
+          "chinese": 0,
+          "neutral": 0,
+          "dynamic": 1,
+          "chinese_with_latin_words": 0
+        },
+        "menu_add_item": {
+          "calls": 16,
+          "entries": 16,
+          "needing-review": 7,
+          "chinese": 4,
+          "neutral": 0,
+          "dynamic": 5,
+          "chinese_with_latin_words": 0
+        },
+        "number_input_set_header_text": {
+          "calls": 27,
+          "entries": 27,
+          "needing-review": 3,
+          "chinese": 6,
+          "neutral": 2,
+          "dynamic": 16,
+          "chinese_with_latin_words": 2
+        },
+        "popup_set_header": {
+          "calls": 334,
+          "entries": 334,
+          "needing-review": 244,
+          "chinese": 61,
+          "neutral": 5,
+          "dynamic": 24,
+          "chinese_with_latin_words": 6
+        },
+        "popup_set_text": {
+          "calls": 117,
+          "entries": 117,
+          "needing-review": 47,
+          "chinese": 21,
+          "neutral": 5,
+          "dynamic": 44,
+          "chinese_with_latin_words": 8
+        },
+        "submenu_add_item": {
+          "calls": 1237,
+          "entries": 1237,
+          "needing-review": 870,
+          "chinese": 185,
+          "neutral": 14,
+          "dynamic": 168,
+          "chinese_with_latin_words": 34
+        },
+        "submenu_add_item_ex": {
+          "calls": 5,
+          "entries": 5,
+          "needing-review": 1,
+          "chinese": 0,
+          "neutral": 0,
+          "dynamic": 4,
+          "chinese_with_latin_words": 0
+        },
+        "submenu_add_lockable_item": {
+          "calls": 15,
+          "entries": 30,
+          "needing-review": 17,
+          "chinese": 10,
+          "neutral": 1,
+          "dynamic": 2,
+          "chinese_with_latin_words": 3
+        },
+        "submenu_change_item_label": {
+          "calls": 16,
+          "entries": 16,
+          "needing-review": 1,
+          "chinese": 2,
+          "neutral": 0,
+          "dynamic": 13,
+          "chinese_with_latin_words": 0
+        },
+        "submenu_set_header": {
+          "calls": 174,
+          "entries": 174,
+          "needing-review": 125,
+          "chinese": 12,
+          "neutral": 0,
+          "dynamic": 37,
+          "chinese_with_latin_words": 2
+        },
+        "text_box_set_text": {
+          "calls": 82,
+          "entries": 82,
+          "needing-review": 3,
+          "chinese": 2,
+          "neutral": 0,
+          "dynamic": 77,
+          "chinese_with_latin_words": 2
+        },
+        "text_input_set_header_text": {
+          "calls": 210,
+          "entries": 210,
+          "needing-review": 149,
+          "chinese": 20,
+          "neutral": 1,
+          "dynamic": 40,
+          "chinese_with_latin_words": 3
+        },
+        "variable_item_list_add": {
+          "calls": 661,
+          "entries": 661,
+          "needing-review": 408,
+          "chinese": 178,
+          "neutral": 0,
+          "dynamic": 75,
+          "chinese_with_latin_words": 36
+        },
+        "variable_item_list_set_header": {
+          "calls": 15,
+          "entries": 15,
+          "needing-review": 8,
+          "chinese": 2,
+          "neutral": 0,
+          "dynamic": 5,
+          "chinese_with_latin_words": 0
+        },
+        "variable_item_set_current_value_text": {
+          "calls": 1146,
+          "entries": 1146,
+          "needing-review": 34,
+          "chinese": 11,
+          "neutral": 92,
+          "dynamic": 1009,
+          "chinese_with_latin_words": 0
+        },
+        "variable_item_set_item_label": {
+          "calls": 7,
+          "entries": 7,
+          "needing-review": 0,
+          "chinese": 3,
+          "neutral": 0,
+          "dynamic": 4,
+          "chinese_with_latin_words": 0
+        },
+        "variable_item_set_locked": {
+          "calls": 34,
+          "entries": 34,
+          "needing-review": 8,
+          "chinese": 19,
+          "neutral": 3,
+          "dynamic": 4,
+          "chinese_with_latin_words": 10
+        },
+        "widget_add_button_element": {
+          "calls": 343,
+          "entries": 343,
+          "needing-review": 257,
+          "chinese": 71,
+          "neutral": 6,
+          "dynamic": 9,
+          "chinese_with_latin_words": 0
+        },
+        "widget_add_string_element": {
+          "calls": 262,
+          "entries": 262,
+          "needing-review": 120,
+          "chinese": 27,
+          "neutral": 1,
+          "dynamic": 114,
+          "chinese_with_latin_words": 6
+        },
+        "widget_add_string_multiline_element": {
+          "calls": 57,
+          "entries": 57,
+          "needing-review": 20,
+          "chinese": 17,
+          "neutral": 0,
+          "dynamic": 20,
+          "chinese_with_latin_words": 6
+        },
+        "widget_add_text_box_element": {
+          "calls": 89,
+          "entries": 89,
+          "needing-review": 23,
+          "chinese": 4,
+          "neutral": 9,
+          "dynamic": 53,
+          "chinese_with_latin_words": 2
+        },
+        "widget_add_text_scroll_element": {
+          "calls": 235,
+          "entries": 235,
+          "needing-review": 55,
+          "chinese": 0,
+          "neutral": 0,
+          "dynamic": 180,
+          "chinese_with_latin_words": 0
+        }
+      }
+    }
+  },
+  "previews": [
+    {
+      "path": "documentation/custom/animation-zh-20260929.png",
+      "sha256": "a84d585ae6b3f9ab6ae7e6f5e08db2746c9a66fdc4c06da79ee7770d015d5f07",
+      "kind": "source layout from actual C draw calls and font, not hardware capture"
+    },
+    {
+      "path": "documentation/custom/iphone-sharing-light-20260929.png",
+      "sha256": "be484856664d4931c424ba4ca05f44f8db2e5b345954ade2d18c74f281de3b11",
+      "kind": "unmodified offline iPhone simulator image from 41fd31347"
+    },
+    {
+      "path": "documentation/custom/iphone-sharing-dark-20260929.png",
+      "sha256": "9a2b14d6aa8c029b7c8e65ce5d957d8fc62eacd79de6b7004e9c287f2bc1e807",
+      "kind": "unmodified offline iPhone simulator image from 41fd31347"
+    }
+  ],
+  "files": [
+    {
+      "path": "applications/examples/example_network/application.fam",
+      "sha256": "ee130db1bf4d5aa84e5f231e1e3a27306e6e54d4bd09d686660103b9c418ba16"
+    },
+    {
+      "path": "applications/examples/example_network/network.c",
+      "sha256": "bf4bf3c5ef332c873a85fdb0dfd91080c438b4a3e42b14b6d046afdb214b326b"
+    },
+    {
+      "path": "applications/main/archive/scenes/archive_scene_delete.c",
+      "sha256": "80d501c58c3e9e53836052c7be1a3b4910733fc1765d686f6a41dbfca53d190f"
+    },
+    {
+      "path": "applications/main/archive/scenes/archive_scene_info.c",
+      "sha256": "1b2492574ec595574b3efbe8703dc6e9c836241da33310e6669fd79b1f7ca80f"
+    },
+    {
+      "path": "applications/main/archive/scenes/archive_scene_search.c",
+      "sha256": "f61309b76a8b867179678a1c2e471f71e645c97773f66aaa5cf38eac8e5073cf"
+    },
+    {
+      "path": "applications/main/archive/views/archive_browser_view.c",
+      "sha256": "0e4e1fffafe63810d6c9cb7f80af7c01f7b9afa27a0716fef9d4046d35be4456"
+    },
+    {
+      "path": "applications/main/gpio/gpio_i2c_sfp_control.c",
+      "sha256": "b221758d7bbd3f32bd0d34b1e5133c4b3c4ee83dda91d6c82a9d2b216603ecba"
+    },
+    {
+      "path": "applications/main/gpio/gpio_items.c",
+      "sha256": "44c6cfa5e997fc47327b95693f0a91fa4019cfd9f4cc558db3ea97cde7e9a36f"
+    },
+    {
+      "path": "applications/main/gpio/scenes/gpio_scene_usb_uart_config.c",
+      "sha256": "6fd4db0f1f003b0c6b91487809f19bb5890ea7dc347232c338f89f3c08d89b43"
+    },
+    {
+      "path": "applications/main/gpio/views/gpio_i2c_scanner.c",
+      "sha256": "120531982f2b76a8b219415f894921e967648751deae4117592d62d2571fb890"
+    },
+    {
+      "path": "applications/main/gpio/views/gpio_i2c_sfp.c",
+      "sha256": "275090e3460b8d42c4e5c2c28fa7779a84c76cd16d2ae38e9e835cf3cc13916f"
+    },
+    {
+      "path": "applications/main/gpio/views/gpio_usb_uart.c",
+      "sha256": "dfbdcd3d7cf502b528c53e69901b54cb0f693a7e48dc49720e6a0e7c26cee536"
+    },
+    {
+      "path": "applications/services/desktop/animations/animation_manager.c",
+      "sha256": "afa2d99bbf6a6351af630b9996a492f8187f9b2ed49e89b34d087983406576f3"
+    },
+    {
+      "path": "applications/services/desktop/animations/animation_storage.c",
+      "sha256": "0ebee40ac95cf5329d91671dca59c764b9a95f88633fb8bbe2ffefa30a5f9a68"
+    },
+    {
+      "path": "applications/services/desktop/animations/animation_storage.h",
+      "sha256": "1854097f6b1907bd508d08183f117f2b24f95db23de002fc95f15c6c0f9e9875"
+    },
+    {
+      "path": "applications/services/desktop/animations/views/animation_caption.c",
+      "sha256": "01f303c4ff4c6b084de57f57870b2298e648d5d8537d1c2a854c4830f49af5b2"
+    },
+    {
+      "path": "applications/services/desktop/animations/views/animation_caption.h",
+      "sha256": "1cd43da3699bde049a30c4a45254a94ba41b5f848725b4fd1d7f3b43f402845e"
+    },
+    {
+      "path": "applications/services/desktop/animations/views/bubble_animation_view.c",
+      "sha256": "1918ba98de10dc817d2826b376645ef92041c5b93f007f9adb4432c960c88b92"
+    },
+    {
+      "path": "applications/services/desktop/animations/views/bubble_animation_view.h",
+      "sha256": "c1a47d971f794ea5e3542309dc70517a9fc5b175d0bdc84358b94d2039fb2904"
+    },
+    {
+      "path": "applications/services/desktop/animations/views/one_shot_animation_view.c",
+      "sha256": "ee76788738b23936490b85514146bedfc387f8994d32cfbd3fb793a9083a9d86"
+    },
+    {
+      "path": "applications/services/gui/application.fam",
+      "sha256": "1a1637fb8ba546ba44bed23b329e1f4eed756103533c90908e1180994e961f87"
+    },
+    {
+      "path": "applications/services/gui/canvas.c",
+      "sha256": "8aa9d1b566ce6395124b4e3b07d429fd49e93d36835e93f2f5eb8fc3e105c623"
+    },
+    {
+      "path": "applications/services/gui/gui.c",
+      "sha256": "f6889a2a9f33d8f2e891b654e449308551d5e662c2fb6228dce1f57ef28c4cac"
+    },
+    {
+      "path": "applications/services/gui/native_zh_boot_font.h",
+      "sha256": "7185c429224ffd8dcf4e5c1e9106c09a24ed489c517c8fd3a1a82b694fc84b99"
+    },
+    {
+      "path": "applications/services/gui/native_zh_font.h",
+      "sha256": "8294e338c82cdf477a8d96fa550b73d0b142cea270c72e38785cbef3b33f6421"
+    },
+    {
+      "path": "applications/services/gui/native_zh_resource.c",
+      "sha256": "cd27c93724632c3f02e7c61a083b2f6a9bdf5090e9aa7976bb90e184119d979d"
+    },
+    {
+      "path": "applications/services/gui/native_zh_resource.h",
+      "sha256": "2385ef609a0bda6cb1305196bb5594d4e0bcc9a928aade95d712c3f79b432a07"
+    },
+    {
+      "path": "applications/services/gui/native_zh_resource_data.h",
+      "sha256": "40ad2948d1a4c6eece152f946b0c26ebe4b697cf18717cf187f492ce63641de3"
+    },
+    {
+      "path": "applications/services/gui/native_zh_resource_format.c",
+      "sha256": "ea9553ea2b8f34de45d2f9433b5a1a95d1cdd7af6e00071b4e49c3736009721e"
+    },
+    {
+      "path": "applications/services/gui/native_zh_resource_format.h",
+      "sha256": "ca317985994389af02d5b1fc2b33c5dc606113cb6ee54359053f60d0f102077b"
+    },
+    {
+      "path": "applications/services/gui/resources/locale/zh_cn.glyphs",
+      "sha256": "ef3423813e6843dffd6f4bcee0c329f93802104db12325fe0f802ca9f6498eaa"
+    },
+    {
+      "path": "applications/services/loader/loader_menu.c",
+      "sha256": "2393f8e3a87b39f86e1a2d144a22c4eb01e74275dc49982c949110d57ae3a245"
+    },
+    {
+      "path": "applications/services/locale/locale_ui.h",
+      "sha256": "a7f3d0ff10ede12b2e74077322cbba9176ac0424b94715e533fd2cbc1302ddf3"
+    },
+    {
+      "path": "applications/services/network/network.c",
+      "sha256": "e880a0b5c267d1c25633b1059fe8652d53082db2a811f505ec2a86ba9d772c56"
+    },
+    {
+      "path": "applications/settings/about/about.c",
+      "sha256": "ce576a1b53c78385518d6e6cf955f995e610d7bb71204271e6e40b4d21f33073"
+    },
+    {
+      "path": "applications/settings/storage_settings/scenes/storage_settings_scene_internal_info.c",
+      "sha256": "8ae657a9c4adc59c60e7c7ed77a58d6b4deda9fecdc15333b34570c994654cd4"
+    },
+    {
+      "path": "applications/system/findmy/scenes/findmy_scene_config.c",
+      "sha256": "7c026c2b1740603ed9513bb4ca046308c64b429e0b23656f3b653a8475a8a9d5"
+    },
+    {
+      "path": "applications/union/UPSTREAM.json",
+      "sha256": "1451063132b58552e0491d09ff917fe3796edb38e4e64fa500b3662d3a035f30"
+    },
+    {
+      "path": "applications/union/application.fam",
+      "sha256": "c3307548895ac13d072091e9aba9ab2f563c65753639d2759c33d2f7b7233e7b"
+    },
+    {
+      "path": "applications/union/brainfuck/application.fam",
+      "sha256": "4e77fcdb3e1e2154b09e79ef0a3eff40393c4336f6835482d9d076a36e40ad3e"
+    },
+    {
+      "path": "applications/union/brainfuck/bfico.png",
+      "sha256": "d20189e53a508b39d6c303c22841501ce19d2e4bb33b0c21ab5f1e2145ffca0d"
+    },
+    {
+      "path": "applications/union/brainfuck/brainfuck.c",
+      "sha256": "50daac935407b7207e8470d03bde08e51e66ff9554fad7448adc6e86e51a9f13"
+    },
+    {
+      "path": "applications/union/brainfuck/brainfuck.h",
+      "sha256": "9c447aa9359f8bc199688a237077f1239179bb51ba2900fa077800ca6aa5ff0d"
+    },
+    {
+      "path": "applications/union/brainfuck/brainfuck_i.h",
+      "sha256": "983d661c55a17be0099ae7808b62a85660e8e1f4669ed1bf229984eb06610bae"
+    },
+    {
+      "path": "applications/union/brainfuck/icons/ButtonRightSmall_3x5.png",
+      "sha256": "36c1e2811774d4f1ba49de7721a1aebd0bfae8c08c49042cdf50c700f2e0238d"
+    },
+    {
+      "path": "applications/union/brainfuck/icons/KeyBackspaceSelected_24x11.png",
+      "sha256": "a3bde4e1d898e42ea0556d8a2e21307b36d94623f027fb2f56164677405f6e8f"
+    },
+    {
+      "path": "applications/union/brainfuck/icons/KeyBackspace_24x11.png",
+      "sha256": "1d693659e3df3fcd0fa220fec4fdc04417cc8f5a7678e4e6aa16b56c4e802854"
+    },
+    {
+      "path": "applications/union/brainfuck/icons/KeyInputSelected_30x11.png",
+      "sha256": "46884c3c2c8d8380e130b7a954d6ceedfe4abcda02d45acec779d3d119992b89"
+    },
+    {
+      "path": "applications/union/brainfuck/icons/KeyInput_30x11.png",
+      "sha256": "4d2139e1a98da7c8226d96dd7ad965f97c2fb16a53b7dab638329a0974094055"
+    },
+    {
+      "path": "applications/union/brainfuck/icons/KeyRunSelected_24x11.png",
+      "sha256": "4ebddcfe49e0f9d48acc9d2d35f0614428496a22ce73ecc3b66c1cd70a97fa7b"
+    },
+    {
+      "path": "applications/union/brainfuck/icons/KeyRun_24x11.png",
+      "sha256": "0bfcb2824e2d4a808b17f2b11cff31063d417d2efeb0a0565270ed34a7aa89e7"
+    },
+    {
+      "path": "applications/union/brainfuck/icons/KeySaveSelected_24x11.png",
+      "sha256": "bef473803262801abc8d71edef672decc500a96a424d98f6343f220b18c4a058"
+    },
+    {
+      "path": "applications/union/brainfuck/icons/KeySave_24x11.png",
+      "sha256": "f1a1fb6e866964ab1e8f0f06dfda6a8fd4d88b539ff48517c58e2f107c942bc5"
+    },
+    {
+      "path": "applications/union/brainfuck/icons/bfico.png",
+      "sha256": "d20189e53a508b39d6c303c22841501ce19d2e4bb33b0c21ab5f1e2145ffca0d"
+    },
+    {
+      "path": "applications/union/brainfuck/img/1.png",
+      "sha256": "ba2998eaa1b8622ac937a5f7518b4757c4122477700cc344c4a467583d178e49"
+    },
+    {
+      "path": "applications/union/brainfuck/img/2.png",
+      "sha256": "36451d751e0a84bdbd8b397debe6807379b1f14da983cbf50d98deb61cf10988"
+    },
+    {
+      "path": "applications/union/brainfuck/img/3.png",
+      "sha256": "0148081c067109282905471e7bdd60e719628e86c92825618baac1dfa069c7c5"
+    },
+    {
+      "path": "applications/union/brainfuck/scenes/brainfuck_scene.c",
+      "sha256": "473725e29809da64325de3bde3e644c6b29909e9d32e7b854c58991b121b99d8"
+    },
+    {
+      "path": "applications/union/brainfuck/scenes/brainfuck_scene.h",
+      "sha256": "9f27773f53035954fa7a18ea9e7d7b9b0e91e3602f4f5410a8a5777362314601"
+    },
+    {
+      "path": "applications/union/brainfuck/scenes/brainfuck_scene_config.h",
+      "sha256": "812a6dd64609fb06f742a5a828e2e52b31ca512525a78adf495bf234b1768cf3"
+    },
+    {
+      "path": "applications/union/brainfuck/scenes/brainfuck_scene_dev.c",
+      "sha256": "8299b7dd4f8d702e6a7c0e7c54ef761466c94cfae8b30adbeee404a79b8e2ae6"
+    },
+    {
+      "path": "applications/union/brainfuck/scenes/brainfuck_scene_exec.c",
+      "sha256": "19501e7445a6a8152ee15589a940c6e91aaeb59660e6c60787b9bac17ae58433"
+    },
+    {
+      "path": "applications/union/brainfuck/scenes/brainfuck_scene_file_create.c",
+      "sha256": "e10d063b9603918607263e6c21868cf45ddf0db01b6ff64f8031138fd0ee33a0"
+    },
+    {
+      "path": "applications/union/brainfuck/scenes/brainfuck_scene_file_select.c",
+      "sha256": "b636add994e516aa475f92b978e9b0d0dcd2dff4ceeee8c7121f9c899073d600"
+    },
+    {
+      "path": "applications/union/brainfuck/scenes/brainfuck_scene_set_input.c",
+      "sha256": "95a8c9ecef7b710c3ff84de4789135bd7305f80077693c2bb82833829eb5050a"
+    },
+    {
+      "path": "applications/union/brainfuck/scenes/brainfuck_scene_start.c",
+      "sha256": "3c5b2b6ba0bd22be36ac324c0322a32a93ee5646fbf854555ea9696f71bccd98"
+    },
+    {
+      "path": "applications/union/brainfuck/views/bf_dev_env.c",
+      "sha256": "3c528f7c25352ead84dea036c040bcdb2f62868b333e559787324a48f3ae5af5"
+    },
+    {
+      "path": "applications/union/brainfuck/views/bf_dev_env.h",
+      "sha256": "aa1916d554e4aa2a0f766c7d9e822c4a422358e36470f65af1a57e09d17d746e"
+    },
+    {
+      "path": "applications/union/brainfuck/worker.c",
+      "sha256": "91b0513d20911024f8e02f6dc803519365b9a01fad217e50be5146676ff43899"
+    },
+    {
+      "path": "applications/union/brainfuck/worker.h",
+      "sha256": "82d79bb7304bef7ef3f5e721b551b839620b786569a221d957f89bd25f8fbe48"
+    },
+    {
+      "path": "applications/union/chess_clock/application.fam",
+      "sha256": "8707bda1446b5fc7ac45e3b301c6a3dc2b62ff84c04ab3ad95d0774bd5b9632d"
+    },
+    {
+      "path": "applications/union/chess_clock/chess_clock.c",
+      "sha256": "74c34a687b65c82179503f32b3d4024d57ff94b48e381f5deb3d45ae58c0995a"
+    },
+    {
+      "path": "applications/union/chess_clock/chess_clock.png",
+      "sha256": "ed7b61a1b5a72892e8e7d0514cecfb43f501f736381204352ee64122098213a4"
+    },
+    {
+      "path": "applications/union/dice/CHANGELOG.md",
+      "sha256": "8b70f26cd8077bd09a7bfaca74c9ec4afbfcbb6e6c16c5eed0cfdbc58f78fac7"
+    },
+    {
+      "path": "applications/union/dice/LICENSE.md",
+      "sha256": "3972dc9744f6499f0f9b2dbf76696f2ae7ad8af9b23dde66d6af86c9dfb36986"
+    },
+    {
+      "path": "applications/union/dice/README.md",
+      "sha256": "54db443bc6049a2bb7df9e81fd1cc8ed12ee37835c55fb2ac04313e30dedf2d2"
+    },
+    {
+      "path": "applications/union/dice/application.fam",
+      "sha256": "8fa8132b8a9fc2672e505c05b657748e29f23109ad841514873c7375185f44ef"
+    },
+    {
+      "path": "applications/union/dice/assets/coin_1.png",
+      "sha256": "65f24d4e4d40733dc3ca75946a53a7ad86371cf1b06c0129d2bae256a64ed3fd"
+    },
+    {
+      "path": "applications/union/dice/assets/coin_2.png",
+      "sha256": "a18ed6db9054a2394944f99d33b8422429d7c45741320ea33bf2eccbcb7ae457"
+    },
+    {
+      "path": "applications/union/dice/assets/coin_3.png",
+      "sha256": "c47e3bef4df9a548ca72cfaded84abb2808b4982287f65856cdec0636b273f1e"
+    },
+    {
+      "path": "applications/union/dice/assets/coin_4.png",
+      "sha256": "6baead5c9bba95906905a29685e44b009844d18778b29ab86e39439247603e7b"
+    },
+    {
+      "path": "applications/union/dice/assets/coin_5.png",
+      "sha256": "5feaa03314b757f26bd5caf9bfd7ca4456aae90c3e4e80982570aa6d06c0c044"
+    },
+    {
+      "path": "applications/union/dice/assets/coin_6.png",
+      "sha256": "00d85785948b80d41f47180425aad0179ab8c4a4ea7987018f07e6515036fe22"
+    },
+    {
+      "path": "applications/union/dice/assets/coin_7.png",
+      "sha256": "ed384799665660030e5cedc2c935973a8244f5474ce00c1c770d24712069fe87"
+    },
+    {
+      "path": "applications/union/dice/assets/d100_1.png",
+      "sha256": "fbc0d62be360a0a10507c67484caf5652f764adbe4fde848d8dcba950882aafa"
+    },
+    {
+      "path": "applications/union/dice/assets/d100_2.png",
+      "sha256": "4e94848ac3e0b85a579a910cdbbd89e485ce0deb9edc35c4a8aa84b588ac6016"
+    },
+    {
+      "path": "applications/union/dice/assets/d100_3.png",
+      "sha256": "4d13ef493998a2eecddead334c2e984934fcc0fa77d58ac6e3604425e9945b0a"
+    },
+    {
+      "path": "applications/union/dice/assets/d100_4.png",
+      "sha256": "13621d3155a65d276497c8ddbd98d09a955a07eb8fe3bafcf10706b1d6f90d81"
+    },
+    {
+      "path": "applications/union/dice/assets/d10_1.png",
+      "sha256": "a7c827c92c73f5d7e90b9a0b48879b7fb3d4a05421870996dc69c34c2d9b1021"
+    },
+    {
+      "path": "applications/union/dice/assets/d10_2.png",
+      "sha256": "4efae3f11964bd2f810edb42a3729465cb9fe2805250e92c5f997e7356241737"
+    },
+    {
+      "path": "applications/union/dice/assets/d10_3.png",
+      "sha256": "b1989e47d17cc7724b8bce512935c59352cc10b637f22780444ad0ba84df9be6"
+    },
+    {
+      "path": "applications/union/dice/assets/d10_4.png",
+      "sha256": "b7a5b2fe3e7d16f259dc23f3d8dac1da5b43172c5c1f51129fe45f8b4dff6b88"
+    },
+    {
+      "path": "applications/union/dice/assets/d12_1.png",
+      "sha256": "19d3c27c6970c8b35428357e636ceed4de3e1aa82feda565f0f01f59cdfef427"
+    },
+    {
+      "path": "applications/union/dice/assets/d12_2.png",
+      "sha256": "b877828b575b3a3d56bc366e988dd1852d48b4548cc85270c6933b19197e2063"
+    },
+    {
+      "path": "applications/union/dice/assets/d12_3.png",
+      "sha256": "cc60de5993abcecbdaf8b709270dc7acbae6805932c7d353bf41297651714595"
+    },
+    {
+      "path": "applications/union/dice/assets/d12_4.png",
+      "sha256": "5b2d2ce34b5b1c1da84b0a2d3fc70c444e0697df548b855b72fea12a9e8376d4"
+    },
+    {
+      "path": "applications/union/dice/assets/d20_1.png",
+      "sha256": "8fa3bf6d9f9feb0ec873504a8e07f3fb128ea4ca6aef5f5611ac31f97e8eff15"
+    },
+    {
+      "path": "applications/union/dice/assets/d20_2.png",
+      "sha256": "1a4e27dbb7f310821eefd67b41154ae98a3f692a542d1697f5e01a78633a186c"
+    },
+    {
+      "path": "applications/union/dice/assets/d20_3.png",
+      "sha256": "b7ffdc90de054b6c2af5ce32d22240f4f2bba935bcb62554467e3fd62c0de15f"
+    },
+    {
+      "path": "applications/union/dice/assets/d20_4.png",
+      "sha256": "d620114a71d4ece8ad7a4e46c7463e363ea656ce417f6130ce0fba17695fc0c9"
+    },
+    {
+      "path": "applications/union/dice/assets/d4_1.png",
+      "sha256": "5bae2b65ecb37b79c471b56eac42a48f5cd8216bf5c14e33982cfcaa91e4823c"
+    },
+    {
+      "path": "applications/union/dice/assets/d4_2.png",
+      "sha256": "3d00788a7ece78afc0b6ea49a0ebc040519256db2d003f03bcbeb5839655c942"
+    },
+    {
+      "path": "applications/union/dice/assets/d4_3.png",
+      "sha256": "e5a1a579d9011bc9c7e457cf3190d9018f6ed109128ce7e7e1b215ee95bc2084"
+    },
+    {
+      "path": "applications/union/dice/assets/d6_1.png",
+      "sha256": "76a85a9509d6a8b8bc172ba7751f05c59b8f27b8ad2687ddd4736027b769d8e0"
+    },
+    {
+      "path": "applications/union/dice/assets/d6_2.png",
+      "sha256": "aa733f5b680432f796877d918a34dbe3f1abec56e0522ff75ada5efbcc162651"
+    },
+    {
+      "path": "applications/union/dice/assets/d6_3.png",
+      "sha256": "0a9a6293ca75e86ae658007f1b965d0143dcf62344e41a928de48414fe8321ad"
+    },
+    {
+      "path": "applications/union/dice/assets/d6_4.png",
+      "sha256": "f6bfef551a068cd798001c6c274357a444e27b20cb316e83cff03e076c52cc96"
+    },
+    {
+      "path": "applications/union/dice/assets/d8_1.png",
+      "sha256": "7a9ff3154c16a92b988c8749521917dfb3a6910dd1718848b2b842a91ac62272"
+    },
+    {
+      "path": "applications/union/dice/assets/d8_2.png",
+      "sha256": "966094718eb06a5f366e1c802ef39d94a16c7da66fa7b86e23b0e5804356e079"
+    },
+    {
+      "path": "applications/union/dice/assets/d8_3.png",
+      "sha256": "0c7fac6588504322bb1bebc7a58cda4853719b9bf81859ff216bf7fdbbad1f8d"
+    },
+    {
+      "path": "applications/union/dice/assets/d8_4.png",
+      "sha256": "a26c55269951d7b5105fc07e01475fa0d2e645f272772456989d4747904ddaf1"
+    },
+    {
+      "path": "applications/union/dice/assets/ui_button_back.png",
+      "sha256": "3f12cb0a1956dd2858d4691b502d67b5992fdbe4d17e226df6bb5fca7f93bcd2"
+    },
+    {
+      "path": "applications/union/dice/assets/ui_button_down.png",
+      "sha256": "ff5429b6dd925fcae7743c587e3e38ed93ccfd6444965c2ccbe45532b04a629a"
+    },
+    {
+      "path": "applications/union/dice/assets/ui_button_exit.png",
+      "sha256": "e65bae9e786a0031ca4698490982d7336b89f1c54eadc2e6c833aea254ee2789"
+    },
+    {
+      "path": "applications/union/dice/assets/ui_button_history.png",
+      "sha256": "17b88080f4bdb7aa8027ff624920e66aa382a4864626475c3e57aecb1c66b1e2"
+    },
+    {
+      "path": "applications/union/dice/assets/ui_button_left.png",
+      "sha256": "7e0a7af2e4caa440236f463354d31d01c550dbb13c0d7513f0d68190c3505f48"
+    },
+    {
+      "path": "applications/union/dice/assets/ui_button_right.png",
+      "sha256": "03f5b685a975a763213672b5cfc1241534ddc6a485f3d3a66483b0adf6641ae5"
+    },
+    {
+      "path": "applications/union/dice/assets/ui_button_roll.png",
+      "sha256": "008c3426a42e9db1dcf6df3b222965d6ec78832f0d84981b26041bb79d21a2a5"
+    },
+    {
+      "path": "applications/union/dice/assets/ui_button_up.png",
+      "sha256": "bc34aa6dc975bda0af68512b8c297a3d230ea1ac40f144a84bd095d53f086202"
+    },
+    {
+      "path": "applications/union/dice/assets/ui_count.png",
+      "sha256": "4b68fd3eadb879c73c84e3ae588a149aeb8a24485ddead126a338883c01d18da"
+    },
+    {
+      "path": "applications/union/dice/assets/ui_count_1.png",
+      "sha256": "e34442866ebc31aee02c6c4886206827c24f0b1371908770789e08d6809499cc"
+    },
+    {
+      "path": "applications/union/dice/assets/ui_result_border.png",
+      "sha256": "2e25c727f0f37ab6391e1b04393535bef2d0d1e2075d23c2f07680d5774a457a"
+    },
+    {
+      "path": "applications/union/dice/constants.h",
+      "sha256": "4cf990a2b494e0300191635d7257b473c3200c242fe1ff53fffe1a27845da9ae"
+    },
+    {
+      "path": "applications/union/dice/dice_app.c",
+      "sha256": "230e39a9a7d2bbe69c7e88ecd8751a76c35a7abce1bfcf392698c7993dcf6f18"
+    },
+    {
+      "path": "applications/union/dice/icon.png",
+      "sha256": "eb9835359a2dfac225ce8b886f8b94ef607c9310fe2dd1a332dcc649bc3fe62b"
+    },
+    {
+      "path": "applications/union/dice/img/1.png",
+      "sha256": "775fff8ca6ca1303c5c4aa240b5487cdfbc46a6142b4ee4cdf6e910c81400f50"
+    },
+    {
+      "path": "applications/union/dice/img/2.png",
+      "sha256": "53682a3b8a041ac90dc4edf40bc8a6b58e050ebd31c52acf161b1b5fb5a506a4"
+    },
+    {
+      "path": "applications/union/fz_reaction_game/.flipcorg/gallery/Screenshot-20230226-160738.png",
+      "sha256": "c9198fdbdc00dba8f0730dfcd84c823bdc28a87828db48c7916c8a7a2b5a81f2"
+    },
+    {
+      "path": "applications/union/fz_reaction_game/.flipcorg/gallery/Screenshot-20230226-160750.png",
+      "sha256": "6ed897f450738570d13766296f50022558225774c80523c0a4a562d7fdc17afe"
+    },
+    {
+      "path": "applications/union/fz_reaction_game/LICENSE",
+      "sha256": "904feef4eaf87b4164a56591f4d82410fdacf253aed60a356d9abbc7a45773de"
+    },
+    {
+      "path": "applications/union/fz_reaction_game/README.md",
+      "sha256": "35d10163c521e6a89b0c3a155d7679987b9799f35cd4359d4ca1b81683e0e93f"
+    },
+    {
+      "path": "applications/union/fz_reaction_game/application.fam",
+      "sha256": "2a9d9666a65f60503d9277983f65a161d0eb6259109c2e474a5d98033cc44e80"
+    },
+    {
+      "path": "applications/union/fz_reaction_game/icon.png",
+      "sha256": "8023edf03e8a0e5493c29a5fdd2fb0aeb5d8993441429ed706513cca6142b31d"
+    },
+    {
+      "path": "applications/union/fz_reaction_game/img/1.png",
+      "sha256": "23970d4a6822b064ca08bae2e1d30d2c5b4f632e15352f1a5bcfd0be8e6cde26"
+    },
+    {
+      "path": "applications/union/fz_reaction_game/reaction.c",
+      "sha256": "631ebd1314d6271504c5df8d5993d40b18508c3bfc2ab57d7a2c7efbe3123811"
+    },
+    {
+      "path": "applications/union/gps_rpc/LICENSE",
+      "sha256": "3972dc9744f6499f0f9b2dbf76696f2ae7ad8af9b23dde66d6af86c9dfb36986"
+    },
+    {
+      "path": "applications/union/gps_rpc/application.fam",
+      "sha256": "b19ce491584f53c77bdd21e89bb73d63d03c1768fa0ad03a80339f2fe6eeecef"
+    },
+    {
+      "path": "applications/union/gps_rpc/gps.c",
+      "sha256": "e54141dcb92bc28354b7abc64ad1968782a151ab3ed6fe7a0f987ce90d505439"
+    },
+    {
+      "path": "applications/union/gps_rpc/gps_10px.png",
+      "sha256": "889c3ca10b25ca9eebc70b10addadf18f8caab43fac9ce6ecfa197e09feca16b"
+    },
+    {
+      "path": "applications/union/mandelbrot/CHANGELOG.md",
+      "sha256": "c6a02a166ffbb685be18c52bb3551f73d3a3d396cb4df8c1c96f7f72438ce985"
+    },
+    {
+      "path": "applications/union/mandelbrot/Mandelbrot.png",
+      "sha256": "eec6fa293a6c20dabf6a80f4d42497a39cc8d41b8849cd18837f87713eb80a03"
+    },
+    {
+      "path": "applications/union/mandelbrot/application.fam",
+      "sha256": "5666ed3b580a2ae60efef49feabd611134abf0ffc01dac3729141c9394cb7965"
+    },
+    {
+      "path": "applications/union/mandelbrot/img/1.png",
+      "sha256": "9d6055672e3b7c71895d24600b5cb74652d2ebcd611b049bc36dc376e703450e"
+    },
+    {
+      "path": "applications/union/mandelbrot/img/2.png",
+      "sha256": "43a4eab9134d3e0fb042fb215bf6097d90c751bbd7bb816262f625bb304eb1be"
+    },
+    {
+      "path": "applications/union/mandelbrot/mandelbrot.c",
+      "sha256": "02393675ad4fa622c265aa84fe4a8c06cc6d5f5d116074104b817e9b8ab01371"
+    },
+    {
+      "path": "applications/union/montyhall/Monty.png",
+      "sha256": "59e912ac52eadaf652b456f7a1996d7b6b15ca5dd94ba1df01e9604da93160eb"
+    },
+    {
+      "path": "applications/union/montyhall/application.fam",
+      "sha256": "6b6342cd1a59147c526257cc1f57a4ddfb385fe164a24300c51a8c5b944231f3"
+    },
+    {
+      "path": "applications/union/montyhall/img/1.png",
+      "sha256": "fe44621e347c7351f8f26230d25b61c2eaac82a2a1a64450ff8b90e47335a6c0"
+    },
+    {
+      "path": "applications/union/montyhall/img/2.png",
+      "sha256": "6c44d39b60d5139f149e9c716b93d8c3dc472a719d546ba978234f87c78c9752"
+    },
+    {
+      "path": "applications/union/montyhall/img/3.png",
+      "sha256": "c4d07c83ec40606bdbc2665afc607508ee8c4728dc6f46150b277657c43edb82"
+    },
+    {
+      "path": "applications/union/montyhall/monteyhall.c",
+      "sha256": "867b997db06a09f31991a5fc0cf592e4c69fa6a215c6fc471b1f65d4ea7c8056"
+    },
+    {
+      "path": "applications/union/ocarina/README.md",
+      "sha256": "f98435650734c488da8b8221baadff42c68fe12aad95e2c5b6ed170d525a991e"
+    },
+    {
+      "path": "applications/union/ocarina/application.fam",
+      "sha256": "aa2645bd065d171306081efba5953b8be7f4bf5a644f236af03d01a15bb4023b"
+    },
+    {
+      "path": "applications/union/ocarina/icons/music_10px.png",
+      "sha256": "09135acb2248be3a1c6f8cc6194370568b45c2b4b5ca416facb6b4b3ea561a4c"
+    },
+    {
+      "path": "applications/union/ocarina/img/1.png",
+      "sha256": "48a9632342a73a947991ff1191ace6d495689841af4975b94f15ca029735383d"
+    },
+    {
+      "path": "applications/union/ocarina/music_10px.png",
+      "sha256": "09135acb2248be3a1c6f8cc6194370568b45c2b4b5ca416facb6b4b3ea561a4c"
+    },
+    {
+      "path": "applications/union/ocarina/ocarina.c",
+      "sha256": "41c1d2cd982f1c783ebb8d0bd2c3da1ff4d8737064aa992d9520103a3d98fa64"
+    },
+    {
+      "path": "applications/union/pause_timer/LICENSE",
+      "sha256": "3972dc9744f6499f0f9b2dbf76696f2ae7ad8af9b23dde66d6af86c9dfb36986"
+    },
+    {
+      "path": "applications/union/pause_timer/application.fam",
+      "sha256": "8b4ae8ea864340234f80b934de1d95620f0186cbfb41c93dc9ce74f6366461ee"
+    },
+    {
+      "path": "applications/union/pause_timer/pause_timer.c",
+      "sha256": "9db10f80721a5af45953da84bf3944b00298711bc48389104f59e5e2ad6c2faa"
+    },
+    {
+      "path": "applications/union/pause_timer/pause_timer.h",
+      "sha256": "14493a8387046d584beb94f82ecabdd0cede1a91807b89be8534c1d10e734408"
+    },
+    {
+      "path": "applications/union/pause_timer/pause_timer_10px.png",
+      "sha256": "8acfcf650920b0db266e07f090a583d858b9b560a8205873bbef85f8f9925dc3"
+    },
+    {
+      "path": "applications/union/pause_timer/scenes/scene.c",
+      "sha256": "63e34d52ef87cb369a75bbbbb28694cf917e5eb031c97d8bd8e1f4da8870e5fc"
+    },
+    {
+      "path": "applications/union/pause_timer/scenes/scene.h",
+      "sha256": "7bb91c92ee16a399bfbd34e3d8299dcb3152c82a91fdf4ca4831cc15f0798f54"
+    },
+    {
+      "path": "applications/union/pause_timer/scenes/scene_config.h",
+      "sha256": "e7263b8ced931a45f6990242ee8f8499b962ecd263d62a322b8dbc90995b1f81"
+    },
+    {
+      "path": "applications/union/pause_timer/scenes/scene_countdown.c",
+      "sha256": "fbd556a7ce5395991aea0e1b19cd630a0dc66bb76b94d33ea6bdd159322b37b0"
+    },
+    {
+      "path": "applications/union/pause_timer/scenes/scene_ir_learn.c",
+      "sha256": "311b0f9ec9081de4a4110decdf0bc1e4f68232049bd92bfdbfbeeaeb902e43a7"
+    },
+    {
+      "path": "applications/union/pause_timer/scenes/scene_main.c",
+      "sha256": "624864e38608d675b42c3548977575bcee16a87cdb1a18cf7496b433ca8a6c7a"
+    },
+    {
+      "path": "applications/union/pause_timer/views.h",
+      "sha256": "bb8740350d9673b2b40800528f6f8e6b9725aff393b65f99ab08044ff87486e3"
+    },
+    {
+      "path": "applications/union/pause_timer/views/countdown.c",
+      "sha256": "736997bbb19135efccc9dec469bbd30437cf0951d2f399df256c4ab541a7316f"
+    },
+    {
+      "path": "applications/union/pause_timer/views/countdown.h",
+      "sha256": "c77beb227f7d98068006d6c4a1cb1bf5a5c84e32d3f965db2cd14dc38cde1819"
+    },
+    {
+      "path": "applications/union/pause_timer/views/ir_learn.c",
+      "sha256": "8749469fed748b637e1fce7c365520c94a454b40520b8f84c690314e79de26f3"
+    },
+    {
+      "path": "applications/union/pause_timer/views/ir_learn.h",
+      "sha256": "830ab4cd5778e3ad6c15dce97be7b1b03a5855e4e701a78ca21ab0d7ea597482"
+    },
+    {
+      "path": "applications/union/pause_timer/views/time_input.c",
+      "sha256": "dbc8e694634ef4a6de1b0ac670f918ad01deae5aa95dda4e7f05ab179684461d"
+    },
+    {
+      "path": "applications/union/pause_timer/views/time_input.h",
+      "sha256": "c0405f7be63fdd089c39ef98b3df9a58ab625e98ab9444e4884eca287cd406d8"
+    },
+    {
+      "path": "applications/union/racegame/LICENSE",
+      "sha256": "3972dc9744f6499f0f9b2dbf76696f2ae7ad8af9b23dde66d6af86c9dfb36986"
+    },
+    {
+      "path": "applications/union/racegame/README.md",
+      "sha256": "ec8099b252cfd4969ca91ac6da1a6bd9550f0c1bd59d514415627dc17283ced4"
+    },
+    {
+      "path": "applications/union/racegame/application.fam",
+      "sha256": "de96ca0e930a89075146f3d70d6027a239eaccb9e0db157cb8c28e1bed76660d"
+    },
+    {
+      "path": "applications/union/racegame/icon.png",
+      "sha256": "d65daa0c05b70823d755f6fc575bf8d2a11dc38266d2664e7d046be186737ff4"
+    },
+    {
+      "path": "applications/union/racegame/img/1.png",
+      "sha256": "de96ffb12b6ff776c5a0f8254a405bb3943055a689a8d13c82dc0048d1338789"
+    },
+    {
+      "path": "applications/union/racegame/img/2.png",
+      "sha256": "00975324b7ecba541d3fad94cc54a46755c464c1492bae7d320eab1f01483609"
+    },
+    {
+      "path": "applications/union/racegame/race.c",
+      "sha256": "ecba23377c02f8a79e5ebef181c450dd2bc8090dcbd963fdd4139f060317aa0a"
+    },
+    {
+      "path": "assets/dolphin/external/L1_Boxing_128x64/meta.txt",
+      "sha256": "d30e8bd09c83d94e6ecf072833f102d28a022edc115db79520be4237218080e7"
+    },
+    {
+      "path": "assets/dolphin/external/L1_Cry_128x64/meta.txt",
+      "sha256": "32f091bd9fbf78beee6f990ca33abd9b8edaa74794fa361c1837bbbfe4a9100a"
+    },
+    {
+      "path": "assets/dolphin/external/L1_Kaiju_128x64/meta.txt",
+      "sha256": "a89deb1761f8ab56fe966e9d79cd906319a74fc614dfb967bdef8a9179ebd290"
+    },
+    {
+      "path": "assets/dolphin/external/L1_Laptop_128x51/meta.txt",
+      "sha256": "d0092f7702b88ce9b48228a8f55ff20fbd200deae2dab5e90b33f05d707e94dc"
+    },
+    {
+      "path": "assets/dolphin/external/L1_Leaving_sad_128x64/meta.txt",
+      "sha256": "02e9b2cca66f5ce73345ff0255623d21f0b417e0a590167ba4ddd7ab526bfedd"
+    },
+    {
+      "path": "assets/dolphin/external/L1_Mad_fist_128x64/meta.txt",
+      "sha256": "4c6d64667e5c675f646e55a9390095db08ffcff948f30020bc80397ba16cf284"
+    },
+    {
+      "path": "assets/dolphin/external/L1_My_dude_128x64/meta.txt",
+      "sha256": "117687761630da69225b9a892f6ca975df0f19ced199b64ea8b7d6714d25bdbd"
+    },
+    {
+      "path": "assets/dolphin/external/L1_Painting_128x64/meta.txt",
+      "sha256": "7da0b86b660dae0803a194c9468ad1a80880a1dc1d7a62dd2ce3f9bc27bdf4b4"
+    },
+    {
+      "path": "assets/dolphin/external/L1_Procrastinating_128x64/meta.txt",
+      "sha256": "9f1db571d3489a2f82651eb3de8e564bd2b0093fa92efa01ae7aaec725565105"
+    },
+    {
+      "path": "assets/dolphin/external/L1_Read_books_128x64/meta.txt",
+      "sha256": "b97b62bf385e1b408c8e65126c3b8875fe44879140912e1e97486bcd88e7c978"
+    },
+    {
+      "path": "assets/dolphin/external/L1_Sad_song_128x64/meta.txt",
+      "sha256": "c1098b5a63045dde06c42c69d67333d8468a32e8f17938c7cfa41597e8716051"
+    },
+    {
+      "path": "assets/dolphin/external/L1_Senpai_128x64/meta.txt",
+      "sha256": "a98c29494611b3a54eb394cccd6452ba4e8f35272e5cf754bbef64fdc491bb29"
+    },
+    {
+      "path": "assets/dolphin/external/L1_Showtime_128x64/meta.txt",
+      "sha256": "98e2c9c2da00f764e63f89bc852791a2e7d4da38bff129c527536d4b5928e90c"
+    },
+    {
+      "path": "assets/dolphin/external/L1_Sleep_128x64/meta.txt",
+      "sha256": "1ab1d9743153fa205467110715e80bd7aaa0f9b7f6acd733480d461809e6062e"
+    },
+    {
+      "path": "assets/dolphin/external/L1_Tv_128x47/meta.txt",
+      "sha256": "96a2c7a036a4a94ad85f6d3060f77cb8acfdcf8ad2f0fc51822075d0914d520e"
+    },
+    {
+      "path": "assets/dolphin/external/L1_Wardriving_128x64/meta.txt",
+      "sha256": "919ef5af2bca1115306f9e0ac8883a6c65901d0b6d1a3298e66e8d7f5f46f969"
+    },
+    {
+      "path": "assets/dolphin/external/L1_Waves_128x50/meta.txt",
+      "sha256": "5d185852354bc71a6d51966897ce8bf6c8b5965a83d5066e99f4b8462a5fb3ee"
+    },
+    {
+      "path": "assets/dolphin/external/L2_Coding_in_the_shell_128x64/meta.txt",
+      "sha256": "cbb2507a5d9fca027dd57ad6742c1903a5f2d2b6a86b3b740773b3ea4fa2ad70"
+    },
+    {
+      "path": "assets/dolphin/external/L2_Hacking_pc_128x64/meta.txt",
+      "sha256": "f79925c019846253c4c8e27f55e186d65c9e4b8e46aa9d55d788c1193e520dd2"
+    },
+    {
+      "path": "assets/dolphin/external/L2_Soldering_128x64/meta.txt",
+      "sha256": "bae044defb0262a2c081a51f2da2ab866a8fa30bd22033ac5084ade0400743d3"
+    },
+    {
+      "path": "assets/dolphin/external/L3_Freedom_2_dolphins_128x64/meta.txt",
+      "sha256": "5047fb275dfd75de41838a200197a5e232eb41b8018442d36d19b320a4f0e886"
+    },
+    {
+      "path": "assets/dolphin/internal/L1_BadBattery_128x47/meta.txt",
+      "sha256": "7df144657bb9f36607cdcd386d5f2ab7e36adacae104fa9b62db9555cece8bc3"
+    },
+    {
+      "path": "mobile/FlipperLab/App/FlipperDevice.swift",
+      "sha256": "3d13ad87f355691f1f0ab61d0cc1d5e7cfc58e8762168571064b5fd6c8f93fb0"
+    },
+    {
+      "path": "mobile/FlipperLab/App/FlipperLabApp.swift",
+      "sha256": "0d37c568eb0f03c1085adeecb355f42c13a1d0a1f1b60089d824218652f2e7d5"
+    },
+    {
+      "path": "mobile/FlipperLab/App/Info.plist",
+      "sha256": "073d8d1f3bf6f52591c5acdd9d47093329a00f41d745a26518e744f4a8f1013b"
+    },
+    {
+      "path": "mobile/FlipperLab/App/PhoneCompanion.swift",
+      "sha256": "68c39d0a76ea496b45d26f05f7a0d2adc76fd5f9b74bc1a8828fa7ffe50df9d3"
+    },
+    {
+      "path": "mobile/FlipperLab/App/PhoneLocationProvider.swift",
+      "sha256": "7bb1714e2e658223a1423115c6f1af26db48abf33109e3271ffb65b723062603"
+    },
+    {
+      "path": "mobile/FlipperLab/App/Views/DeviceView.swift",
+      "sha256": "d3ce9e58f829372c6ecdee6594fe86a8515a2467c661bcfd8e251b30d8d1be77"
+    },
+    {
+      "path": "mobile/FlipperLab/App/Views/PhoneSharingView.swift",
+      "sha256": "97e5bfe728c5406f9ba8162590624adb421a145a7c0adc1293cd56415e439ac6"
+    },
+    {
+      "path": "mobile/FlipperLab/App/Views/RootView.swift",
+      "sha256": "4063eefaba406db5f45c6867e26ab36a942c6d3de7c84db03671a7f035206b8e"
+    },
+    {
+      "path": "mobile/FlipperLab/Sources/FlipperCore/CompanionNetworking.swift",
+      "sha256": "14ffe5f1a02113b12fb2c036ed0bd4cf426d2c632ba0ff2ea15a2f7cb148a1ac"
+    },
+    {
+      "path": "mobile/FlipperLab/Sources/FlipperCore/CompanionProtocol.swift",
+      "sha256": "a689cd5774c611e3246623a0bb706d4dbfbe4e15f5d61eb25d47aac5a51c1d76"
+    },
+    {
+      "path": "mobile/FlipperLab/Sources/FlipperCore/CompanionStorage.swift",
+      "sha256": "5b017844ef6fb9bc8aebf5b747c9c58979b4f8b278b90fe0736bd4c9c8a78f18"
+    },
+    {
+      "path": "mobile/FlipperLab/Sources/FlipperCore/FlipperFunction.swift",
+      "sha256": "a85fc054358008209e0ea707fbb3043f83c22b0dac587687f4d3b9c9d9589840"
+    },
+    {
+      "path": "mobile/FlipperLab/Sources/FlipperCore/RPCOutboundQueue.swift",
+      "sha256": "f9b5cb9fec3ad4005d52d80371d8ce088783d86640a7598d8365208fcf049a1e"
+    },
+    {
+      "path": "mobile/FlipperLab/Sources/FlipperCore/RPCWire.swift",
+      "sha256": "79e50e928c746dc58b85f3e3a68c3f18a02104e1e5cab62eafd0a56d75dd125e"
+    },
+    {
+      "path": "mobile/FlipperLab/Tests/FlipperCoreTests/CompanionNetworkingTests.swift",
+      "sha256": "9b97d5cb15b687e912ea4ed315c7d56b0aa9ee6b2d1639dc93d9217b350c6358"
+    },
+    {
+      "path": "mobile/FlipperLab/Tests/FlipperCoreTests/CompanionProtocolTests.swift",
+      "sha256": "b67eee16851e4ef81e5dd6199e8f2862503578af73372242559ee68c795ac8bd"
+    },
+    {
+      "path": "mobile/FlipperLab/Tests/FlipperCoreTests/CompanionStorageTests.swift",
+      "sha256": "47356802163638d3c2b268d7dfc64d5faa8722cbf704a0f8549789828fb04c4d"
+    },
+    {
+      "path": "mobile/FlipperLab/Tests/FlipperCoreTests/FlipperFunctionTests.swift",
+      "sha256": "96b131ef6102087460374ee24339a6f031734790d4ecf05358515160cb17ef6e"
+    },
+    {
+      "path": "mobile/FlipperLab/Tests/FlipperCoreTests/RPCOutboundQueueTests.swift",
+      "sha256": "5ae1ff8337509dbf4be1bafdacc397b4558f8760d497c0ec4fe6ca870a1584c8"
+    },
+    {
+      "path": "mobile/FlipperLab/UITests/FlipperLabUITests.swift",
+      "sha256": "0551983e068eb583046a60878cbf55c41bef2611659dbe40c3db3dc48b412440"
+    },
+    {
+      "path": "scripts/audit_app_union_detail.py",
+      "sha256": "d7d294771eb7eb6d53b71be3d41ffdae90989d4bdea88499baa509f45216758c"
+    },
+    {
+      "path": "scripts/flipper/assets/dolphin.py",
+      "sha256": "d0377f4480796bca9d3c858ab2ae4d4b8625b842ce23cefeb11d5e605ca4c708"
+    },
+    {
+      "path": "scripts/flipper/utils/fff.py",
+      "sha256": "f50f4eab6068e7c706663fc4dd4f714998f9b1d6732563cd45fdd49679942c55"
+    },
+    {
+      "path": "scripts/generate_zh_resource.py",
+      "sha256": "bdc49d7848739f8ff0c2e9bd37136971505642a4f3b2485b0d9699f98a4381a5"
+    },
+    {
+      "path": "scripts/render_animation_zh_preview.py",
+      "sha256": "378703f31f98666f76fb23798cb82bba200f73dff5c4162b21adc0ee3b38e688"
+    },
+    {
+      "path": "scripts/tests/test_animation_zh.py",
+      "sha256": "1b7550a9b7adf47b66075d996f82f2b88ec599ea4de5713099bd31fed482e130"
+    },
+    {
+      "path": "scripts/tests/test_app_union_detail.py",
+      "sha256": "c6ef7dd0d9d849682889dee6247beefe2e121dece01e5b1aa81a8e11fd7c3615"
+    },
+    {
+      "path": "scripts/tests/test_companion_services.py",
+      "sha256": "4aa8f8e19aae38ee540439be18b87c042b7887b0875a9a2e467fa286d34adbf0"
+    },
+    {
+      "path": "scripts/tests/test_native_ui_utf8.py",
+      "sha256": "ac88054d7713fef58ca8b53e765283c20a768b52017bdff8c2cdc2c5b3a3d21f"
+    },
+    {
+      "path": "scripts/tests/test_zh_cache.py",
+      "sha256": "66def2641ee2bada98b3348a9562472bf9b097ba38ffa3adf1074fb21d650aec"
+    },
+    {
+      "path": "scripts/tests/test_zh_resource.py",
+      "sha256": "8ebcd6a747033cc9b2bb3fa5b2e78eb825ab18d73099b5a7d1f5f0742003f905"
+    }
+  ]
+}

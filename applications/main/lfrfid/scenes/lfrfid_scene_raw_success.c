@@ -12,9 +12,9 @@ void lfrfid_scene_raw_success_on_enter(void* context) {
         64,
         AlignLeft,
         AlignTop,
-        "\e#RAW RFID Read Success\e#\n"
-        "Now you can analyze files or\n"
-        "send them to developers",
+        "\033#RAW RFID Read Success\033#\nNow you can analyze files or\nsend them to developers"
+        ""
+        "",
         false);
 
     widget_add_button_element(widget, GuiButtonTypeCenter, "OK", lfrfid_widget_callback, app);

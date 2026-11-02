@@ -61,8 +61,8 @@ bool momentum_app_scene_protocols_freqs_add_on_event(void* context, SceneManager
             popup_set_header(app->popup, "Invalid frequency!", 64, 18, AlignCenter, AlignCenter);
             popup_set_text(
                 app->popup,
-                "Must be 281-361,\n"
-                "378-481, 749-962 MHz",
+                "Must be 281-361,\n378-481, 749-962 MHz"
+                "",
                 64,
                 40,
                 AlignCenter,
