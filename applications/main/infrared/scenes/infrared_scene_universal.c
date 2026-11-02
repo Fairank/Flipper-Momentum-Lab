@@ -13,89 +13,36 @@ typedef enum {
     SubmenuIndexUniversalFromFile,
 } SubmenuIndex;
 
-static void infrared_scene_universal_submenu_callback(void* context, uint32_t index) {
+static void infrared_scene_universal_callback(void* context, int32_t index, InputType type) {
     InfraredApp* infrared = context;
-    view_dispatcher_send_custom_event(infrared->view_dispatcher, index);
+    if(type == InputTypeShort) {
+        view_dispatcher_send_custom_event(infrared->view_dispatcher, index);
+    }
 }
 
 void infrared_scene_universal_on_enter(void* context) {
     InfraredApp* infrared = context;
-    Submenu* submenu = infrared->submenu;
-
-    submenu_add_item(
-        submenu,
+    InfraredButtons* panel = infrared->home_panel;
+    static const char* const labels[] = {
         "TVs",
-        SubmenuIndexUniversalTV,
-        infrared_scene_universal_submenu_callback,
-        context);
-
-    submenu_add_item(
-        submenu,
         "Projectors",
-        SubmenuIndexUniversalProjector,
-        infrared_scene_universal_submenu_callback,
-        context);
-
-    submenu_add_item(
-        submenu,
         "Audio",
-        SubmenuIndexUniversalAudio,
-        infrared_scene_universal_submenu_callback,
-        context);
-
-    submenu_add_item(
-        submenu,
         "ACs",
-        SubmenuIndexUniversalAirConditioner,
-        infrared_scene_universal_submenu_callback,
-        context);
-
-    submenu_add_item(
-        submenu,
         "LEDs",
-        SubmenuIndexUniversalLEDs,
-        infrared_scene_universal_submenu_callback,
-        context);
-
-    submenu_add_item(
-        submenu,
         "Fans",
-        SubmenuIndexUniversalFan,
-        infrared_scene_universal_submenu_callback,
-        context);
-
-    submenu_add_item(
-        submenu,
-        "Blu-ray/DVDs",
-        SubmenuIndexUniversalBluray,
-        infrared_scene_universal_submenu_callback,
-        context);
-
-    submenu_add_item(
-        submenu,
+        "Blu-ray/DVD",
         "Monitors",
-        SubmenuIndexUniversalMonitor,
-        infrared_scene_universal_submenu_callback,
-        context);
-
-    submenu_add_item(
-        submenu,
-        "Digital Signs",
-        SubmenuIndexUniversalDigitalSign,
-        infrared_scene_universal_submenu_callback,
-        context);
-
-    submenu_add_item(
-        submenu,
-        "Load from Library File",
-        SubmenuIndexUniversalFromFile,
-        infrared_scene_universal_submenu_callback,
-        context);
-
-    submenu_set_selected_item(
-        submenu, scene_manager_get_scene_state(infrared->scene_manager, InfraredSceneUniversal));
-
-    view_dispatcher_switch_to_view(infrared->view_dispatcher, InfraredViewSubmenu);
+        "Signs",
+        "Library file",
+    };
+    infrared_buttons_set_header(panel, "Universal");
+    for(size_t i = 0; i < COUNT_OF(labels); ++i) {
+        infrared_buttons_add(
+            panel, labels[i], i, false, infrared_scene_universal_callback, infrared);
+    }
+    infrared_buttons_set_selected(
+        panel, scene_manager_get_scene_state(infrared->scene_manager, InfraredSceneUniversal));
+    view_dispatcher_switch_to_view(infrared->view_dispatcher, InfraredViewHome);
 }
 
 bool infrared_scene_universal_on_event(void* context, SceneManagerEvent event) {
@@ -143,5 +90,5 @@ bool infrared_scene_universal_on_event(void* context, SceneManagerEvent event) {
 
 void infrared_scene_universal_on_exit(void* context) {
     InfraredApp* infrared = context;
-    submenu_reset(infrared->submenu);
+    infrared_buttons_reset(infrared->home_panel);
 }

@@ -15,12 +15,27 @@ typedef union {
 } InfraredSceneState;
 #pragma pack(pop)
 
-void infrared_scene_universal_common_item_callback(void* context, uint32_t index, InputType type) {
+void infrared_scene_universal_common_item_callback(void* context, int32_t index, InputType type) {
     InfraredApp* infrared = context;
     if(type == InputTypeShort) {
         uint32_t event = infrared_custom_event_pack(InfraredCustomEventTypeButtonSelected, index);
         view_dispatcher_send_custom_event(infrared->view_dispatcher, event);
     }
+}
+
+void infrared_scene_universal_common_add_button(
+    InfraredApp* infrared,
+    uint32_t id,
+    const char* name) {
+    infrared_brute_force_add_record(infrared->brute_force, id, name);
+    infrared_buttons_add(
+        infrared->button_panel,
+        name,
+        id,
+        false,
+        infrared_scene_universal_common_item_callback,
+        infrared);
+    infrared_buttons_set_hint(infrared->button_panel, id, "OK Try codes | Back Exit", true);
 }
 
 static void infrared_scene_universal_common_progress_input_callback(
@@ -62,8 +77,8 @@ static int32_t infrared_scene_universal_common_task_callback(void* context) {
 
 void infrared_scene_universal_common_on_enter(void* context) {
     InfraredApp* infrared = context;
-    view_set_orientation(view_stack_get_view(infrared->view_stack), ViewOrientationVertical);
-    view_stack_add_view(infrared->view_stack, button_panel_get_view(infrared->button_panel));
+    view_set_orientation(view_stack_get_view(infrared->view_stack), ViewOrientationHorizontal);
+    view_stack_add_view(infrared->view_stack, infrared_buttons_get_view(infrared->button_panel));
 
     // Load universal remote data in background
     infrared_blocking_task_start(infrared, infrared_scene_universal_common_task_callback);
@@ -251,8 +266,8 @@ void infrared_scene_universal_common_return(void* context) {
 
 void infrared_scene_universal_common_on_exit(void* context) {
     InfraredApp* infrared = context;
-    ButtonPanel* button_panel = infrared->button_panel;
-    view_stack_remove_view(infrared->view_stack, button_panel_get_view(button_panel));
+    InfraredButtons* button_panel = infrared->button_panel;
+    view_stack_remove_view(infrared->view_stack, infrared_buttons_get_view(button_panel));
+    infrared_buttons_reset(button_panel);
     infrared_brute_force_reset(infrared->brute_force);
-    button_panel_reset(button_panel);
 }

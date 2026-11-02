@@ -62,6 +62,7 @@ bool infrared_scene_rpc_on_event(void* context, SceneManagerEvent event) {
             if(!INFRARED_ERROR_PRESENT(task_error)) {
                 const char* remote_name = infrared_remote_get_name(infrared->remote);
                 infrared_text_store_set(infrared, 0, "loaded\n%s", remote_name);
+                infrared_scene_rpc_show(infrared);
                 scene_manager_set_scene_state(
                     infrared->scene_manager, InfraredSceneRpc, InfraredRpcStateLoaded);
             } else {
