@@ -196,13 +196,9 @@ static InfraredApp* infrared_alloc(void) {
     view_dispatcher_add_view(
         view_dispatcher, InfraredViewDialogEx, dialog_ex_get_view(infrared->dialog_ex));
 
-    infrared->button_menu = infrared_buttons_alloc(4);
+    infrared->button_menu = button_menu_alloc();
     view_dispatcher_add_view(
-        view_dispatcher, InfraredViewButtonMenu, infrared_buttons_get_view(infrared->button_menu));
-
-    infrared->home_panel = infrared_buttons_alloc(6);
-    view_dispatcher_add_view(
-        view_dispatcher, InfraredViewHome, infrared_buttons_get_view(infrared->home_panel));
+        view_dispatcher, InfraredViewButtonMenu, button_menu_get_view(infrared->button_menu));
 
     infrared->popup = popup_alloc();
     view_dispatcher_add_view(view_dispatcher, InfraredViewPopup, popup_get_view(infrared->popup));
@@ -233,7 +229,7 @@ static InfraredApp* infrared_alloc(void) {
             infrared_debug_view_get_view(infrared->debug_view));
     }
 
-    infrared->button_panel = infrared_buttons_alloc(6);
+    infrared->button_panel = button_panel_alloc();
     infrared->progress = infrared_progress_view_alloc();
 
     return infrared;
@@ -264,10 +260,7 @@ static void infrared_free(InfraredApp* infrared) {
     dialog_ex_free(infrared->dialog_ex);
 
     view_dispatcher_remove_view(view_dispatcher, InfraredViewButtonMenu);
-    infrared_buttons_free(infrared->button_menu);
-
-    view_dispatcher_remove_view(view_dispatcher, InfraredViewHome);
-    infrared_buttons_free(infrared->home_panel);
+    button_menu_free(infrared->button_menu);
 
     view_dispatcher_remove_view(view_dispatcher, InfraredViewPopup);
     popup_free(infrared->popup);
@@ -289,7 +282,7 @@ static void infrared_free(InfraredApp* infrared) {
         infrared_debug_view_free(infrared->debug_view);
     }
 
-    infrared_buttons_free(infrared->button_panel);
+    button_panel_free(infrared->button_panel);
     infrared_progress_view_free(infrared->progress);
 
     view_dispatcher_free(view_dispatcher);

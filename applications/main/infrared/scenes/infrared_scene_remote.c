@@ -28,38 +28,38 @@ static void
 void infrared_scene_remote_on_enter(void* context) {
     InfraredApp* infrared = context;
     InfraredRemote* remote = infrared->remote;
-    InfraredButtons* button_menu = infrared->button_menu;
+    ButtonMenu* button_menu = infrared->button_menu;
     SceneManager* scene_manager = infrared->scene_manager;
 
     for(size_t i = 0; i < infrared_remote_get_signal_count(remote); ++i) {
-        infrared_buttons_add(
+        button_menu_add_item(
             button_menu,
             infrared_remote_get_signal_name(remote, i),
             i,
-            true,
             infrared_scene_remote_button_menu_callback,
+            ButtonMenuItemTypeCommon,
             context);
     }
 
-    infrared_buttons_add(
+    button_menu_add_item(
         button_menu,
         "+",
         ButtonIndexLearn,
-        false,
         infrared_scene_remote_button_menu_callback,
+        ButtonMenuItemTypeControl,
         context);
-    infrared_buttons_add(
+    button_menu_add_item(
         button_menu,
         "Edit",
         ButtonIndexEdit,
-        false,
         infrared_scene_remote_button_menu_callback,
+        ButtonMenuItemTypeControl,
         context);
 
-    infrared_buttons_set_header(button_menu, infrared_remote_get_name(remote));
+    button_menu_set_header(button_menu, infrared_remote_get_name(remote));
     const int16_t button_index =
         (signed)scene_manager_get_scene_state(scene_manager, InfraredSceneRemote);
-    infrared_buttons_set_selected(button_menu, button_index);
+    button_menu_set_selected_item(button_menu, button_index);
     scene_manager_set_scene_state(scene_manager, InfraredSceneRemote, ButtonIndexNA);
 
     view_dispatcher_switch_to_view(infrared->view_dispatcher, InfraredViewButtonMenu);
@@ -122,5 +122,5 @@ bool infrared_scene_remote_on_event(void* context, SceneManagerEvent event) {
 void infrared_scene_remote_on_exit(void* context) {
     InfraredApp* infrared = context;
     infrared_tx_stop(infrared);
-    infrared_buttons_reset(infrared->button_menu);
+    button_menu_reset(infrared->button_menu);
 }

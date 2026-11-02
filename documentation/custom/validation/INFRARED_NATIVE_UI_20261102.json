@@ -1,0 +1,119 @@
+{
+  "client_date": "2026-11-02",
+  "passed": true,
+  "scope": "Restore original Flipper Infrared menus, native icon panels and portrait saved-remote buttons after user rejected card UI",
+  "native_ui_baseline_commit": "1e8cb923a89e28295c7470bce3360d786a63c572",
+  "application_source_matches_native_baseline_except": [
+    "Stop transmission before resetting saved-remote view on exit",
+    "Show RPC loaded-model view before restoring the Loaded state and confirming success"
+  ],
+  "source_hash_line_endings": "LF, matching Git normalization",
+  "source_files_sha256": {
+    "applications/main/infrared/infrared_app.c": "c31687b0e762507d0ae8dc1a291a87b0971a837d2204f808ada7e6a841d54c37",
+    "applications/main/infrared/infrared_app_i.h": "c69eb280d8a06be6fe598e23325e44fbadfb7cfec70808a44de5937ddc68f70b",
+    "applications/main/infrared/scenes/common/infrared_scene_universal_common.c": "e5e1bed97926102cd30122a058b69550f257e991b47c732a4af61f19d64634b1",
+    "applications/main/infrared/scenes/common/infrared_scene_universal_common.h": "d16c07423e0b9263395be0b9d525c1e16a05b9a638df100e86b52abfa0f42460",
+    "applications/main/infrared/scenes/infrared_scene_remote.c": "ac1df4589b591e9b7c59095d6245c84265e5469e0465c258a8210621097c769b",
+    "applications/main/infrared/scenes/infrared_scene_start.c": "4595ed1f9c05247c812c6ee77fd9eec6bfefa5b5e958961ecf8fedf24069fb48",
+    "applications/main/infrared/scenes/infrared_scene_universal.c": "24b94983c1ac50784fe52ecc44df2892edabbbf58f5e93ebd3a6975b0535d17b",
+    "applications/main/infrared/scenes/infrared_scene_universal_ac.c": "dfc4a4fe2043417b6f91a132fb6f28ab9aa948e00205a0dcf481adfb09dd4c91",
+    "applications/main/infrared/scenes/infrared_scene_universal_audio.c": "ba2f6c6d82860734a61a46d3ec938fec73c44cfc1fbde9be460d53efa49dd5ea",
+    "applications/main/infrared/scenes/infrared_scene_universal_bluray.c": "340422e8cea5bf9b58d0507ef4a9e0fb7aec0fcccba45950d5be0f529a6cedec",
+    "applications/main/infrared/scenes/infrared_scene_universal_digital_sign.c": "a4eb469a65f791daac73e1d5e157dc42a1ad967ef91e0c6b140f48a1c8a19f2f",
+    "applications/main/infrared/scenes/infrared_scene_universal_fan.c": "b1aeb898ea326764780ed1a37a623e1aac697a7616116d2823ad6860a0a9eb5d",
+    "applications/main/infrared/scenes/infrared_scene_universal_from_file.c": "372c634805991c0cd0106132f289c5413ea8803af616a985cb58b184972f0f33",
+    "applications/main/infrared/scenes/infrared_scene_universal_leds.c": "597d3383f2f6d38c86a2ccc9d77d02c2feab63d62bc5d7b6b3070f78c39e8fc0",
+    "applications/main/infrared/scenes/infrared_scene_universal_monitor.c": "ee8549e2e17ca4f4de00c7cc3bc8776beb9f29ab1e3cdc9ce5cecc78a3863f47",
+    "applications/main/infrared/scenes/infrared_scene_universal_projector.c": "5577a590db85c301e5a495d85229d2bfb5a5fd6c707d03d12495396b81c69899",
+    "applications/main/infrared/scenes/infrared_scene_universal_tv.c": "e7f2bddcfeb64040beff4d17466719ec891e39ee1272f1f2faf024a1ff11b9d7",
+    "applications/main/infrared/views/infrared_progress_view.c": "ce526623acea679f042ba81f755fbd183e580b632f729430995b903c24214333",
+    "scripts/tests/fixtures/infrared_native_controls.c": "94d26b252598f5d7b4323b297445d7c3584548f92e5775779a524580743ed1b2",
+    "scripts/tests/test_infrared_native_controls.py": "64b9939ed957013a32c79fd8c18a9b28e144489d7c16388f619796d80919c023"
+  },
+  "host_tests": {
+    "passed": 240,
+    "skipped": 0,
+    "seconds": 149.692,
+    "native_controls_regressions": 5,
+    "retained_rpc_status_regressions": 2,
+    "removed_rejected_card_only_tests": 11
+  },
+  "build": {
+    "complete_firmware_and_apps": true,
+    "lint_all": true,
+    "bundle": "flipper-z-f7-update-mntm-codex-iphone-zh-architecture-c5690a84.tgz",
+    "bundle_sha256": "5ff6793b545d9027bb6eaa61da288192f6c5c9fba66682eee3b259db67bb7093",
+    "version_label_base_commit": "c5690a84ed0a8eac1ed9aa6456c5c2c8569c378d",
+    "source_state": "Restored working tree; application/test source hashes recorded above; package version label retains base commit",
+    "faps": 297,
+    "fals": 122,
+    "resources": 3799,
+    "sdk_entries": 3306,
+    "primary_flash_margin_bytes": 5240
+  },
+  "device": {
+    "application_only": true,
+    "primary_and_radio_flashed": false,
+    "primary_unchanged": "c6daa25d",
+    "radio_unchanged": "Full1.20.0",
+    "installed_app": "/ext/apps/Infrared/infrared.fap",
+    "installed_app_bytes": 126752,
+    "installed_app_sha256": "590fe73cd26cb98c84f0ea7897cc860325082c960253d4a056b1d35b2e16575a",
+    "installed_app_md5_verified": "38a9f786a7b613215e57e66194e79afd",
+    "manifest_only_ir_entry_changed": true,
+    "speaker_volume": 0.0,
+    "pairing_desktop_IR_settings_and_radar_apps_preserved": true,
+    "fresh_turn_backup_settings_checksums_verified": true,
+    "original_and_prior_app_backups_retained_privately": true,
+    "left_on_native_IR_home": true
+  },
+  "ui": {
+    "manual_actual_device_frame_review": true,
+    "native_list_home": true,
+    "native_icon_universal_panels": true,
+    "portrait_saved_remote_buttons": true,
+    "software_RPC_keys_remain_logical": true,
+    "screens_reviewed": [
+      "home",
+      "universal_categories",
+      "TV_icon_panel",
+      "AC_icon_panel",
+      "library_file_entry",
+      "Saved_Remotes_More_Remotes_directory",
+      "GREE_saved_remote_and_scrolling",
+      "TCL_saved_remote",
+      "edit_entry",
+      "learn_entry",
+      "RPC_loaded_model"
+    ],
+    "repeated_open_close": 8,
+    "rpc_load_success_and_exit": true,
+    "rpc_error_code": 0,
+    "rpc_loaded_model_status_retained": true,
+    "rpc_transport_tested": "USB",
+    "native_from_file_release_callback_verified_in_host_tests": true
+  },
+  "retained_library": {
+    "remote_files": 1648,
+    "TV_files": 397,
+    "AC_files": 158,
+    "signal_records": 31854,
+    "path": "/ext/infrared/More_Remotes",
+    "actual_model_files_opened": [
+      "GREE_YAPOF",
+      "TCL_32S327"
+    ],
+    "source_resources_unchanged": true,
+    "full_data_validation_record": "INFRARED_LIBRARY_20261102.json"
+  },
+  "limits": {
+    "infrared_transmission_performed": false,
+    "real_appliance_response_tested": false,
+    "BLE_radio_acceptance": false,
+    "universal_progress_overlay_transmission_test": false
+  },
+  "known_pre_existing_build_warnings": [
+    "Disabled cli_bridge/mtp manifests use .cli_gui/.f0_mtp app IDs",
+    "SCons sdk_headers/sdk.opts warning after SDK tree generation; full build and SDK/API checks passed"
+  ]
+}

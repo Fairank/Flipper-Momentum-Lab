@@ -18,6 +18,8 @@
 #include <gui/modules/submenu.h>
 #include <gui/modules/dialog_ex.h>
 #include <gui/modules/text_input.h>
+#include <gui/modules/button_menu.h>
+#include <gui/modules/button_panel.h>
 #include <gui/modules/variable_item_list.h>
 
 #include <rpc/rpc_app.h>
@@ -36,7 +38,6 @@
 #include "views/infrared_progress_view.h"
 #include "views/infrared_debug_view.h"
 #include "views/infrared_move_view.h"
-#include "views/infrared_buttons.h"
 
 #define INFRARED_FILE_NAME_SIZE  100
 #define INFRARED_TEXT_STORE_NUM  2
@@ -119,8 +120,7 @@ struct InfraredApp {
     Submenu* submenu; /**< Standard view for displaying application menus. */
     TextInput* text_input; /**< Standard view for receiving user text input. */
     DialogEx* dialog_ex; /**< Standard view for displaying dialogs. */
-    InfraredButtons* button_menu; /**< Landscape controls for saved remotes. */
-    InfraredButtons* home_panel; /**< Landscape home and category chooser. */
+    ButtonMenu* button_menu; /**< Custom view for interacting with IR remotes. */
     Popup* popup; /**< Standard view for displaying messages. */
     VariableItemList* var_item_list; /**< Standard view for displaying menus of choice items. */
 
@@ -128,7 +128,7 @@ struct InfraredApp {
     InfraredDebugView* debug_view; /**< Custom view for displaying debug information. */
     InfraredMoveView* move_view; /**< Custom view for rearranging buttons in a remote. */
 
-    InfraredButtons* button_panel; /**< Landscape universal remote controls. */
+    ButtonPanel* button_panel; /**< Standard view for displaying control panels. */
     Loading* loading; /**< Standard view for informing about long operations. */
     InfraredProgressView* progress; /**< Custom view for showing brute force progress. */
 
@@ -156,7 +156,6 @@ typedef enum {
     InfraredViewDebugView,
     InfraredViewMove,
     InfraredViewLoading,
-    InfraredViewHome,
 } InfraredView;
 
 /**
